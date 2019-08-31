@@ -19,8 +19,8 @@ package kosui.pppswingui;
 
 import java.util.HashMap;
 import javax.swing.SwingUtilities;
-import kosui.ppplocalui.ViOperable;
 import kosui.ppputil.VcConst;
+import kosui.ppplocalui.EiTriggerable;
 
 /**
  * a stupid mechanism to ensure the draw() from your sketch only 
@@ -38,8 +38,8 @@ public final class VcKeeper {
 
   private static volatile String cmCommand=C_INVALID;
   private static volatile String cmSeparator=",";
-  private static final HashMap<String, ViOperable> O_MAP
-    =new HashMap<String, ViOperable>();
+  private static final HashMap<String, EiTriggerable> O_MAP
+    =new HashMap<String, EiTriggerable>();
 
   //===
 
@@ -49,9 +49,11 @@ public final class VcKeeper {
   public static final void ccKeep(){
     if(VcConst.ccIsValidString(cmCommand)){
       String[] lpLine=cmCommand.split(cmSeparator);
-      if(O_MAP.containsKey(lpLine[0]))
-        {O_MAP.get(lpLine[0]).ccOperate(lpLine);}
-      else{
+      if(O_MAP.containsKey(lpLine[0])){
+        //[todo]::
+        throw new RuntimeException("[REFECT]::not yet!!");
+        //O_MAP.get(lpLine[0]).ccOperate(lpLine);
+      }else{
         SwingUtilities.invokeLater(new Runnable() {
           @Override public void run(){
             ScFactory.ccMessageBox("unhandled_command:"+cmCommand);
@@ -91,7 +93,7 @@ public final class VcKeeper {
    * @param pxOperation # 
    */
   public static final 
-  void ccAddOperation(String pxCommand, ViOperable pxOperation){
+  void ccAddOperation(String pxCommand, EiTriggerable pxOperation){
     if(!O_MAP.containsKey(pxCommand)){
       O_MAP.put(pxCommand, pxOperation);
     }//..?

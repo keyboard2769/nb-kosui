@@ -4,6 +4,8 @@
 
 package ppptest;
 
+import kosui.ppputil.VcTagger;
+import kosui.ppputil.VcResponsiveBar;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,7 +29,7 @@ public class TestSketch extends PApplet {
     
     size(320, 240);
     noSmooth();
-    EcConst.ccInit(this);
+    EcConst.ccSetupSketch(this);
     
     
   }//+++
@@ -61,7 +63,7 @@ public class TestSketch extends PApplet {
   }//+++
   
   @Override public void keyPressed() {
-    if(VcConsole.ccKeyTyped(key, keyCode)){return;}
+    if(VcResponsiveBar.ccKeyTyped(key, keyCode)){return;}
     
     switch(key){
       

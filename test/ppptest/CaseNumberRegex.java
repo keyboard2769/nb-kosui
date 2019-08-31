@@ -17,8 +17,8 @@
 
 package ppptest;
 
-import static kosui.ppputil.VcConst.ccIsFloatString;
-import static kosui.ppputil.VcConst.ccIsIntegerString;
+import static kosui.ppputil.VcNumericUtility.ccIsFloatString;
+import static kosui.ppputil.VcNumericUtility.ccIsIntegerString;
 
 public class CaseNumberRegex{
   public static void main(String[] args){

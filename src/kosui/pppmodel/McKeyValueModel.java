@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppputil;
+package kosui.pppmodel;
 
-import kosui.pppswingui.McTableAdapter;
+import kosui.pppmodel.McTableAdapter;
 
 import processing.data.StringDict;
 

@@ -18,15 +18,14 @@
 package kosui.ppplocalui;
 
 /**
- * just a little works like a event listener.<br>
- * for some reason i decide this should take a string array.<br> 
+ * just a little works like a runnable stuff.<br>
+ * for some reason i decide this should take no parameter.<br> 
  */
-public interface ViOperable{
+public interface EiTriggerable{
   
   /**
-   * 
-   * @param pxLine anything that can be use as a parameter
+   * some action
    */
-  public void ccOperate(String[] pxLine);
+  public void ccTrigger();
   
 }//***eof

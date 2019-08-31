@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppputil;
+package kosui.pppmodel;
 
 import processing.data.IntList;
 import processing.data.StringList;
 
 import java.util.HashMap;
+import kosui.ppputil.VcConst;
 
 import static kosui.ppputil.VcConst.ccIsValidString;
 import static kosui.ppputil.VcConst.ccLogln;
+import kosui.ppputil.VcNumericUtility;
 import static processing.core.PApplet.println;
 import static processing.core.PApplet.parseInt;
 
@@ -100,7 +102,7 @@ public class McCommand{
     StringList lpStringList=new StringList();
     for(int i=1,s=lpTokens.length;i<s;i++){
       String lpToken=lpTokens[i];
-      if(VcConst.ccIsIntegerString(lpToken)){
+      if(VcNumericUtility.ccIsIntegerString(lpToken)){
         lpIntegerList.append(parseInt(lpToken));
       }else{
         lpStringList.append(lpToken);

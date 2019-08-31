@@ -92,15 +92,14 @@ public final class EcConst {
   /**
    * <b>NO NULL CHECK!!</b><br>
    * <pre>
-   * should be called from setup() before
-   *   constructing any UIElement, 
-   *   for there is some basic mode setting this library prefers.
-   * for some reason this does no calls noSmooth(). <br>
-   *   like : EcFactory.ccInit(this);
+   * supposedly should get called from PApplet.setup()
+   *   before constructing any UIElement but after size(), 
+   *   for there is some basic mode setting this library intended prefers.
+   * for some reason this does no calls noSmooth().
    * </pre>
    * @param pxOwner : your sketch
    */
-  public static final void ccInit(PApplet pxOwner){
+  public static final void ccSetupSketch(PApplet pxOwner){
     pxOwner.frameRate(16);
     pxOwner.noStroke();
     pxOwner.textAlign(LEFT,TOP);
@@ -404,7 +403,8 @@ public final class EcConst {
    * @param args you know what it is.
    */
   public static void main(String[] args) {
-    System.err.println("kosui.EcFactory.main()::kosui v 19b01");
+    System.out.println("Key Optional System User Interface");
+    System.out.println("v19b01");
     System.err.println("kosui.EcFactory.main()::NOT_FOR_PUBLIC_USE!!");
   }//+++
 

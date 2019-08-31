@@ -15,15 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppplocalui;
-
-import kosui.ppputil.McLineStacker;
-import kosui.ppputil.VcConst;
+package kosui.ppputil;
 
 import processing.core.PApplet;
 import static processing.core.PConstants.BOTTOM;
 import static processing.core.PConstants.LEFT;
 import static processing.core.PApplet.constrain;
+
+import kosui.pppmodel.McLineStacker;
 
 /**
  * i used to wonder how should i handle the in window print problem, 
@@ -32,85 +31,108 @@ import static processing.core.PApplet.constrain;
  */
 public final class VcStacker {
   
-  static private PApplet pbOwner=null;
+  /**
+   * @return instance
+   */
+  public static final VcStacker ccGetInstance(){return SELF;}
+  private static final VcStacker SELF = new VcStacker();
+  private VcStacker (){}//+++
+  
+  //===
+  
+  private PApplet pbOwner=null;
   
   /**
    * will be shown after cleared 
    */
-  static public String pbDefaultMessage="::";
+  private  String pbDefaultMessage="::";
   
-  static private boolean pbIsVisible=true;
-  static private int pbBaseColor=0xFF33EE33;
-  static private int pbReversedOffsetY=40;
-  static private int pbCharCount=48;
+  private boolean pbIsVisible=true;
   
-  static private final McLineStacker O_STK=new McLineStacker();
+  private int
+    //-- color
+    pbBaseColor=0xFF33EE33,
+    //-- pix
+    pbReversedOffsetY=40,
+    //-- count
+    pbCharCount=48
+  ;//...
+  
+  private final McLineStacker O_STK
+    = new McLineStacker();
   
   //===
   
-  private VcStacker (){}//+++
-  
   /**
-   * it is invoked from the factory's initiator.
-   * you don't have to call this in your sketch.<br>
+   * <pre>
+   * it is invoked from the manager's initiator.
+   * you might have to call this in your sketch.
+   * </pre>
    * @param pxOwner your sketch
    */
-  static public final void ccInit(PApplet pxOwner)
-    {pbOwner=pxOwner;}
-  
-  //=== 
+  public final void ccInit(PApplet pxOwner){
+    if(pxOwner==null){return;}
+    if(pbOwner==null){pbOwner=pxOwner;}
+  }//..!
   
   /**
-   * 
    * @param pxColor both text and base line will be this color
    */
-  static public final void ccSetBaseColor(int pxColor)
-    {pbBaseColor=pxColor;}//+++
+  public final void ccSetBaseColor(int pxColor){
+    pbBaseColor=pxColor;
+  }//+++
   
   /**
    * @param pxSize #
    * @param pxDivisor #
    */
-  static public final void ccSetTrim(int pxSize, int pxDivisor){
+  public final void ccSetTrim(int pxSize, int pxDivisor){
     O_STK.ccSetTrim(pxSize, pxDivisor);
   }//+++
   
   /**
+   * <pre>
    * a base line will be placed on the scree,
-   * it is also where the text starts.
+   *   it is also where the text starts.
+   * </pre>
    * @param pxOffsetY to the bottom
    */
-  static public final void ccSetReversedOffsetY(int pxOffsetY)
-    {pbReversedOffsetY=pxOffsetY;}//+++
+  public final void ccSetReversedOffsetY(int pxOffsetY){
+    pbReversedOffsetY=pxOffsetY;
+  }//+++
   
   /**
    * max character number of a single line.<br>
-   * will be constrained to 3-512;
-   * @param pxCount #
+   * @param pxCount 3~512
    */
-  static public final void ccSetCharCount(int pxCount){
+  public final void ccSetCharCount(int pxCount){
     pbCharCount=constrain(pxCount, 3, 512);
   }//+++
   
   /**
-   * 
    * @param pxState #
    */
-  static public final void ccSetVisible(boolean pxState)
-    {pbIsVisible=pxState;}//+++
+  public final void ccSetVisible(boolean pxState){
+    pbIsVisible=pxState;
+  }//+++
   
   /**
    * flip version
    */
-  static public final void ccFlipVisible()
-    {pbIsVisible=!pbIsVisible;}//+++
+  public final void ccFlipVisible(){
+    pbIsVisible=!pbIsVisible;
+  }//+++
   
   //===
   
   /**
-   * should be called inside draw()
+   * supposedly should get called inside PApplet.draw() loop
    */
-  static public final void ccUpdate(){
+  public static final void ccUpdate(){
+    SELF.ssUpdate();
+  }//+++
+  
+  private void ssUpdate(){
     if(pbOwner==null || !pbIsVisible){return;}
     int lpOffset=pbOwner.height-pbReversedOffsetY;
     pbOwner.pushStyle();{
@@ -123,49 +145,44 @@ public final class VcStacker {
   }//+++
   
   /**
+   * will get passed to McLineStacker.ccStack() directly.<br>
    * @param pxTag #
    * @param pxVal #
    */
   static public final void ccStack(String pxTag, Object pxVal){
-    O_STK.ccStack(pxTag, pxVal);
+    SELF.O_STK.ccStack(pxTag, pxVal);
   }//+++
   
   /**
-   * a wrapper of to string method.
-   * @param pxVal #
+   * a wrapped input will get passed to McLineStacker.ccStack() directly.<br>
+   * @param pxLine #
    */
-  static public final void ccStack(Object pxVal){
-    ccStack(pxVal.toString());
+  static public final void ccStack(String pxLine){
+    SELF.O_STK.ccStack(VcStringUtility.ccWrap(pxLine, SELF.pbCharCount));
   }//+++
   
   /**
-   * @param pxVal #
+   * set stacked to default message held by the system stacker.
    */
-  static public final void ccStack(String pxVal){
-    O_STK.ccStack(
-      VcConst.ccWrap(pxVal, pbCharCount)
-    );
+  static public final void ccClear(){
+    SELF.O_STK.ccClear(SELF.pbDefaultMessage);
   }//+++
-  
-  /**
-   * set stacked to default message held by the system stacker
-   */
-  static public final void ccClear(){O_STK.ccClear(pbDefaultMessage);}//+++
   
   /**
    * @param pxDefault will replace current default message
    */
   static public final void ccClear(String pxDefault){
-    pbDefaultMessage=VcConst.ccWrap(pxDefault, pbCharCount);
-    O_STK.ccClear(pbDefaultMessage);
+    SELF.pbDefaultMessage=VcStringUtility.ccWrap(pxDefault, SELF.pbCharCount);
+    SELF.O_STK.ccClear(SELF.pbDefaultMessage);
   }//+++
   
   //===
   
   /**
-   * @return #
+   * @return McLineStacker.ccGetSize()
    */
-  static public final int ccGetSize()
-    {return O_STK.ccGetSize();}
+  public final int ccGetSize(){
+    return O_STK.ccGetSize();
+  }//+++
   
 }//***eof

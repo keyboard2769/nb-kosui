@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppplocalui;
+package kosui.ppputil;
 
 import processing.core.PApplet;
 import static processing.core.PApplet.nf;
@@ -58,7 +58,7 @@ public final class VcAxis {
    * @param pxEnable #
    */
   public final void ccInit(PApplet pxParent, boolean pxEnable){
-    cmOwner=pxParent;
+    if(cmOwner==null){cmOwner=pxParent;}
     ccSetIsEnabled(pxEnable);
   }//..!
   

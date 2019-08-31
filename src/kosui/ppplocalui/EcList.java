@@ -18,7 +18,7 @@
 package kosui.ppplocalui;
 
 import static processing.core.PApplet.constrain;
-import static kosui.ppputil.VcConst.ccLeft;
+import static kosui.ppputil.VcStringUtility.ccLeft;
 
 /**
  * a rectangle shows some lists.<br>

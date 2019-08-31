@@ -24,7 +24,7 @@ import java.util.HashMap;
  * outside from a coordinator. <br>
  * but actually it is just a rectangle with text. <br>
  */
-final class EcTipManager extends EcComponent {
+public final class EcTipManager extends EcComponent {
   
   private static final int 
     C_TEXT_ADJ_X = 2,
@@ -72,7 +72,7 @@ final class EcTipManager extends EcComponent {
    * @param pxID #
    * @param pxTip #
    */
-  final void ccPut(int pxID, String pxTip)
+  public final void ccPut(int pxID, String pxTip)
     {cmTipMap.put(pxID, new EcTip(pxTip));}//+++
   
   //===

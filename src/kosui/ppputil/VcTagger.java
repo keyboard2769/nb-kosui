@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppplocalui;
+package kosui.ppputil;
 
 import processing.core.PApplet;
 import static processing.core.PApplet.ceil;
@@ -57,15 +57,16 @@ public final class VcTagger{
   /**
    * <pre>
    * should get invoked from the manager's initiator.
-   * you don't have to call this in your sketch.
+   * you might have to call this in your sketch.
    * if you want to change the raw setting
    *   you can call the setter anywhere.
    * </pre>
-   * @param pxParent your sketch
+   * @param pxOwner your sketch
    * @param pxRow max row count, DONT PASS ZERO!!
    */
-  public final void ccInit(PApplet pxParent, int pxRow){
-    cmOwner=pxParent;
+  public final void ccInit(PApplet pxOwner, int pxRow){
+    if(pxOwner==null){return;}
+    if(cmOwner==null){cmOwner=pxOwner;}
     ccSetRow(pxRow);
   }//..!
   

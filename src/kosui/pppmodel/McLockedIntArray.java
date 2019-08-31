@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppputil;
+package kosui.pppmodel;
+
+import kosui.ppputil.VcNumericUtility;
 
 /**
- * i cant remenber why i build this. <br>
- * possiblely it is for a memory viewer application. <br>
+ * i cant remember why i build this. <br>
+ * possibly it is for a memory viewer application. <br>
  */
 public final class McLockedIntArray {
 
@@ -34,7 +36,7 @@ public final class McLockedIntArray {
    * @param pxSize array size
    */
   public McLockedIntArray(int pxSize) {
-    cmArray = new int[VcConst.ccToPowerOfTwo(pxSize)];
+    cmArray = new int[VcNumericUtility.ccToPowerOfTwo(pxSize)];
     cmMask = cmArray.length - 1;
   }//+++
 

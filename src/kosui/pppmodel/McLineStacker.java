@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.ppputil;
+package kosui.pppmodel;
 
+import kosui.ppputil.VcConst;
 import processing.data.StringList;
 import static processing.core.PApplet.join;
 
@@ -47,19 +48,18 @@ public class McLineStacker {
   //===
   
   /**
-   * tagged value version
-   * @param pxTag will be catted a colon
-   * @param pxVal toString() will be called.
+   * tagged value version.<br>
+   * @param pxTag must have some thing.
+   * @param pxVal toString() can be anything.
    */
-  public final void ccStack(String pxTag, Object pxVal)
-    {ccStack(pxTag+":"+pxVal);}//+++
-  
-  /**
-   * value version 
-   * @param pxVal toString() will be called.
-   */
-  public final void ccStack(Object pxVal)
-    {ccStack(pxVal.toString());}//+++
+  public final void ccStack(String pxTag, Object pxVal){
+    if(!VcConst.ccIsValidString(pxTag)){return;}
+    if(pxVal==null){
+      ccStack(pxTag);
+    }else{
+      ccStack(pxTag+":"+pxVal);
+    }//..?
+  }//+++
   
   /**
    * stacks text to show.<br>
@@ -67,19 +67,20 @@ public class McLineStacker {
    * @param pxLine the text
    */
   public final void ccStack(String pxLine){
-    cmStacker=cmStacker+"\n"+pxLine;
+    if(pxLine==null){return;}
+    cmStacker=cmStacker+VcConst.C_V_NEWLINE+pxLine;
     if(cmStacker.length()>cmTrimSize){ccTrimStack();}
   }//+++
   
   private void ccTrimStack(){
-    StringList lpList=new StringList(cmStacker.split("\n"));
+    StringList lpList=new StringList(cmStacker.split(VcConst.C_V_NEWLINE));
     int lpLength=lpList.size();
     if(lpLength<=cmTrimDivisor){
       cmStacker=cmStacker.substring(0,cmStacker.length()/cmTrimDivisor);
       return;
-    }
+    }//..?
     for(int i=0,s=lpLength/cmTrimDivisor;i<s;i++){lpList.remove(i);}
-    cmStacker=join(lpList.array(),"\n");
+    cmStacker=join(lpList.array(),VcConst.C_V_NEWLINE);
   }//+++
   
   /**

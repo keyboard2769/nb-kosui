@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kosui.pppswingui;
+package kosui.pppmodel;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
