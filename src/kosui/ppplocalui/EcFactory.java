@@ -104,8 +104,8 @@ public final class EcFactory {
       return;
     }
     EcPoint.ccInitOwner(pxOwner);
-    VcTagger.ccInit(pxOwner, 8);
-    VcAxis.ccInit(pxOwner);
+    VcTagger.ccGetInstance().ccInit(pxOwner, 8);
+    VcAxis.ccGetInstance().ccInit(pxOwner,false);
     VcConsole.ccInit(pxOwner);
     VcStacker.ccInit(pxOwner);
     pxOwner.frameRate(16);

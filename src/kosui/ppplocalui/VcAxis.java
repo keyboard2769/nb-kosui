@@ -19,107 +19,130 @@ package kosui.ppplocalui;
 
 import processing.core.PApplet;
 import static processing.core.PApplet.nf;
-import static processing.core.PApplet.LEFT;
-import static processing.core.PApplet.RIGHT;
-import static processing.core.PApplet.TOP;
+import static processing.core.PConstants.LEFT;
+import static processing.core.PConstants.RIGHT;
+import static processing.core.PConstants.TOP;
 
 /**
- * if i am drawing some sketch on a paper i will never use a ruler.<br>
- * i wish you have a better way to determine any location and size.<br>
+ * <pre>
+ * if i am drawing some sketch on a paper i will never use a ruler.
+ * i wish you have a better way to determine any location and size.
+ * </pre>
  */
 public final class VcAxis {
   
-  private static PApplet pbOwner=null;
+  /**
+   * @return instance
+   */
+  public static final VcAxis ccGetInstance(){return SELF;}
+  private static final VcAxis SELF = new VcAxis();
+  private VcAxis(){}//..!
   
-  private static int pbAxisColor=0x9933EE33;
-  private static boolean pbIsEnabled=true;
-  private static int 
-    pbAnchorX=0,
-    pbAnchorY=0
+  //===
+
+  private PApplet cmOwner=null;
+  
+  private int cmAxisColor=0x9933EE33;
+  private boolean cmIsEnabled=true;
+  private int 
+    cmAnchorX=0,
+    cmAnchorY=0
   ;//...
   
-  //===
-  
-  private VcAxis (){}//+++
-  
-  //===
-  
   /**
-   * it is invoked from the factory's initiator.
-   * you don't have to call this in your sketch;
+   * <pre>
+   * it is invoked from the manager's initiator.
+   * you might have to call this in your sketch.
+   * </pre>
    * @param pxParent your sketch
+   * @param pxEnable #
    */
-  static public void ccInit(PApplet pxParent)
-    {pbOwner=pxParent;}//+++
+  public final void ccInit(PApplet pxParent, boolean pxEnable){
+    cmOwner=pxParent;
+    ccSetIsEnabled(pxEnable);
+  }//..!
   
   //===
   
   /**
    * 
-   * @param pxColor #
+   * @param pxColor ARGB
    */
-  static public void ccSetColor(int pxColor)
-    {pbAxisColor=pxColor;}//+++
+  public final void ccSetColor(int pxColor){
+    cmAxisColor=pxColor;
+  }//+++
   
   /**
    * 
-   * @param pxX #
-   * @param pxY #
+   * @param pxX pix
+   * @param pxY pix
    */
-  static public void ccSetAnchor(int pxX,int pxY)
-    {pbAnchorX=pxX;pbAnchorY=pxY;}//+++
+  public final void ccSetAnchor(int pxX,int pxY){
+    cmAnchorX=pxX;
+    cmAnchorY=pxY;
+  }//+++
   
   /**
    * flips states.
    */
-  static public void ccSetIsEnabled()
-    {pbIsEnabled=!pbIsEnabled;}//+++
+  public final void ccSetIsEnabled(){
+    cmIsEnabled=!cmIsEnabled;
+  }//+++
   
   /**
    * 
    * @param pxStatus #
    */
-  static public void ccSetIsEnabled(boolean pxStatus)
-    {pbIsEnabled=pxStatus;}//+++
+  public final void ccSetIsEnabled(boolean pxStatus){
+    cmIsEnabled=pxStatus;
+  }//+++
   
   //===
   
-  /**
-   * should be called inside draw()
-   */
-  static public void ccUpdate(){
+  private void ssUpdate(){
     
-    if(!pbIsEnabled){return;}
+    //-- check
+    if(!cmIsEnabled){return;}
+    if(cmOwner==null){return;}
     
-    int lpMouseX=pbOwner.mouseX;
-    int lpMouseY=pbOwner.mouseY;
-    int lpWidth=lpMouseX-pbAnchorX;
-    int lpHeight=lpMouseY-pbAnchorY;
-    boolean lpHasAnchor=(pbAnchorX!=0)&&(pbAnchorY!=0);
+    //-- pre
+    int lpMouseX=cmOwner.mouseX;
+    int lpMouseY=cmOwner.mouseY;
+    int lpWidth=lpMouseX-cmAnchorX;
+    int lpHeight=lpMouseY-cmAnchorY;
+    boolean lpHasAnchor=(cmAnchorX!=0)&&(cmAnchorY!=0);
     
     //-- axis
-    pbOwner.noFill();
-    pbOwner.stroke(pbAxisColor);
-    pbOwner.line(0,lpMouseY,pbOwner.width,lpMouseY);
-    pbOwner.line(lpMouseX,0,lpMouseX,pbOwner.height);
+    cmOwner.noFill();
+    cmOwner.stroke(cmAxisColor);
+    cmOwner.line(0,lpMouseY,cmOwner.width,lpMouseY);
+    cmOwner.line(lpMouseX,0,lpMouseX,cmOwner.height);
     
     //-- rect
-    if(lpHasAnchor){pbOwner.rect(pbAnchorX,pbAnchorY,lpWidth,lpHeight);}
-    pbOwner.noStroke();
+    if(lpHasAnchor){cmOwner.rect(cmAnchorX,cmAnchorY,lpWidth,lpHeight);}
+    cmOwner.noStroke();
     
     //-- info
-    pbOwner.fill(pbAxisColor);
+    cmOwner.fill(cmAxisColor);
     String lpMouse=nf(lpMouseX,3)+":"+nf(lpMouseY,3);
     String lpSize=nf(lpWidth,3)+":"+nf(lpHeight,3);
-    pbOwner.text(lpMouse,lpMouseX+2,lpMouseY-14);
-    pbOwner.textAlign(RIGHT, TOP);
-    pbOwner.text(lpSize,lpMouseX-2,lpMouseY+4);
+    cmOwner.text(lpMouse,lpMouseX+2,lpMouseY-14);
+    cmOwner.textAlign(RIGHT, TOP);
+    cmOwner.text(lpSize,lpMouseX-2,lpMouseY+4);
     if(lpHasAnchor){
-      String lpAnchor=nf(pbAnchorX,3)+":"+nf(pbAnchorY,3);
-      pbOwner.text(lpAnchor,lpMouseX-2,lpMouseY-14);
+      String lpAnchor=nf(cmAnchorX,3)+":"+nf(cmAnchorY,3);
+      cmOwner.text(lpAnchor,lpMouseX-2,lpMouseY-14);
     }//..?
-    pbOwner.textAlign(LEFT, TOP);
-    
+    cmOwner.textAlign(LEFT, TOP);
+  
+  }//+++
+  
+  /**
+   * <b>MUST BE INITIATED</b><br>
+   * should be called inside draw()<br>
+   */
+  static public void ccUpdate(){
+    SELF.ssUpdate();
   }//+++
   
 }//***eof

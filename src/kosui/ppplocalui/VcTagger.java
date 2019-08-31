@@ -19,6 +19,7 @@ package kosui.ppplocalui;
 
 import processing.core.PApplet;
 import static processing.core.PApplet.ceil;
+import static kosui.ppputil.VcConst.ccIsValidString;
 
 /**
  * draw string and value as tags on the screen.<br>
@@ -26,130 +27,162 @@ import static processing.core.PApplet.ceil;
  */
 public final class VcTagger{
   
-  static private PApplet pbOwner=null;
+  /**
+   * @return instance
+   */
+  public static final VcTagger ccGetInstance(){return SELF;}
+  private static final VcTagger SELF = new VcTagger();
+  private VcTagger(){}//..!
   
-  static private int
-    pbCounter=0,
-    pbTagHeight=16,
-    pbRow=8,
-    pbGapX=100,
-    pbGapY=20,
-    pbOffsetX=5,
-    pbOffsetY=20,
-    pbBackground=0x99666666,
-    pbForeround =0xFF33EE33
-  ;//--
+  //===
   
-  static private float pbTagWidthCoeff=1.02f;
+  private PApplet cmOwner=null;
   
-  static private boolean pbIsVisible=true;
+  private int
+    cmCounter=0,
+    cmTagHeight=16,
+    cmRow=8,
+    cmGapX=100,
+    cmGapY=20,
+    cmOffsetX=5,
+    cmOffsetY=20,
+    cmBackground=0x99666666,
+    cmForeround =0xFF33EE33
+  ;//...
   
-  //== constructor
+  private float cmTagWidthCoeff=1.02f;
   
-  private VcTagger(){}
-  
-  //== modifier
+  private boolean cmIsVisible=true;
   
   /**
-   * it is invoked from the factory's initiator.
-   * you don't have to call this in your sketch.<br>
-   * if you wanna change the raw setting you can call the
-   * setter anywhere.<br>
+   * <pre>
+   * should get invoked from the manager's initiator.
+   * you don't have to call this in your sketch.
+   * if you want to change the raw setting
+   *   you can call the setter anywhere.
+   * </pre>
    * @param pxParent your sketch
    * @param pxRow max row count, DONT PASS ZERO!!
    */
-  static public void ccInit(PApplet pxParent, int pxRow)
-    {pbOwner=pxParent;pbRow=pxRow==0?1:pxRow;}//+++
+  public final void ccInit(PApplet pxParent, int pxRow){
+    cmOwner=pxParent;
+    ccSetRow(pxRow);
+  }//..!
+  
+  //===
   
   /**
    * gap count from start point but not end. 
    * should be bigger than actual text height and width.
-   * @param pxGapX #
-   * @param pxGapY #
+   * @param pxGapX 0~255 pix
+   * @param pxGapY 0~255 pix
    */
-  static public void ccSetGap(int pxGapX, int pxGapY)
-    {pbGapX=pxGapX;pbGapY=pxGapY;}//+++
+  public final void ccSetGap(int pxGapX, int pxGapY){
+    cmGapX=pxGapX&0xFF;
+    cmGapY=pxGapY&0xFF;
+  }//+++
   
   /**
    * for 320*240 size, 7 is recommended. 
-   * @param pxRow #
+   * @param pxRow 1~31
    */
-  static public void ccSetRow(int pxRow)
-    {pbRow=pxRow;}//+++
+  public final void ccSetRow(int pxRow){
+    cmRow=(pxRow&0x1F)|0x1;
+  }//+++
   
   /**
    * set how every blocks auto size its self
-   * @param pxHeight #
-   * @param pxWCoeff #
+   * @param pxHeight 0~255pix
+   * @param pxWCoeff 1.0~2.0
    */
-  static public void ccSetTagSize(int pxHeight, float pxWCoeff)
-    {pbTagHeight=pxHeight;pbTagWidthCoeff=pxWCoeff; }//+++
+  public final void ccSetTagSize(int pxHeight, float pxWCoeff){
+    cmTagHeight=pxHeight&0xFF;
+    cmTagWidthCoeff=pxWCoeff<1f?1f
+      :(pxWCoeff>2f?2f:pxWCoeff);
+  }//+++
   
   /**
    * 
-   * @param pxOffsetX #
-   * @param pxOffsetY #
+   * @param pxOffsetX pix
+   * @param pxOffsetY pix
    */
-  static public void ccSetLocationOffset(int pxOffsetX, int pxOffsetY)
-    {pbOffsetX=pxOffsetX;pbOffsetY=pxOffsetY;}//+++
+  public final void ccSetLocationOffset(int pxOffsetX, int pxOffsetY){
+    cmOffsetX=pxOffsetX;
+    cmOffsetY=pxOffsetY;
+  }//+++
   
   /**
    * 
-   * @param pxFore #
-   * @param pxBack #
+   * @param pxFore ARGB
+   * @param pxBack ARGB
    */
-  static public void ccSetColor(int pxFore, int pxBack)
-    {pbForeround=pxFore;pbBackground=pxBack;}//+++
+  public final void ccSetColor(int pxFore, int pxBack){
+    cmForeround=pxFore;
+    cmBackground=pxBack;
+  }//+++
   
   /**
    * flips visibility
    */
-  static public void ccSetIsVisible()
-    {pbIsVisible=!pbIsVisible;}//+++
+  public final void ccSetIsVisible(){
+    cmIsVisible=!cmIsVisible;
+  }//+++
   
   /**
    * 
    * @param pxStatus #
    */
-  static public void ccSetIsVisible(boolean pxStatus)
-    {pbIsVisible=pxStatus;}//+++
+  public final void ccSetIsVisible(boolean pxStatus){
+    cmIsVisible=pxStatus;
+  }//+++
   
-  //== updator
+  //===
+  
+  private void ssUpdate(String pxTag){
+    if(!cmIsVisible){return;}
+    if(cmOwner==null){return;}
+    if(!ccIsValidString(pxTag)){return;}
+    //--
+    int lpX=(cmCounter/cmRow)*cmGapX+cmOffsetX;
+    int lpY=(cmCounter%cmRow)*cmGapY+cmOffsetY;
+    int lpW=ceil(cmOwner.textWidth(pxTag)*cmTagWidthCoeff);
+    //--
+    cmOwner.fill(cmBackground);
+    cmOwner.rect(lpX, lpY, lpW, cmTagHeight);
+    //--
+    cmOwner.fill(cmForeround);
+    cmOwner.text(pxTag, lpX, lpY);
+    //--
+    cmCounter++;
+  }//+++
+  
+  //===
   
   /**
-   * 
+   * <b>MUST BE INITIATED</b><br>
+   * <b>MUST BE STABILIZED</b><br>
    * @param pxLine #
    */
-  static public void ccTag(String pxLine)
-    {ccUpdate(pxLine);}//+++
+  static public void ccTag(String pxLine){
+    SELF.ssUpdate(pxLine);
+  }//+++
   
   /**
-   * 
+   * <b>MUST BE INITIATED</b><br>
+   * <b>MUST BE STABILIZED</b><br>
    * @param pxTag #
    * @param pxValue #
    */
-  static public void ccTag(String pxTag, Object pxValue)
-    {ccUpdate(pxTag+":"+pxValue.toString());}//+++
+  static public void ccTag(String pxTag, Object pxValue){
+    if(pxValue==null){ccTag(pxTag);}
+    else{SELF.ssUpdate(pxTag+":"+pxValue.toString());}
+  }//+++
   
   /**
    * must be called at the end of draw()
    */
-  static public void ccStabilize(){pbCounter=0;}//+++
-  
-  //==  
-  static private void ccUpdate(String pxTag){
-    if(pbOwner==null || !pbIsVisible){return;}
-    int lpX=(pbCounter/pbRow)*pbGapX+pbOffsetX;
-    int lpY=(pbCounter%pbRow)*pbGapY+pbOffsetY;
-    int lpW=ceil(pbOwner.textWidth(pxTag)*pbTagWidthCoeff);
-    //--
-    pbOwner.fill(pbBackground);
-    pbOwner.rect(lpX, lpY, lpW, pbTagHeight);
-    //--
-    pbOwner.fill(pbForeround);
-    pbOwner.text(pxTag, lpX, lpY);
-    //--
-    pbCounter++;
+  static public void ccStabilize(){
+    SELF.cmCounter=0;
   }//+++
-    
+  
 }//***eof
