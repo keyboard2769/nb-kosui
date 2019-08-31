@@ -36,6 +36,21 @@ public final class VcStringUtility {
   //===
   
   /**
+   * <b>WARN:</b>
+   * <b>BY NOW IT IS MEANLY IMPLEMENTED AS JUST SPLITTING BY SPACE</b><br>
+   * extract the unit representation from the given form.<br>
+   * @param pxForm something like "000.0 kpa"
+   * @return extracted string like " kpa"
+   */
+  static public final String ccExtracUnit(String pxForm){
+    //[plan]::make this better!!
+    if(!VcConst.ccIsValidString(pxForm)){return "";}
+    String[] lpSplitted=pxForm.split(" ");
+    if(lpSplitted.length==1){return "";}
+    return lpSplitted[lpSplitted.length-1];
+  }//+++
+  
+  /**
    * insert new line with every given count. <br>
    * NOT synchronized. based on StringBuilder. <br>
    * @param pxSource #

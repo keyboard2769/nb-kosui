@@ -17,13 +17,13 @@
 
 package kosui.ppplocalui;
 
-import static processing.core.PApplet.ceil;
+import kosui.ppputil.VcConst;
 
 /**
  * if a element is mouse hovered, it can show a tip. <br>
  * but only those element has a id can show it. <br>
  */
-public class EcTip {
+public class EcTip extends EcRect{
   
   /**
    * a tip in a box
@@ -31,20 +31,12 @@ public class EcTip {
   public final String cmTip;
   
   /**
-   * the size of the box
-   */
-  public int cmTipW,cmTipH;
-  
-  /**
    * 
    * @param pxTip can be set only once
    */
   public EcTip(String pxTip){
-    cmTip=pxTip;
-    cmTipW=ceil(EcComponent.pbOwner.textWidth(pxTip));
-    cmTipH=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
-    for(char it:pxTip.toCharArray())
-      {if(it=='\n'){cmTipH+=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;}}
+    cmTip=VcConst.ccIsValidString(pxTip)?pxTip:"<?>";
+    ccSetSize(pxTip);
   }//+++
 
 }//***eof

@@ -26,6 +26,8 @@ import java.util.HashMap;
  */
 public final class EcTipManager extends EcComponent {
   
+  //[todo]::make this a singleton manager
+  
   private static final int 
     C_TEXT_ADJ_X = 2,
     C_TEXT_ADJ_Y = 2
@@ -56,11 +58,11 @@ public final class EcTipManager extends EcComponent {
     if(cmTipMap.containsKey(pxID)){
       EcTip lpTip=cmTipMap.get(pxID);
       cmX=pbOwner.mouseX<(pbOwner.width/2)?
-        pbOwner.mouseX:pbOwner.mouseX-lpTip.cmTipW;
+        pbOwner.mouseX:pbOwner.mouseX-lpTip.ccGetW();
       cmY=pbOwner.mouseY<(pbOwner.height/2)?
-        pbOwner.mouseY:pbOwner.mouseY-lpTip.cmTipH;
+        pbOwner.mouseY:pbOwner.mouseY-lpTip.ccGetH();
       pbOwner.fill(cmPaneColor);
-      pbOwner.rect(cmX,cmY,lpTip.cmTipW,lpTip.cmTipH);
+      pbOwner.rect(cmX,cmY,lpTip.ccGetW(),lpTip.ccGetH());
       pbOwner.fill(cmTextColor);
       pbOwner.text(lpTip.cmTip,cmX+C_TEXT_ADJ_X,cmY+C_TEXT_ADJ_Y);
     }//..?

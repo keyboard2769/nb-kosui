@@ -17,6 +17,10 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppplogic.ZcRangedModel;
+import kosui.ppplogic.ZcRangedValueModel;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 import static processing.core.PApplet.nf;
 import static processing.core.PApplet.nfc;
 
@@ -46,7 +50,39 @@ public class EcValueBox extends EcElement{
   public EcValueBox(){
     super();
     ccSetTextAlign('r');
-  }//++!
+    ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//..!
+  
+  /**
+   * @param pxKey will get passed to key and name separately
+   * @param pxForm serves as initiated text and last two letter will be unit
+   * @param pxID will get passed to setter directly
+   */
+  public EcValueBox(String pxKey, String pxForm, int pxID){
+    super();
+    ccSetKey(pxKey);
+    ccSetText(pxForm);
+    ccSetTextAlign('r');
+    ccSetID(pxID);
+    ccSetSize();
+    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
+    ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//..!
+  
+  /**
+   * output component can have no identical id.<br>
+   * @param pxKey will get passed to key and name separately
+   * @param pxForm serves as initiated text and last two letter will be unit
+   */
+  public EcValueBox(String pxKey, String pxForm){
+    super();
+    ccSetKey(pxKey);
+    ccSetText(pxForm);
+    ccSetTextAlign('r');
+    ccSetSize();
+    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
+    ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//..!
   
   //===
   
@@ -74,13 +110,13 @@ public class EcValueBox extends EcElement{
   }//+++
   
   //===
-
+  
   /**
    * a current digit value will be applyed
    * @param pxVal #
    */
   public final void ccSetValue(int pxVal){
-    cmText=nf(pxVal, cmDigit)+cmUnit;
+    cmText=nf(pxVal, cmDigit)+" "+cmUnit;
   }//+++
 
   /**
@@ -91,7 +127,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetValue(int pxVal, int pxDigit){
     cmDigit=pxDigit;
-    cmText=nf(pxVal, cmDigit)+cmUnit;
+    cmText=nf(pxVal, cmDigit)+" "+cmUnit;
   }//+++
 
   /**
@@ -102,7 +138,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetValue(float pxVal, int pxDigit){
     cmDigit=pxDigit;
-    cmText=nfc(pxVal, cmDigit)+cmUnit;
+    cmText=nfc(pxVal, cmDigit)+" "+cmUnit;
   }//+++
 
   /**
@@ -110,6 +146,7 @@ public class EcValueBox extends EcElement{
    * @param pxUnit #
    */
   public final void ccSetUnit(String pxUnit){
+    if(!VcConst.ccIsValidString(pxUnit)){return;}
     cmUnit=pxUnit;
   }//+++
 

@@ -27,6 +27,23 @@ public class EcShape extends EcComponent{
    * the fill of the shape
    */
   protected int cmBaseColor=EcConst.C_LIT_GRAY;
+
+  /**
+   * inherited default
+   */
+  public EcShape(){
+    super();
+  }//..!
+  
+  /**
+   * 
+   * @param pxW
+   * @param pxH 
+   */
+  public EcShape(int pxW, int pxH){
+    super();
+    ccSetSize(pxW, pxH);
+  }//..!
   
   //==
   
@@ -34,8 +51,9 @@ public class EcShape extends EcComponent{
    * 
    * @param pxColor the fill of the shape
    */
-  public final void ccSetBaseColor(int pxColor)
-    {cmBaseColor=pxColor;}//+++
+  public final void ccSetBaseColor(int pxColor){
+    cmBaseColor=pxColor;
+  }//+++
   
   //===
   

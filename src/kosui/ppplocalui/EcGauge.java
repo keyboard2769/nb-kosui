@@ -45,8 +45,34 @@ public class EcGauge extends EcElement {
    * between 0-127
    */
   protected int cmContentValue = 32;
+
+  /**
+   * inherited default
+   */
+  public EcGauge(){
+    super();
+  }//..!
   
-  //==
+  /**
+   * inherited
+   * @param pxKey # but please note that a gauge don't have to have a name
+   * @param pxID #
+   */
+  public EcGauge(String pxKey, int pxID){
+    super(pxKey, pxID);
+  }//..!
+  
+  /**
+   * 
+   * output component can have no identical id.<br>
+   * @param pxKey will get passed to setter directly and this is a GAUGE?!
+   */
+  public EcGauge(String pxKey){
+    super();
+    ccSetupKey(pxKey);
+  }//..!
+  
+  //===
   
   /**
    * 
@@ -60,8 +86,9 @@ public class EcGauge extends EcElement {
    * the gauge will be full as this value equals 127
    * @param pxHalfByte : 0-127
    */
-  public final void ccSetPercentage(int pxHalfByte)
-    {cmContentValue=pxHalfByte&127;}//+++
+  public final void ccSetPercentage(int pxHalfByte){
+    cmContentValue=pxHalfByte&127;
+  }//+++
   
   /**
    * like if you wanna the value of 50%,
@@ -97,7 +124,7 @@ public class EcGauge extends EcElement {
     cmStrokeColor=pxStroke;
   }//+++
   
-  //==
+  //===
   
   /**
    * {@inheritDoc }
@@ -121,23 +148,25 @@ public class EcGauge extends EcElement {
   
   }//+++
   
-  //== teller
+  //===
   
   /**
    * ##
    * @param pxVal this value has nothing to do with this
    * @return inputed_value*current_gauge/127 
    */
-  public final int ccTellScale(int pxVal)
-    {return pxVal*cmContentValue/127;}//+++
+  public final int ccTellScale(int pxVal){
+    return pxVal*cmContentValue/127;
+  }//+++
   
-  //==
+  //===
   
   /**
    * 
    * @return between 0-127
    */
-  public final int ccGetContentValue()
-    {return cmContentValue;}//+++
+  public final int ccGetContentValue(){
+    return cmContentValue;
+  }//+++
 
 }//***eof

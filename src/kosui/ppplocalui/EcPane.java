@@ -17,28 +17,48 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcConst;
+
 /**
  * a pane with title just lies under elements.<br>
  * may looks like some window.<br>
  */
 public class EcPane extends EcShape{
   
-  //===
   private static final int C_TEXT_ADJ_Y=2;
+  
   //===
   
   private String cmTitle="<title/>";
   
-  //==
+  /**
+   * inherited default
+   */
+  public EcPane(){
+    super();
+  }//..!
   
   /**
-   * 
-   * @param pxTitle #
+   * inherited plus alpha
+   * @param pxTitle will get passed to setter directly
    */
-  public final void ccSetTitle(String pxTitle)
-    {cmTitle=pxTitle;}//+++
+  public EcPane(String pxTitle){
+    super();
+    ccSetTitle(pxTitle);
+  }//..!
   
-  //==
+  /**
+   * inherited plus alpha
+   * @param pxTitle will get passed to setter directly
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public EcPane(String pxTitle, int pxW, int pxH){
+    super(pxW, pxH);
+    ccSetTitle(pxTitle);
+  }//..!
+  
+  //===
   
   /**
    * {@inheritDoc }
@@ -53,6 +73,15 @@ public class EcPane extends EcShape{
     
     pbOwner.text(cmTitle, cmX+2, cmY+2+C_TEXT_ADJ_Y);
   
+  }//+++
+  
+  /**
+   * if you want a empty title, pass a space.<br>
+   * @param pxTitle must have something
+   */
+  public final void ccSetTitle(String pxTitle){
+    if(!VcConst.ccIsValidString(pxTitle)){return;}
+    cmTitle=pxTitle;
   }//+++
   
 }//***eof

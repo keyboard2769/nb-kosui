@@ -23,6 +23,32 @@ package kosui.ppplocalui;
  */
 public class EcSlider extends EcGauge{
 
+  /**
+   * inherited default
+   */
+  public EcSlider(){
+    super();
+  }//..!
+  
+  /**
+   * inherited
+   * @param pxKey #
+   */
+  public EcSlider(String pxKey){
+    super(pxKey);
+  }//..!
+  
+  /**
+   * inherited default
+   * @param pxKey #
+   * @param pxID #
+   */
+  public EcSlider(String pxKey, int pxID){
+    super(pxKey, pxID);
+  }//..!
+  
+  //===
+  
   @Override public void ccUpdate(){
     
     int lpPosition=ccTellScale(cmIsVertical?cmH:cmW);
@@ -41,7 +67,7 @@ public class EcSlider extends EcGauge{
       ccActFill();
       pbOwner.rect(cmX+lpPosition-4, cmY, 8, cmH);
       if(ccIsMousePressed()){cmContentValue=(pbOwner.mouseX-cmX)*127/cmW;}
-    }
+    }//..?
     
     if(cmHasStroke){pbOwner.noStroke();}
     

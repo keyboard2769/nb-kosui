@@ -243,6 +243,7 @@ public final class VcResponsiveBar {
    */
   public static final 
   void ccRegisterTrigger(String pxCommand, EiTriggerable pxTrigger){
+    if(pxTrigger==null){return;}
     if(SELF.cmMapOfCommand.containsKey(pxCommand)){return;}
     SELF.cmMapOfCommand.put(pxCommand, pxTrigger);
   }//+++

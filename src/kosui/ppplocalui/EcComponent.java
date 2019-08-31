@@ -47,7 +47,7 @@ public abstract class EcComponent extends EcRect{
    * @param pxOwner your sketch
    */
   static public final void ccInitOwner(PApplet pxOwner){
-    if(pxOwner!=null){return;}
+    if(pxOwner==null){return;}
     pbOwner=pxOwner;
   }//+++
   

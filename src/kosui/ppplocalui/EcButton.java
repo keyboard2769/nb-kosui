@@ -34,6 +34,23 @@ public class EcButton extends EcElement {
     C_COLOR_FILL_PRESSED =0xFF99BB99,
     C_COLOR_FILL_NORMAL  =0xFF999999
   ;//...
+
+  /**
+   * inherited default
+   */
+  public EcButton(){
+    super();
+  }//..!
+  
+  /**
+   * inherited
+   * @param pxKey #
+   * @param pxID #
+   */
+  public EcButton(String pxKey, int pxID){
+    super(pxKey, pxID);
+    ccSetSize();
+  }//..!
   
   //===
   

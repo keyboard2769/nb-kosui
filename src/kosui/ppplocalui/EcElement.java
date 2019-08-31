@@ -17,7 +17,8 @@
 
 package kosui.ppplocalui;
 
-import static processing.core.PApplet.ceil;
+import kosui.ppputil.VcConst;
+
 import static processing.core.PApplet.TOP;
 import static processing.core.PApplet.BOTTOM;
 import static processing.core.PApplet.LEFT;
@@ -80,6 +81,28 @@ public class EcElement extends EcComponent{
     cmNameAlign = 'x',
     cmTextAlign = 'c'
   ;//...
+  
+  //===
+
+  /**
+   * default ID is ignored.<br>
+   * default texts is tagged.<br>
+   */
+  public EcElement(){
+    super();
+  }//..!
+  
+  /**
+   * rest of those initiated values might be eight.
+   * @param pxKey will get passed to setter directly
+   * @param pxID will get passed to setter directly
+   */
+  public EcElement(String pxKey, int pxID){
+    super();
+    ccSetupKey(pxKey);
+    ccSetID(pxID);
+    ccSetSize();
+  }//..!
   
   //===
   
@@ -149,158 +172,181 @@ public class EcElement extends EcComponent{
   /**
    * inward use only
    */
-  protected final void ccActFill()
-    {pbOwner.fill(cmIsActivated?cmOnColor:cmOffColor);}//+++
+  protected final void ccActFill(){
+    pbOwner.fill(cmIsActivated?cmOnColor:cmOffColor);
+  }//+++
   
   /**
    * inward use only
    * @return color
    */
-  protected final int ccActColor()
-    {return cmIsActivated?cmOnColor:cmOffColor;}//+++
+  protected final int ccActColor(){
+    return cmIsActivated?cmOnColor:cmOffColor;
+  }//+++
   
   //===
   
   /**
-   * 
+   * an id is effectively serve as a key for a element
+   * at various situation with undefined meaning.<br>
    * @param pxID #
    */
-  public final void ccSetID(int pxID){cmID=pxID;}//+++
+  public final void ccSetID(int pxID){
+    cmID=pxID;
+  }//+++
   
   /**
-   * 
-   * @param pxName #
+   * a name is something to get displayed outside the element
+   * as a attached label.<br>
+   * @param pxName can be empty but not null
    */
-  public final void ccSetName(String pxName)
-    {cmName=pxName;}//+++
+  public final void ccSetName(String pxName){
+    if(pxName==null){return;}
+    cmName=pxName;
+  }//+++
   
   /**
-   * 
-   * @param pxText #
+   * a text is something to get displayed inside the element
+   * as a content.<br>
+   * @param pxText can be empty but not null
    */
-  public final void ccSetText(String pxText)
-    {cmText=pxText;}//+++
+  public final void ccSetText(String pxText){
+    if(pxText==null){return;}
+    cmText=pxText;
+  }//+++
   
   /**
-   * 
-   * @param pxMode_ablr
-   * <div> 'a': above </div>
-   * <div> 'b': below </div>
-   * <div> 'l': left </div>
-   * <div> 'r': right </div>
-   * <div> 'x': (or you can pass anything) hidden </div>
+   * <pre>
+   * mode:
+   *  - 'a':above
+   *  - 'b':below
+   *  - 'l':left
+   *  - 'r':right
+   *  - 'x':hidden(or you can pass anything)
+   * </pre>
+   * @param pxMode_ablr # 
    */
-  public final void ccSetNameAlign (char pxMode_ablr)
-    {cmNameAlign=pxMode_ablr;}//+++
+  public final void ccSetNameAlign (char pxMode_ablr){
+    cmNameAlign=pxMode_ablr;
+  }//+++
     
   /**
-   * 
-   * @param pxMode_lcr 
-   * <div> 'l': left </div>
-   * <div> 'c': center </div>
-   * <div> 'r': right </div>
-   * <div> 'x': (or you can pass anything) same as center </div>
+   * <pre>
+   * mode:
+   *  - 'l':left
+   *  - 'c':center(or you can pass anything)
+   *  - 'r':right
+   * </pre>
+   * @param pxMode_lcr #
    */
-  public final void ccSetTextAlign(char pxMode_lcr)
-    {cmTextAlign=pxMode_lcr;}//+++
+  public final void ccSetTextAlign(char pxMode_lcr){
+    cmTextAlign=pxMode_lcr;
+  }//+++
   
   /**
    * 
-   * @param pxOn #
-   * @param pxOff #
+   * @param pxOn ARGB
+   * @param pxOff ARGB
    */
-  public final void ccSetColor(int pxOn, int pxOff)
-    {cmOnColor=pxOn;cmOffColor=pxOff;}//+++
+  public final void ccSetColor(int pxOn, int pxOff){
+    cmOnColor=pxOn;cmOffColor=pxOff;
+  }//+++
   
   /**
    * 
-   * @param pxOn #
+   * @param pxOn ARGB
    */
-  public final void ccSetColor(int pxOn)
-    {cmOnColor=pxOn;}//+++
+  public final void ccSetColor(int pxOn){
+    cmOnColor=pxOn;
+  }//+++
   
   /**
    * 
-   * @param pxColor #
+   * @param pxColor ARGB
    */
-  public final void ccSetNameColor(int pxColor)
-    {cmNameColor=pxColor;}//+++
+  public final void ccSetNameColor(int pxColor){
+    cmNameColor=pxColor;
+  }//+++
   
   /**
    * 
-   * @param pxColor #
+   * @param pxColor ARGB
    */
-  public final void ccSetTextColor(int pxColor)
-    {cmTextColor=pxColor;}//+++
+  public final void ccSetTextColor(int pxColor){
+    cmTextColor=pxColor;
+  }//+++
 
   /**
-   * 
+   * the activeness only represent the on/off status.<br>
    * @param pxStatus #
    */
-  public final void ccSetIsActivated(boolean pxStatus)
-    {cmIsActivated=pxStatus;}//+++
+  public final void ccSetIsActivated(boolean pxStatus){
+    cmIsActivated=pxStatus;
+  }//+++
   
   /**
    * flips activity
    */
-  public final void ccSetIsActivated()
-    {cmIsActivated=!cmIsActivated;}//+++
+  public final void ccSetIsActivated(){
+    cmIsActivated=!cmIsActivated;
+  }//+++
   
   /**
    * a alias for comparing id using focus logic
    * @param pxFocusedID activates this element if equals to his id
    */
-  public final void ccSetIsActivated(int pxFocusedID)
-    {cmIsActivated=(cmID==pxFocusedID);}//+++
+  public final void ccSetIsActivated(int pxFocusedID){
+    cmIsActivated=(cmID==pxFocusedID);
+  }//+++
   
   /**
-   * 
+   * an enabled one is a mouse click able one.<br>
    * @param pxStatus #
    */
-  public final void ccSetIsEnabled(boolean pxStatus)
-    {cmIsEnabled=pxStatus;}//+++
+  public final void ccSetIsEnabled(boolean pxStatus){
+    cmIsEnabled=pxStatus;
+  }//+++
   
   /**
-   * 
+   * the visibility only means the ccUpdate() will get bypassed or not.<not>
    * @param pxStatus #
    */
-  public final void ccSetIsVisible(boolean pxStatus)
-    {cmIsVisible=pxStatus;}//+++
+  public final void ccSetIsVisible(boolean pxStatus){
+    cmIsVisible=pxStatus;
+  }//+++
   
   //===
 
   /**
-   * automatically change the size based on the text 
-   * currently set
+   * pass text set directly to EcRect.ccSetSize(String).<br>
    */
   public final void ccSetSize(){
-    
-    cmW = ceil(pbOwner.textWidth(cmText))
-          +EcConst.C_DEFAULT_AUTOSIZE_MARGIN*2;
-    cmH = EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
-    
-    for(char it:cmText.toCharArray())
-      {if(it=='\n'){cmH+=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;}}
-    
+    ccSetSize(cmText);
   }//+++
 
   /**
-   * 
-   * @param pxKey #
+   * <pre>
+   * a key should be a pure ASCII defined string
+   *   which can later serve as a key for localization translation.
+   * </pre>
+   * @param pxKey must have some thing 
    */
-  public final void ccSetKey(String pxKey)
-    {cmKey=pxKey;}//+++
+  public final void ccSetKey(String pxKey){
+    if(!VcConst.ccIsValidString(pxKey)){return;}
+    cmKey=pxKey;
+  }//+++
   
   //=== 
   
   /**
-   * set both key and name and text
-   * @param pxKey #
+   * set both key and name and text to the same value.<br>
+   * @param pxValue thus the value is the key it must have something
    */
-  public final void ccSetupKey(String pxKey){
-    cmKey=pxKey;
-    cmName=pxKey;
-    cmText=pxKey;
+  public final void ccSetupKey(String pxValue){
+    if(!VcConst.ccIsValidString(pxValue)){return;}
+    cmKey=pxValue;
+    cmName=pxValue;
+    cmText=pxValue;
   }//+++
 
   /**
@@ -322,42 +368,50 @@ public class EcElement extends EcComponent{
    * 
    * @return id only when is mouse over.
    */
-  public final int ccTellMouseID()
-    {return ccIsMouseHovered()?cmID:0;}//+++
+  public final int ccTellMouseID(){
+    return ccIsMouseHovered()?cmID:0;
+  }//+++
   
   /**
    * 
    * @return #
    */
-  public final boolean ccIsActivated()
-    {return cmIsActivated;}//+++
+  public final boolean ccIsActivated(){
+    return cmIsActivated;
+  }//+++
   
   /**
    * 
    * @return true only when enabled
    */
-  public final boolean ccIsMouseHovered()
-    {return ccContains(pbOwner.mouseX, pbOwner.mouseY)&&cmIsEnabled;}//+++
+  public final boolean ccIsMouseHovered(){
+    return ccContains(pbOwner.mouseX, pbOwner.mouseY)
+         &&cmIsEnabled;
+  }//+++
   
   /**
    * 
    * @return just anded mouse pressed flag from your sketch
    */
-  public final boolean ccIsMousePressed()
-    {return ccIsMouseHovered()&&pbOwner.mousePressed;}//+++
+  public final boolean ccIsMousePressed(){
+    return ccIsMouseHovered()
+         &&pbOwner.mousePressed;
+  }//+++
   
   /**
    * 
    * @return #
    */
-  public final int ccGetID()
-    {return cmID;}//+++
+  public final int ccGetID(){
+    return cmID;
+  }//+++
   
   /**
    * 
    * @return #
    */
-  public final String ccGetText()
-    {return cmText;}//+++
+  public final String ccGetText(){
+    return cmText;
+  }//+++
   
 }//***eof

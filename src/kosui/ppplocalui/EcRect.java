@@ -18,6 +18,7 @@
 package kosui.ppplocalui;
 
 import java.util.ArrayList;
+import kosui.ppputil.VcConst;
 
 /**
  * they say a rectangle is just two vector value.<br>
@@ -29,8 +30,41 @@ public class EcRect extends EcPoint{
    * size
    */
   protected int cmW=8,cmH=8;
+
+  /**
+   * all initiated value is eight.
+   */
+  public EcRect(){
+    super();
+    ccSetSize(8, 8);
+  }//+++
+  
+  /**
+   * rest of those initiated values might be eight.
+   * @param pxW will get passed to ccSetSize() directly
+   * @param pxH 
+   */
+  public EcRect(int pxW, int pxH){
+    super();
+    ccSetSize(pxW, pxH);
+  }//+++
   
   //===
+  
+  /**
+   * @param pxW 0~65535
+   */
+  public final void ccSetW(int pxW){
+    cmW=pxW&0xFFFF;
+  }//+++
+  
+  /**
+   * 
+   * @param pxH  0~65535
+   */
+  public final void ccSetH(int pxH){
+    cmH=pxH&0xFFFF;
+  }//+++
   
   /**
    * <pre>
@@ -65,8 +99,8 @@ public class EcRect extends EcPoint{
    * @param pxH #
    */
   public final void ccSetSize(int pxW, int pxH){
-    if(pxW!=0){cmW=pxW;}
-    if(pxH!=0){cmH=pxH;}
+    ccSetW(pxW);
+    ccSetH(pxH);
   }//+++
   
   /**
@@ -74,10 +108,9 @@ public class EcRect extends EcPoint{
    * @param pxTarget this does check null
    */
   public final void ccSetSize(EcRect pxTarget){
-    if(pxTarget!=null){
-      cmW=pxTarget.ccGetW();
-      cmH=pxTarget.ccGetH();
-    }
+    if(pxTarget==null){return;}
+    ccSetW(pxTarget.ccGetW());
+    ccSetH(pxTarget.ccGetH());
   }//+++
   
   /**
@@ -87,10 +120,9 @@ public class EcRect extends EcPoint{
    * @param pxInH pass false to ignore
    */
   public final void ccSetSize(EcRect pxTarget, boolean pxInW, boolean pxInH){
-    if(pxTarget!=null){
-      if(pxInW){cmW=pxTarget.ccGetW();}
-      if(pxInH){cmH=pxTarget.ccGetH();}
-    }//..?
+    if(pxTarget==null){return;}
+    if(pxInW){ccSetW(pxTarget.ccGetW());}
+    if(pxInH){ccSetH(pxTarget.ccGetH());}
   }//+++
     
   /**
@@ -102,12 +134,38 @@ public class EcRect extends EcPoint{
    */
   public final void ccSetSize(EcRect pxTarget, int pxOffsetW, int pxOffsetH){
     if(pxTarget!=null){
-      cmW=pxTarget.ccGetW()+pxOffsetW;
-      cmH=pxTarget.ccGetH()+pxOffsetH;
+      ccSetW(pxTarget.ccGetW()+pxOffsetW);
+      ccSetH(pxTarget.ccGetH()+pxOffsetH);
     }else{
       cmW+=pxOffsetW;
       cmH+=pxOffsetH;
     }//..?
+  }//+++
+  
+  /**
+   * automatically change the size based on the given text.
+   * thus the letter width is depends on the PApplet,
+   *   if any instance invoke auto size before
+   *   the base class is initiated,
+   *   a hard coded default value will get applied.
+   * if it didn't match, you might have to invoke it again somewhere.
+   * @param pxText 
+   */
+  public final void ccSetSize(String pxText){
+    
+    if(!VcConst.ccIsValidString(pxText)){return;}
+    
+    cmW = (EcConst.C_DEFAULT_AUTOSIZE_MARGIN*2)
+        + (!EcComponent.ccHasOwner()?
+            (EcConst.C_DEFAULT_TEXT_WIDTH*pxText.length())
+           :((int)(EcComponent.pbOwner.textWidth(pxText)))
+          );
+    cmH = EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
+    
+    char lpNewLine=VcConst.C_V_NEWLINE.charAt(0);
+    for(char it:pxText.toCharArray())
+      {if(it==lpNewLine){cmH+=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;}}
+  
   }//+++
   
   /**
@@ -140,9 +198,8 @@ public class EcRect extends EcPoint{
    * @param pxOffsetX #
    * @param pxOffsetY #
    */
-  public final void ccSetEndPoint(
-    EcRect pxTarget, int pxOffsetX, int pxOffsetY
-  ){
+  public final
+  void ccSetEndPoint(EcRect pxTarget, int pxOffsetX, int pxOffsetY){
     if(pxTarget==null){ccSetEndPoint(pxOffsetX, pxOffsetY);return;}
     cmW=pxTarget.ccEndX()-cmX+pxOffsetX;
     cmH=pxTarget.ccEndY()-cmY+pxOffsetY;

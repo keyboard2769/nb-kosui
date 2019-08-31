@@ -26,7 +26,24 @@ public class EcPoint {
   /**
    * location
    */
-  protected int cmX=8, cmY=8;
+  protected int cmX, cmY;
+
+  /**
+   * all initiated value is eight.
+   */
+  public EcPoint(){
+    cmX=8;cmY=8;
+  }//..!
+  
+  /**
+   * @param pxX will get passed to ccSetLocation() directly
+   * @param pxY will get passed to ccSetLocation() directly 
+   */
+  public EcPoint(int pxX, int pxY){
+    ccSetLocation(pxX, pxY);
+  }//..!
+  
+  //===
   
   /**
    * 

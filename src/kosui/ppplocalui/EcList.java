@@ -24,7 +24,7 @@ import static kosui.ppputil.VcStringUtility.ccLeft;
  * a rectangle shows some lists.<br>
  * it can return some integer as index.<br>
  */
-public class EcList extends kosui.ppplocalui.EcElement{
+public class EcList extends EcElement{
   
   //===
   private static final int
@@ -43,12 +43,17 @@ public class EcList extends kosui.ppplocalui.EcElement{
   //===
   
   /**
-   * only initiates size and color.M<br>
-   * the default row count is 3,<br>
-   * with cell sized 48*18, with gap as 2.<br>
-   * default color set is yellow as on and gray as off.<br>
+   * <pre>
+   * only initiates size and color.
+   * the default row count is 3,
+   * with cell sized 48*18, with gap as 2.
+   * default color set is yellow as on and gray as off.
+   * the list is not supposed to get clicked.
+   * </pre>
    */
   public EcList(){
+    super();
+    ccSetIsEnabled(false);
     ccFitSize();
     ccSetColor(EcConst.C_YELLOW, EcConst.C_DIM_GRAY);
   }//+++ 

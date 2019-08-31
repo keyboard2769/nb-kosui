@@ -43,6 +43,37 @@ public class EcTextBox extends EcElement{
     ccSetTextColor(EcConst.C_LIT_GRAY);
   }//++!
   
+  /**
+   * @param pxKey will get passed to key and name separately
+   * @param pxForm serves as the initiate text
+   * @param pxID will get passed to setter directly
+   */
+  public EcTextBox(String pxKey, String pxForm, int pxID){
+    super();
+    ccSetKey(pxKey);
+    ccSetName(pxKey);
+    ccSetText(pxForm);
+    ccSetID(pxID);
+    ccSetTextAlign('l');
+    ccSetTextColor(EcConst.C_LIT_GRAY);
+    ccSetSize();
+  }//..!
+  
+  /**
+   * output component can have no identical id.<br>
+   * @param pxKey will get passed to key and name separately
+   * @param pxForm serves as the initiate text
+   */
+  public EcTextBox(String pxKey, String pxForm){
+    super();
+    ccSetKey(pxKey);
+    ccSetName(pxKey);
+    ccSetText(pxForm);
+    ccSetTextAlign('l');
+    ccSetTextColor(EcConst.C_LIT_GRAY);
+    ccSetSize();
+  }//..!
+  
   //===
   
   @Override public void ccUpdate() {

@@ -30,19 +30,32 @@ import static processing.core.PConstants.TOP;
 public final class EcConst {
   
   /**
-   * pre configured colors:<br>
-   *   lit &gt; %non-fix% &gt; dim &gt; dark<br>
-   *   [red,orange,yellow,green,water,blue,purple,gray]<br>
-   * may not all well defined.
-   * may changes on purpose.
+   * serves as a dummy id.<br>
+   * might be confusing with zero and this is not supposed to be zero.<br>
    */
-  public static final int
-    //-- id
-    C_ID_IGNORE = 0xFFFF,
+  public static final int C_ID_IGNORE = 0xFFFF;
+  
+  /**
+   * auto sizing using this as a measurement.<br>
+   */
+  public static final int 
     //-- pix
+    C_DEFAULT_TEXT_WIDTH      =  8,
     C_DEFAULT_TEXT_HEIGHT     = 16,
     C_DEFAULT_AUTOSIZE_MARGIN =  4,
-    C_DEFAULT_AUTOSIZE_HEIGHT = 20,
+    C_DEFAULT_AUTOSIZE_HEIGHT = 20
+  ;//...
+    
+  /**
+   * <pre>
+   * pre configured colors:
+   *   lit &gt; %non-fix% &gt; dim &gt; dark
+   *   [red,orange,yellow,green,water,blue,purple,gray]
+   * may not all well defined.
+   * may changes on purpose.
+   * </pre>
+   */
+  public static final int
     //-- color
     C_WHITE = 0xFFEEEEEE,
     //--
@@ -85,9 +98,7 @@ public final class EcConst {
     C_BLACK = 0xFF111111
   ;//...
   
-  //===
-  
-  private EcConst(){}//+++ 
+  private EcConst(){}//..!
   
   /**
    * <b>NO NULL CHECK!!</b><br>
@@ -105,250 +116,8 @@ public final class EcConst {
     pxOwner.textAlign(LEFT,TOP);
     pxOwner.ellipseMode(CENTER);
   }//+++
-
-  //=== pane
   
-  /**
-   * 
-   * @param pxTitle #
-   * @param pxX #
-   * @param pxY #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  public static final EcPane ccCreatePane
-    (String pxTitle,int pxX, int pxY, int pxW, int pxH)
-  { EcPane lpRes=new EcPane();
-    lpRes.ccSetTitle(pxTitle);
-    lpRes.ccSetLocation(pxX, pxY);
-    lpRes.ccSetSize(pxW, pxH);
-    return lpRes;
-  }//+++
-    
-  /**
-   * default location is at 8.8
-   * @param pxTitle #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public final EcPane ccCreatePane
-    (String pxTitle, int pxW, int pxH)
-  { EcPane lpRes=ccCreatePane(pxTitle, 8, 8, pxW, pxH);
-    return lpRes;
-  }//+++
-  
-  //=== button & lamp
-    
-  /**
-   * 
-   * @param pxText #
-   * @return #
-   */
-  static public final EcElement ccCreateTextLamp(String pxText){
-    EcElement lpRes = new EcElement();
-    lpRes.ccSetupKey(pxText);
-    lpRes.ccSetSize();
-    return lpRes;
-  }//+++
-    
-  /**
-   * 
-   * @param pxName #
-   * @param pxW #
-   * @param pxH #
-   * @param pxID #
-   * @return #
-   */
-  static public final EcButton ccCreateButton
-    (String pxName, int pxW, int pxH, int pxID)
-  { EcButton lpRes=new EcButton();
-    lpRes.ccSetID(pxID);
-    lpRes.ccSetupKey(pxName);
-    lpRes.ccSetSize(pxW, pxH);
-    lpRes.ccSetColor(0xFFEEEE33, 0xFF111111);
-    lpRes.ccSetIsEnabled(true);
-    return lpRes;
-  }//+++
-  
-  /**
-   * 
-   * @param pxName #
-   * @param pxID #
-   * @return #
-   */
-  static public final EcButton ccCreateButton
-    (String pxName,int pxID)
-  { EcButton lpRes=ccCreateButton(pxName, 8, 8, pxID);
-    lpRes.ccSetSize();
-    return lpRes;
-  }//+++
-    
-  /**
-   * 
-   * @param pxName #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public EcLamp ccCreateLamp
-    (String pxName, int pxW, int pxH)
-  { EcLamp lpRes = new EcLamp();
-    lpRes.ccSetupKey(pxName);
-    lpRes.ccSetText(pxName.substring(0, 1));
-    lpRes.ccSetSize(pxW, pxH);
-    lpRes.ccSetNameAlign('r');
-    return lpRes;
-  }//+++
-  
-  /**
-   * lamp text will be initiated with the first letter of name
-   * @param pxName #
-   * @return #
-   */
-  static public EcLamp ccCreateLamp
-    (String pxName)
-    {return ccCreateLamp(pxName, C_DEFAULT_TEXT_HEIGHT, C_DEFAULT_TEXT_HEIGHT);}//+++
-  
-  //=== text box
-    
-  /**
-   * 
-   * @param pxForm like : "000.0 KG "
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public EcTextBox ccCreateBox
-    (String pxForm, int pxW, int pxH)
-  { EcTextBox lpRes=new EcTextBox();
-    lpRes.ccSetupKey(pxForm);
-    lpRes.ccSetSize(pxW, pxH);
-    return lpRes;
-  }//+++
-    
-  /**
-   * 
-   * @param pxForm like : "000.0 KG "
-   * @return #
-   */
-  static public EcTextBox ccCreateBox 
-    (String pxForm)
-  { EcTextBox lpRes=ccCreateBox(pxForm, 8, 8);
-    lpRes.ccSetSize();
-    return lpRes;
-  }//+++
-  
-  /**
-   * 
-   * @param pxForm like : "000.0 KG "
-   * @param pxName #
-   * @param pxAlign 'a'/'b'/'l'/'r'/'x' : see EcElement.ccSetNameAlign();
-   * @return #
-   */
-  static public EcTextBox ccCreateBox
-    (String pxForm, String pxName, char pxAlign)
-  { EcTextBox lpRes=ccCreateBox(pxForm);
-    lpRes.ccSetName(pxName);
-    lpRes.ccSetNameAlign(pxAlign);
-    return lpRes;
-  }//+++
-  
-  /**
-   * color set and has id or not is the only difference
-   * @param pxForm #
-   * @param pxName #
-   * @param pxAlign 'a'/'b'/'l'/'r'/'x' : see EcElement.ccSetNameAlign();
-   * @param pxID #
-   * @return #
-   */
-  static public EcTextBox ccCreateInputBox
-    (String pxForm, String pxName, char pxAlign, int pxID)
-  { EcTextBox lpRes=ccCreateBox(pxForm, pxName, pxAlign);
-    lpRes.ccSetTextColor(C_DARK_GRAY);
-    lpRes.ccSetColor(EcConst.C_LIT_YELLOW, EcConst.C_DIM_YELLOW);
-    lpRes.ccSetID(pxID);
-    return lpRes;  
-  }//+++
-  
-  //== gauge & slider
-    
-  /**
-   * ##
-   * @param pxName #
-   * @param pxHasStroke #
-   * @param pxIsVertical #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public EcGauge ccCreateGauge
-    (String pxName, boolean pxHasStroke, boolean pxIsVertical, int pxW, int pxH)
-  { EcGauge lpRes=new EcGauge();
-    lpRes.ccSetupKey(pxName);
-    lpRes.ccSetSize(pxW, pxH);
-    lpRes.ccSetColor(0xFFEE3333,0xFFEEEE33);
-    lpRes.ccSetIsVertical(pxIsVertical);
-    lpRes.ccSetHasStroke(pxHasStroke);
-    lpRes.ccSetGaugeColor(0xFF111111, 0xFFCCCCCC);
-    lpRes.ccSetPercentage(32);
-    return lpRes;
-  }//+++
-    
-  /**
-   * 
-   * @param pxName #
-   * @return #
-   */
-  static public EcGauge ccCreateGauge
-    (String pxName)
-  { EcGauge lpRes=ccCreateGauge(pxName,true,true,8,8);
-    lpRes.ccSetSize();
-    return lpRes;
-  }//+++
-    
-  /**
-   * ##
-   * @param pxName #
-   * @param pxNameAlign #
-   * @param pxHasStroke #
-   * @param pxIsVertical #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public EcGauge ccCreateGauge
-    (String pxName,char pxNameAlign,
-     boolean pxHasStroke, boolean pxIsVertical, int pxW, int pxH)
-  { EcGauge lpRes=ccCreateGauge(pxName, pxHasStroke, pxIsVertical, pxW, pxH);
-    lpRes.ccSetNameAlign(pxNameAlign);
-    return lpRes;
-  }//+++
-  
-  /**
-   * 
-   * @param pxName #
-   * @param pxHasStroke #
-   * @param pxIsVertical #
-   * @param pxW #
-   * @param pxH #
-   * @return #
-   */
-  static public EcSlider ccCreateSlider
-    (String pxName, boolean pxHasStroke, boolean pxIsVertical, int pxW, int pxH)
-  { EcSlider lpRes=new EcSlider();
-    lpRes.ccSetupKey(pxName);
-    lpRes.ccSetSize(pxW, pxH);
-    lpRes.ccSetColor(C_RED,C_LIT_GRAY);
-    lpRes.ccSetIsVertical(pxIsVertical);
-    lpRes.ccSetHasStroke(pxHasStroke);
-    lpRes.ccSetGaugeColor(C_DIM_GRAY, C_LIT_GRAY);
-    lpRes.ccSetPercentage(63);
-    return lpRes;
-  }//+++
-    
-  //== colours
+  //=== utility
   
   /**
    * only bit wise calculation involved
@@ -399,7 +168,8 @@ public final class EcConst {
   //== entry
   
   /**
-   * 
+   * for some arbitrary reason, the utility class of the local UI package
+   * is the main class.<br>
    * @param args you know what it is.
    */
   public static void main(String[] args) {

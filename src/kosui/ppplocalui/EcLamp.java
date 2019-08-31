@@ -29,6 +29,33 @@ public class EcLamp extends EcElement{
     //-- color
     C_COLOR_STROKE   = 0xFF555555
   ;//...
+
+  /**
+   * the default size is 18*18 pix;
+   */
+  public EcLamp(){
+    super();
+    ccSetSize(18, 18);
+  }//..!
+  
+  /**
+   * inherited
+   * @param pxKey #
+   * @param pxID #
+   */
+  public EcLamp(String pxKey, int pxID){
+    super(pxKey, pxID);
+    ccSetSize(18, 18);
+  }//..!
+  
+  /**
+   * output component can have no identical id.<br>
+   * @param pxKey will get passed to setter directly
+   */
+  public EcLamp(String pxKey){
+    super();
+    ccSetupKey(pxKey);
+  }//..!
   
   //===
   
@@ -36,11 +63,9 @@ public class EcLamp extends EcElement{
    * {@inheritDoc }
    */
   @Override public void ccUpdate() {
-    
     drawRoundLamp(ccActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
-    
   }//+++
   
   /**
