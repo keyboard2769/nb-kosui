@@ -27,8 +27,7 @@ import kosui.ppputil.*;
 public class TestMain{
   
   public static void main(String[] args){
-    System.out.println("TestMain.main()::hellow:"
-      +VcConst.ccGetBuildInfo());
+    System.out.println("TestMain.main()::hellow:");
     //--
     
     //--

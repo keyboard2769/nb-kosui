@@ -17,8 +17,6 @@
 
 package kosui.ppplocalui;
 
-import processing.core.PApplet;
-
 /**
  * i thought a point is not a vector.<br>
  * but a root class should not look like this.<br>
@@ -26,52 +24,33 @@ import processing.core.PApplet;
 public class EcPoint {
   
   /**
-   * im not sure if it is right to handle the reference problem like this.
-   */
-  static protected PApplet pbOwner=null;
-  
-  /**
    * location
    */
   protected int cmX=8, cmY=8;
   
-  //===
-  
   /**
-   * calls set() of PApplet
-   * @param pxColor #
+   * 
+   * @param pxX pix:0-65536
    */
-  protected final void drawPoint(int pxColor){
-    pbOwner.set(cmX, cmY, pxColor);
+  public final void ccSetX(int pxX){
+    cmX=pxX&0xFFFF;
   }//+++
   
-  //===
-  
   /**
-   * im not sure if it is right to put the main reference
-   * to THE SKETCH here
-   * but anyway i think this is the most convenient way!!
-   * @param pxOwner your sketch
+   * 
+   * @param pxY pix:0-65535
    */
-  static public final void ccInitOwner(PApplet pxOwner)
-    {pbOwner=pxOwner;}//+++
+  public final void ccSetY(int pxY){
+    cmY=pxY&0xFFFF;
+  }//+++
   
   /**
-   * incase you just use one element.<br>
-   * not sure if it is a good idea.
-   * @param pxOwner your sketch
-   */
-  public final void ccSetOwner(PApplet pxOwner)
-    {pbOwner=pxOwner;}//+++
-  
-  /**
-   * does NOT accept minus value
-   * @param pxX #
-   * @param pxY #
+   * @param pxX pix:0-65535
+   * @param pxY pix:0-65535
    */
   public final void ccSetLocation(int pxX,int pxY){
-    if(pxX>=0){cmX=pxX;}
-    if(pxY>=0){cmY=pxY;}
+    ccSetX(pxX);
+    ccSetY(pxY);
   }//+++
   
   /**
@@ -88,22 +67,16 @@ public class EcPoint {
    * 
    * @return x
    */
-  public final int ccGetX(){return cmX;}//+++
+  public final int ccGetX(){
+    return cmX;
+  }//+++
   
   /**
    * 
    * @return y
    */
-  public final int ccGetY(){return cmY;}//+++
-  
-  //==
-  
-  /**
-   * it is NOT SAFE if an illegal PApplet has been initiated
-   * make sure it is your RUNNING PApplet passed to this class
-   * @return true if owner is not null
-   */
-  static public final boolean ccHasOwner()
-    {return pbOwner!=null;}//+++
+  public final int ccGetY(){
+    return cmY;
+  }//+++
   
 }//***eof

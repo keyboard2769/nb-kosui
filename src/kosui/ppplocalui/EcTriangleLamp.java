@@ -46,7 +46,7 @@ public class EcTriangleLamp extends EcElement{
   protected final void drawTriangleLamp(int pxColor){
 
     pbOwner.fill(pxColor);
-    pbOwner.stroke(EcFactory.C_LIT_GRAY);
+    pbOwner.stroke(EcConst.C_LIT_GRAY);
     switch(cmDirection){
 
       case 'u':

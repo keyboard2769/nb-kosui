@@ -33,38 +33,17 @@ public class EcRect extends EcPoint{
   //===
   
   /**
-   * calls rect() of PApplet
-   * @param pxColor #
-   */
-  protected final void drawRect(int pxColor){
-    pbOwner.fill(pxColor);
-    pbOwner.rect(cmX, cmY, cmW, cmH);
-  }//+++
-  
-  /**
-   * calls line() of PApplet. <br>
-   * this also calls noStroke() for convention reason
-   * @param pxColor#
-   * @deprecated combine complex pattern with this is not recommended.
-   */
-  @Deprecated protected final void drawLine(int pxColor){
-    pbOwner.stroke(pxColor);
-    pbOwner.line(cmX, cmY, ccEndX(), ccEndY());
-    pbOwner.noStroke();
-  }//+++
-  
-  //===
-  
-  /**
-   * relocate its self based on the target passed by offset.<br>
-   * start from the left-top corner of the target if 
-   * both offset is not zero.<br>
+   * <pre>
+   * relocate its self based on the target passed by offset.
+   * start from the left-top corner of the target if.
+   * both offset is not zero.
    * align vertical(below) or horizontal(right) next to the target if
-   * one of the offset is passed zero.<br>
+   *   one of the offset is passed zero.
    * like when you want follow an element
-   * below to the target with 5pix offset : rect.ccFollows(target,0,5);<br>
+   *   below to the target with 5pix offset : rect.ccFollows(target,0,5);
    * like when you want follow an element
-   * right to the target with 5pix offset : rect.ccFollows(target,5,0);<br>
+   *   right to the target with 5pix offset : rect.ccFollows(target,5,0);
+   * </pre>
    * @param pxTarget #
    * @param pxOffsetX #
    * @param pxOffsetY #

@@ -45,10 +45,10 @@ public class EcPane extends EcShape{
    */
   @Override public void ccUpdate() {
     
-    pbOwner.fill(EcFactory.C_WHITE);
+    pbOwner.fill(EcConst.C_WHITE);
     pbOwner.rect(cmX,cmY,cmW,cmH);
     
-    pbOwner.fill(EcFactory.C_BLACK);
+    pbOwner.fill(EcConst.C_BLACK);
     pbOwner.rect(cmX+2,cmY+18,cmW-4,cmH-21);
     
     pbOwner.text(cmTitle, cmX+2, cmY+2+C_TEXT_ADJ_Y);

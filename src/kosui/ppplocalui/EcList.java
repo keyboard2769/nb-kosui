@@ -50,7 +50,7 @@ public class EcList extends kosui.ppplocalui.EcElement{
    */
   public EcList(){
     ccFitSize();
-    ccSetColor(EcFactory.C_YELLOW, EcFactory.C_DIM_GRAY);
+    ccSetColor(EcConst.C_YELLOW, EcConst.C_DIM_GRAY);
   }//+++ 
   
   //=== modifier
@@ -122,7 +122,7 @@ public class EcList extends kosui.ppplocalui.EcElement{
     //-- draw pane
     ccActFill();
     pbOwner.rect(cmX, cmY, cmW, cmH);
-    pbOwner.fill(EcFactory.C_WHITE);
+    pbOwner.fill(EcConst.C_WHITE);
     pbOwner.rect(cmX+C_STROKE_THICK, cmY+C_STROKE_THICK,
       cmW-+C_STROKE_THICK*2, cmH-+C_STROKE_THICK*2);
     ccActFill();
@@ -142,7 +142,7 @@ public class EcList extends kosui.ppplocalui.EcElement{
         pbOwner.rect(cmX+C_STROKE_THICK*3,
           lpBufY,
           cmCellWidth, cmCellHeight);
-        pbOwner.fill(EcFactory.C_DIM_GRAY);
+        pbOwner.fill(EcConst.C_DIM_GRAY);
         pbOwner.text(ccLeft(lpBuf,cmCellCharCount),
           cmX+C_STROKE_THICK*4,
           lpBufY+2

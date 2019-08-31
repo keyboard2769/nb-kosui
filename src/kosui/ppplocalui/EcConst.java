@@ -27,7 +27,7 @@ import static processing.core.PConstants.TOP;
  * as an inner static class.<br>
  * now he just produce em. so, don't just new those elements.<br>
  */
-public final class EcFactory {
+public final class EcConst {
   
   /**
    * pre configured colors:<br>
@@ -87,27 +87,20 @@ public final class EcFactory {
   
   //===
   
-  private EcFactory(){}//+++ 
+  private EcConst(){}//+++ 
   
   /**
+   * <b>NO NULL CHECK!!</b><br>
+   * <pre>
    * should be called from setup() before
-   * constructing any UIElement. <br>
-   * also initiate some static element like axis and console,
-   * and some basic mode setting this library prefers. <br>
+   *   constructing any UIElement, 
+   *   for there is some basic mode setting this library prefers.
    * for some reason this does no calls noSmooth(). <br>
-   * like : EcFactory.ccInit(this);
+   *   like : EcFactory.ccInit(this);
+   * </pre>
    * @param pxOwner : your sketch
    */
   public static final void ccInit(PApplet pxOwner){
-    if(pxOwner==null){
-      System.err.println(".EcFactory.ccInit()::null value passed!!");
-      return;
-    }
-    EcPoint.ccInitOwner(pxOwner);
-    VcTagger.ccGetInstance().ccInit(pxOwner, 8);
-    VcAxis.ccGetInstance().ccInit(pxOwner,false);
-    VcConsole.ccInit(pxOwner);
-    VcStacker.ccInit(pxOwner);
     pxOwner.frameRate(16);
     pxOwner.noStroke();
     pxOwner.textAlign(LEFT,TOP);
@@ -275,7 +268,7 @@ public final class EcFactory {
     (String pxForm, String pxName, char pxAlign, int pxID)
   { EcTextBox lpRes=ccCreateBox(pxForm, pxName, pxAlign);
     lpRes.ccSetTextColor(C_DARK_GRAY);
-    lpRes.ccSetColor(EcFactory.C_LIT_YELLOW, EcFactory.C_DIM_YELLOW);
+    lpRes.ccSetColor(EcConst.C_LIT_YELLOW, EcConst.C_DIM_YELLOW);
     lpRes.ccSetID(pxID);
     return lpRes;  
   }//+++
@@ -411,7 +404,8 @@ public final class EcFactory {
    * @param args you know what it is.
    */
   public static void main(String[] args) {
-    System.err.println("kosui.EcFactory.main()::DONT_JUST_RUN!!");
+    System.err.println("kosui.EcFactory.main()::kosui v 19b01");
+    System.err.println("kosui.EcFactory.main()::NOT_FOR_PUBLIC_USE!!");
   }//+++
 
 }//***eof

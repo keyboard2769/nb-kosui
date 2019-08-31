@@ -41,10 +41,10 @@ public class EcTip {
    */
   public EcTip(String pxTip){
     cmTip=pxTip;
-    cmTipW=ceil(EcRect.pbOwner.textWidth(pxTip));
-    cmTipH=EcFactory.C_DEFAULT_AUTOSIZE_HEIGHT;
+    cmTipW=ceil(EcComponent.pbOwner.textWidth(pxTip));
+    cmTipH=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
     for(char it:pxTip.toCharArray())
-      {if(it=='\n'){cmTipH+=EcFactory.C_DEFAULT_AUTOSIZE_HEIGHT;}}
+      {if(it=='\n'){cmTipH+=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;}}
   }//+++
 
 }//***eof

@@ -447,18 +447,4 @@ public final class VcConst {
   /*[IGNORE]::*/
   //</editor-fold>
   
-  /**
-   * complied from : <br>
-   *   <div>- rm13:my 2012 13inch retina macbook pro</div>
-   *   <div>- am11:my 2014 11inch macbook air</div>
-   *   <div>- fj13:my 13 inch fujitsu notebook</div>
-   *   <div>- sv11:my 11 inch sony vaio pro</div>
-   * <br><hr> actually this marking means nothing.
-   * just a convenient way to rename exported file.
-   * 
-   * @return #
-   */
-  static public final String ccGetBuildInfo()
-    {return "kosui_b1902121426fj13";}//+++
-  
 }//***eof

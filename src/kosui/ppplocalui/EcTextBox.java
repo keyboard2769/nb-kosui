@@ -40,7 +40,7 @@ public class EcTextBox extends EcElement{
   public EcTextBox(){
     super();
     ccSetTextAlign('l');
-    ccSetTextColor(EcFactory.C_LIT_GRAY);
+    ccSetTextColor(EcConst.C_LIT_GRAY);
   }//++!
   
   //===

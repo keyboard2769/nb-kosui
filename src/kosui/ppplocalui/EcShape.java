@@ -21,12 +21,12 @@ package kosui.ppplocalui;
  * a shape don't react at user, but it is a component. <br>
  * and it always lies under elements. <br>
  */
-public class EcShape extends EcRect implements EiUpdatable{
+public class EcShape extends EcComponent{
   
   /**
    * the fill of the shape
    */
-  protected int cmBaseColor=EcFactory.C_LIT_GRAY;
+  protected int cmBaseColor=EcConst.C_LIT_GRAY;
   
   //==
   

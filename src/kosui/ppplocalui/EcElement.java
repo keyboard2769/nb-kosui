@@ -25,13 +25,15 @@ import static processing.core.PApplet.RIGHT;
 import static processing.core.PApplet.CENTER;
 
 /**
+ * <pre>
  * in the very first i thought that only thing can react to you 
- * should be called "element" while actually everybody call it
- * "component".<br>
+ *   should be called "element" while actually everybody call it
+ *   "component".
  * i still do so. you see, "element" is a "component",
- * and "shape" too is a "component".<br>
+ *   and "shape" too is a "component".<br>
+ * </pre>
  */
-public class EcElement extends EcRect implements EiUpdatable{
+public class EcElement extends EcComponent{
   
   private static final int
     //-- pix
@@ -46,11 +48,11 @@ public class EcElement extends EcRect implements EiUpdatable{
    * basic field
    */
   protected int
-    cmID        = EcFactory.C_ID_IGNORE,
-    cmOnColor   = EcFactory.C_YELLOW,
-    cmOffColor  = EcFactory.C_DIM_GRAY,
-    cmNameColor = EcFactory.C_LIT_GRAY,
-    cmTextColor = EcFactory.C_DARK_GRAY
+    cmID        = EcConst.C_ID_IGNORE,
+    cmOnColor   = EcConst.C_YELLOW,
+    cmOffColor  = EcConst.C_DIM_GRAY,
+    cmNameColor = EcConst.C_LIT_GRAY,
+    cmTextColor = EcConst.C_DARK_GRAY
   ;//...
   
   /**
@@ -274,11 +276,11 @@ public class EcElement extends EcRect implements EiUpdatable{
   public final void ccSetSize(){
     
     cmW = ceil(pbOwner.textWidth(cmText))
-          +EcFactory.C_DEFAULT_AUTOSIZE_MARGIN*2;
-    cmH = EcFactory.C_DEFAULT_AUTOSIZE_HEIGHT;
+          +EcConst.C_DEFAULT_AUTOSIZE_MARGIN*2;
+    cmH = EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
     
     for(char it:cmText.toCharArray())
-      {if(it=='\n'){cmH+=EcFactory.C_DEFAULT_AUTOSIZE_HEIGHT;}}
+      {if(it=='\n'){cmH+=EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;}}
     
   }//+++
 

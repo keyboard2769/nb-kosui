@@ -29,7 +29,7 @@ public interface EiGroup {
    * 
    * @return only component registered here is considered in the group.
    */
-  public ArrayList<EiUpdatable> ccGiveShapeList();
+  public ArrayList<EcShape> ccGiveShapeList();
   
   /**
    * 

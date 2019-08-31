@@ -43,7 +43,7 @@ public class EcBaseCoordinator {
   private static LinkedHashMap<Integer,EcElement> pbInputtableList;
   private static EcTipManager pbTipManager;
   
-  private final ArrayList<EiUpdatable> cmShapeList;
+  private final ArrayList<EcComponent> cmShapeList;
   private final ArrayList<EcElement> cmElementList;
 
   //==
@@ -71,18 +71,18 @@ public class EcBaseCoordinator {
    */
   public final void ccUpdate(){
     
-    if(!EcPoint.ccHasOwner()){return;}
+    if(!EcComponent.ccHasOwner()){return;}
     
     for(EcElement it:pbInputtableList.values())
       {it.ccSetIsActivated(it.ccGetID()==pbInputFocusID);}
-    for(EiUpdatable it:cmShapeList){it.ccUpdate();}
+    for(EcComponent it:cmShapeList){it.ccUpdate();}
     pbMouseOverID=0;
     for(EcElement it:cmElementList){
       it.ccUpdate();
       if(it.ccIsMouseHovered()){pbMouseOverID=it.ccGetID();}
-    }
+    }//..~
     
-    pbTipManager.ccUpdate(pbMouseOverID);
+    pbTipManager.ssUpdate(pbMouseOverID);
   
   }//+++
   
@@ -109,7 +109,7 @@ public class EcBaseCoordinator {
    * this don't check.
    * @param pxShape #
    */
-  public final void ccAddShape(EiUpdatable pxShape)
+  public final void ccAddShape(EcComponent pxShape)
     {cmShapeList.add(pxShape);}//+++
   
   /**
@@ -117,7 +117,7 @@ public class EcBaseCoordinator {
    * this don't check.
    * @param pxList # 
    */
-  public final void ccAddShape(ArrayList<EiUpdatable> pxList)
+  public final void ccAddShape(ArrayList<EcComponent> pxList)
     {cmShapeList.addAll(pxList);}//+++
   
   /**
@@ -155,7 +155,7 @@ public class EcBaseCoordinator {
    * call this when you think a value has been taken
    */
   public final void ccClearCurrentInputFocus(){
-    pbInputFocusID=EcFactory.C_ID_IGNORE;
+    pbInputFocusID=EcConst.C_ID_IGNORE;
     pbInputIndex=pbInputtableList.size();
   }//+++
   
@@ -178,7 +178,7 @@ public class EcBaseCoordinator {
     if(pbInputIndex>lpSize)
       {pbInputIndex=0;}
     if(pbInputIndex==lpSize)
-      {pbInputFocusID=EcFactory.C_ID_IGNORE;return;}
+      {pbInputFocusID=EcConst.C_ID_IGNORE;return;}
     EcElement[] lpArray =new EcElement[lpSize];
     pbInputtableList.values().toArray(lpArray);
     EcElement lpBox=lpArray[pbInputIndex];
@@ -190,7 +190,7 @@ public class EcBaseCoordinator {
    * @return null if there is nothing focused so you have to check
    */
   public final EcElement ccGetCurrentFocusedBox(){
-    if(pbInputFocusID==0 || pbInputFocusID==EcFactory.C_ID_IGNORE)
+    if(pbInputFocusID==0 || pbInputFocusID==EcConst.C_ID_IGNORE)
       {return null;}
     return pbInputtableList.get(pbInputFocusID);
   }//+++
@@ -209,7 +209,7 @@ public class EcBaseCoordinator {
    * @return focus id is not zero or "ignore"
    */
   public final boolean ccHasInputtableFocused()
-    {return pbInputFocusID!=0 && pbInputFocusID!=EcFactory.C_ID_IGNORE;}//+++
+    {return pbInputFocusID!=0 && pbInputFocusID!=EcConst.C_ID_IGNORE;}//+++
   
   /**
    * 

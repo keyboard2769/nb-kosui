@@ -24,7 +24,7 @@ import java.util.HashMap;
  * outside from a coordinator. <br>
  * but actually it is just a rectangle with text. <br>
  */
-final class EcTipManager extends EcPoint {
+final class EcTipManager extends EcComponent {
   
   private static final int 
     C_TEXT_ADJ_X = 2,
@@ -39,12 +39,19 @@ final class EcTipManager extends EcPoint {
   private int cmTextColor=0xFFCCCCCC;
   
   //===
+
+  /**
+   * {@inheritDoc }
+   */
+  @Override public void ccUpdate(){
+    ssUpdate(0);
+  }//+++
   
   /**
    * not supposed to be used outside from a coordinator. <br>
    * @param pxID supposedly the current mouse hovered element's id. br<> 
    */
-  final void ccUpdate(int pxID){
+  public final void ssUpdate(int pxID){
     if(cmIsDisabled){return;}
     if(cmTipMap.containsKey(pxID)){
       EcTip lpTip=cmTipMap.get(pxID);

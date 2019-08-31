@@ -27,7 +27,7 @@ public class TestSketch extends PApplet {
     
     size(320, 240);
     noSmooth();
-    EcFactory.ccInit(this);
+    EcConst.ccInit(this);
     
     
   }//+++
