@@ -36,6 +36,14 @@ public final class VcStringUtility {
   //===
   
   /**
+   * @param pxInput #
+   * @return empty string if null passed
+   */
+  static public final String ccNulloutString(String pxInput){
+    return pxInput==null?"":pxInput;
+  }//+++
+  
+  /**
    * <b>WARN:</b>
    * <b>BY NOW IT IS MEANLY IMPLEMENTED AS JUST SPLITTING BY SPACE</b><br>
    * extract the unit representation from the given form.<br>

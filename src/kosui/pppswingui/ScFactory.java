@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -391,6 +392,19 @@ public final class ScFactory {
     );
     ccSetupTextLamp(lpRes, -1, -1);
     return lpRes;
+  }//+++
+  
+  //== outout UI ** console area
+  
+  /**
+   * color and ability and text align is configured
+   * @param pxTarget don't pass null
+   */
+  public static final void ccSetupConsoleArea(JTextArea pxTarget){
+    pxTarget.setBackground(Color.LIGHT_GRAY);
+    pxTarget.setDisabledTextColor(Color.DARK_GRAY);
+    pxTarget.setEditable(false);
+    pxTarget.setEnabled(false);
   }//+++
   
   //== component ** misc

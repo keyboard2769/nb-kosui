@@ -18,15 +18,18 @@ i figure out how to use release page.
 #### plan 
 
 - [ ] $ merge EcTip into EcTipMamager, make it a real manager.
-- [ ] $ merge binary method from wm monitor to numeric utilities
 - [ ] $ rewrite all swing dialog method comment
-- [ ] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
 - [ ] $ let's define more awt color!!
 - [ ] $ make a class and demo for trend chart.
+- [ ] $ add create and load json method to McFactory.
 - [ ] $ fill up those array packup methods.
 
 #### current
 
+- [ ] $ merge binary method from wm monitor to numeric utilities
+
 #### done
+
+- [x] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
 
 <hr><!--eof-->

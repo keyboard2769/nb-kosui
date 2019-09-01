@@ -18,11 +18,17 @@
 package kosui.pppswingui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -78,7 +84,10 @@ public class ScConst {
   ;//--
   
   private static final JFileChooser O_FILE_CHOOSER
-    = new JFileChooser();
+    = new JFileChooser(VcConst.C_V_PWD);
+  
+  private static final Font O_DEFAULT_FONT
+    = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);;
   
   private ScConst(){}//..!
   
@@ -110,13 +119,40 @@ public class ScConst {
   }//+++
   
   /**
-   * will be blocked out from event dispatch thread
-   * @param pxMessage #
+   * will be blocked out from event dispatch thread.<br>
+   * @param pxMessage must have something
    */
   public static final void ccMessageBox(String pxMessage){
     if(!ccIsEDT()){return;}
     if(!VcConst.ccIsValidString(pxMessage)){return;}
     JOptionPane.showMessageDialog(cmOwner,pxMessage);
+  }//+++
+  
+  /**
+   * will be blocked out from event dispatch thread.<br>
+   * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
+   * and yes, there will be no ccWarnBox().<br>
+   * @param pxMessage must have something
+   */
+  public static final void ccErrorBox(String pxMessage){
+    if(!ccIsEDT()){return;}
+    JOptionPane.showMessageDialog(
+      cmOwner,
+      pxMessage,
+      cmOwner==null?"<!>":cmOwner.getTitle(),
+      JOptionPane.ERROR_MESSAGE
+    );
+  }//+++
+  
+  public static final boolean ccYesOrNoBox(String pxMessage){
+    if(!ccIsEDT()){return false;}
+    int i=JOptionPane.showConfirmDialog(
+      cmOwner,
+      pxMessage,
+      cmOwner==null?"<?>":cmOwner.getTitle(),
+      JOptionPane.YES_NO_OPTION
+    );
+    return i==0;
   }//+++
   
   /**
@@ -129,7 +165,7 @@ public class ScConst {
    * @return #
    */
   public static final
-  String ccGetStringFromInputBox(String pxBrief, String pxDefault){
+  String ccGetStringByInputBox(String pxBrief, String pxDefault){
     if(!ccIsEDT()){return "<blocked>";}
     String lpRes=JOptionPane.showInputDialog(cmOwner, pxBrief, pxDefault);
     if(!VcConst.ccIsValidString(lpRes)){return "<?>";}
@@ -171,69 +207,61 @@ public class ScConst {
   }//+++
   
   /**
-   * also initiate some status of file chooser
-   * @param lpFolderPath #
+   * <pre>
+   * mode:
+   *  - [f]:file
+   *  - [d]:direcory
+   *  - [x]:UNDEFINED.(or you can pass any letter)
+   * </pre>
+   * @param pxMode #
+   * @return might be null if something goes wrong
    */
-  public static final void ccSetFileChooserDefualtFolder
-    (String lpFolderPath)
-  { if(!VcConst.ccIsValidString(lpFolderPath)){return;}
-    File lpFile=new File(lpFolderPath);
-    if(ccIsEDT()){
-      O_FILE_CHOOSER.setDialogType(JFileChooser.OPEN_DIALOG);
-      O_FILE_CHOOSER.setMultiSelectionEnabled(false);
-      O_FILE_CHOOSER.setDragEnabled(false);
-      O_FILE_CHOOSER.setFileHidingEnabled(false);
-      if(lpFile.isDirectory()){
-        O_FILE_CHOOSER.setCurrentDirectory(lpFile);
-      }else{
-        System.err.println(
-          ".ScFactory.ccSetFileChooserDefualtFolder()::"
-          +"passed pass is not directory!"
-        );
-      }
-    }
+  public static final File ccGetFileByFileChooser(char pxMode){
+    
+    //-- pre
+    if(ccIsEDT()){return null;}
+    
+    //-- apply
+    int lpMode=JFileChooser.FILES_AND_DIRECTORIES;
+    switch(pxMode){
+      case 'f':lpMode=JFileChooser.FILES_ONLY;break;
+      case 'd':lpMode=JFileChooser.DIRECTORIES_ONLY;break;
+      default:break;
+    }//..?
+    
+    //-- show
+    O_FILE_CHOOSER.updateUI();
+    O_FILE_CHOOSER.setFileSelectionMode(lpMode);
+    int lpFlag=O_FILE_CHOOSER.showDialog(cmOwner, null);
+    if(lpFlag==JFileChooser.APPROVE_OPTION){
+      File lpFile=O_FILE_CHOOSER.getSelectedFile();
+      return lpFile;
+    }else{return null;}
+    
   }//+++
   
   /**
-   * wrapper for JFileChooser::setSelectedFile. 
-   * will check passed string by File::isAbsolute and File::isDirectory. 
-   * @param pxDefaultFile #
-   * @return #
+   * <pre>
+   * mode:
+   *  - [f]:file
+   *  - [d]:direcory
+   *  - [x]:UNDEFINED.(or you can pass any letter)
+   * and,
+   * for all this years i have diceded the follow rule:
+   *   a file is a File,
+   *   a path is a Path,
+   *   a url is a URL,
+   *   a uri is a URI,
+   * and location is a String.
+   * </pre>
+   * @param cmMode_fd #
+   * @return string of the absolute path
    */
-  public static final String ccGetPathByFileChooser(String pxDefaultFile){
-    File lpFile=new File(pxDefaultFile);
-    if(lpFile.isAbsolute()){
-      O_FILE_CHOOSER.setSelectedFile(lpFile);
-    }//+++
-    return ccGetPathByFileChooser(lpFile.isDirectory()?'d':'f');
-  }//+++
-    
-  /**
-   * 
-   * @param pxMode [f]file..[d]directory..
-   * @return undefined tag if something went wrong
-   */
-  public static final
-  String ccGetPathByFileChooser(char pxMode){
-    //[later]:: make this better
-    if(ccIsEDT()){
-      int lpMode=JFileChooser.FILES_AND_DIRECTORIES;
-      switch(pxMode){
-        case 'f':lpMode=JFileChooser.FILES_ONLY;break;
-        case 'd':lpMode=JFileChooser.DIRECTORIES_ONLY;break;
-        default:break;
-      }//..?
-      O_FILE_CHOOSER.updateUI();
-      O_FILE_CHOOSER.setFileSelectionMode(lpMode);
-      int lpFlag=O_FILE_CHOOSER
-        .showDialog(cmOwner, null);
-      if(lpFlag==JFileChooser.APPROVE_OPTION){
-        File lpFile=O_FILE_CHOOSER.getSelectedFile();
-        if(lpFile!=null){
-          return lpFile.getAbsolutePath();
-        }else{return C_M_INVALID;}
-      }else{return C_M_INVALID;}
-    }return C_M_INVALID;
+  public static final String ccGetLocationByFileChooser(char cmMode_fd){ 
+    File lpFile=ccGetFileByFileChooser(cmMode_fd);
+    if(lpFile==null){return C_M_INVALID;}
+    if(!lpFile.isAbsolute()){return C_M_INVALID;}
+    return lpFile.getAbsolutePath();
   }//+++
   
   /**
@@ -296,6 +324,40 @@ public class ScConst {
   //=== system
   
   /**
+   * @return default font is hard coded.
+   */
+  public static final Font ccGetDefaultFont(){
+    return O_DEFAULT_FONT;
+  }//+++
+  
+  /**
+   * an alias to pxTarget.setFont.<br>
+   * if it contains children than all will be set to the default.<br>
+   * @param pxTarget do not pass null
+   */
+  public static final void ccSetToDefaultFont(JComponent pxTarget){
+    if(!ccIsEDT()){return;}
+    if(O_DEFAULT_FONT==null){return;}
+    if(pxTarget==null){return;}
+    pxTarget.setFont(O_DEFAULT_FONT);
+    Component[] lpList = pxTarget.getComponents();
+    if(lpList==null){return;}
+    if(lpList.length==0){return;}
+    for(Component it:lpList){
+      if(it instanceof JComponent){it.setFont(O_DEFAULT_FONT);}
+    }//..~
+  }//+++
+  
+  /**
+   * an alias to FileChooser.setApproveButtonText().<br>
+   * @param pxText must have some thing
+   */
+  public static final void ccSetFileChooserButtonText(String pxText){
+    if(!VcConst.ccIsValidString(pxText)){return;}
+    O_FILE_CHOOSER.setApproveButtonText(pxText);
+  }//+++
+  
+  /**
    * try to get an array of LookAndFeelInfo from UIManager, 
    *   than apply an indexed one via setLookAndFeel(). <br>
    * if a minus index is passed, getCrossPlatformLookAndFeelClassName()
@@ -333,6 +395,30 @@ public class ScConst {
       System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
     }//..%
     
+  }//+++
+  
+  /**
+   * for multiple hardware monitor situation.<br>
+   * @return (0,0) or (%resolution%,0)
+   */
+  public static final Point ccGetScreenInitPoint(){
+    Point lpDummyPoint = null;
+    Point lpInitPoint = null;
+    for (
+      GraphicsDevice lpDevice:
+      GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()
+    ){
+      if (lpDummyPoint == null) {
+        lpDummyPoint = 
+          lpDevice.getDefaultConfiguration().getBounds().getLocation();
+      } else if (lpInitPoint == null) {
+        lpInitPoint = 
+          lpDevice.getDefaultConfiguration().getBounds().getLocation();
+      }//..?
+    }//..~
+    if (lpInitPoint == null) {lpInitPoint = lpDummyPoint;}
+    if (lpInitPoint == null) {lpInitPoint = new Point(0,0);}
+    return lpInitPoint;
   }//+++
   
 }//***eof
