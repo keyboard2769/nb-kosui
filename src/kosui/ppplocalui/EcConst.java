@@ -111,6 +111,7 @@ public final class EcConst {
    * @param pxOwner : your sketch
    */
   public static final void ccSetupSketch(PApplet pxOwner){
+    if(pxOwner==null){return;}
     pxOwner.frameRate(16);
     pxOwner.noStroke();
     pxOwner.textAlign(LEFT,TOP);

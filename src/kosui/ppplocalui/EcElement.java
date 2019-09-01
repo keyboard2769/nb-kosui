@@ -308,7 +308,7 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * the visibility only means the ccUpdate() will get bypassed or not.<not>
+   * the visibility only means the ccUpdate() will get bypassed or not.<br>
    * @param pxStatus #
    */
   public final void ccSetIsVisible(boolean pxStatus){

@@ -42,9 +42,9 @@ public final class ScList extends JScrollPane {
   public ScList() {this(0, 0);}
   
   /**
-   * 
-   * @param pxW width
-   * @param pxH height
+   * #
+   * @param pxW pix
+   * @param pxH pix
    */
   public ScList(int pxW, int pxH) {
     super();
@@ -53,7 +53,7 @@ public final class ScList extends JScrollPane {
     setViewportView(cmList);
     if (pxW > 0 && pxH > 0) {
       setPreferredSize(new Dimension(pxW, pxH));
-    }
+    }//..?
   }//+++
 
   //===
@@ -134,6 +134,15 @@ public final class ScList extends JScrollPane {
    */
   public final Object ccGetEventSource() {
     return cmList;
+  }//+++
+  
+  /**
+   * calls updateUI() than repaint().<br>
+   */
+  public final void ccRefresh(){
+    if(!ScConst.ccIsEDT()){return;}
+    cmList.updateUI();
+    cmList.repaint();
   }//+++
 
 }//***eof

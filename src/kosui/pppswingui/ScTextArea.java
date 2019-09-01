@@ -26,7 +26,7 @@ import javax.swing.JTextArea;
  * basically just a text area in a scroll pane. <br>
  * but i think this is a better name for text area. <br>
  */
-public class ScConsole extends JScrollPane {
+public class ScTextArea extends JScrollPane {
 
   private final JTextArea cmArea;
   
@@ -37,7 +37,7 @@ public class ScConsole extends JScrollPane {
    * @param pxR row
    * @param pxC column
    */
-  public ScConsole(int pxR, int pxC) {
+  public ScTextArea(int pxR, int pxC) {
     super();
     cmArea = new JTextArea("--standby::\n", pxR, pxC);
     cmArea.setEditable(false);
@@ -54,7 +54,7 @@ public class ScConsole extends JScrollPane {
    * @param pxLine will be treated as a error if blocked out.
    */
   public final void ccStack(String pxLine) {
-    if (ScFactory.ccIsEDT()) {
+    if (ScConst.ccIsEDT()) {
       cmArea.append(pxLine + "\n");
       int lpLength = cmArea.getText().length();
       cmArea.setSelectionStart(lpLength - 2);

@@ -194,5 +194,23 @@ public final class VcNumericUtility {
     }//..~
     return lpRes;
   }//+++
+    
+  /**
+   * just casting.<br>
+   * @param pxVal #
+   * @return #
+   */
+  public static final float ccFloat(int pxVal){
+    return (float)pxVal;
+  }//+++
+  
+  /**
+   * just casting.<br>
+   * @param pxVal #
+   * @return #
+   */
+  public static final int ccInteger(float pxVal){
+    return (int)pxVal;
+  }//+++
   
  }//***eof

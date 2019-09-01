@@ -8,9 +8,24 @@ i figure out how to use release page.
 
 ## todo list
 
+#### hold
+
 - [ ] $ uno
 - [ ] $ dos
 - [ ] $ tre!!
 - [ ] $ quatro!!?! 
+
+#### plan 
+
+- [ ] $ merge EcTip into EcTipMamager, make it a real manager.
+- [ ] $ merge binary method from wm monitor to numeric utilities
+- [ ] $ rewrite all swing dialog method comment
+- [ ] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
+- [ ] $ let's define more awt color!!
+- [ ] $ make a class and demo for trend chart.
+
+#### current
+
+#### done
 
 <hr><!--eof-->

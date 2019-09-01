@@ -126,33 +126,12 @@ public final class ScTable extends JScrollPane {
   //===
   
   /**
-   * calls both repaint() and updateUI() of JTable. 
+   * calls updateUI() than repaint().<br>
    */
   public final void ccRefresh(){
-    if(ScFactory.ccIsEDT()){
-      cmTable.repaint();
-      cmTable.updateUI();
-    }//..?
-  }//+++
-  
-  /**
-   * calls repaint() of JTable.
-   */
-  public final void ccRepaintTable(){
-    if(ScFactory.ccIsEDT()){
-      cmTable.repaint();
-    }//..?
-  }//+++
-  
-  /**
-   * calls updateUI() of JTable. <br>
-   * for the situation that modification does not show up by repainting,
-   * actually i don t know why it is necessary. <br>
-   */
-  public final void ccUpdateTable(){
-    if(ScFactory.ccIsEDT()){
-      cmTable.updateUI();
-    }//..?
+    if(!ScConst.ccIsEDT()){return;}
+    cmTable.updateUI();
+    cmTable.repaint();
   }//+++
   
   //===

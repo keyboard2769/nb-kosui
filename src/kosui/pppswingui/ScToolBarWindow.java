@@ -20,7 +20,6 @@ package kosui.pppswingui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.BorderFactory;
@@ -74,7 +73,7 @@ public final class ScToolBarWindow extends JWindow {
     }//..?
 
     //-- public
-    cmBar = ScFactory.ccMyStuckedToolBar();
+    cmBar = ScFactory.ccCreateStuckedToolBar();
 
     cmHelpMI = new JMenuItem("help");
     cmHelpMI.setActionCommand("--toolbar-help");
@@ -84,7 +83,7 @@ public final class ScToolBarWindow extends JWindow {
     cmQuitMI.setActionCommand("--toolbar-quit");
     cmQuitMI.addActionListener(pxListener);
 
-    cmRunPL = ScFactory.ccMyTextLamp("Run", 30, 30);
+    cmRunPL = ScFactory.ccCreateTextLamp("Run", 30, 30);
 
     //-- local
     JPopupMenu lpPop = new JPopupMenu();
@@ -178,8 +177,8 @@ public final class ScToolBarWindow extends JWindow {
    */
   public final void ccSetRunLampStatus(boolean pxStatus) {
     if (SwingUtilities.isEventDispatchThread()) {
-      cmRunPL.setBackground(pxStatus ? ScFactory.DARK_RED : Color.DARK_GRAY);
-    }
+      cmRunPL.setBackground(pxStatus ? ScConst.DARK_RED : Color.DARK_GRAY);
+    }//..?
   }//+++
   
 }//***eof

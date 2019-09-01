@@ -40,6 +40,7 @@ public class ScTitledWindow extends JWindow {
   private boolean cmHasCenter;
   private boolean cmHasEnd;
   private int cmAnchorX, cmAnchorY;
+  private boolean cmIsFinished;
 
   //=== 
   
@@ -51,6 +52,7 @@ public class ScTitledWindow extends JWindow {
     super(pxOwner);
     cmHasCenter=false;
     cmHasEnd=false;
+    cmIsFinished=false;
     cmAnchorX=0;
     cmAnchorY=0;
   }//+++
@@ -113,6 +115,7 @@ public class ScTitledWindow extends JWindow {
     setAlwaysOnTop(false);
     cmHasCenter=true;
     cmHasEnd=true;
+    cmIsFinished=true;
   }//++!
 
   /**
@@ -196,7 +199,7 @@ public class ScTitledWindow extends JWindow {
    * flips visibility. <br>
    * will be blocked out from dispatch event. <br>
    */
-  public final void ccSetIsVisible(){if(ScFactory.ccIsEDT()){
+  public final void ccSetIsVisible(){if(ScConst.ccIsEDT()){
     boolean lpNow=isVisible();
     setVisible(!lpNow);
   }}//+++
@@ -206,6 +209,14 @@ public class ScTitledWindow extends JWindow {
    * @param pxStatus #
    */
   public final void ccSetIsVisible(boolean pxStatus)
-    {if(ScFactory.ccIsEDT()){setVisible(pxStatus);}}//+++
+    {if(ScConst.ccIsEDT()){setVisible(pxStatus);}}//+++
+  
+  /**
+   * for defending double initiation.<br>
+   * @return #
+   */
+  public final boolean ccIsFinished(){
+    return cmIsFinished;
+  }//+++
 
 }//***eof
