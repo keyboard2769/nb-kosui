@@ -18,7 +18,6 @@
 package kosui.ppputil;
 
 import static kosui.ppputil.VcConst.ccIsValidString;
-import static processing.core.PApplet.hex;
 
 /**
  *
@@ -101,48 +100,7 @@ public final class VcStringUtility {
   
   //===
   
-  /**
-   * actually i don't see why i needed this.
-   * @param pxArray #
-   * @return #
-   */
-  synchronized static public final String[] ccToStringArray(Object[] pxArray){
-    String[] lpRes=new String[pxArray.length];
-    for(int i=0,s=lpRes.length;i<s;i++)
-      {lpRes[i]=pxArray[i].toString();}
-    return lpRes;
-  }//+++
-  
-  /**
-   * pack up a big string for print.<br>
-   * @param pxArray must have something 
-   * @param pxWrap where the line breaks
-   * @return 
-   */
-  static public final String ccPackupArray(byte[] pxArray, int pxWrap){
-    if(pxArray==null){return "";}
-    if(pxArray.length==0){return "";}
-    StringBuilder lpBuilder
-      = new StringBuilder("byte array:");
-    lpBuilder.append(VcConst.C_V_NEWLINE);
-    int lpWrapCount=0;
-    for(int i=0,s=pxArray.length;i<s;i++){
-      lpBuilder.append(" 0x");
-      lpBuilder.append(hex(pxArray[i],2));
-      lpWrapCount++;
-      if(lpWrapCount==pxWrap){
-        lpBuilder.append(VcConst.C_V_NEWLINE);
-        lpWrapCount=0;
-      }//..?
-    }//..~
-    lpBuilder.append(VcConst.C_V_NEWLINE);
-    lpBuilder.append("<<<");
-    lpBuilder.append(VcConst.C_V_NEWLINE);
-    return lpBuilder.toString();
-  }//+++
-    
-  //[PLAN]::static String ccPackupArray(boolean[] pxArray, int pxWrap){}
-  //[PLAN]::static String ccPackupArray(int[] pxArray, int pxWrap){}
-  //[PLAN]::static String ccPackupArray(float[] pxArray, int pxWrap){}
+  //        ..pack up a big string for print
+  //[plan]::String ccPackupStringList(Object[] pxData){}
   
  }//***eof

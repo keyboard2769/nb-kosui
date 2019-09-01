@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -61,9 +62,9 @@ public final class VcLocalCoordinator {
   private final Queue<EiTriggerable> cmQueueOfLoopTrigger
     = new LinkedList<EiTriggerable>();
   
-  private final ArrayList<EcShape> cmListOfShape
+  private final List<EcShape> cmListOfShape
     = new ArrayList<EcShape>();
-  private final ArrayList<EcElement> cmListOfElement
+  private final List<EcElement> cmListOfElement
     = new ArrayList<EcElement>();
   
   private final EcTipManager cmTipManager
@@ -177,7 +178,7 @@ public final class VcLocalCoordinator {
   /**
    * @param pxList simply an alias to addAll()
    */
-  static public final void ccAddElement(ArrayList<EcElement> pxList){
+  static public final void ccAddElement(List<? extends EcElement> pxList){
     if(pxList==null){return;}
     if(pxList.isEmpty()){return;}
     if(SELF.cmListOfElement.containsAll(pxList)){return;}
@@ -196,7 +197,7 @@ public final class VcLocalCoordinator {
   /**
    * @param pxList simply an alias to addAll()
    */
-  static public final void ccAddShape(ArrayList<EcShape> pxList){
+  static public final void ccAddShape(List<? extends EcShape> pxList){
     if(pxList==null){return;}
     if(pxList.isEmpty()){return;}
     if(SELF.cmListOfShape.containsAll(pxList)){return;}
@@ -209,10 +210,7 @@ public final class VcLocalCoordinator {
   static public final void ccAddGroup(EiGroup pxGroup){
     if(pxGroup==null){return;}
     ccAddShape(pxGroup.ccGiveShapeList());
-    /*
-    cmElementList.addAll(pxGroup.ccGiveElementList());
-    cmShapeList.addAll(pxGroup.ccGiveShapeList());
-    */
+    ccAddElement(pxGroup.ccGiveElementList());
   }//+++
   
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Key Parker from K.I.C
+ * Copyright (C) 2019 Key Parker from K.I.C
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,27 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package kosui.ppplocalui;
 
-import java.util.List;
+package kosui.pppmodel;
 
 /**
- * you can jam every component into one coordinator subclass. <br>
- * using this interface may split them, but well,
- * it is still the same thing. <br>
+ * a memory map might be byte interchangeable,<br>
+ * a free formatted binary file might be byte interchangeable.<br>
  */
-public interface EiGroup {
+public interface MiByteInterchangeable{
   
   /**
-   * 
-   * @return only component registered here is considered in the group.
+   * @return #
    */
-  public List<EcShape> ccGiveShapeList();
+  public byte[] ccToByteArray();
   
   /**
-   * 
-   * @return only component registered here is considered in the group.
+   * @param pxData #
    */
-  public List<EcElement> ccGiveElementList();
+  public void ccTakeByteArray(byte[] pxData);
+  
   
 }//***eof

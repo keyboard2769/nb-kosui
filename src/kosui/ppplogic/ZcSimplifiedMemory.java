@@ -28,7 +28,8 @@ public class ZcSimplifiedMemory implements ZiMemory {
   private final boolean[][] cmBitArray;
 
   /**
-   * the default size is 256 and is immutable. 
+   * the default size is 256 and is immutable.<br>
+   * word area and bit area is totally separated.<br>
    */
   public ZcSimplifiedMemory() {
     cmWordArray = new int[256];
@@ -36,6 +37,15 @@ public class ZcSimplifiedMemory implements ZiMemory {
   }//+++
   
   //=== interface 
+
+  /**
+   * since the word area and bit area is totally separated,
+   * this return value absolutely has not meaning at all.<br>
+   * @return single channel length;
+   */
+  @Override public int ccGetSize(){
+    return 256;
+  }//+++
   
   /**
    * {@inheritDoc }

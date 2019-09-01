@@ -18,9 +18,13 @@
 package pppexample;
 
 import java.awt.Frame;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcPane;
+import kosui.ppplocalui.EcRect;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcRangedValueModel;
@@ -35,14 +39,25 @@ public class DemoLocalUI extends PApplet {
 
   //=== overridden
   
-  private final EcPane cmMainPane
-    = new EcPane("count!!", 300, 200);
-  private final EcValueBox cmCounterTB
-    = new EcValueBox("counter", "0000");
-  private final EcButton cmAddSW
-    = new EcButton("add", 0xAA01);
-  private final EcButton cmResetSW
-    = new EcButton("reset", 0xAA02);
+  private final EcPane cmMainPane = new EcPane("count!!", 300, 200);
+  private final EcValueBox cmCounterTB = new EcValueBox("counter", "0000");
+  private final EcButton cmAddSW = new EcButton("add", 0xAA01);
+  private final EcButton cmResetSW = new EcButton("reset", 0xAA02);
+
+  public final List<EcButton> cmDesSendBitSW
+   = Collections.unmodifiableList(Arrays.asList(
+    new EcButton("0", 0xBA00),new EcButton("1", 0xBA01),
+    new EcButton("2", 0xBA02),new EcButton("3", 0xBA03),
+    //
+    new EcButton("4", 0xBA04),new EcButton("5", 0xBA05),
+    new EcButton("6", 0xBA06),new EcButton("7", 0xBA07),
+    //
+    new EcButton("8", 0xBA08),new EcButton("9", 0xBA09),
+    new EcButton("A", 0xBA0A),new EcButton("B", 0xBA0B),
+    //
+    new EcButton("C", 0xBA0C),new EcButton("D", 0xBA0D),
+    new EcButton("E", 0xBA0E),new EcButton("F", 0xBA0F)
+  ));
   
   private final ZcRangedValueModel cmCounterModel
     = new ZcRangedValueModel(0, 99);
@@ -99,6 +114,10 @@ public class DemoLocalUI extends PApplet {
     cmResetSW.ccSetLocation(cmAddSW, 4, 0);
     VcLocalCoordinator.ccAddElement(cmResetSW);
     VcLocalCoordinator.ccRegisterMouseTrigger(cmResetSW, cmResetCounter);
+    
+    cmDesSendBitSW.get(0).ccSetLocation(cmCounterTB, 0,20);
+    EcRect.ccFlowLayout(cmDesSendBitSW, 2, false, false);
+    VcLocalCoordinator.ccAddElement(cmDesSendBitSW);
     
     //-- binding
     VcLocalCoordinator.ccRegisterKeyTrigger

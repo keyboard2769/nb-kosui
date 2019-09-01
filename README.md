@@ -26,10 +26,11 @@ i figure out how to use release page.
 
 #### current
 
-- [ ] $ merge binary method from wm monitor to numeric utilities
+- [ ] $ build a local ui example using all type of given ui compnent.
 
 #### done
 
+- [x] $ merge binary method from wm monitor to numeric utilities
 - [x] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
 
 <hr><!--eof-->

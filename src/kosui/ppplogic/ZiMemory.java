@@ -22,6 +22,12 @@ package kosui.ppplogic;
  * for some reason "word" is numbered in decimal, we don't keep it here. <br>
  */
 public interface ZiMemory {
+  
+  /**
+   * ##
+   * @return word size
+   */
+  public int ccGetSize();
 
   /**
    * even though it is a Integer a 16 bit value will be returned.<br>

@@ -17,6 +17,9 @@
 
 package kosui.ppputil;
 
+import kosui.ppplogic.ZiMemory;
+import processing.core.PApplet;
+
 /**
  * some time i cant tell the difference between numeric and conversion.<br>
  * anyway this does not make things more tedious.<br>
@@ -30,7 +33,7 @@ public final class VcNumericUtility {
   }//+++
   private VcNumericUtility(){}//..!
   
-  //===
+  //=== judgement
   
   /**
    * if you think REGEX is heavy you should NOT use this.
@@ -50,6 +53,8 @@ public final class VcNumericUtility {
   static public final boolean ccIsFloatString(String pxNum){
     return pxNum.matches("^[+-]?(([1-9][0-9]{0,9})|(0))([.][0-9]{1,2})?$");
   }//+++
+  
+  //=== conversion
 
   /**
    * one "true" "yes" "on" and none zero value will be true
@@ -123,22 +128,25 @@ public final class VcNumericUtility {
     return lpRes;
 
   }//+++
-
+  
   /**
-   * [2-&gt;2][3-&gt;4][4-&gt;4][5-&gt;8][6-&gt;8][7-&gt;8][9-&gt;16]...
-   * @param pxSource #
-   * @return fixed value
+   * ##
+   * @param pxLine #"0,0,0,0,0,"
+   * @param pxSplit #","
+   * @return #
    */
-  static public final int ccToPowerOfTwo(int pxSource){
-    int lpMasked=pxSource&0xFFFF;
-    int lpTester=0x00008000;
-    while(lpTester!=1){
-      if( (lpTester&lpMasked)!=0 ){break;}
-      lpTester>>=1;
+  synchronized static public int[] ccParseIntegerArrayString
+    (String pxLine, String pxSplit)
+  { String[] lpTokens=pxLine.split(pxSplit);
+    int[] lpRes=new int[lpTokens.length];
+    for(int i=0,s=lpRes.length;i<s;i++){
+      if(ccIsIntegerString(lpTokens[i])){
+        lpRes[i]=Integer.decode(lpTokens[i]);
+      }else{
+        lpRes[i]=0;
+      }//..?
     }//..~
-    
-    return lpTester==lpMasked?lpTester:lpTester*2;
-    
+    return lpRes;
   }//+++
   
   /**
@@ -174,26 +182,6 @@ public final class VcNumericUtility {
       ((int)(pxSource*100f))
     )/100f;
   }//+++
-  
-  /**
-   * ##
-   * @param pxLine #"0,0,0,0,0,"
-   * @param pxSplit #","
-   * @return #
-   */
-  synchronized static public int[] ccParseIntegerArrayString
-    (String pxLine, String pxSplit)
-  { String[] lpTokens=pxLine.split(pxSplit);
-    int[] lpRes=new int[lpTokens.length];
-    for(int i=0,s=lpRes.length;i<s;i++){
-      if(ccIsIntegerString(lpTokens[i])){
-        lpRes[i]=Integer.decode(lpTokens[i]);
-      }else{
-        lpRes[i]=0;
-      }//..?
-    }//..~
-    return lpRes;
-  }//+++
     
   /**
    * just casting.<br>
@@ -212,5 +200,167 @@ public final class VcNumericUtility {
   public static final int ccInteger(float pxVal){
     return (int)pxVal;
   }//+++
+  
+  //===
+  
+  /**
+   * pack up a big string for print.<br>
+   * @param pxData must have something 
+   * @param pxWrap where the line breaks
+   * @return 
+   */
+  static public final String ccPackupHexStringTable(byte[] pxData, int pxWrap){
+    if(pxData==null){return "";}
+    if(pxData.length==0){return "";}
+    StringBuilder lpBuilder
+      = new StringBuilder("byte array:");
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    int lpWrapCount=0;
+    for(int i=0,s=pxData.length;i<s;i++){
+      lpBuilder.append(" 0x");
+      lpBuilder.append(PApplet.hex(pxData[i],2));
+      lpWrapCount++;
+      if(lpWrapCount==pxWrap){
+        lpBuilder.append(VcConst.C_V_NEWLINE);
+        lpWrapCount=0;
+      }//..?
+    }//..~
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    lpBuilder.append("<<<");
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    return lpBuilder.toString();
+  }//+++
+  
+  
+  /**
+   * pack up a big string for print.<br>
+   * @param pxData must have something 
+   * @param pxWrap where the line breaks
+   * @return 
+   */
+  public static String ccPackupHexStringTable(int[] pxData, int pxWrap){
+    if(pxData==null){return ".[0]";}
+    if(pxData.length<=1){return ".[1]";}
+    StringBuilder lpBuilder = new StringBuilder(".ccToHexTableString()::");
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    int lpWrapCNT=0;
+    int lpWrap=pxWrap<4?4:pxWrap;
+    for(int i:pxData){
+      lpBuilder.append(PApplet.hex(i,8));
+      lpBuilder.append("H ");
+      lpWrapCNT++;
+      if(lpWrapCNT==lpWrap){
+        lpBuilder.append(VcConst.C_V_NEWLINE);
+        lpWrapCNT=0;
+      }//..?
+    }//..~
+    return lpBuilder.toString();
+  }//+++
+  
+  /**
+   * pack up a big string for print.<br>
+   * @param pxData must have something 
+   * @param pxWrap where the line breaks
+   * @return 
+   */
+  public static String ccPackupHexStringTable(ZiMemory pxData, int pxWrap){
+    if(pxData==null){return ".[0]";}
+    StringBuilder lpBuilder = new StringBuilder(".ccToHexTableString()::\n");
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    int lpWrapCNT=0;
+    int lpWrap=pxWrap<4?4:pxWrap;
+    for(int i=0,s=pxData.ccGetSize();i<s;i++){
+      lpBuilder.append(PApplet.hex(pxData.ccReadWord(i),8));
+      lpBuilder.append("H ");
+      lpWrapCNT++;
+      if(lpWrapCNT==lpWrap){
+        lpBuilder.append(VcConst.C_V_NEWLINE);
+        lpWrapCNT=0;
+      }//..?
+    }//..~
+    return lpBuilder.toString();
+  }//+++
+  
+  //=== binary
+
+  /**
+   * [2-&gt;2][3-&gt;4][4-&gt;4][5-&gt;8][6-&gt;8][7-&gt;8][9-&gt;16]...
+   * @param pxSource #
+   * @return fixed value
+   */
+  static public final int ccToPowerOfTwo(int pxSource){
+    int lpMasked=pxSource&0xFFFF;
+    int lpTester=0x00008000;
+    while(lpTester!=1){
+      if( (lpTester&lpMasked)!=0 ){break;}
+      lpTester>>=1;
+    }//..~
+    return lpTester==lpMasked?lpTester:lpTester*2;
+  }//+++
+  
+  /**
+   * @param pxLow #
+   * @param pxHigh #
+   * @return new 16-bit value in integer form
+   */
+  public static final int ccBinaryCombine(byte pxLow, byte pxHigh){
+    int lpRes=0;
+    lpRes|=(((int)pxLow)&0x00FF);
+    lpRes|=(((int)pxHigh)&0x00FF)<<8;
+    return lpRes;
+  }//+++
+  
+  /**
+   * @param pxSource #
+   * @return 24~31th bits
+   */
+  public static final byte ccBinaryTrimHH(int pxSource){
+    return (byte)(
+      (pxSource&0xFF000000)>>24
+    );
+  }//+++
+  
+  /**
+   * @param pxSource #
+   * @return 16~23th bits
+   */
+  public static final byte ccBinaryTrimHL(int pxSource){
+    return (byte)(
+      (pxSource&0x00FF0000)>>16
+    );
+  }//+++
+  
+  /**
+   * @param pxSource #
+   * @return 8~15th bits
+   */
+  public static final byte ccBinaryTrimLH(int pxSource){
+    return (byte)(
+      (pxSource&0x0000FF00)>>8
+    );
+  }//+++
+  
+  /**
+   * @param pxSource #
+   * @return 0~7th bits
+   */
+  public static final byte ccBinaryTrimLL(int pxSource){
+    return (byte)(
+      (pxSource&0x000000FF)
+    );
+  }//+++
+  
+  //[plan]::ccMaskedShiftL(int , int)
+  //[plan]::ccMaskedShiftR(int , int)
+  //[plan]::ccMaskedShiftR(byte , int)
+  //[plan]::ccMaskedShiftR(byte , int)
+  
+  //[plan]::ccBinarySet(int , int , bool)
+  //[plan]::ccBinarySetBit(byte , int , bool)
+  //[plan]::ccBinaryLoad(int , int )
+  //[plan]::ccBinaryLoad(byte , int )
+  
+  //[plan]::ccBinaryReassemble(int[],bool reversed)
+  //[plan]::ccBinaryReassemble(byte[],bool reversed)
   
  }//***eof

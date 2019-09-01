@@ -17,7 +17,7 @@
 
 package kosui.ppplocalui;
 
-import java.util.ArrayList;
+import java.util.List;
 import kosui.ppputil.VcConst;
 
 /**
@@ -177,6 +177,9 @@ public class EcRect extends EcPoint{
     cmW+=pxOffsetW;
     cmH+=pxOffsetH;
   }//+++
+  
+  //[plan]::ccSetEndX()
+  //[plan]::ccSetEndY()
     
   /**
    * an other convenient way to set size
@@ -268,10 +271,14 @@ public class EcRect extends EcPoint{
   //===
   
   /**
+   * <pre>
    * layout elements of passed container 
-   * in a "DUO" motor switch manner, but in this case,
-   * you have make sure the total number match the size. <br>
-   * (say, for 3 column and 2 row, there have to be 6 elements)
+   *   in a "DUO" motor switch manner,
+   *   but in this case,
+   *   you have to make sure the total number match the size.
+   *   (say, for 3 column and 2 row, there have to be 6 elements)
+   * the first one should has a valid location.
+   * </pre>
    * @param pxList the 0th element will be the anchor
    * @param pxGapX count from the start point
    * @param pxGapY count from the start point
@@ -279,7 +286,7 @@ public class EcRect extends EcPoint{
    * @param pxRow count of row
    */
   public static final void ccGridLayout(
-    ArrayList<EcRect> pxList,
+    List<? extends EcRect> pxList,
     int pxGapX, int pxGapY,
     int pxColumn, int pxRow
   ){
@@ -298,15 +305,18 @@ public class EcRect extends EcPoint{
   }//+++
   
   /**
+   * <pre>
    * layout elements of passed container 
-   * in a vertical or horizontal straight line,
+   *   in a vertical or horizontal straight line.
+   * the first one should has a valid location.
+   * </pre>
    * @param pxList the 0th element will be the anchor
    * @param pxGap #
    * @param pxIsVertical #
    * @param pxIsReversed for vert, it s upward. for horizon, it s right ward.
    */
   public static final void ccFlowLayout(
-    ArrayList<EcRect> pxList,
+    List<? extends EcRect> pxList,
     int pxGap, boolean pxIsVertical, boolean pxIsReversed
   ){
     if(pxList==null){return;}
