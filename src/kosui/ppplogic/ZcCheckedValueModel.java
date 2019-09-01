@@ -32,16 +32,19 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @param pxMin the lower bound
    * @param pxRange the distance between lower bound and higher bound
    */
-  public ZcCheckedValueModel(int pxMin, int pxRange)
-    {super(pxMin, pxRange);cmCheckList=new ArrayList();}//+++
+  public ZcCheckedValueModel(int pxMin, int pxRange){
+    super(pxMin, pxRange);
+    cmCheckList=new ArrayList();
+  }//+++
   
   /**
    * 
    * @param pxMin for the checker
    * @param pxRange for the checker
    */
-  public final void ccAddChecker(int pxMin, int pxRange)
-    {cmCheckList.add(new ZcRangedModel(pxMin, pxRange));}//+++
+  public final void ccAddChecker(int pxMin, int pxRange){
+    cmCheckList.add(new ZcRangedModel(pxMin, pxRange));
+  }//+++
   
   /**
    * you have to remember which index stands for what your self

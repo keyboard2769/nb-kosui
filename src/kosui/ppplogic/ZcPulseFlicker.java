@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Key Parker
+ * Copyright (C) 2019 Key Parker from K.I.C
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,8 @@ public class ZcPulseFlicker extends ZcFlicker{
   /**
    * {@inheritDoc }
    */
-  @Override public boolean ccIsUp()
-    {return cmValue==cmJudge;}//+++
+  @Override public boolean ccIsUp(){
+    return cmValue==cmJudge;
+  }//+++
 
 }//***eof

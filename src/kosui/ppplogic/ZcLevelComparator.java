@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Key Parker
+ * Copyright (C) 2019 Key Parker from K.I.C
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ package kosui.ppplogic;
 
 /**
  * ranks a given value in a preset serial of values as level. <br>
- * for some reason we just need eight levels here. <br>
+ * for some reason we just have eight levels here. <br>
  */
 public class ZcLevelComparator{
   
@@ -108,30 +108,33 @@ public class ZcLevelComparator{
     return cmCurrentValue>=cmLevel[C_SIZE-1];
   }//+++
   
-  //===
+  //=== test
   
   /**
    * 
    * @return #
    * @deprecated for test use
    */
-  @Deprecated public final int[] testGetLevelSetting()
-    {return cmLevel;}//+++
+  @Deprecated public final int[] tstGetLevelSetting(){
+    return cmLevel;
+  }//+++
   
   /**
    * 
    * @return #
    * @deprecated for test use
    */
-  @Deprecated public final int testGetValue()
-    {return cmCurrentValue;}//+++
+  @Deprecated public final int tstGetValue(){
+    return cmCurrentValue;
+  }//+++
   
   /**
    * 
    * @return #
    * @deprecated for test use
    */
-  @Deprecated public final int testGetLevel()
-    {return cmCurrentLevel;}
+  @Deprecated public final int tstGetLevel(){
+    return cmCurrentLevel;
+  }//+++
 
 }//***eof

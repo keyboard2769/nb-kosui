@@ -24,14 +24,14 @@ package kosui.ppplogic;
 public interface ZiMemory {
 
   /**
-   * 
+   * even though it is a Integer a 16 bit value will be returned.<br>
    * @param pxAddr word address
    * @return value
    */
   public int ccReadWord(int pxAddr);
 
   /**
-   * 
+   * ##
    * @param pxAddr word address
    * @param pxBit bit numbering
    * @return value
@@ -39,14 +39,14 @@ public interface ZiMemory {
   public boolean ccReadBit(int pxAddr, int pxBit);
 
   /**
-   * 
+   * even though it is a Integer it should get masked to 16 bit.<br>
    * @param pxAddr word address
    * @param pxValue to be set
    */
   public void ccWriteWord(int pxAddr, int pxValue);
 
   /**
-   * 
+   * ##
    * @param pxAddr word address
    * @param pxBit bit numbering
    * @param pxValue to be set

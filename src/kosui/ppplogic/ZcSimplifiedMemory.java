@@ -36,17 +36,33 @@ public class ZcSimplifiedMemory implements ZiMemory {
   }//+++
   
   //=== interface 
-
-  @Override public int ccReadWord(int pxAddr)
-  {return cmWordArray[pxAddr & 0xFF];}//+++
-
-  @Override public boolean ccReadBit(int pxAddr, int pxBit)
-  {return cmBitArray[pxAddr & 0xFF][pxBit & 0xF];}//+++
-
-  @Override public void ccWriteWord(int pxAddr, int pxValue)
-  {cmWordArray[pxAddr & 0xFF] = pxValue;}//+++
-
-  @Override public void ccWriteBit(int pxAddr, int pxBit, boolean pxValue)
-  {cmBitArray[pxAddr & 0xFF][pxBit & 0xF] = pxValue;}//+++
+  
+  /**
+   * {@inheritDoc }
+   */
+  @Override public int ccReadWord(int pxAddr){
+    return cmWordArray[pxAddr & 0xFF];
+  }//+++
+  
+  /**
+   * {@inheritDoc }
+   */
+  @Override public boolean ccReadBit(int pxAddr, int pxBit){
+    return cmBitArray[pxAddr & 0xFF][pxBit & 0xF];
+  }//+++
+  
+  /**
+   * {@inheritDoc }
+   */
+  @Override public void ccWriteWord(int pxAddr, int pxValue){
+    cmWordArray[pxAddr & 0xFF] = pxValue;
+  }//+++
+  
+  /**
+   * {@inheritDoc }
+   */
+  @Override public void ccWriteBit(int pxAddr, int pxBit, boolean pxValue){
+    cmBitArray[pxAddr & 0xFF][pxBit & 0xF] = pxValue;
+  }//+++
 
 }//***eof

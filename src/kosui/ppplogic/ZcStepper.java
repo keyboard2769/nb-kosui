@@ -26,47 +26,44 @@ public class ZcStepper {
   /**
    * stage 
    */
-  protected int cmStage;
+  protected int cmStage=0;
 
   /**
-   * start at step zero
-   */
-  public ZcStepper()
-    {cmStage=0;}//+++
-
-  /**
-   * 
+   * a mimic to "LC S#.#;SC S#.#;".<br>
    * @param pxFrom #
    * @param pxTo #
    * @param pxCondition a lock, or a trigger
    */
-  public final void ccStep(int pxFrom, int pxTo, boolean pxCondition)
-    {if(cmStage==pxFrom && pxCondition){cmStage=pxTo;}}//+++
+  public final void ccStep(int pxFrom, int pxTo, boolean pxCondition){
+    if(cmStage==pxFrom && pxCondition){cmStage=pxTo;}
+  }//+++
 
   /**
-   * 
+   * ##
    * @param pxStage #
    * @param pxCondition #
    */
-  public void ccSetTo(int pxStage, boolean pxCondition)
-    {if (pxCondition) {cmStage = pxStage;}}//+++
+  public void ccSetTo(int pxStage, boolean pxCondition){
+    if (pxCondition) {cmStage = pxStage;}
+  }//+++
 
   /**
-   * 
+   * ##
    * @param pxStage #
    * @return #
    */
-  public boolean ccIsAt(int pxStage)
-    {return cmStage==pxStage;}//+++
+  public boolean ccIsAt(int pxStage){
+    return cmStage==pxStage;
+  }//+++
   
   //===
   
   /**
-   * 
+   * ##
    * @return current stage
    * @deprecated i have to stick on how you should not concern on this. 
    */
-  @Deprecated public final int testGetStage(){
+  @Deprecated public final int tstGetStage(){
     return cmStage;
   }//+++
     

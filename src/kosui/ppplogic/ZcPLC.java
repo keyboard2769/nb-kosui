@@ -24,28 +24,9 @@ import java.util.ArrayList;
  * if you can find, see how FUJI-ELECTRONICS PROGRAMMABLE LOGIC CONTROLLER
  * SERIES SX:NP1PM-256E programs him self.<br>
  */
-public class ZcPLC {
-  
-  /**
-   * communicates between local UI. <br>
-   * supposedly can be replaced for a real word memory. <br>
-   */
-  protected ZiMemory cmLinkedMemory;
+public abstract class ZcPLC implements ZiMemory{
 
-  private final ArrayList<ZiTask> cmTaskList;
-
-  //===
-  
-  /**
-   * 
-   * @param pxLinkedMemory from your sketch which get modified via UI.
-   */
-  public ZcPLC(ZiMemory pxLinkedMemory) {
-    cmLinkedMemory = pxLinkedMemory;
-    cmTaskList = new ArrayList();
-  }//+++
-
-  //===
+  private final ArrayList<ZiTask> cmTaskList = new ArrayList();
   
   /**
    * supposedly task is a piece of code mimics PLC movement 
@@ -53,6 +34,8 @@ public class ZcPLC {
    * @param pxTask #
    */
   public final void ccAddTask(ZiTask pxTask) {
+    if(pxTask==null){return;}
+    if(cmTaskList.contains(pxTask)){return;}
     cmTaskList.add(pxTask);
   }//+++
   
@@ -62,14 +45,10 @@ public class ZcPLC {
    * supposedly should be called from draw()
    */
   public final void ccUpdate() {
-    if (cmLinkedMemory == null) {
-      return;
-    }
     for (ZiTask it : cmTaskList) {
       it.ccScan();
       it.ccSimulate();
-    }
+    }//..?
   }//+++
-
 
 }//***eof

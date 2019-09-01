@@ -35,25 +35,28 @@ public class ZcRangedModel {
    * @param pxMin the lower bound
    * @param pxRange the distance between lower bound and higher bound
    */
-  public ZcRangedModel(int pxMin, int pxRange)
-    {ccSetRange(pxMin, pxRange);}//+++
+  public ZcRangedModel(int pxMin, int pxRange){
+    ccSetRange(pxMin, pxRange);
+  }//+++
   
   //==
   
   /**
-   * only changes the upper bound of the range
+   * only changes the upper bound of the range.<br>
    * @param pxRange will be masked into 0-65535
    */
-  public final void ccSetRange(int pxRange)
-    {cmMax=cmMin+pxRange&0xFFFF;}//+++
+  public final void ccSetRange(int pxRange){
+    cmMax=cmMin+pxRange&0xFFFF;
+  }//+++
   
   /**
    * ##
    * @param pxMin the lower bound
    * @param pxRange the distance between lower bound and higher bound
    */
-  public final void ccSetRange(int pxMin, int pxRange)
-    {cmMin=pxMin;cmMax=pxMin+pxRange&0xFFFF;}//+++
+  public final void ccSetRange(int pxMin, int pxRange){
+    cmMin=pxMin;cmMax=pxMin+pxRange&0xFFFF;
+  }//+++
   
   //==
   
@@ -86,22 +89,25 @@ public class ZcRangedModel {
    * @param pxSource #
    * @return [min,max)
    */
-  public final boolean ccContains(int pxSource)
-    {return (pxSource>=cmMin)&&(pxSource<cmMax);}//+++
+  public final boolean ccContains(int pxSource){
+    return (pxSource>=cmMin)&&(pxSource<cmMax);
+  }//+++
   
   /**
    * 
    * @return #
    */
-  public final int ccGetMin()
-    {return cmMin;}//+++
+  public final int ccGetMin(){
+    return cmMin;
+  }//+++
   
   /**
    * 
    * @return #
    */
-  public final int ccGetMax()
-    {return cmMax;}//+++
+  public final int ccGetMax(){
+    return cmMax;
+  }//+++
   
   /**
    * i used call this span.
@@ -110,7 +116,8 @@ public class ZcRangedModel {
    * and we call the minimum value "offset".
    * @return #
    */
-  public final int ccGetRange()
-    {return cmMax-cmMin;}//+++
+  public final int ccGetRange(){
+    return cmMax-cmMin;
+  }//+++
   
 }//***eof

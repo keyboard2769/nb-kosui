@@ -29,12 +29,13 @@ public class ZcRangedValueModel extends ZcRangedModel{
   protected int cmValue;
   
   /**
-   * value will be set to minimum
+   * value will be set to minimum.<br>
    * @param pxMin the lower bound
    * @param pxRange the distance between lower bound and higher bound
    */
-  public ZcRangedValueModel(int pxMin, int pxRange)
-    {super(pxMin, pxRange);cmValue=pxMin;}//++!
+  public ZcRangedValueModel(int pxMin, int pxRange){
+    super(pxMin, pxRange);cmValue=pxMin;
+  }//++!
   
   //===
     
@@ -42,12 +43,15 @@ public class ZcRangedValueModel extends ZcRangedModel{
    * ##
    * @param pxValue #
    */
-  public final void ccSetValue(int pxValue)
-    {cmValue=ccLimit(pxValue);}//+++
+  public final void ccSetValue(int pxValue){
+    cmValue=ccLimit(pxValue);
+  }//+++
   
   /**
+   * <pre>
    * pretend min is 50, max is 100, and say, 0.5f is passed,
-   * than value is gonna be like 75.
+   *   than value is gonna be like 75.
+   * </pre>
    * @param pxZeroToOne does NOT check, don t get cross.
    */
   public final void ccSetValue(float pxZeroToOne){
@@ -55,18 +59,20 @@ public class ZcRangedValueModel extends ZcRangedModel{
   }//+++
   
   /**
-   * stuck its self at range bounds via ccLimit()
+   * stuck its self at range bounds via ccLimit()<br>
    * @param pxOffset #
    */
-  public final void ccShift(int pxOffset)
-    {cmValue=ccLimit(cmValue+pxOffset);}//+++
+  public final void ccShift(int pxOffset){
+    cmValue=ccLimit(cmValue+pxOffset);
+  }//+++
   
   /**
-   * starts over again after across bounds via ccWarp()
+   * starts over again after across bounds via ccWarp()<br>
    * @param pxOffset #
    */
-  public final void ccRoll(int pxOffset)
-    {cmValue=ccWarp(cmValue+pxOffset);}//+++
+  public final void ccRoll(int pxOffset){
+    cmValue=ccWarp(cmValue+pxOffset);
+  }//+++
   
   //===
   
@@ -74,7 +80,8 @@ public class ZcRangedValueModel extends ZcRangedModel{
    * 
    * @return #
    */
-  public final int ccGetValue()
-    {return cmValue;}//+++
+  public final int ccGetValue(){
+    return cmValue;
+  }//+++
     
 }//***eof

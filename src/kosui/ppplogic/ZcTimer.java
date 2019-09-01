@@ -29,8 +29,9 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
   protected int cmJudge;
   
   /**
-   * update count basically. like for 16FPS, 16 means one second.
-   * @param pxDiv will be trimmed to [3-65535]
+   * update count basically. like for 16FPS, 16 means one second.<br>
+   * for security reason it will get masked, even value may change.<br>
+   * @param pxDiv will be masked to [3-65535]
    */
   public ZcTimer(int pxDiv){
     super(0, (pxDiv|0x03)&0xFFFF);
@@ -53,7 +54,8 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
    * @return #
    * @deprecated i still believe client code should not concern on this
    */
-  @Deprecated public final int testGetCurrentCount()
-    {return cmValue;}//+++
+  @Deprecated public final int tstGetCurrentCount(){
+    return cmValue;
+  }//+++
   
 }//***eof

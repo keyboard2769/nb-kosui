@@ -23,6 +23,7 @@ package kosui.ppplogic;
  */
 public class ZcFlicker extends ZcTimer{
   
+  private boolean cmIsCounting;
   
   /**
    * you can consider this thing as a square wave generator
@@ -54,15 +55,24 @@ public class ZcFlicker extends ZcTimer{
    * {@inheritDoc }
    */
   @Override public void ccAct(boolean pxAct){
+    cmIsCounting=pxAct;
     if(pxAct){ccRoll(1);}
     else{ccSetValue(0);}
+  }//+++
+
+  /**
+   * @return a flag that NOT based on current value
+   */
+  @Override public boolean ccIsCounting(){
+    return cmIsCounting;
   }//+++
   
   /**
    * {@inheritDoc }
    */
-  @Override public boolean ccIsUp()
-    {return cmValue>cmJudge;}//+++
+  @Override public boolean ccIsUp(){
+    return cmValue>cmJudge;
+  }//+++
   
   /**
    * the duty rate of flicker will be 50% by default. <br>

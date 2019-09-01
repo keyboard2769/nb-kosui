@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 keypad
+ * Copyright (C) 2018 Key Parker from K.I.C
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,15 +55,17 @@ public class ZcChainStepper extends ZcStepper{
    * 
    * @return if any bits is not off. 
    */
-  public final boolean ccIsStepping()
-    {return cmStage>0;}//+++
+  public final boolean ccIsStepping(){
+    return cmStage>0;
+  }//+++
 
   /**
    * 
    * @param pxStage #
    * @return #
    */
-  @Override public boolean ccIsAt(int pxStage)
-    {return cmStage>=pxStage;}//+++
+  @Override public boolean ccIsAt(int pxStage){
+    return cmStage>=pxStage;
+  }//+++
   
 }//***eof

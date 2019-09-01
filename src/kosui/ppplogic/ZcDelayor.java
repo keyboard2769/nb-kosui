@@ -66,6 +66,13 @@ public class ZcDelayor extends ZcTimer{
   }//+++
 
   /**
+   * {@inheritDoc }
+   */
+  @Override public boolean ccIsCounting(){
+    return cmValue>0;
+  }//+++
+  
+  /**
    * the delay value will be 50% of all by default. <br>
    * for implement reason you have to use other method if you need to change.
    * @param pxDiv #

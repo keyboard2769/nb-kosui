@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 keypad
+ * Copyright (C) 2019 Key Parker from K.I.C.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,12 @@
 package kosui.ppplogic;
 
 /**
+ * <pre>
  * sometime the result just can not match out side standards
- *   via offset-span scaling. <br>
+ *   via offset-span scaling.
  * this model applies an additional adjust to the result
- *   by multiplying a "bias" and adding a "offset". <br>
+ *   by multiplying a "bias" and adding a "offset".
+ * </pre>
  */
 public class ZcRevisedScaledModel extends ZcScaledModel{
   

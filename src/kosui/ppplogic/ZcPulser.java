@@ -31,7 +31,7 @@ public class ZcPulser {
   
   /**
    * supposedly should be called from draw(). <br>
-   * like : pulser.ccPulse(keyPressed %AND% key=='a');
+   * like : pulser.ccPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
    * @return both head(stand up) and tail(sit down) side
    */
@@ -39,26 +39,28 @@ public class ZcPulser {
     if(cmBuff!=pxAct){
       cmBuff=pxAct;
       return true;
-    }
+    }//..?
     return false;
   }//+++
 
   /**
    * supposedly should be called from draw(). <br>
-   * like : pulser.ccUpPulse(keyPressed %AND% key=='a');
+   * like : pulser.ccUpPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
    * @return head side
    */
-  public final boolean ccUpPulse(boolean pxAct)
-    {return ccPulse(pxAct)&&(cmBuff);}//+++
+  public final boolean ccUpPulse(boolean pxAct){
+    return ccPulse(pxAct)&&(cmBuff);
+  }//+++
   
   /**
    * supposedly should be called from draw(). <br>
-   * like : pulser.ccDownPulse(keyPressed %AND% key=='a');
+   * like : pulser.ccDownPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
    * @return tail side
    */
-  public final boolean ccDownPulse(boolean pxAct)
-    {return ccPulse(pxAct)&&(!cmBuff);}//+++
+  public final boolean ccDownPulse(boolean pxAct){
+    return ccPulse(pxAct)&&(!cmBuff);
+  }//+++
    
 }//***eof

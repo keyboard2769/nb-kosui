@@ -50,6 +50,13 @@ public class ZcImpulseTimer extends ZcTimer{
   @Override public boolean ccIsUp(){
     return cmValue > 0;
   }//+++
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override public boolean ccIsCounting(){
+    return cmValue > 0;
+  }//+++
   
   /**
    * {@inheritDoc}

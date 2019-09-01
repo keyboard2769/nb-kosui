@@ -37,15 +37,16 @@ public class ZcScaledModel {
   //===
   
   /**
-   * 
+   * ##
    * @param pxInputOffset #
    * @param pxInputSpan #
    * @param pxOutputOffset #
    * @param pxOutputSpan #
    */
-  public ZcScaledModel
-    (int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan)
-  { cmInputValue=pxInputOffset;
+  public ZcScaledModel(
+    int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
+  ){
+    cmInputValue=pxInputOffset;
     ccSetupScale(pxInputOffset, pxInputSpan, pxOutputOffset, pxOutputSpan);
     cmIntegerOutput=0;
     cmFloatOutput=0f;
@@ -54,7 +55,7 @@ public class ZcScaledModel {
   //==
     
   /**
-   * calculates at the same time 
+   * calculates at the same time.<br>
    * @param pxInputValue #
    */
   public void ccSetInputValue(int pxInputValue){
@@ -64,47 +65,63 @@ public class ZcScaledModel {
   }//+++
 
   /**
+   * <pre>
    * since check function will be called separately, 
    *   using ccSetupScale() is recommended.
+   * </pre>
    * @param pxInputOffset the inputOffset to set
    */
-  public void ccSetInputOffset(int pxInputOffset)
-    {cmInputOffset = pxInputOffset;ssForceValidity();}//+++
+  public void ccSetInputOffset(int pxInputOffset){
+    cmInputOffset = pxInputOffset;
+    ssForceValidity();
+  }//+++
 
   /**
+   * <pre>
    * since check function will be called separately, 
    *   using ccSetupScale() is recommended.
+   * </pre>
    * @param pxInputSpan the inputSpan to set
    */
-  public void ccSetInputSpan(int pxInputSpan)
-    {cmInputSpan = pxInputSpan;ssForceValidity();}//+++
+  public void ccSetInputSpan(int pxInputSpan){
+    cmInputSpan = pxInputSpan;
+    ssForceValidity();
+  }//+++
 
   /**
+   * <pre>
    * since check function will be called separately, 
    *   using ccSetupScale() is recommended.
+   * </pre>
    * @param pxOutputOffset the outputOffset to set
    */
-  public void ccSetOutputOffset(int pxOutputOffset)
-    {cmOutputOffset = pxOutputOffset;ssForceValidity();}//+++
+  public void ccSetOutputOffset(int pxOutputOffset){
+    cmOutputOffset = pxOutputOffset;
+    ssForceValidity();
+  }//+++
 
   /**
+   * <pre>
    * since check function will be called separately, 
    *   using ccSetupScale() is recommended.
+   * </pre>
    * @param outputSpan the outputSpan to set
    */
-  public void ccSetOutputSpan(int outputSpan)
-    {cmOutputSpan = outputSpan;ssForceValidity();}//+++
+  public void ccSetOutputSpan(int outputSpan){
+    cmOutputSpan = outputSpan;ssForceValidity();
+  }//+++
     
   /**
-   * 
+   * ##
    * @param pxInputOffset #
    * @param pxInputSpan #
    * @param pxOutputOffset #
    * @param pxOutputSpan #
    */
-  public final void ccSetupScale
-    (int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan)
-  { cmInputOffset=pxInputOffset;cmInputSpan=pxInputSpan;
+  public final void ccSetupScale(
+    int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
+  ){
+    cmInputOffset=pxInputOffset;cmInputSpan=pxInputSpan;
     cmOutputOffset=pxOutputOffset;cmOutputSpan=pxOutputSpan;
     ssForceValidity();
   }//+++
@@ -118,23 +135,23 @@ public class ZcScaledModel {
     }else{
       if(cmInputOffset>=cmInputSpan){
         cmInputSpan=cmInputOffset+1;
-      }
-    }
+      }//..?
+    }//..?
     
     if(cmOutputOffset<0 || cmOutputSpan<0){
       cmOutputOffset=0;cmOutputSpan=1;
     }else{
       if(cmOutputOffset>=cmOutputSpan){
         cmOutputSpan=cmOutputOffset+1;
-      }
-    }
+      }//..?
+    }//..?
     
   }//+++
   
   //===
   
   /**
-   * via PApplet::map before casting
+   * via PApplet::map before casting.<br>
    * @param pxSource supposedly a output/real value
    * @return pxSource casted instead of PApplet::ceil
    */
@@ -147,7 +164,7 @@ public class ZcScaledModel {
   }//+++
   
   /**
-   * via PApplet::map before casting
+   * via PApplet::map before casting.<br>
    * @param pxSource supposedly a output/real value
    * @return pxSource casted instead of PApplet::ceil
    */
@@ -158,7 +175,7 @@ public class ZcScaledModel {
   }//+++
   
   /**
-   * via PApplet::map
+   * via PApplet::map.<br>
    * @param pxSource #
    * @return #
    */
@@ -169,7 +186,7 @@ public class ZcScaledModel {
   }//+++
   
   /**
-   * via PApplet::ceil after ::map
+   * via PApplet::ceil after ::map.<br>
    * @param pxSource #
    * @return #
    */
@@ -183,44 +200,51 @@ public class ZcScaledModel {
    * 
    * @return #
    */
-  public final float ccGetScaledFloatValue()
-    {return cmFloatOutput;}//+++
+  public final float ccGetScaledFloatValue(){
+    return cmFloatOutput;
+  }//+++
     
   /**
    * 
    * @return #
    */
-  public final int ccGetScaledIntegerValue()
-    {return cmIntegerOutput;}//+++
+  public final int ccGetScaledIntegerValue(){
+    return cmIntegerOutput;
+  }//+++
   
   /**
    * @return #
    */
-  public int ccGetInputValue()
-    {return cmInputValue;}//+++
+  public int ccGetInputValue(){
+    return cmInputValue;
+  }//+++
 
   /**
    * @return #
    */
-  public int ccGetInputOffset()
-    {return cmInputOffset;}//+++
+  public int ccGetInputOffset(){
+    return cmInputOffset;
+  }//+++
 
   /**
    * @return #
    */
-  public int ccGetInputSpan()
-    {return cmInputSpan;}//+++
+  public int ccGetInputSpan(){
+    return cmInputSpan;
+  }//+++
 
   /**
    * @return #
    */
-  public int ccGetOutputOffset()
-    {return cmOutputOffset;}//+++
+  public int ccGetOutputOffset(){
+    return cmOutputOffset;
+  }//+++
 
   /**
    * @return #
    */
-  public int ccGetOutputSpan()
-    {return cmOutputSpan;}//+++
+  public int ccGetOutputSpan(){
+    return cmOutputSpan;
+  }//+++
   
 }//***eof

@@ -24,19 +24,25 @@ package kosui.ppplogic;
 public interface ZiTimer{
   
   /**
-   * supposedly and ultimately should be called from draw()
+   * supposedly and ultimately should be called from draw().<br>
    * @param pxAct when you want timer to count
    */
   public void ccAct(boolean pxAct);
 
   /**
-   * supposedly and ultimately should be called from draw()
+   * supposedly and ultimately should be called from draw().<br>
    * @return timer-up!
    */
   public boolean ccIsUp();
   
   /**
-   * may vary on purpose
+   * supposedly and ultimately should be called from draw().<br>
+   * @return should based on the current value but not the action condition.
+   */
+  public boolean ccIsCounting();
+  
+  /**
+   * may vary on purpose.<br>
    * @param pxDiv update count basically. like for 16FPS, 16 means one second.
    */
   public void ccSetTime(int pxDiv);

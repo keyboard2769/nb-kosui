@@ -58,6 +58,13 @@ public class ZcOnDelayTimer extends ZcTimer{
   /**
    * {@inheritDoc }
    */
+  @Override public boolean ccIsCounting(){
+    return cmValue>0;
+  }//+++
+  
+  /**
+   * {@inheritDoc }
+   */
   @Override public void ccSetTime(int pxDiv){
     ccSetRange(ccLimitTimeValue(pxDiv));
     ccInit();
