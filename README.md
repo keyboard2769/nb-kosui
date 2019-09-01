@@ -23,6 +23,7 @@ i figure out how to use release page.
 - [ ] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
 - [ ] $ let's define more awt color!!
 - [ ] $ make a class and demo for trend chart.
+- [ ] $ fill up those array packup methods.
 
 #### current
 

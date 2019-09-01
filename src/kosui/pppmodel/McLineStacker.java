@@ -34,9 +34,11 @@ public class McLineStacker {
   //===
   
   /**
+   * <pre>
    * if the texts stacked reached the size passed,
-   * it will be trimmed based on line number and the divisor passed.
-   * the default size is 512, with divisor as 2;
+   *   it will be trimmed based on line number and the divisor passed.
+   * the default size is 512, with divisor as 2.
+   * </pre>
    * @param pxSize will be masked to 31-65535, 1023 recommended
    * @param pxDivisor don't pass zero, 4 recommended
    */
@@ -69,10 +71,10 @@ public class McLineStacker {
   public final void ccStack(String pxLine){
     if(pxLine==null){return;}
     cmStacker=cmStacker+VcConst.C_V_NEWLINE+pxLine;
-    if(cmStacker.length()>cmTrimSize){ccTrimStack();}
+    if(cmStacker.length()>cmTrimSize){ssTrimStack();}
   }//+++
   
-  private void ccTrimStack(){
+  private void ssTrimStack(){
     StringList lpList=new StringList(cmStacker.split(VcConst.C_V_NEWLINE));
     int lpLength=lpList.size();
     if(lpLength<=cmTrimDivisor){
@@ -86,25 +88,31 @@ public class McLineStacker {
   /**
    * clear all lines.
    */
-  public final void ccClear()
-    {cmStacker="";}//+++
+  public final void ccClear(){
+    cmStacker="";
+  }//+++
   
   /**
    * @param pxDefault all lines will be replaced to this
    */
-  public final void ccClear(String pxDefault)
-    {cmStacker=pxDefault;}//+++
+  public final void ccClear(String pxDefault){
+    cmStacker=pxDefault;
+  }//+++
   
   //===
   
   /**
    * @return length of stacked text
    */
-  public final int ccGetSize(){return cmStacker.length();}//+++
+  public final int ccGetSize(){
+    return cmStacker.length();
+  }//+++
   
   /**
    * @return #
    */
-  public final String ccGetStacked(){return cmStacker;}//+++
+  public final String ccGetStacked(){
+    return cmStacker;
+  }//+++
   
 }//***eof

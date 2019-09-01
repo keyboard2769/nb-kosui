@@ -21,7 +21,6 @@ import processing.data.IntList;
 import processing.data.StringList;
 
 import java.util.HashMap;
-import kosui.ppputil.VcConst;
 
 import static kosui.ppputil.VcConst.ccIsValidString;
 import static kosui.ppputil.VcConst.ccLogln;
@@ -77,8 +76,9 @@ public class McCommand{
    * 
    * @param pxInstruction as "command param1 param2 param3 ..."
    */
-  public McCommand(String pxInstruction)
-    {ccSetCommand(pxInstruction);}//+++
+  public McCommand(String pxInstruction){
+    ccSetCommand(pxInstruction);
+  }//+++
   
   /**
    * 
@@ -123,15 +123,16 @@ public class McCommand{
   //=== modifier
   
   /**
-   * parsed integer value is based on these definitions.
+   * parsed integer value is based on these definitions.<br>
    * @param pxCommand #
    * @param pxID #
    */
-  static public final void ccDefineCommand(String pxCommand, int pxID)
-    {O_CMD_MAP.put(pxCommand, pxID);}//+++
+  static public final void ccDefineCommand(String pxCommand, int pxID){
+    O_CMD_MAP.put(pxCommand, pxID);
+  }//+++
   
   /**
-   * note this does NOT automatically parse the command.
+   * note this does NOT automatically parse the command.<br>
    * @param pxInstruction as "command param1 param2 param3 ..."
    */
   public final void ccSetCommand(String pxInstruction){
@@ -154,21 +155,23 @@ public class McCommand{
     if(ccGetStringParameterCount()>=0){println(cmStringParameter);}
   }//+++
   
-  //=== teller
+  //=== 
   
   /**
    * @return zero means nothing
    */
-  public final int ccGetCommandID()
-    {return cmCommandID;}//+++
+  public final int ccGetCommandID(){
+    return cmCommandID;
+  }//+++
   
   /**
    * using getParam() to get a single value but not this to get the 
-   * whole array is recommended.
+   * whole array is recommended.<br>
    * @return can be null
    */
-  public final int[] ccGetIntegerParameter()
-    {return cmIntegerParameter;}//+++
+  public final int[] ccGetIntegerParameter(){
+    return cmIntegerParameter;
+  }//+++
   
   /**
    * @return invalid constant if parameters is not initiated.
@@ -179,7 +182,7 @@ public class McCommand{
   }//+++
   
   /**
-   * parsed parameter 
+   * parsed parameter.<br>
    * @param pxIndex #
    * @return -1 if something went wrong
    */
@@ -193,8 +196,9 @@ public class McCommand{
   /**
    * @return can be null
    */
-  public final String[] ccGetStringParameter()
-    {return cmStringParameter;}//+++
+  public final String[] ccGetStringParameter(){
+    return cmStringParameter;
+  }//+++
   
   /**
    * @return invalid constant if parameters is not initiated.

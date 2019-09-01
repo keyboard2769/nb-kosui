@@ -17,8 +17,8 @@
 
 package kosui.pppmodel;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+import javax.swing.event.TableModelListener;
 
 /**
  * can serve as a dummy model to a JTable. <br>
@@ -27,9 +27,9 @@ import javax.swing.table.TableModel;
 public class McTableAdapter implements TableModel {
 
   /**
-   * dummy
+   * dummy content
    */
-  static protected final String C_DEFAULT = "<nn/>";
+  static protected final String C_DEFAULT = "<?>";
 
   /**
    * changes when add or remove table listener is called
@@ -39,84 +39,76 @@ public class McTableAdapter implements TableModel {
   //===
   
   /**
-   * 
    * @return #
    */
-  public int ccGetListenerCounter()
-  {return cmListenerCounter;}
+  public int ccGetListenerCounter(){
+    return cmListenerCounter;
+  }//+++
   
   //=== 
-
-  /**
-   * 
-   * @return #
-   */
-  @Override public int getRowCount()
-  {return 2;}//+++
-
-  /**
-   * 
-   * @return #
-   */
-  @Override public int getColumnCount()
-  {return 2;}//+++
   
   /**
-   * 
-   * @param pxColumnIndex #
-   * @return #
+   * {@inheritDoc }
    */
-  @Override public String getColumnName(int pxColumnIndex)
-  {return C_DEFAULT;}//+++
+  @Override public int getRowCount(){
+    return 2;
+  }//+++
 
   /**
-   * 
-   * @param pxColumnIndex #
-   * @return #
+   * {@inheritDoc }
    */
-  @Override public Class<?> getColumnClass(int pxColumnIndex)
-  {return C_DEFAULT.getClass();}//+++
+  @Override public int getColumnCount(){
+    return 2;
+  }//+++
+  
+  /**
+   * {@inheritDoc }
+   */
+  @Override public String getColumnName(int pxColumnIndex){
+    return C_DEFAULT;
+  }//+++
 
   /**
-   * 
-   * @param pxRowIndex #
-   * @param pxColumnIndex #
-   * @return #
+   * {@inheritDoc }
    */
-  @Override public boolean isCellEditable(int pxRowIndex, int pxColumnIndex)
-  {return false;}//+++
+  @Override public Class<?> getColumnClass(int pxColumnIndex){
+    return C_DEFAULT.getClass();
+  }//+++
 
   /**
-   * 
-   * @param pxRowIndex #
-   * @param pxColumnIndex #
-   * @return #
+   * {@inheritDoc }
    */
-  @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex)
-  {return C_DEFAULT;}//+++
+  @Override public boolean isCellEditable(int pxRowIndex, int pxColumnIndex){
+    return false;
+  }//+++
 
   /**
-   * 
-   * @param pxaValue #
-   * @param pxRowIndex #
-   * @param pxColumnIndex #
+   * {@inheritDoc }
    */
-  @Override public void setValueAt
-    (Object pxaValue, int pxRowIndex, int pxColumnIndex)
-  {}//+++
+  @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex){
+    return C_DEFAULT;
+  }//+++
 
   /**
-   * counts up counter
-   * @param pxL will be ignored
+   * {@inheritDoc }
    */
-  @Override public void addTableModelListener(TableModelListener pxL)
-  {cmListenerCounter++;}//+++
+  @Override public
+  void setValueAt(Object pxaValue, int pxRowIndex, int pxColumnIndex){}//+++
 
   /**
-   * counts up counter
-   * @param pxL will be ignored
+   * {@inheritDoc }
    */
-  @Override public void removeTableModelListener(TableModelListener pxL)
-  {cmListenerCounter--;}//+++
+  @Override public
+  void addTableModelListener(TableModelListener pxListener){
+    cmListenerCounter++;
+  }//+++
+
+  /**
+   * {@inheritDoc }
+   */
+  @Override public
+  void removeTableModelListener(TableModelListener pxListener){
+    cmListenerCounter--;
+  }//+++
 
 }//***eof
