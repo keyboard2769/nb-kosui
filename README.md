@@ -19,7 +19,8 @@ i know it is a nonsense name, but anyway.
 
 #### logic
 - basically a bunch of model class mimics
-  [programmable logic controller](https://en.wikipedia.org/wiki/Programmable_logic_controller)  instructions and devices like Timer, Stpper, Flicker, Pulse-Generator, etc. 
+  [programmable logic controller](https://en.wikipedia.org/wiki/Programmable_logic_controller) 
+  instructions and devices like Timer, Stpper, Flicker, Pulse-Generator, etc. 
 - all of these devices is suppossed to run in a scan loop.
   so, thus, in processing, it is THE `draw()`. 
 
@@ -67,7 +68,6 @@ i know it is a nonsense name, but anyway.
 
 #### plan 
 
-- [ ] $ merge EcTip into EcTipMamager, make it a real manager.
 - [ ] $ rewrite all swing dialog method comment
 - [ ] $ let's define more awt color!!
 - [ ] $ make a class and demo for trend chart.
@@ -76,12 +76,13 @@ i know it is a nonsense name, but anyway.
 
 #### onfire
 
-- [ ] $ refactor EcSlider to makle EcGauge intentionally draggable
+- [ ] $ merge EcTip into EcTipMamager, make it a real manager.
 
-#### done
+#### currently
 
 - [x] $ built a local ui example using given type of ui compnent.
 - [x] $ merged binary method from wm monitor to numeric utilities
 - [x] $ merged ccGetFileByFileChooser from xml specifier to swing dialog
+- [x] $ refactor EcSlider to makle EcGauge intentionally draggable
 
 <hr><!--eof-->

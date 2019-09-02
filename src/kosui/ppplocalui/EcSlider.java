@@ -36,6 +36,7 @@ public class EcSlider extends EcGauge{
    */
   public EcSlider(String pxKey){
     super(pxKey);
+    ccSetIsEnabled(true);
   }//..!
   
   /**
@@ -45,34 +46,29 @@ public class EcSlider extends EcGauge{
    */
   public EcSlider(String pxKey, int pxID){
     super(pxKey, pxID);
+    ccSetIsEnabled(true);
   }//..!
   
   //===
   
   @Override public void ccUpdate(){
     
+    //-- pre
     int lpPosition=ccTellScale(cmIsVertical?cmH:cmW);
+    ccApplyClickedValue();
     
+    //-- draw
     if(cmHasStroke){pbOwner.stroke(cmStrokeColor);}
-    
     pbOwner.fill(cmBackColor);
-      
     if(cmIsVertical){
       pbOwner.rect(ccCenterX()-2, cmY, 4, cmH);
       ccActFill();
-      pbOwner.rect(cmX,cmY+lpPosition-4,cmW,8);
-      if(ccIsMousePressed()){
-        cmContentValue=(pbOwner.mouseY-cmY)*255/cmH;
-      }//..?
+      pbOwner.rect(cmX,ccEndY()-lpPosition-8,cmW,8);
     }else{
       pbOwner.rect(cmX, ccCenterY()-2, cmW, 4);
       ccActFill();
       pbOwner.rect(cmX+lpPosition-4, cmY, 8, cmH);
-      if(ccIsMousePressed()){
-        cmContentValue=(pbOwner.mouseX-cmX)*255/cmW;
-      }//..?
     }//..?
-    
     if(cmHasStroke){pbOwner.noStroke();}
     
   }//+++

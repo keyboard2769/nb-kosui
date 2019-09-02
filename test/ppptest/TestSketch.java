@@ -20,84 +20,101 @@ import processing.core.*;
 
 public class TestSketch extends PApplet {
   
-  static volatile int pbRoller=0;
+  static private volatile int cmRoller=0;
+  
+  //=== action
+  
+  private final EiTriggerable cmQuitting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      println("kosui.ppptest.TestSketch.cmQuitting::call PApplet.exit");
+      exit();
+    }//+++
+  };
   
   //=== overridden
   
+  private final EcGauge cmTesterA = new EcGauge("t", 0xAA01);
+  private final EcGauge cmTesterB = new EcGauge("t", 0xAA02);
+  private final EcSlider cmTesterC = new EcSlider("t", 0xAA03);
+  private final EcSlider cmTesterD = new EcSlider("t", 0xAA04);
   
   @Override public void setup() {
     
+    //-- init
     size(320, 240);
-    noSmooth();
     EcConst.ccSetupSketch(this);
+    VcTagger.ccGetInstance().ccInit(this, 7);
+    VcLocalCoordinator.ccGetInstance().ccInit(this);
     
+    //-- laytout
+    cmTesterA.ccSetLocation(50, 50);
+    cmTesterA.ccSetIsVertical(true);
+    cmTesterA.ccSetSize(80,80);
+    cmTesterA.ccSetIsEnabled(true);
+    
+    
+    cmTesterB.ccSetLocation(cmTesterA,8, 0);
+    cmTesterB.ccSetIsVertical(false);
+    cmTesterB.ccSetSize(80,80);
+    cmTesterB.ccSetIsEnabled(true);
+    
+    
+    cmTesterC.ccSetLocation(cmTesterA,0,8);
+    cmTesterC.ccSetIsVertical(true);
+    cmTesterC.ccSetSize(80,80);
+    cmTesterC.ccSetIsEnabled(true);
+    
+    
+    cmTesterD.ccSetLocation(cmTesterC,8,0);
+    cmTesterD.ccSetIsVertical(false);
+    cmTesterD.ccSetSize(80,80);
+    cmTesterD.ccSetIsEnabled(true);
+    
+    
+    
+    VcLocalCoordinator.ccAddElement(cmTesterA);
+    VcLocalCoordinator.ccAddElement(cmTesterB);
+    VcLocalCoordinator.ccAddElement(cmTesterC);
+    VcLocalCoordinator.ccAddElement(cmTesterD);
+    
+    //-- bind
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
+    
+    //-- post
+    VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
     
   }//+++
   
   @Override public void draw() { 
     
+    //-- pre
     background(0);
-    pbRoller++;pbRoller&=0x0F;
+    cmRoller++;cmRoller&=0x0F;
     
-    //-- test bit
-    int lpTestValue=ceil(map(mouseX,0,width,0,500));
-    float lpTestRatio=map((float)mouseX,0.0f,(float)width,0.0f,1.0f);
-    boolean lpTestBit=(pbRoller<7);
-    boolean lpFullSecondPLS=pbRoller==7;
+    //-- scan
     
-    //-- local loop
-    //   DONT DELET THE IF PART!!
-    if(lpTestBit){
-      
-    }else{
-      
-    }
-    
-    //-- AND DONT DELETE THIS
-    
+    //-- update
+    VcLocalCoordinator.ccUpdate();
     
     //-- finishing
-    VcTagger.ccTag("roller",pbRoller);
+    VcTagger.ccTag("roller",cmRoller);
+    VcTagger.ccTag("a",cmTesterA.ccGetContentValue());
+    VcTagger.ccTag("b",cmTesterB.ccGetContentValue());
+    VcTagger.ccTag("c",cmTesterC.ccGetContentValue());
+    VcTagger.ccTag("d",cmTesterD.ccGetContentValue());
     VcTagger.ccStabilize();
     
   }//+++
   
   @Override public void keyPressed() {
-    if(VcResponsiveBar.ccKeyTyped(key, keyCode)){return;}
-    
-    switch(key){
-      
-      case 'q':fsPover();break;
-      default:break;
-    }
+    VcLocalCoordinator.ccKeyPressed(keyCode);
   }//+++
-  
-  //=== supportor
-  
-  void fsPover(){
-    println("-- TestSketch::exit done.");
-    exit();
-  }//+++
-  
-  //=== utility
-    
-  boolean fnIsPressed(char pxKey){
-    return keyPressed && (key==pxKey);
-  }//+++
-  
-  //=== inner
-  
-  //=== tests
   
   //=== entry
   
   static public void main(String[] passedArgs) {
     PApplet.main(TestSketch.class.getCanonicalName());
-    /* [ALT]::
-      String[] appletArgs = new String[] { "TestSketch" };
-      if (passedArgs != null) {PApplet.main(concat(appletArgs, passedArgs));}
-      else {PApplet.main(appletArgs);}
-    */
   }//+++
   
 }//***eof

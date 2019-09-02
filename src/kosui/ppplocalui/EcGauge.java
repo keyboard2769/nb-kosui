@@ -60,6 +60,7 @@ public class EcGauge extends EcElement {
    */
   public EcGauge(String pxKey, int pxID){
     super(pxKey, pxID);
+    ccSetIsEnabled(false);
   }//..!
   
   /**
@@ -70,6 +71,7 @@ public class EcGauge extends EcElement {
   public EcGauge(String pxKey){
     super();
     ccSetupKey(pxKey);
+    ccSetIsEnabled(false);
   }//..!
   
   //===
@@ -131,19 +133,18 @@ public class EcGauge extends EcElement {
    */
   @Override public void ccUpdate() {
     
+    //-- pre
     int lpLength=ccTellScale(cmIsVertical?cmH:cmW);
+    ccApplyClickedValue();
     
+    //-- draw
     if(cmHasStroke){pbOwner.stroke(cmStrokeColor);}
-    
     pbOwner.fill(cmBackColor);
     pbOwner.rect(cmX,cmY,cmW,cmH);
-    
     ccActFill();
     if(cmIsVertical){pbOwner.rect(cmX,cmY+cmH,cmW,-lpLength);}
     else{pbOwner.rect(cmX,cmY,lpLength,cmH);}
-    
     if(cmHasStroke){pbOwner.noStroke();}
-    
     drawName(cmNameColor);
   
   }//+++
@@ -162,19 +163,47 @@ public class EcGauge extends EcElement {
   //===
   
   /**
-   * @return between 0-255
+   * <pre>
+   * you have to note that the value is heavily depends on
+   *   the PApplet coordinate system.
+   * it is pretty anti-intuitive when oriented in virtical.
+   * try ccGetReversedValue().
+   * </pre>
+   * @return # 0-255
    */
   public final int ccGetContentValue(){
     return cmContentValue&0xFF;
   }//+++
+  
+  /**
+   * <pre>
+   * for orientation issues.
+   * </pre>
+   * @return # 0-255
+   */
+  public final int ccGetReversedValue(){
+    return 0xFF-ccGetContentValue();
+  }//+++
 
   /**
+   * additionally orientation and stroke mode will get fetched.<br>
    * @param pxTarget #
    */
   public void ccSetupStyle(EcGauge pxTarget) {
     super.ccSetupStyle(pxTarget);
-    ccSetIsVertical(pxTarget.cmIsVertical);
-    ccSetHasStroke(pxTarget.cmHasStroke);
+    cmIsVertical=pxTarget.cmIsVertical;
+    cmHasStroke=pxTarget.cmHasStroke;
+  }//+++
+  
+  /**
+   * mouse location will affect the content value.<br>
+   */
+  protected final void ccApplyClickedValue(){
+    if(!cmIsEnabled){return;}
+    if(!ccIsMousePressed()){return;}
+    cmContentValue=cmIsVertical?
+       (255-ccGetMouseOffsetY()*255/cmH)
+      :(    ccGetMouseOffsetX()*255/cmW);
   }//+++
   
 }//***eof

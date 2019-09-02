@@ -51,6 +51,16 @@ public abstract class EcComponent extends EcRect{
     pbOwner=pxOwner;
   }//+++
   
+  /**
+   * supposedly might get called from draw() loop.<br>
+   * @param pxKey #
+   * @return #
+   */
+  static public final boolean ccIsKeyPressed(char pxKey){
+    if(pbOwner==null){return false;}
+    return pbOwner.keyPressed && (pbOwner.key==pxKey);
+  }//+++
+  
   //===
   
   /**

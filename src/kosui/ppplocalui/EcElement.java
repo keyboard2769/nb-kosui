@@ -350,12 +350,13 @@ public class EcElement extends EcComponent{
   }//+++
 
   /**
-   * apply on/off color and name align
+   * color and alignment and enability well get fetched.<br>
    * @param pxTarget #
    */
   public void ccSetupStyle(EcElement pxTarget){
     cmOnColor=pxTarget.cmOnColor;
     cmOffColor=pxTarget.cmOffColor;
+    cmIsEnabled=pxTarget.cmIsEnabled;
     cmNameAlign=pxTarget.cmNameAlign;
     cmNameColor=pxTarget.cmNameColor;
     cmTextAlign=pxTarget.cmTextAlign;
@@ -399,7 +400,7 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * @return pix compaired from left side edge
+   * @return pix compared from left side edge
    */
   public final int ccGetMouseOffsetX(){
     if(ccIsMousePressed()){
@@ -410,11 +411,11 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * @return pix compaired from down side edge
+   * @return pix compared from up side edge
    */
   public final int ccGetMouseOffsetY(){
     if(ccIsMousePressed()){
-      return pbOwner.mouseY-ccEndX();
+      return pbOwner.mouseY-ccGetY();
     }else{
       return 0;
     }//..?
