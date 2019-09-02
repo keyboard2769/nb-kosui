@@ -26,11 +26,34 @@ import processing.core.PApplet;
  */
 public final class VcNumericUtility {
   
-  private static VcNumericUtility self = null;
+  public static final int C_ONBIT_Z    = 0x00000001;
+  public static final int C_ONBIT_I    = 0x00000002;
+  public static final int C_ONBIT_II   = 0x00000004;
+  public static final int C_ONBIT_III  = 0x00000008;
+  
+  public static final int C_ONBIT_IV   = 0x00000010;
+  public static final int C_ONBIT_V    = 0x00000020;
+  public static final int C_ONBIT_VI   = 0x00000040;
+  public static final int C_ONBIT_VII  = 0x00000080;
+  
+  public static final int C_ONBIT_VIII = 0x00000100;
+  public static final int C_ONBIT_IX   = 0x00000200;
+  public static final int C_ONBIT_X    = 0x00000400;
+  public static final int C_ONBIT_XI   = 0x00000800;
+  
+  public static final int C_ONBIT_XII  = 0x00001000;
+  public static final int C_ONBIT_XIII = 0x00002000;
+  public static final int C_ONBIT_XIV  = 0x00004000;
+  public static final int C_ONBIT_XV   = 0x00008000; 
+  
+  /**
+   * @return instance
+   */
   public static VcNumericUtility ccGetInstance() {
     if(self==null){self=new VcNumericUtility();}
     return self;
   }//+++
+  private static VcNumericUtility self = null;
   private VcNumericUtility(){}//..!
   
   //=== judgement
@@ -350,6 +373,11 @@ public final class VcNumericUtility {
     );
   }//+++
   
+  public static final int ccWithBitSet(int pxBitAddr){
+    //[todo]::test this!!
+    return 0x00008000>>(0xF-pxBitAddr&0xF);
+  }//+++
+  
   //[plan]::ccMaskedShiftL(int , int)
   //[plan]::ccMaskedShiftR(int , int)
   //[plan]::ccMaskedShiftR(byte , int)
@@ -357,7 +385,11 @@ public final class VcNumericUtility {
   
   //[plan]::ccBinarySet(int , int , bool)
   //[plan]::ccBinarySetBit(byte , int , bool)
-  //[plan]::ccBinaryLoad(int , int )
+  
+  public final boolean ccBinaryLoad(int pxSource, int pxBitAddr){
+    return false;
+  }//+++
+  
   //[plan]::ccBinaryLoad(byte , int )
   
   //[plan]::ccBinaryReassemble(int[],bool reversed)

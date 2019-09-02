@@ -1,7 +1,7 @@
 Key Optional System User Interface
 ===
 my Processing based utility classes, based on processing's `core.jar`, 
-for building hardware-panel like demos.
+for building quit craftable hardware-panel like SCADA system.
 i know it is a nonsense name, but anyway. 
 
 ---
@@ -30,13 +30,14 @@ i know it is a nonsense name, but anyway.
   and outwarded read/write.
 
 #### utility
-- a bunch of singleton classes provides some personal utility function. 
-- some of them is referred as "manager" for UI components,
+- a bunch of singleton classes provides
+  lots of all singing all dancing utility functions. 
+- some of them is referred as a "manager" or "coorditanor" for UI components,
   they might work only under the certain UI thread.
 
 #### test
 - hand crafted case test codes.
-- actual living eamples is located here also.
+- actual living examples is located here also.
 - and bunch of untested experimental codes.
 
 ---

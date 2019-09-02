@@ -59,8 +59,7 @@ public class DemoLocalUI extends PApplet {
     new EcButton("E", 0xBA0E),new EcButton("F", 0xBA0F)
   ));
   
-  private final ZcRangedValueModel cmCounterModel
-    = new ZcRangedValueModel(0, 99);
+  private short cmCounterModel = 0;
   
   //=== action
   
@@ -73,13 +72,13 @@ public class DemoLocalUI extends PApplet {
   
   private final EiTriggerable cmAddCoounter = new EiTriggerable() {
     @Override public void ccTrigger(){
-      cmCounterModel.ccShift(1);
+      cmCounterModel++;
     }//+++
   };
   
   private final EiTriggerable cmResetCounter = new EiTriggerable() {
     @Override public void ccTrigger(){
-      cmCounterModel.ccSetValue(0);
+      cmCounterModel--;
     }//+++
   };
 
@@ -135,7 +134,7 @@ public class DemoLocalUI extends PApplet {
     background(0);
 
     //-- update ** binding
-    cmCounterTB.ccSetValue(cmCounterModel.ccGetValue());
+    cmCounterTB.ccSetValue((int)cmCounterModel);
     
     //-- update ** manager
     VcLocalCoordinator.ccUpdate();
