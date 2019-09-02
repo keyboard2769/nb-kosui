@@ -25,8 +25,14 @@ import java.util.HashMap;
  */
 public final class VcTranslator {
   
-  private static final VcTranslator SELF = new VcTranslator();
-  public static VcTranslator ccGetReference(){return SELF;}//+++
+  /**
+   * @return instance
+   */
+  public static VcTranslator ccGetInstance(){
+    if(self==null){self = new VcTranslator();}
+    return self;
+  }//+++
+  private static VcTranslator self = null;
   private VcTranslator(){}//..!
 
   //===
@@ -112,10 +118,10 @@ public final class VcTranslator {
     if(pxSource==null){return pxSource;}
     if(pxSource.equals("")){return pxSource;}
     if(pxSource.equals("...")){return pxSource;}
-    switch(SELF.cmMode){
-      case 'e':return SELF.cmEnglishDict.getOrDefault(pxSource, pxSource);
-      case 'j':return SELF.cmJapaneseDict.getOrDefault(pxSource, pxSource);
-      case 'c':return SELF.cmChineseDict.getOrDefault(pxSource, pxSource);
+    switch(self.cmMode){
+      case 'e':return self.cmEnglishDict.getOrDefault(pxSource, pxSource);
+      case 'j':return self.cmJapaneseDict.getOrDefault(pxSource, pxSource);
+      case 'c':return self.cmChineseDict.getOrDefault(pxSource, pxSource);
       default:return pxSource;
     }//..?
   }//+++

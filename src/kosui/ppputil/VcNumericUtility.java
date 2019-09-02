@@ -51,14 +51,6 @@ public final class VcNumericUtility {
     C_ONBIT_XV   = 0x00008000
   ;//+++
   
-  /**
-   * @return instance
-   */
-  public static VcNumericUtility ccGetInstance() {
-    if(self==null){self=new VcNumericUtility();}
-    return self;
-  }//+++
-  private static VcNumericUtility self = null;
   private VcNumericUtility(){}//..!
   
   //=== judgement

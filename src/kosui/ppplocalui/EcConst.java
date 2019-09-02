@@ -17,6 +17,7 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcNumericUtility;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.LEFT;
@@ -28,6 +29,16 @@ import static processing.core.PConstants.TOP;
  * now he just produce em. so, don't just new those elements.<br>
  */
 public final class EcConst {
+  
+  /**
+   * this probably will never change.
+   */
+  public static final float C_FRAME_RATE = 16.0f;
+  
+  /**
+   * this probably will never change.
+   */
+  public static final int C_FPS = 16;
   
   /**
    * serves as a dummy id.<br>
@@ -112,13 +123,32 @@ public final class EcConst {
    */
   public static final void ccSetupSketch(PApplet pxOwner){
     if(pxOwner==null){return;}
-    pxOwner.frameRate(16);
+    pxOwner.frameRate(C_FRAME_RATE);
     pxOwner.noStroke();
     pxOwner.textAlign(LEFT,TOP);
     pxOwner.ellipseMode(CENTER);
   }//+++
   
-  //=== utility
+  //=== utility ** time
+  
+  /**
+   * @param pxFrameCount #
+   * @return based on the given FPS, which is 16
+   */
+  public static final float ccToSecondCount(int pxFrameCount){
+    return VcNumericUtility.ccFloat(pxFrameCount)/C_FRAME_RATE;
+  }//+++
+  
+  /**
+   * 
+   * @param pxSecondCount #
+   * @return based on the given FPS, which is 16
+   */
+  public static final int ccToFrameCount(float pxSecondCount){
+    return PApplet.ceil(pxSecondCount*C_FRAME_RATE);
+  }//+++
+  
+  //=== utility ** color
   
   /**
    * only bit wise calculation involved

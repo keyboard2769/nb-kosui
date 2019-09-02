@@ -30,8 +30,11 @@ public final class VcTagger{
   /**
    * @return instance
    */
-  public static final VcTagger ccGetInstance(){return SELF;}
-  private static final VcTagger SELF = new VcTagger();
+  public static final VcTagger ccGetInstance(){
+    if(self==null){self=new VcTagger();}
+    return self;
+  }//+++
+  private static VcTagger self = null;
   private VcTagger(){}//..!
   
   //===
@@ -165,7 +168,7 @@ public final class VcTagger{
    * @param pxLine #
    */
   static public void ccTag(String pxLine){
-    SELF.ssUpdate(pxLine);
+    self.ssUpdate(pxLine);
   }//+++
   
   /**
@@ -176,14 +179,14 @@ public final class VcTagger{
    */
   static public void ccTag(String pxTag, Object pxValue){
     if(pxValue==null){ccTag(pxTag);}
-    else{SELF.ssUpdate(pxTag+":"+pxValue.toString());}
+    else{self.ssUpdate(pxTag+":"+pxValue.toString());}
   }//+++
   
   /**
    * must be called at the end of draw()
    */
   static public void ccStabilize(){
-    SELF.cmCounter=0;
+    self.cmCounter=0;
   }//+++
   
 }//***eof

@@ -34,9 +34,12 @@ public final class VcStacker {
   /**
    * @return instance
    */
-  public static final VcStacker ccGetInstance(){return SELF;}
-  private static final VcStacker SELF = new VcStacker();
-  private VcStacker (){}//+++
+  public static final VcStacker ccGetInstance(){
+    if(self==null){self=new VcStacker();}
+    return self;
+  }//+++
+  private static VcStacker self = null;
+  private VcStacker (){}//..!
   
   //===
   
@@ -129,7 +132,7 @@ public final class VcStacker {
    * supposedly should get called inside PApplet.draw() loop
    */
   public static final void ccUpdate(){
-    SELF.ssUpdate();
+    self.ssUpdate();
   }//+++
   
   private void ssUpdate(){
@@ -150,7 +153,7 @@ public final class VcStacker {
    * @param pxVal #
    */
   static public final void ccStack(String pxTag, Object pxVal){
-    SELF.O_STK.ccStack(pxTag, pxVal);
+    self.O_STK.ccStack(pxTag, pxVal);
   }//+++
   
   /**
@@ -158,22 +161,22 @@ public final class VcStacker {
    * @param pxLine #
    */
   static public final void ccStack(String pxLine){
-    SELF.O_STK.ccStack(VcStringUtility.ccWrap(pxLine, SELF.pbCharCount));
+    self.O_STK.ccStack(VcStringUtility.ccWrap(pxLine, self.pbCharCount));
   }//+++
   
   /**
    * set stacked to default message held by the system stacker.
    */
   static public final void ccClear(){
-    SELF.O_STK.ccClear(SELF.pbDefaultMessage);
+    self.O_STK.ccClear(self.pbDefaultMessage);
   }//+++
   
   /**
    * @param pxDefault will replace current default message
    */
   static public final void ccClear(String pxDefault){
-    SELF.pbDefaultMessage=VcStringUtility.ccWrap(pxDefault, SELF.pbCharCount);
-    SELF.O_STK.ccClear(SELF.pbDefaultMessage);
+    self.pbDefaultMessage=VcStringUtility.ccWrap(pxDefault, self.pbCharCount);
+    self.O_STK.ccClear(self.pbDefaultMessage);
   }//+++
   
   //===

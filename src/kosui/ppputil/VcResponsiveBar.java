@@ -31,9 +31,12 @@ public final class VcResponsiveBar {
   /**
    * @return instance
    */
-  static public final VcResponsiveBar ccGetInstance(){return SELF;}
-  static private final VcResponsiveBar SELF = new VcResponsiveBar();
-  private VcResponsiveBar (){}//+++
+  static public final VcResponsiveBar ccGetInstance(){
+    if(self==null){self= new VcResponsiveBar();}
+    return self;
+  }//+++
+  static private VcResponsiveBar self = null;
+  private VcResponsiveBar (){}//..!
   
   //===
   
@@ -112,7 +115,7 @@ public final class VcResponsiveBar {
    * should be called inside draw()
    */
   public static final void ccUpdate(){
-    SELF.ssUpdate();
+    self.ssUpdate();
   }//+++
   
   private void ssUpdate(){
@@ -161,20 +164,20 @@ public final class VcResponsiveBar {
    */
   public static boolean ccKeyTyped(char pxKey, int pxKeyCode){
     if(pxKeyCode==0x0A){//..{ENTER}
-      if(SELF.cmIsTypeMode){
-        SELF.cmIsTypeMode=false;
-        SELF.ssReadInput();
-        SELF.ssFireOperation();
+      if(self.cmIsTypeMode){
+        self.cmIsTypeMode=false;
+        self.ssReadInput();
+        self.ssFireOperation();
       }else{
-        SELF.cmIsTypeMode=true;
+        self.cmIsTypeMode=true;
       }//..?
-    }else{if(SELF.cmIsTypeMode){
-      if(pxKeyCode==0x08 && SELF.cmField.length()>4)//..{BS}
-        {SELF.cmField=SELF.cmField.substring(0, SELF.cmField.length()-1);}
-      if(pxKey>=' ' && pxKey<='z' && SELF.cmField.length()<C_MAX_CHAR_L)
-        {SELF.cmField=SELF.cmField.concat(Character.toString(pxKey));}
+    }else{if(self.cmIsTypeMode){
+      if(pxKeyCode==0x08 && self.cmField.length()>4)//..{BS}
+        {self.cmField=self.cmField.substring(0, self.cmField.length()-1);}
+      if(pxKey>=' ' && pxKey<='z' && self.cmField.length()<C_MAX_CHAR_L)
+        {self.cmField=self.cmField.concat(Character.toString(pxKey));}
     }}//..?
-    return SELF.cmIsTypeMode;
+    return self.cmIsTypeMode;
   }//+++
   
   private void ssReadInput(){
@@ -228,11 +231,11 @@ public final class VcResponsiveBar {
   public static void ccWatch(String pxTag, Object pxValue){
     if(!VcConst.ccIsValidString(pxTag)){return;}
     if(pxValue==null){return;}
-    if(SELF.cmWatchBarContent.length()>=512){return;}
+    if(self.cmWatchBarContent.length()>=512){return;}
     StringBuilder lpBuilder=new StringBuilder("[");
     lpBuilder.append(pxTag);lpBuilder.append(":");
     lpBuilder.append(pxValue);lpBuilder.append("]");
-    SELF.cmWatchBarContent+=lpBuilder.toString();
+    self.cmWatchBarContent+=lpBuilder.toString();
   }//+++
   
   //===
@@ -244,8 +247,8 @@ public final class VcResponsiveBar {
   public static final 
   void ccRegisterTrigger(String pxCommand, EiTriggerable pxTrigger){
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfCommand.containsKey(pxCommand)){return;}
-    SELF.cmMapOfCommand.put(pxCommand, pxTrigger);
+    if(self.cmMapOfCommand.containsKey(pxCommand)){return;}
+    self.cmMapOfCommand.put(pxCommand, pxTrigger);
   }//+++
   
   /**
@@ -279,7 +282,7 @@ public final class VcResponsiveBar {
    * @param pxMessage #
    */
   public static void ccAddHelpMessage(String pxMessage){
-    SELF.cmListOfHelpMessage.append(pxMessage);
+    self.cmListOfHelpMessage.append(pxMessage);
   }//+++
   
   //===
@@ -393,7 +396,7 @@ public final class VcResponsiveBar {
    * @return #
    */
   static public final String ccGetLastAccepted(){
-    return SELF.cmLastAccepted;
+    return self.cmLastAccepted;
   }//+++
   
   /**
@@ -403,11 +406,11 @@ public final class VcResponsiveBar {
    * @return if any
    */
   static public final String ccGetLastAccepted(int pxIndex){
-    if(SELF.cmDesAccepted==null){return "";}
+    if(self.cmDesAccepted==null){return "";}
     int lpFixedIndex=pxIndex<0?0:(
-      pxIndex>SELF.cmDesAccepted.length?SELF.cmDesAccepted.length:pxIndex
+      pxIndex>self.cmDesAccepted.length?self.cmDesAccepted.length:pxIndex
     );
-    return SELF.cmDesAccepted[lpFixedIndex];
+    return self.cmDesAccepted[lpFixedIndex];
   }//+++
   
 }//***eof

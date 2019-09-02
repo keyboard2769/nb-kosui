@@ -31,10 +31,10 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
   /**
    * update count basically. like for 16FPS, 16 means one second.<br>
    * for security reason it will get masked, even value may change.<br>
-   * @param pxDiv will be masked to [3-65535]
+   * @param pxDivision will be masked to [3-65535]
    */
-  public ZcTimer(int pxDiv){
-    super(0, (pxDiv|0x03)&0xFFFF);
+  public ZcTimer(int pxDivision){
+    super(0, (pxDivision|0x03)&0xFFFF);
     cmJudge=0;
   }//++!
   

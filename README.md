@@ -65,10 +65,11 @@ i know it is a nonsense name, but anyway.
 - [ ] $ dos
 - [ ] $ quatro? 
 - [ ] $ tre!!
+- [ ] $ a "drawing" package handles PDF and print stuff
+- [ ] $ a LineChart class
 
 #### plan 
 
-- [ ] $ rewrite all swing dialog method comment
 - [ ] $ let's define more awt color!!
 - [ ] $ make a class and demo for trend chart.
 - [ ] $ add create and load json method to McFactory.
@@ -76,13 +77,14 @@ i know it is a nonsense name, but anyway.
 
 #### onfire
 
-- [ ] $ merge EcTip into EcTipMamager, make it a real manager.
+- [ ] $ rewrite all swing dialog method comment
 
 #### currently
 
 - [x] $ built a local ui example using given type of ui compnent.
 - [x] $ merged binary method from wm monitor to numeric utilities
 - [x] $ merged ccGetFileByFileChooser from xml specifier to swing dialog
-- [x] $ refactor EcSlider to makle EcGauge intentionally draggable
+- [x] $ re-implemented EcSlider to make EcGauge intentionally draggable
+- [x] $ merged EcTip into EcTipMamager, make it a real manager.
 
 <hr><!--eof-->

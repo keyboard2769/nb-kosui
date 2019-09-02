@@ -31,11 +31,6 @@ import static processing.core.PApplet.year;
  */
 public final class VcStampUtility {
   
-  private static VcStampUtility self = null;
-  public static VcStampUtility ccGetInstance() {
-    if(self==null){self=new VcStampUtility();}
-    return self;
-  }//+++
   private VcStampUtility(){}//..!
   
   //===
@@ -97,7 +92,8 @@ public final class VcStampUtility {
   
   /**
    * supposedly for auto generated test file.<br>
-   * @return # _%mark%hhmmss
+   * @param pxMark #
+   * @return # _%mark%hhmmss 
    */
   synchronized static public final String ccTimeStampTypeFIV(String pxMark){
     StringBuilder lpRes=new StringBuilder("_");

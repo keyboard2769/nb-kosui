@@ -43,8 +43,8 @@ public interface ZiTimer{
   
   /**
    * may vary on purpose.<br>
-   * @param pxDiv update count basically. like for 16FPS, 16 means one second.
+   * @param pxDivision update count basically. like for 16FPS, 16 means one second.
    */
-  public void ccSetTime(int pxDiv);
+  public void ccSetTime(int pxDivision);
   
 }//***eof

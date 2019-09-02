@@ -28,11 +28,8 @@ import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcShape;
-import kosui.ppplocalui.EcTipManager;
 import kosui.ppplocalui.EiGroup;
 import kosui.ppplocalui.EiTriggerable;
-
-import static kosui.ppputil.VcConst.ccIsValidString;
 
 /**
  * this should be just a container.
@@ -40,6 +37,9 @@ import static kosui.ppputil.VcConst.ccIsValidString;
  */
 public final class VcLocalCoordinator {
   
+  /**
+   * @return instance
+   */
   public static final VcLocalCoordinator ccGetInstance(){return SELF;}
   private static final VcLocalCoordinator SELF = new VcLocalCoordinator();
   private VcLocalCoordinator(){}//..!
@@ -73,9 +73,6 @@ public final class VcLocalCoordinator {
   private final List<EcElement> cmListOfElement
     = new ArrayList<EcElement>();
   
-  private final EcTipManager cmTipManager
-    = new EcTipManager();
-
   //===
   
   /**
@@ -123,9 +120,6 @@ public final class VcLocalCoordinator {
       it.ccUpdate();
       if(it.ccIsMouseHovered()){cmMouseOverID=it.ccGetID();}
     }//..~
-    
-    //-- layer III
-    cmTipManager.ssUpdate(cmMouseOverID);
   
   }//+++
   
@@ -251,16 +245,6 @@ public final class VcLocalCoordinator {
     SELF.cmMapOfInputtable.put(pxBox.ccGetID(), pxBox);
     SELF.cmInputIndex=SELF.cmMapOfInputtable.size();
   }//+++
-  
-  /**
-   * passed tip will always show if the element of passed id is mouse hovered
-   * @param pxID #
-   * @param pxTip #
-   */
-  static public final void ccAddTip(int pxID, String pxTip){
-    if(!ccIsValidString(pxTip)){return;}
-    SELF.cmTipManager.ccPut(pxID, pxTip);
-  }//+++ 
   
   //===
   

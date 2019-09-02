@@ -32,10 +32,14 @@ import kosui.ppplocalui.EiTriggerable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcTipManager;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
 public class DemoLocalUI extends PApplet {
+  
+  static private final String C_BLK_MSG
+    = "... press F3 to show UI description.";
   
   static private DemoLocalUI self;
 
@@ -109,6 +113,11 @@ public class DemoLocalUI extends PApplet {
     }//+++
   };
   
+  private final EiTriggerable cmTipShowing = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      VcTipManager.ccActivate();
+    }//+++
+  };
   private final EiTriggerable cmLeftShifting = new EiTriggerable() {
     @Override public void ccTrigger(){
       cmCounterModel<<=1;
@@ -159,9 +168,10 @@ public class DemoLocalUI extends PApplet {
     self=this;
 
     //-- init
+    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcTipManager.ccGetInstance().ccInit(this);
     
     //-- init ** 
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
     
     //-- layout
     
@@ -185,9 +195,13 @@ public class DemoLocalUI extends PApplet {
     cmSlider.ccSetLocation(cmGauge, 0, 5);
     cmSlider.ccSetSize(cmGauge);
     cmSlider.ccSetupStyle(cmGauge);
+    cmSlider.ccSetIsEnabled(true);
     VcLocalCoordinator.ccAddElement(cmSlider);
     VcLocalCoordinator.ccRegisterWheelUpTrigger(cmSlider, cmIncrementting);
     VcLocalCoordinator.ccRegisterWheelDownTrigger(cmSlider, cmDecrementing);
+    VcTipManager.ccRegisterTipMessage(cmSlider,
+      "Mouse Wheel Acceptable. "+VcConst.C_V_NEWLINE+"Draggable. "
+    );
     
     //-- layout ** click
     cmClickPane.ccSetLocation(cmQuitSW,0, 10);
@@ -198,21 +212,25 @@ public class DemoLocalUI extends PApplet {
     cmShiftLeftSW.ccSetLocation(cmClickPane,5, 22);
     VcLocalCoordinator.ccAddElement(cmShiftLeftSW);
     VcLocalCoordinator.ccRegisterMouseTrigger(cmShiftLeftSW, cmLeftShifting);
+    VcTipManager.ccRegisterTipMessage(cmShiftLeftSW, "Shift Left");
     
     cmDecrementSW.ccSetSize(cmShiftLeftSW);
     cmDecrementSW.ccSetLocation(cmShiftLeftSW, 4, 0);
     VcLocalCoordinator.ccAddElement(cmDecrementSW);
     VcLocalCoordinator.ccRegisterMouseTrigger(cmDecrementSW, cmDecrementing);
+    VcTipManager.ccRegisterTipMessage(cmDecrementSW, "Decrement");
     
     cmIncrementSW.ccSetSize(cmDecrementSW);
     cmIncrementSW.ccSetLocation(cmDecrementSW, 4, 0);
     VcLocalCoordinator.ccAddElement(cmIncrementSW);
     VcLocalCoordinator.ccRegisterMouseTrigger(cmIncrementSW, cmIncrementting);
+    VcTipManager.ccRegisterTipMessage(cmIncrementSW, "Increment");
     
     cmShiftRightSW.ccSetSize(cmIncrementSW);
     cmShiftRightSW.ccSetLocation(cmIncrementSW, 4, 0);
     VcLocalCoordinator.ccAddElement(cmShiftRightSW);
     VcLocalCoordinator.ccRegisterMouseTrigger(cmShiftRightSW, cmRightShifting);
+    VcTipManager.ccRegisterTipMessage(cmShiftRightSW, "Shift Right");
     
     cmDesBitSW.get(0).ccSetLocation(
       cmClickPane.ccEndX()-25,
@@ -233,13 +251,13 @@ public class DemoLocalUI extends PApplet {
     VcLocalCoordinator.ccAddElement(cmHexadecimalTB);
     
     //-- binding
-    
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_F3, cmTipShowing);
     for(EcButton it:cmDesBitSW){
       VcLocalCoordinator.ccRegisterMouseTrigger(it, cmManipulating);
     }//..~
-    
-    VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     
     //-- post setting
     println(".setup()::over");
@@ -255,6 +273,13 @@ public class DemoLocalUI extends PApplet {
     //-- update ** manager
     cmScanning.ccTrigger();
     VcLocalCoordinator.ccUpdate();
+    VcTipManager.ccUpdate();
+    
+    //-- update ** IV
+    if(ccIsRollingAbove(7)){
+      fill(0xFF33EE33);
+      text(C_BLK_MSG,3,3);
+    }//..?
     
   }//+++
   
@@ -269,12 +294,6 @@ public class DemoLocalUI extends PApplet {
   @Override public void mouseWheel(MouseEvent me) {
      int lpCount=-1*(int)(me.getAmount());//...i dont know why float cant work 
      VcLocalCoordinator.ccMouseWheel(lpCount>0, lpCount<0);
-     /*
-     if(cmSlider.ccIsMouseHovered()){
-       if(lpCount>0){cmIncrementting.ccTrigger();}
-       if(lpCount<0){cmDecrementing.ccTrigger();}
-     }//..?
-     */
   }//+++
   
   //=== utility
@@ -285,11 +304,11 @@ public class DemoLocalUI extends PApplet {
   
   //=== entry
   
-  static public boolean ccGetRollingAbove(int pxZeroToFifteen){
+  static public boolean ccIsRollingAbove(int pxZeroToFifteen){
     return cmRoller>pxZeroToFifteen;
   }//+++
   
-  static public boolean ccGetRollingAt(int pxZeroToFifteen){
+  static public boolean ccIsRollingAt(int pxZeroToFifteen){
     return cmRoller==pxZeroToFifteen;
   }//+++
   

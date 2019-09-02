@@ -53,7 +53,7 @@ public final class VcConst {
   
   private static final boolean C_DOSE_LOG = false;
   
-  private VcConst(){}//+++ 
+  private VcConst(){}//..!
   
   //===
   

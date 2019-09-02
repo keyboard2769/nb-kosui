@@ -77,10 +77,10 @@ public class ZcFlicker extends ZcTimer{
   /**
    * the duty rate of flicker will be 50% by default. <br>
    * for implement reason you have to use other method if you need to change.
-   * @param pxDiv #
+   * @param pxDivision #
    */
-  @Override public void ccSetTime(int pxDiv){
-    ccSetRange(ccLimitTimeValue(pxDiv));
+  @Override public void ccSetTime(int pxDivision){
+    ccSetRange(ccLimitTimeValue(pxDivision));
     ssInit(0.5f);
   }//+++
   

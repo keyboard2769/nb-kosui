@@ -25,11 +25,6 @@ import static kosui.ppputil.VcConst.ccIsValidString;
  */
 public final class VcStringUtility {
   
-  private static VcStringUtility self = null;
-  public static VcStringUtility ccGetInstance() {
-    if(self==null){self=new VcStringUtility();}
-    return self;
-  }//+++
   private VcStringUtility(){}//..!
   
   //===

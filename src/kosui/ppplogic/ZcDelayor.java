@@ -75,10 +75,10 @@ public class ZcDelayor extends ZcTimer{
   /**
    * the delay value will be 50% of all by default. <br>
    * for implement reason you have to use other method if you need to change.
-   * @param pxDiv #
+   * @param pxDivision #
    */
-  @Override public void ccSetTime(int pxDiv){
-    int lpDiv=ccLimitTimeValue(pxDiv);
+  @Override public void ccSetTime(int pxDivision){
+    int lpDiv=ccLimitTimeValue(pxDivision);
     ccInit(lpDiv/2,lpDiv/2);
   }//+++
   

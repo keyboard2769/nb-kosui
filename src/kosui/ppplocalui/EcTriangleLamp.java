@@ -40,7 +40,7 @@ public class EcTriangleLamp extends EcElement{
   
 
   /**
-   * internal use only
+   * internal use only.<br>
    * @param pxColor #
    */
   protected final void drawTriangleLamp(int pxColor){
@@ -55,7 +55,7 @@ public class EcTriangleLamp extends EcElement{
           ccEndX(), ccEndY(),
           cmX, ccEndY()
         );
-        break;
+      break;
 
       case 'd':
         pbOwner.triangle(
@@ -63,7 +63,7 @@ public class EcTriangleLamp extends EcElement{
           ccEndX(), cmY,
           ccCenterX(), ccEndY()
         );
-        break;
+      break;
 
       case 'l':
         pbOwner.triangle(
@@ -71,7 +71,7 @@ public class EcTriangleLamp extends EcElement{
           ccEndX(), cmY,
           ccEndX(), ccEndY()
         );
-        break;
+      break;
 
       case 'r':
         pbOwner.triangle(
@@ -79,24 +79,28 @@ public class EcTriangleLamp extends EcElement{
           ccEndX(), ccCenterY(),
           cmX, ccEndY()
         );
-        break;
+      break;
 
-      default:
-        break;
-    }
+      default:break;
+    }//..?
+    
     pbOwner.noStroke();
 
   }//+++
 
   /**
-   * -[u]up.. <br>
-   * -[d]down.. <br>
-   * -[l]left.. <br>
-   * -[r]right.. <br>
-   * 
+   * <pre>
+   * mode:
+   *  - [u]:up
+   *  - [d]:down
+   *  - [l]:left
+   *  - [r]:right
+   *  - [x]:empty (or you can pass any letter)
+   * </pre>
    * @param pxMode_udlr #
    */
-  public final void ccSetDirection(char pxMode_udlr)
-    {cmDirection=pxMode_udlr;}//+++
+  public final void ccSetDirection(char pxMode_udlr){
+    cmDirection=pxMode_udlr;
+  }//+++
 
 }//***

@@ -34,8 +34,11 @@ public final class VcAxis {
   /**
    * @return instance
    */
-  public static final VcAxis ccGetInstance(){return SELF;}
-  private static final VcAxis SELF = new VcAxis();
+  public static final VcAxis ccGetInstance(){
+    if(self==null){self = new VcAxis();}
+    return self;
+  }
+  private static VcAxis self = null;
   private VcAxis(){}//..!
   
   //===
@@ -142,7 +145,7 @@ public final class VcAxis {
    * should be called inside draw()<br>
    */
   static public void ccUpdate(){
-    SELF.ssUpdate();
+    self.ssUpdate();
   }//+++
   
 }//***eof
