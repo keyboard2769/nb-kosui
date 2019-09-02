@@ -353,7 +353,7 @@ public class EcElement extends EcComponent{
    * apply on/off color and name align
    * @param pxTarget #
    */
-  public final void ccMatchStyle(EcElement pxTarget){
+  public void ccSetupStyle(EcElement pxTarget){
     cmOnColor=pxTarget.cmOnColor;
     cmOffColor=pxTarget.cmOffColor;
     cmNameAlign=pxTarget.cmNameAlign;
@@ -396,6 +396,28 @@ public class EcElement extends EcComponent{
   public final boolean ccIsMousePressed(){
     return ccIsMouseHovered()
          &&pbOwner.mousePressed;
+  }//+++
+  
+  /**
+   * @return pix compaired from left side edge
+   */
+  public final int ccGetMouseOffsetX(){
+    if(ccIsMousePressed()){
+      return pbOwner.mouseX-ccGetX();
+    }else{
+      return 0;
+    }//..?
+  }//+++
+  
+  /**
+   * @return pix compaired from down side edge
+   */
+  public final int ccGetMouseOffsetY(){
+    if(ccIsMousePressed()){
+      return pbOwner.mouseY-ccEndX();
+    }else{
+      return 0;
+    }//..?
   }//+++
   
   /**

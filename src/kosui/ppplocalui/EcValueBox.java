@@ -17,8 +17,6 @@
 
 package kosui.ppplocalui;
 
-import kosui.ppplogic.ZcRangedModel;
-import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
 import static processing.core.PApplet.nf;
@@ -61,6 +59,7 @@ public class EcValueBox extends EcElement{
   public EcValueBox(String pxKey, String pxForm, int pxID){
     super();
     ccSetKey(pxKey);
+    ccSetName(pxKey);
     ccSetText(pxForm);
     ccSetTextAlign('r');
     ccSetID(pxID);
@@ -77,6 +76,7 @@ public class EcValueBox extends EcElement{
   public EcValueBox(String pxKey, String pxForm){
     super();
     ccSetKey(pxKey);
+    ccSetName(pxKey);
     ccSetText(pxForm);
     ccSetTextAlign('r');
     ccSetSize();

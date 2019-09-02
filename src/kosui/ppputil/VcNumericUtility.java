@@ -26,25 +26,30 @@ import processing.core.PApplet;
  */
 public final class VcNumericUtility {
   
-  public static final int C_ONBIT_Z    = 0x00000001;
-  public static final int C_ONBIT_I    = 0x00000002;
-  public static final int C_ONBIT_II   = 0x00000004;
-  public static final int C_ONBIT_III  = 0x00000008;
-  
-  public static final int C_ONBIT_IV   = 0x00000010;
-  public static final int C_ONBIT_V    = 0x00000020;
-  public static final int C_ONBIT_VI   = 0x00000040;
-  public static final int C_ONBIT_VII  = 0x00000080;
-  
-  public static final int C_ONBIT_VIII = 0x00000100;
-  public static final int C_ONBIT_IX   = 0x00000200;
-  public static final int C_ONBIT_X    = 0x00000400;
-  public static final int C_ONBIT_XI   = 0x00000800;
-  
-  public static final int C_ONBIT_XII  = 0x00001000;
-  public static final int C_ONBIT_XIII = 0x00002000;
-  public static final int C_ONBIT_XIV  = 0x00004000;
-  public static final int C_ONBIT_XV   = 0x00008000; 
+  /**
+   * just for conveniecy
+   */
+  public static final int  
+    C_ONBIT_Z    = 0x00000001,
+    C_ONBIT_I    = 0x00000002,
+    C_ONBIT_II   = 0x00000004,
+    C_ONBIT_III  = 0x00000008,
+    //--
+    C_ONBIT_IV   = 0x00000010,
+    C_ONBIT_V    = 0x00000020,
+    C_ONBIT_VI   = 0x00000040,
+    C_ONBIT_VII  = 0x00000080,
+    //--
+    C_ONBIT_VIII = 0x00000100,
+    C_ONBIT_IX   = 0x00000200,
+    C_ONBIT_X    = 0x00000400,
+    C_ONBIT_XI   = 0x00000800,
+    //--
+    C_ONBIT_XII  = 0x00001000,
+    C_ONBIT_XIII = 0x00002000,
+    C_ONBIT_XIV  = 0x00004000,
+    C_ONBIT_XV   = 0x00008000
+  ;//+++
   
   /**
    * @return instance
@@ -220,6 +225,24 @@ public final class VcNumericUtility {
    * @param pxVal #
    * @return #
    */
+  public static final int ccInteger(byte pxVal){
+    return (int)pxVal;
+  }//+++
+  
+  /**
+   * just casting.<br>
+   * @param pxVal #
+   * @return #
+   */
+  public static final int ccInteger(short pxVal){
+    return (int)pxVal;
+  }//+++
+  
+  /**
+   * just casting.<br>
+   * @param pxVal #
+   * @return #
+   */
   public static final int ccInteger(float pxVal){
     return (int)pxVal;
   }//+++
@@ -304,6 +327,40 @@ public final class VcNumericUtility {
     return lpBuilder.toString();
   }//+++
   
+  //=== proportion
+  
+  /**
+   * @param pxByte 0-255
+   * @return 0.0-1.0
+   */
+  public static final float ccProportion(int pxByte){
+    if(pxByte==0){return 0f;}
+    if(pxByte==255){return 1f;}
+    return ((float)(pxByte&0xFF))/255f;
+  }//+++
+  
+  /**
+   * @param pxProportion 0.0-1.0
+   * @return 0-255
+   */
+  public static final int ccProportion(float pxProportion){
+    if(pxProportion<=0f){return 0;}
+    if(pxProportion>255f){return 255;}
+    return (int)(pxProportion*255f);
+  }//+++
+  
+  /**
+   * like if you wanna the value of 0.5f, you pass (50,100).<br>
+   * @param pxValue should be less than span but this do NOT check
+   * @param pxSpan if passed zero this will NOT throw or print anything
+   * @return value/span
+   */
+  public static final float ccProportion(int pxValue, int pxSpan){
+    if(pxSpan<=0 || pxValue<=0){return 0f;}
+    if(pxValue>=pxSpan){return 1f;}
+    return ccRoundForTwoAfter((ccFloat(pxValue)/ccFloat(pxSpan)));
+  }//+++
+  
   //=== binary
 
   /**
@@ -319,6 +376,24 @@ public final class VcNumericUtility {
       lpTester>>=1;
     }//..~
     return lpTester==lpMasked?lpTester:lpTester*2;
+  }//+++
+  
+  /**
+   * generate an only-one-bit-on mask
+   * @param pxBitAddr count from 0
+   * @return the mask
+   */
+  public static final int ccToOnStateMask(int pxBitAddr){
+    return 0x00008000>>(0xF-pxBitAddr&0xF);
+  }//+++
+  
+  /**
+   * generate an only-one-bit-off mask
+   * @param pxBitAddr count from 0
+   * @return the mask
+   */
+  public static final int ccToOffStateMask(int pxBitAddr){
+    return 0xFFFF7FFF>>(0xF-pxBitAddr&0xF);
   }//+++
   
   /**
@@ -373,21 +448,37 @@ public final class VcNumericUtility {
     );
   }//+++
   
-  public static final int ccWithBitSet(int pxBitAddr){
-    //[todo]::test this!!
-    return 0x00008000>>(0xF-pxBitAddr&0xF);
-  }//+++
-  
   //[plan]::ccMaskedShiftL(int , int)
   //[plan]::ccMaskedShiftR(int , int)
   //[plan]::ccMaskedShiftR(byte , int)
   //[plan]::ccMaskedShiftR(byte , int)
   
-  //[plan]::ccBinarySet(int , int , bool)
+  /**
+   * <b>ALL 16-BIT BASED EVEN THOUGH IT DEAL WITH AN INTEGER</b><br>
+   * set a given bit status to the value passed.<br>
+   * @param pxSource #
+   * @param pxBitAddr count from zero
+   * @param pxValue #
+   * @return # a new value
+   */
+  static public final
+  int ccBinarySet(int pxSource, int pxBitAddr, boolean pxValue){
+    return pxValue?
+       pxSource|ccToOnStateMask(pxBitAddr)
+      :pxSource&ccToOffStateMask(pxBitAddr);
+  }//+++
+  
   //[plan]::ccBinarySetBit(byte , int , bool)
   
-  public final boolean ccBinaryLoad(int pxSource, int pxBitAddr){
-    return false;
+  /**
+   * <b>ALL 16-BIT BASED EVEN THOUGH IT DEAL WITH AN INTEGER</b><br>
+   * test if the given bit is in on-state.<br>
+   * @param pxSource #
+   * @param pxBitAddr count from zero
+   * @return #
+   */
+  static public final boolean ccBinaryLoad(int pxSource, int pxBitAddr){
+    return (pxSource&ccToOnStateMask(pxBitAddr))!=0;
   }//+++
   
   //[plan]::ccBinaryLoad(byte , int )

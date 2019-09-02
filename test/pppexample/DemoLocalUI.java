@@ -23,13 +23,17 @@ import java.util.Collections;
 import java.util.List;
 import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcGauge;
 import kosui.ppplocalui.EcPane;
 import kosui.ppplocalui.EcRect;
+import kosui.ppplocalui.EcSlider;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
-import kosui.ppplogic.ZcRangedValueModel;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
+import kosui.ppputil.VcNumericUtility;
 import processing.core.PApplet;
+import processing.event.MouseEvent;
 
 public class DemoLocalUI extends PApplet {
   
@@ -39,12 +43,25 @@ public class DemoLocalUI extends PApplet {
 
   //=== overridden
   
-  private final EcPane cmMainPane = new EcPane("count!!", 300, 200);
-  private final EcValueBox cmCounterTB = new EcValueBox("counter", "0000");
-  private final EcButton cmAddSW = new EcButton("add", 0xAA01);
-  private final EcButton cmResetSW = new EcButton("reset", 0xAA02);
-
-  public final List<EcButton> cmDesSendBitSW
+  private final EcButton cmQuitSW = new EcButton("quit",0x9900);
+  
+  private final EcPane cmDragPane
+    = new EcPane("Drag!!", 320-10*3-100, 80);
+  private final EcPane cmClickPane
+    = new EcPane("Click!!", 320-10*2, 80);
+  
+  private final EcGauge cmGauge = new EcGauge("G:");
+  private final EcSlider cmSlider = new EcSlider("S'", 0xCA01);
+  
+  private final EcButton cmShiftLeftSW  = new EcButton("<", 0xAA01);
+  private final EcButton cmDecrementSW  = new EcButton("-", 0xAA02);
+  private final EcButton cmIncrementSW  = new EcButton("+", 0xAA03);
+  private final EcButton cmShiftRightSW = new EcButton(">", 0xAA04);
+  
+  private final EcValueBox cmDecimalTB = new EcValueBox("dec", "0000  ");
+  private final EcValueBox cmHexadecimalTB = new EcValueBox("hex", "0000 H");
+  
+  public final List<EcButton> cmDesBitSW
    = Collections.unmodifiableList(Arrays.asList(
     new EcButton("0", 0xBA00),new EcButton("1", 0xBA01),
     new EcButton("2", 0xBA02),new EcButton("3", 0xBA03),
@@ -63,22 +80,72 @@ public class DemoLocalUI extends PApplet {
   
   //=== action
   
-  private final EiTriggerable cmQuit = new EiTriggerable() {
+  private final EiTriggerable cmScanning = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      ssInput();
+      ssOutput();
+    }//+++
+    private void ssInput(){
+      if(cmSlider.ccIsMousePressed()){
+        cmCounterModel=(short)(cmSlider.ccGetContentValue()*32);
+      }//..?
+    }//+++
+    private void ssOutput(){
+      //-- update ** binding
+      cmGauge.ccSetPercentage((int)cmCounterModel, 0x1FFF);
+      cmDecimalTB.ccSetValue((int)cmCounterModel);
+      cmHexadecimalTB.ccSetText("0x"+hex(cmCounterModel,4));
+      for(int i=0;i<16;i++){
+        cmDesBitSW.get(i).ccSetIsActivated
+         (VcNumericUtility.ccBinaryLoad((int)cmCounterModel, i));
+      }//..~
+    }//+++
+  };
+  
+  private final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
       println(".ssPover()::call PApplet.exit()");
       exit();
     }//+++
   };
   
-  private final EiTriggerable cmAddCoounter = new EiTriggerable() {
+  private final EiTriggerable cmLeftShifting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      cmCounterModel<<=1;
+    }//+++
+  };
+  
+  private final EiTriggerable cmDecrementing = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      cmCounterModel--;
+    }//+++
+  };
+  
+  private final EiTriggerable cmIncrementting = new EiTriggerable() {
     @Override public void ccTrigger(){
       cmCounterModel++;
     }//+++
   };
   
-  private final EiTriggerable cmResetCounter = new EiTriggerable() {
+  private final EiTriggerable cmRightShifting = new EiTriggerable() {
     @Override public void ccTrigger(){
-      cmCounterModel--;
+      cmCounterModel>>=1;
+    }//+++
+  };
+  
+  private final EiTriggerable cmManipulating = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      int lpBitIndex
+        =VcLocalCoordinator.ccGetMouseOverID()
+        -cmDesBitSW.get(0).ccGetID();
+      boolean lpCurrentBit
+        =VcNumericUtility.ccBinaryLoad(cmCounterModel, lpBitIndex);
+      lpCurrentBit=!lpCurrentBit;
+      cmCounterModel=(short)VcNumericUtility.ccBinarySet(
+        (int)cmCounterModel,
+        lpBitIndex,
+        lpCurrentBit
+      );/* 4 */VcConst.ccLogln("mouse",lpBitIndex);
     }//+++
   };
 
@@ -97,30 +164,82 @@ public class DemoLocalUI extends PApplet {
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     
     //-- layout
-    cmMainPane.ccSetLocation(10, 22);
-    VcLocalCoordinator.ccAddShape(cmMainPane);
     
-    cmCounterTB.ccSetSize(72, 19);
-    cmCounterTB.ccSetLocation(cmMainPane,5, 22);
-    VcLocalCoordinator.ccAddElement(cmCounterTB);
+    //-- layout ** system
     
-    cmAddSW.ccSetSize(48,20);
-    cmAddSW.ccSetLocation(cmCounterTB, 4, 0);
-    VcLocalCoordinator.ccAddElement(cmAddSW);
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmAddSW, cmAddCoounter);
+    cmQuitSW.ccSetSize(100,100);
+    cmQuitSW.ccSetLocation(10, 30);
+    VcLocalCoordinator.ccAddElement(cmQuitSW);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmQuitSW, cmQuitting);
     
-    cmResetSW.ccSetSize(cmAddSW);
-    cmResetSW.ccSetLocation(cmAddSW, 4, 0);
-    VcLocalCoordinator.ccAddElement(cmResetSW);
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmResetSW, cmResetCounter);
+    //-- layout ** drag
+    cmDragPane.ccSetLocation(cmQuitSW, 10, 0);
+    VcLocalCoordinator.ccAddShape(cmDragPane);
     
-    cmDesSendBitSW.get(0).ccSetLocation(cmCounterTB, 0,20);
-    EcRect.ccFlowLayout(cmDesSendBitSW, 2, false, false);
-    VcLocalCoordinator.ccAddElement(cmDesSendBitSW);
+    cmGauge.ccSetLocation(cmDragPane, 32, 22);
+    cmGauge.ccSetSize(150, 19);
+    cmGauge.ccSetNameAlign('l');
+    cmGauge.ccSetIsVertical(false);
+    VcLocalCoordinator.ccAddElement(cmGauge);
+    
+    cmSlider.ccSetLocation(cmGauge, 0, 5);
+    cmSlider.ccSetSize(cmGauge);
+    cmSlider.ccSetupStyle(cmGauge);
+    VcLocalCoordinator.ccAddElement(cmSlider);
+    VcLocalCoordinator.ccRegisterWheelUpTrigger(cmSlider, cmIncrementting);
+    VcLocalCoordinator.ccRegisterWheelDownTrigger(cmSlider, cmDecrementing);
+    
+    //-- layout ** click
+    cmClickPane.ccSetLocation(cmQuitSW,0, 10);
+    VcLocalCoordinator.ccAddShape(cmClickPane);
+    
+    //-- layout ** click ** button
+    cmShiftLeftSW.ccSetSize(20,20);
+    cmShiftLeftSW.ccSetLocation(cmClickPane,5, 22);
+    VcLocalCoordinator.ccAddElement(cmShiftLeftSW);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmShiftLeftSW, cmLeftShifting);
+    
+    cmDecrementSW.ccSetSize(cmShiftLeftSW);
+    cmDecrementSW.ccSetLocation(cmShiftLeftSW, 4, 0);
+    VcLocalCoordinator.ccAddElement(cmDecrementSW);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmDecrementSW, cmDecrementing);
+    
+    cmIncrementSW.ccSetSize(cmDecrementSW);
+    cmIncrementSW.ccSetLocation(cmDecrementSW, 4, 0);
+    VcLocalCoordinator.ccAddElement(cmIncrementSW);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmIncrementSW, cmIncrementting);
+    
+    cmShiftRightSW.ccSetSize(cmIncrementSW);
+    cmShiftRightSW.ccSetLocation(cmIncrementSW, 4, 0);
+    VcLocalCoordinator.ccAddElement(cmShiftRightSW);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmShiftRightSW, cmRightShifting);
+    
+    cmDesBitSW.get(0).ccSetLocation(
+      cmClickPane.ccEndX()-25,
+      cmShiftLeftSW.ccEndY()+10
+    );
+    EcRect.ccFlowLayout(cmDesBitSW, 2, false, true);
+    VcLocalCoordinator.ccAddElement(cmDesBitSW);
+    
+    //-- layout ** click ** box
+    cmDecimalTB.ccSetSize(64, 19);
+    cmDecimalTB.ccSetLocation(cmShiftRightSW,32, 0);
+    cmDecimalTB.ccSetNameAlign('l');
+    VcLocalCoordinator.ccAddElement(cmDecimalTB);
+    
+    cmHexadecimalTB.ccSetSize(cmDecimalTB);
+    cmHexadecimalTB.ccSetLocation(cmDecimalTB,32, 0);
+    cmHexadecimalTB.ccSetNameAlign('l');
+    VcLocalCoordinator.ccAddElement(cmHexadecimalTB);
     
     //-- binding
+    
+    for(EcButton it:cmDesBitSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmManipulating);
+    }//..~
+    
     VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_Q, cmQuit);
+      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     
     //-- post setting
     println(".setup()::over");
@@ -133,10 +252,8 @@ public class DemoLocalUI extends PApplet {
     ssRoll();
     background(0);
 
-    //-- update ** binding
-    cmCounterTB.ccSetValue((int)cmCounterModel);
-    
     //-- update ** manager
+    cmScanning.ccTrigger();
     VcLocalCoordinator.ccUpdate();
     
   }//+++
@@ -147,6 +264,17 @@ public class DemoLocalUI extends PApplet {
 
   @Override public void mousePressed(){
     VcLocalCoordinator.ccMousePressed();
+  }//+++
+
+  @Override public void mouseWheel(MouseEvent me) {
+     int lpCount=-1*(int)(me.getAmount());//...i dont know why float cant work 
+     VcLocalCoordinator.ccMouseWheel(lpCount>0, lpCount<0);
+     /*
+     if(cmSlider.ccIsMouseHovered()){
+       if(lpCount>0){cmIncrementting.ccTrigger();}
+       if(lpCount<0){cmDecrementing.ccTrigger();}
+     }//..?
+     */
   }//+++
   
   //=== utility

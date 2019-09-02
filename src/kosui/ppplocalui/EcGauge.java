@@ -17,7 +17,7 @@
 
 package kosui.ppplocalui;
 
-import static processing.core.PApplet.ceil;
+import kosui.ppputil.VcNumericUtility;
 
 /**
  * a gauge can be filled.<br>
@@ -42,9 +42,9 @@ public class EcGauge extends EcElement {
   ;//--
   
   /**
-   * between 0-127
+   * between 0-255
    */
-  protected int cmContentValue = 32;
+  protected int cmContentValue = 99;
 
   /**
    * inherited default
@@ -75,30 +75,30 @@ public class EcGauge extends EcElement {
   //===
   
   /**
-   * 
+   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
    * @param pxZeroToOne : 0.00 - 1.00f
    */
   public final void ccSetPercentage(float pxZeroToOne){
-    cmContentValue=ceil(127f*pxZeroToOne)&127;
+    cmContentValue=VcNumericUtility.ccProportion(pxZeroToOne);
   }//+++
   
   /**
-   * the gauge will be full as this value equals 127
-   * @param pxHalfByte : 0-127
+   * the gauge will be full as this value equals 255.<br>
+   * @param pxHalfByte : will get masked to 0-255
    */
   public final void ccSetPercentage(int pxHalfByte){
-    cmContentValue=pxHalfByte&127;
+    cmContentValue=pxHalfByte&0xFF;
   }//+++
   
   /**
-   * like if you wanna the value of 50%,
-   * you can pass (50,100).
+   * like if you wanna the value of 50%, you can pass (50,100).<br>
+   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
    * @param pxVal should be less than span but this do NOT check
    * @param pxSpan if passed zero this will NOT throw or print anything
    */
   public final void ccSetPercentage(int pxVal, int pxSpan){
-    if(pxSpan==0 || pxVal==0){return;}
-    cmContentValue=(pxVal*127/pxSpan)&127;
+    cmContentValue=VcNumericUtility.ccProportion
+      (VcNumericUtility.ccProportion(pxVal, pxSpan));
   }//+++
   
   /**
@@ -153,20 +153,28 @@ public class EcGauge extends EcElement {
   /**
    * ##
    * @param pxVal this value has nothing to do with this
-   * @return inputed_value*current_gauge/127 
+   * @return inputed_value*current_gauge/255
    */
   public final int ccTellScale(int pxVal){
-    return pxVal*cmContentValue/127;
+    return pxVal*cmContentValue/0xFF;
   }//+++
   
   //===
   
   /**
-   * 
-   * @return between 0-127
+   * @return between 0-255
    */
   public final int ccGetContentValue(){
-    return cmContentValue;
+    return cmContentValue&0xFF;
   }//+++
 
+  /**
+   * @param pxTarget #
+   */
+  public void ccSetupStyle(EcGauge pxTarget) {
+    super.ccSetupStyle(pxTarget);
+    ccSetIsVertical(pxTarget.cmIsVertical);
+    ccSetHasStroke(pxTarget.cmHasStroke);
+  }//+++
+  
 }//***eof

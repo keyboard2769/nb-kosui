@@ -19,6 +19,7 @@ package ppptest;
 
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import processing.core.PApplet;
 
 public class CaseNumberRegex{
   
@@ -44,7 +45,7 @@ public class CaseNumberRegex{
     1.2f,1.2f,1.23f,1.234f
   };
     
-  private final void ssTestFloatStringVerify(){
+  static private void ssTestFloatStringVerify(){
     VcConst.ccPrintln("== ccIsFloatString?? >>");
     for(String it:O_CASE_I){
       VcConst.ccPrintln(it, VcNumericUtility.ccIsFloatString(it));
@@ -52,10 +53,51 @@ public class CaseNumberRegex{
     VcConst.ccPrintln("== <<");
   }//+++
   
-  private final void ssTestIntegerStringVerify(){
+  static private void ssTestIntegerStringVerify(){
     VcConst.ccPrintln("== ccIsIntegerString?? >>");
     for(String it:O_CASE_I){
       VcConst.ccPrintln(it, VcNumericUtility.ccIsIntegerString(it));
+    }//..~
+    VcConst.ccPrintln("== <<");
+  }//+++
+  
+  static private void ssTestMaskGeneration(){
+    VcConst.ccPrintln("== ssTestMaskGeneration >>");
+    for(int i=-1;i<17;i++){
+      VcConst.ccPrintln(
+        Integer.toString(i), 
+        PApplet.binary(VcNumericUtility.ccToOnStateMask(i),16)
+      );
+    }//..~
+  }//+++
+  
+  static private void ssTestBinaryLoad(){
+    VcConst.ccPrintln("== ssTestBinaryLoad >>");
+    for(int i=-1;i<17;i++){
+      VcConst.ccPrintln(
+        Integer.toString(i), 
+        VcNumericUtility.ccBinaryLoad(7, i)
+      );
+    }//..~
+    VcConst.ccPrintln("== <<");
+  }//+++
+  
+  static private void ssTestBinarySet(){
+    VcConst.ccPrintln("== ssTestBinarySet >>");
+    int lpSource=1;
+    for(int i=-1;i<17;i++){
+      lpSource=VcNumericUtility.ccBinarySet(lpSource, i, true);
+      VcConst.ccPrintln(
+        Integer.toString(i), 
+        PApplet.hex(lpSource,16)
+      );
+    }//..~
+    for(int i=-1;i<17;i++){
+      lpSource=VcNumericUtility.ccBinarySet(lpSource, i, false);
+      VcConst.ccPrintln(
+        Integer.toString(i), 
+        PApplet.hex(lpSource,16)
+      );
     }//..~
     VcConst.ccPrintln("== <<");
   }//+++
@@ -65,10 +107,8 @@ public class CaseNumberRegex{
   public static void main(String[] args){
     System.out.println("CaseNumberRegex.main()::start");
     //--
-        
     
-    
-    
+    ssTestBinarySet();
     
     //--
     System.out.println("CaseNumberRegex.main()::over");

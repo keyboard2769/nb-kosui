@@ -100,7 +100,7 @@ public final class VcConst {
     if(!ccIsValidString(pxTag)){return;}
     System.out.print(pxTag);
     if(pxValue==null){
-      System.out.print("");
+      System.out.println("");
     }else{
       System.out.print(":");
       System.out.println(pxValue.toString());

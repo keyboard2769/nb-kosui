@@ -76,11 +76,12 @@ i know it is a nonsense name, but anyway.
 
 #### onfire
 
-- [ ] $ build a local ui example using all type of given ui compnent.
+- [ ] $ refactor EcSlider to makle EcGauge intentionally draggable
 
 #### done
 
-- [x] $ merge binary method from wm monitor to numeric utilities
-- [x] $ merge ccGetFileByFileChooser from xml specifier to swing dialog
+- [x] $ built a local ui example using given type of ui compnent.
+- [x] $ merged binary method from wm monitor to numeric utilities
+- [x] $ merged ccGetFileByFileChooser from xml specifier to swing dialog
 
 <hr><!--eof-->

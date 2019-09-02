@@ -61,12 +61,16 @@ public class EcSlider extends EcGauge{
       pbOwner.rect(ccCenterX()-2, cmY, 4, cmH);
       ccActFill();
       pbOwner.rect(cmX,cmY+lpPosition-4,cmW,8);
-      if(ccIsMousePressed()){cmContentValue=(pbOwner.mouseY-cmY)*127/cmH;}
+      if(ccIsMousePressed()){
+        cmContentValue=(pbOwner.mouseY-cmY)*255/cmH;
+      }//..?
     }else{
       pbOwner.rect(cmX, ccCenterY()-2, cmW, 4);
       ccActFill();
       pbOwner.rect(cmX+lpPosition-4, cmY, 8, cmH);
-      if(ccIsMousePressed()){cmContentValue=(pbOwner.mouseX-cmX)*127/cmW;}
+      if(ccIsMousePressed()){
+        cmContentValue=(pbOwner.mouseX-cmX)*255/cmW;
+      }//..?
     }//..?
     
     if(cmHasStroke){pbOwner.noStroke();}
