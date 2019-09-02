@@ -72,12 +72,11 @@ i know it is a nonsense name, but anyway.
 
 - [ ] $ let's define more awt color!!
 - [ ] $ make a class and demo for trend chart.
-- [ ] $ add create and load json method to McFactory.
 - [ ] $ fill up those array packup methods.
 
 #### onfire
 
-- [ ] $ rewrite all swing dialog method comment
+- [ ] $ add create and load json method to McFactory.
 
 #### currently
 
@@ -86,5 +85,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ merged ccGetFileByFileChooser from xml specifier to swing dialog
 - [x] $ re-implemented EcSlider to make EcGauge intentionally draggable
 - [x] $ merged EcTip into EcTipMamager, make it a real manager.
+- [x] $ rewritten all swing dialog method comment
 
 <hr><!--eof-->

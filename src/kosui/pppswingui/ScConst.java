@@ -109,7 +109,7 @@ public class ScConst {
   //=== dialog
   
   /**
-   * prints a simple error message to the output
+   * prints a simple error message to the output.<br>
    * @return SwingUtilities.isEventDispatchThread()
    */
   public static final boolean ccIsEDT(){
@@ -119,7 +119,7 @@ public class ScConst {
   }//+++
   
   /**
-   * will be blocked out from event dispatch thread.<br>
+   * will get blocked out from event dispatch thread.<br>
    * @param pxMessage must have something
    */
   public static final void ccMessageBox(String pxMessage){
@@ -129,7 +129,7 @@ public class ScConst {
   }//+++
   
   /**
-   * will be blocked out from event dispatch thread.<br>
+   * will get blocked out from event dispatch thread.<br>
    * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
    * and yes, there will be no ccWarnBox().<br>
    * @param pxMessage must have something
@@ -156,9 +156,9 @@ public class ScConst {
   }//+++
   
   /**
-   * will be blocked out from event dispatch thread.<br>
+   * will get blocked out from event dispatch thread.<br>
    * there will never be a version does invoke later
-   * for you because your should decide if invoke and wait is necessary
+   * for you because you should decide if invoke and wait is necessary
    * or not and when and how to use the returned string.<br>
    * @param pxBrief a short message you describe about what you want
    * @param pxDefault will be in the input box before getting input
@@ -173,9 +173,11 @@ public class ScConst {
   }//+++
   
   /**
-   * will be blocked out from event dispatch thread.<br>
-   * this thing iterates through the whole list to find the index.<br>
-   * if you don't want those overheads just don't use this.
+   * <pre>
+   * will get blocked out from event dispatch thread.
+   * this thing iterates through the whole list to find the index.
+   * if you are not confortable with those overheads just don't use this one.
+   * </pre>
    * @param pxBrief a short message you describe about what you want
    * @param pxList supposedly a string array but you can pass anything
    * @return #
@@ -265,21 +267,14 @@ public class ScConst {
   }//+++
   
   /**
-   * 
-   * @return color chosen one
+   * will get blocked out from event dispatch thread.<br>
+   * not sure what is gonna happen if owner is not initiated.<br>
+   * @return the chosen one. if anything is wrong, the DARK GRAY.
    */
   public static final int ccGetColorByColorChooser(){
-    //[later]::make this better
-    if(cmOwner!=null){
-      if(ccIsEDT()){
-        Color lpRes=JColorChooser
-          .showDialog(cmOwner, "Choose...", Color.BLACK);
-        if(lpRes!=null){
-          //[later]::make this pappplet capable
-          return lpRes.getRGB();
-        }//..?
-      }//..?
-    }//..?
+    if(!ccIsEDT()){return 0xFF111111;}
+    Color lpRes=JColorChooser.showDialog(cmOwner, "Choose...", Color.BLACK);
+    if(lpRes!=null){return lpRes.getRGB();}
     return 0xFF111111;
   }//+++
     
