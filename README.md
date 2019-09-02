@@ -1,19 +1,68 @@
 Key Optional System User Interface
 ===
-although this is just a convenience repository for pushing and pulling 
-from netbeans, it will be the main repository for kosui right after
-i figure out how to use release page.
+my Processing based utility classes, based on processing's `core.jar`, 
+for building hardware-panel like demos.
+i know it is a nonsense name, but anyway. 
 
-<hr>
+---
+## packages
 
+#### local UI
+- basically a direct drawing UI library with no event handling machanism.
+- instead, it has two ID based system for mouse and keyboard input.
+
+#### swing UI
+- basically a bunch of wrapper class based on JPanel
+  to make swing library just a little bit easy to use for me. 
+- besides that a none local JWindow is wrapped
+  to serve as a container alone side the PApplet frame. 
+
+#### logic
+- basically a bunch of model class mimics
+  [programmable logic controller](https://en.wikipedia.org/wiki/Programmable_logic_controller)  instructions and devices like Timer, Stpper, Flicker, Pulse-Generator, etc. 
+- all of these devices is suppossed to run in a scan loop.
+  so, thus, in processing, it is THE `draw()`. 
+
+#### model
+- basically wrapper classes for processing.core.data, 
+  and do some tedious file io operations.
+- some data representation is rearranged for dealing with the two UI thread 
+  and outwarded read/write.
+
+#### utility
+- a bunch of singleton classes provides some personal utility function. 
+- some of them is referred as "manager" for UI components,
+  they might work only under the certain UI thread.
+
+#### test
+- hand crafted case test codes.
+- actual living eamples is located here also.
+- and bunch of untested experimental codes.
+
+---
+## build and compile or Modify
+- the project is an ant project. the only the dependency is the `core.jar`.
+- originally developed by oracle netbeans ide 8.2, 
+  with oracle jdk 1.6, 
+  on mac osx 10.8,
+  using processing 2.1 core. 
+- currently push and pull enviorenment is apache netbeas ide 11,
+  with oracle open jdk 12,
+  on a chinese rebuilt windows 10 home 1809,
+  using processing 2.0 core. 
+- personnaly i still recommend oracle netbeans ide 8.2.
+  apache 9.x+ wokrs a little bit tissy to me. 
+  but anyway
+
+---
 ## todo list
 
-#### hold
+#### behold
 
 - [ ] $ uno
 - [ ] $ dos
+- [ ] $ quatro? 
 - [ ] $ tre!!
-- [ ] $ quatro!!?! 
 
 #### plan 
 
@@ -24,7 +73,7 @@ i figure out how to use release page.
 - [ ] $ add create and load json method to McFactory.
 - [ ] $ fill up those array packup methods.
 
-#### current
+#### onfire
 
 - [ ] $ build a local ui example using all type of given ui compnent.
 
