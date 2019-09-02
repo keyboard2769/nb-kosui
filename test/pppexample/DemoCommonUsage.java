@@ -73,7 +73,7 @@ public class DemoCommonUsage extends PApplet {
 
     //-- pre
     size(320, 240);
-    frame.setTitle("DemoCommonUsage");
+    frame.setTitle("Common Usage");
     EcConst.ccSetupSketch(this);
     self=this;
 
@@ -135,11 +135,11 @@ public class DemoCommonUsage extends PApplet {
   
   //=== entry
   
-  static public boolean ccGetRollingAbove(int pxZeroToFifteen){
+  static public boolean ccIsRollingAbove(int pxZeroToFifteen){
     return cmRoller>pxZeroToFifteen;
   }//+++
   
-  static public boolean ccGetRollingAt(int pxZeroToFifteen){
+  static public boolean ccIsRollingAt(int pxZeroToFifteen){
     return cmRoller==pxZeroToFifteen;
   }//+++
   

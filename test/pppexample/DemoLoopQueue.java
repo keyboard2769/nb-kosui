@@ -156,7 +156,7 @@ public class DemoLoopQueue extends PApplet {
     //-- pre
     size(320, 240);
     EcConst.ccSetupSketch(this);
-    frame.setTitle("DemoLoopQueue");
+    frame.setTitle("Loop Queue");
     self=this;
     
     //-- init ** swing
@@ -199,7 +199,7 @@ public class DemoLoopQueue extends PApplet {
     SwingUtilities.invokeLater(cmRefreshAmountTB);
     
     //-- update **
-    if(ccGetRollingAbove(7)){
+    if(ccIsRollingAbove(7)){
       fill(0xEE);
       text(C_MESSAGE,5,5);
     }//..?
@@ -218,11 +218,11 @@ public class DemoLoopQueue extends PApplet {
   
   //=== entry
   
-  static public boolean ccGetRollingAbove(int pxZeroToFifteen){
+  static public boolean ccIsRollingAbove(int pxZeroToFifteen){
     return cmRoller>pxZeroToFifteen;
   }//+++
   
-  static public boolean ccGetRollingAt(int pxZeroToFifteen){
+  static public boolean ccIsRollingAt(int pxZeroToFifteen){
     return cmRoller==pxZeroToFifteen;
   }//+++
   

@@ -15,6 +15,7 @@ import kosui.pppswingui.*;
 import kosui.ppputil.*;
 
 import javax.swing.SwingUtilities;
+import kosui.pppmodel.MiPixillatable;
 
 import processing.core.*;
 
@@ -33,10 +34,8 @@ public class TestSketch extends PApplet {
   
   //=== overridden
   
-  private final EcGauge cmTesterA = new EcGauge("t", 0xAA01);
-  private final EcGauge cmTesterB = new EcGauge("t", 0xAA02);
-  private final EcSlider cmTesterC = new EcSlider("t", 0xAA03);
-  private final EcSlider cmTesterD = new EcSlider("t", 0xAA04);
+  EcImage t = new EcImage(32, 32);
+  
   
   @Override public void setup() {
     
@@ -47,35 +46,36 @@ public class TestSketch extends PApplet {
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     
     //-- laytout
-    cmTesterA.ccSetLocation(50, 50);
-    cmTesterA.ccSetIsVertical(true);
-    cmTesterA.ccSetSize(80,80);
-    cmTesterA.ccSetIsEnabled(true);
     
     
-    cmTesterB.ccSetLocation(cmTesterA,8, 0);
-    cmTesterB.ccSetIsVertical(false);
-    cmTesterB.ccSetSize(80,80);
-    cmTesterB.ccSetIsEnabled(true);
+    t.ccFillPixel(0xFF33EE33, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY){
+        return true;
+      }//+++
+    });
+    
+    t.ccFillPixel(0xFF999999, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY){
+        return pxX>pxY;
+      }//+++
+    });
+    
+    t.ccFillPixel(0xFFEEEEEE, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY){
+        return pxX<3 || pxX>28;
+      }//+++
+    });
+    
+    t.ccFillPixel(0xFFEEEEEE, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY){
+        return pxY<3 || pxY>28;
+      }//+++
+    });
     
     
-    cmTesterC.ccSetLocation(cmTesterA,0,8);
-    cmTesterC.ccSetIsVertical(true);
-    cmTesterC.ccSetSize(80,80);
-    cmTesterC.ccSetIsEnabled(true);
+    VcLocalCoordinator.ccAddShape(t);
     
     
-    cmTesterD.ccSetLocation(cmTesterC,8,0);
-    cmTesterD.ccSetIsVertical(false);
-    cmTesterD.ccSetSize(80,80);
-    cmTesterD.ccSetIsEnabled(true);
-    
-    
-    
-    VcLocalCoordinator.ccAddElement(cmTesterA);
-    VcLocalCoordinator.ccAddElement(cmTesterB);
-    VcLocalCoordinator.ccAddElement(cmTesterC);
-    VcLocalCoordinator.ccAddElement(cmTesterD);
     
     //-- bind
     VcLocalCoordinator.ccRegisterKeyTrigger
@@ -93,16 +93,13 @@ public class TestSketch extends PApplet {
     cmRoller++;cmRoller&=0x0F;
     
     //-- scan
+    t.ccSetLocation(mouseX, mouseY);
     
     //-- update
     VcLocalCoordinator.ccUpdate();
     
     //-- finishing
     VcTagger.ccTag("roller",cmRoller);
-    VcTagger.ccTag("a",cmTesterA.ccGetContentValue());
-    VcTagger.ccTag("b",cmTesterB.ccGetContentValue());
-    VcTagger.ccTag("c",cmTesterC.ccGetContentValue());
-    VcTagger.ccTag("d",cmTesterD.ccGetContentValue());
     VcTagger.ccStabilize();
     
   }//+++

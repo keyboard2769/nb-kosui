@@ -29,7 +29,14 @@ public final class McFactory {
   
   private McFactory(){}//+++
   
-  //===
+  //=== JSON
+  
+  //[plan]::ccToJSONArray(List<MiRecord>)
+  //[plan]::ccToJSONObject(HashMap<String, MiRecord>)
+  //[plan]::ccParseJSONArray()
+  //[plan]::ccParseJSONObject()
+  
+  //=== XML 
   
   /**
    * swallow the exception for you.<br>
@@ -68,6 +75,8 @@ public final class McFactory {
     }//..?
     return lpXML;
   }//+++
+  
+  //=== CSV
   
   /**
    * loading with the "header" option.<br>
