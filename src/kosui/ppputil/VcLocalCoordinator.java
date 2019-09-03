@@ -87,6 +87,7 @@ public final class VcLocalCoordinator {
   /**
    * <pre>
    * should be called inside draw().
+   * both passive part and active part is iterated.
    * thus coordinator for-each all component he holds,
    *   ccUpdate() of components should never
    *   be called directly from draw().
@@ -94,31 +95,45 @@ public final class VcLocalCoordinator {
    */
   static public final void ccUpdate(){
     if(!EcComponent.ccHasOwner()){return;}
-    SELF.ssUpdate();
+    ccUpdatePassive();
+    ccUpdateActive();
   }//+++
   
-  private void ssUpdate(){
+  /**
+   * <pre>
+   * draws irresponsive UI serve as background layer.<>
+   * this can get separated from draw() loop to setup() for
+   *   performance improvement, but it sure left some tedious stuff
+   *   for dislay lagging, so,  just a trade off.
+   * </pre>
+   */
+  static public final void ccUpdatePassive(){
+    //-- layer I
+    for(EcShape it:SELF.cmListOfShape){
+      it.ccUpdate();
+    }//..~
+  }//+++
+  
+  /**
+   * queue offering and responsive UI updating.<br>
+   */
+  static public final void ccUpdateActive(){
     
     //-- response to offer
-    if(!cmQueueOfLoopTrigger.isEmpty()){
-      cmQueueOfLoopTrigger.poll().ccTrigger();
+    if(!SELF.cmQueueOfLoopTrigger.isEmpty()){
+      SELF.cmQueueOfLoopTrigger.poll().ccTrigger();
     }//..?
     
     //-- turn on selected inputtable 
-    for(EcElement it:cmMapOfInputtable.values()){
-      it.ccSetIsActivated(it.ccGetID()==cmInputFocusID);
-    }//..~
-    
-    //-- layer I
-    for(EcShape it:cmListOfShape){
-      it.ccUpdate();
+    for(EcElement it:SELF.cmMapOfInputtable.values()){
+      it.ccSetIsActivated(it.ccGetID()==SELF.cmInputFocusID);
     }//..~
     
     //-- layer II
-    cmMouseOverID=0;
-    for(EcElement it:cmListOfElement){
+    SELF.cmMouseOverID=0;
+    for(EcElement it:SELF.cmListOfElement){
       it.ccUpdate();
-      if(it.ccIsMouseHovered()){cmMouseOverID=it.ccGetID();}
+      if(it.ccIsMouseHovered()){SELF.cmMouseOverID=it.ccGetID();}
     }//..~
   
   }//+++

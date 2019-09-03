@@ -19,14 +19,17 @@ package kosui.pppmodel;
 
 /**
  * implement vector drawing API for a bitmap would be tissy, 
- * but this is easy.<br>
- * actually this is a filter.<br>
+ * but this way is easy.<br>
+ * actually just a filter.<br>
  */
 public interface MiPixillatable {
   
   /**
    * <pre>
-   * walking through a whole pixel array is not that hard to implement.
+   * a pixillatable is supposedly to get passed to a image
+   *   whitch implemented ccFillPixel() with a loop iterates
+   *   its entire pixel array.
+   * this filter might get invoked inside that loop.
    * </pre>
    * @param pxX pix
    * @param pxY pix

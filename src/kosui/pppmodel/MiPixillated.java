@@ -26,11 +26,11 @@ public interface MiPixillated{
   
   /**
    * <pre>
-   * any image implement this interface is suppsed to walking through
-   *   the entire pixel array.
-   * also  is not that hard to implement,
+   * any image implement this interface is suppsed to walk through
+   *   its entire pixel array.
+   * although it is not that hard to implement,
    *   you can image that would be super time consuming.
-   * this is not suitable for a large background.
+   * just not suitable for hand-craft a huge background image.
    * </pre>
    * @param pxColor color to fill under the filter
    * @param pxFilter do not pass null
@@ -38,7 +38,7 @@ public interface MiPixillated{
   public void ccFillPixel(int pxColor, MiPixillatable pxFilter);
   
   /**
-   * any image implement this interface is suppsed to check the boundary.<br>
+   * any image implement this interface is supposed to check the boundary.<br>
    * @param pxX pix
    * @param pxY pix 
    * @param pxColor supposedly ARGB
@@ -46,7 +46,7 @@ public interface MiPixillated{
   public void ccSetPixel(int pxX, int pxY, int pxColor);
   
   /**
-   * any image implement this interface is suppsed to check the boundary.<br>
+   * any image implement this interface is supposed to check the boundary.<br>
    * @param pxX pix
    * @param pxY pix 
    * @return supposedly ARGB
