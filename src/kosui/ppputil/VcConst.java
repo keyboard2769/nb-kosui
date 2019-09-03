@@ -17,10 +17,6 @@
 
 package kosui.ppputil;
 
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 /**
  * an utility class should never use such a nonsense name.<br>
  * i don't know from where i got this idea.<br>
@@ -58,14 +54,24 @@ public final class VcConst {
   //===
   
   /**
-   * ##
    * @param pxLine #
-   * @return #
+   * @return no null no empty
    */
   static public final boolean ccIsValidString(String pxLine){
     if(pxLine==null){return false;}
     else{return !pxLine.isEmpty();}
   }//+++
+  
+  /**
+   * @param pxArray #
+   * @return no null no empty
+   */
+  static public final boolean ccIsValidArray(Object[] pxArray){
+    if(pxArray==null){return false;}
+    return pxArray.length!=0;
+  }//+++
+  
+  //===
   
   /**
    * masked out for ccPrintln()<br>
@@ -83,6 +89,8 @@ public final class VcConst {
   static public final void ccLogln(String pxTag, Object pxValue){
     if(C_DOSE_LOG){ccPrintln(pxTag, pxValue);}
   }//+++
+  
+  //=== 
   
   /**
    * alias to ccPrintln(String, null)<br>
@@ -107,33 +115,25 @@ public final class VcConst {
     }//..?
   }//+++
   
+  //=== 
+  
   /**
-   * a wrapper to Files.readAllBytes() and will convert it to string
-   * @param pxURL supposedly should get from class.getResource()
-   * @return a custom tag if error occurred
+   * only a "[ERR]" tag with time stamp will be added through System.err.<br>
+   * @param pxLine #
    */
-  static public final String ccLoadFromURL(URL pxURL){
-    //[TODO]::should this be part of McFile??
-    String lpRes=null;
-    byte[] lpByteBuf=null;
-    if(pxURL!=null){
-      try{
-        lpByteBuf=Files.readAllBytes(Paths.get(pxURL.toURI()));
-      }catch(Exception e){
-        System.err.println("kosui.ppputil.VcConst.ccLoadFromURL()::"
-          + e.getLocalizedMessage());
-      }//..?
-    }//..?
-    if(lpByteBuf!=null){
-      lpRes=new String(lpByteBuf);
-    }//..?
-    return lpRes==null?"<loadFailed/>":lpRes;
-  }//+++
+  public static final void ccErrln(String pxLine){
+    System.err.print(VcStampUtility.ccErrStampTypeI());
+    ccPrintln(pxLine);
+  }//..?
   
-  //=== misc
-  
-  //<editor-fold defaultstate="collapsed" desc="ignore_code">
-  /*[IGNORE]::*/
-  //</editor-fold>
+  /**
+   * only a "[ERR]" tag with time stamp will be added through System.err.<br>
+   * @param pxTag #
+   * @param pxValue #
+   */
+  public static final void ccErrln(String pxTag, Object pxValue){
+    System.err.print(VcStampUtility.ccErrStampTypeI());
+    ccPrintln(pxTag,pxValue);
+  }//..?
   
 }//***eof

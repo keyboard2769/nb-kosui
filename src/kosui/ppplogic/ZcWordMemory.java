@@ -18,14 +18,14 @@
 package kosui.ppplogic;
 
 import java.util.Arrays;
-import kosui.pppmodel.MiByteInterchangeable;
 import kosui.ppputil.VcNumericUtility;
+import kosui.pppmodel.MiByteExchangeable;
 
 /**
  * a more real stuff like implement base on integer array. <br>
  * could be transformed to byte array for sending via socket. <br>
  */
-public class ZcWordMemory implements ZiMemory,MiByteInterchangeable {
+public class ZcWordMemory implements ZiMemory,MiByteExchangeable {
 
   private final int[] cmData;
   private final int cmMask;

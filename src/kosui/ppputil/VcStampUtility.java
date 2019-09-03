@@ -104,4 +104,21 @@ public final class VcStampUtility {
     return lpRes.toString();
   }//+++
   
+  //===
+  
+  /**
+   * supposedly for error generation.<br>
+   * @return # %hh:mm'ss%
+   */
+  synchronized static public final String ccErrStampTypeI(){
+    StringBuilder lpRes=new StringBuilder("[ERR-");
+    lpRes.append(nf(hour(),2));
+    lpRes.append(':');
+    lpRes.append(nf(minute(),2));
+    lpRes.append('\'');
+    lpRes.append(nf(second(),2));
+    lpRes.append(']');
+    return lpRes.toString();
+  }//++++
+  
  }//***eof

@@ -17,6 +17,7 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
@@ -203,10 +204,12 @@ public final class EcConst {
    * is the main class.<br>
    * @param args you know what it is.
    */
-  public static void main(String[] args) {
-    System.out.println("Key Optional System User Interface");
-    System.out.println("v19b01");
-    System.err.println("kosui.EcFactory.main()::NOT_FOR_PUBLIC_USE!!");
+  public static void main(String[] args){
+    VcConst.ccPrintln("Key Optional System User Interface");
+    VcConst.ccPrintln("v0.2.0 b1909001");
+    VcConst.ccPrintln("on",VcConst.C_V_OS);
+    VcConst.ccPrintln("at",VcConst.C_V_PWD);
+    VcConst.ccErrln("NO_PUBLIC_USE!!");
   }//+++
 
 }//***eof

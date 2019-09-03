@@ -27,7 +27,7 @@ public class TestSketch extends PApplet {
   
   private final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
-      println("kosui.ppptest.TestSketch.cmQuitting::call PApplet.exit");
+      println(".cmQuitting::call PApplet.exit");
       exit();
     }//+++
   };
@@ -90,7 +90,7 @@ public class TestSketch extends PApplet {
     
     //-- pre
     background(0);
-    cmRoller++;cmRoller&=0x0F;
+    ccRoll();
     
     //-- scan
     t.ccSetLocation(mouseX, mouseY);
@@ -110,8 +110,20 @@ public class TestSketch extends PApplet {
   
   //=== entry
   
+  static private void ccRoll(){
+    cmRoller++;cmRoller&=0x0F;
+  }//+++
+  
+  static public boolean ccIsRollingAbove(int pxZeroToFifteen){
+    return cmRoller>pxZeroToFifteen;
+  }//+++
+  
+  static public boolean ccIsRollingAt(int pxZeroToFifteen){
+    return cmRoller==pxZeroToFifteen;
+  }//+++
+  
   static public void main(String[] passedArgs) {
     PApplet.main(TestSketch.class.getCanonicalName());
-  }//+++
+  }//..!
   
 }//***eof

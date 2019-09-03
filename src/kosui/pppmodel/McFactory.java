@@ -18,6 +18,9 @@
 package kosui.pppmodel;
 
 import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import processing.data.XML;
 import processing.data.Table;
 
@@ -28,6 +31,29 @@ import processing.data.Table;
 public final class McFactory {
   
   private McFactory(){}//+++
+  
+  //=== text
+  
+  /**
+   * a wrapper to Files.readAllBytes() and will convert it to string.<br>
+   * @param pxURL supposedly should get from class.getResource()
+   * @return could be null
+   */
+  static public final String ccLoadText(URL pxURL){
+    if(pxURL==null){return null;}
+    byte[] lpByteBuf=null;
+    try{
+      lpByteBuf=Files.readAllBytes(Paths.get(pxURL.toURI()));
+    }catch(Exception e){
+      System.err.println("kosui.pppmodel.McFactory.ccLoadText()::"
+        + e.getMessage());
+      lpByteBuf=null;
+    }//..?
+    if(lpByteBuf!=null){
+      return new String(lpByteBuf);
+    }//..?
+    return null;
+  }//+++
   
   //=== JSON
   

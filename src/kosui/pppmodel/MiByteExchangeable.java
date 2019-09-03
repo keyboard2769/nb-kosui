@@ -21,7 +21,7 @@ package kosui.pppmodel;
  * a memory map might be byte interchangeable,<br>
  * a free formatted binary file might be byte interchangeable.<br>
  */
-public interface MiByteInterchangeable{
+public interface MiByteExchangeable{
   
   /**
    * @return #

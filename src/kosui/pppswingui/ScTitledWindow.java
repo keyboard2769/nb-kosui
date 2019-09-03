@@ -192,6 +192,7 @@ public class ScTitledWindow extends JWindow {
    * @param pxTitle #
    */
   public final void ccSetTitle(String pxTitle){
+    if(cmTitle==null){return;}
     cmTitle.setText(pxTitle);
   }//+++
 

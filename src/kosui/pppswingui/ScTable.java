@@ -31,20 +31,24 @@ import javax.swing.table.TableModel;
  * know i see separate them is not a bad idea at all. <br>
  */
 public final class ScTable extends JScrollPane {
-
+  
   private final JTable cmTable;
-
+  
   //===
   
   /**
-   * selection mode will be set single mode
-   * @param pxModel we have a adaptor in this package 
+   * selection mode will be set single mode.<br>
+   * @param pxModel we have a adaptor in this package
    * @param pxW width
    * @param pxH height
    */
   public ScTable(TableModel pxModel, int pxW, int pxH) {
     super();
-    cmTable = new JTable(pxModel);
+    if(pxModel==null){
+      cmTable = new JTable();
+    }else{
+      cmTable = new JTable(pxModel);
+    }//..?
     cmTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     cmTable.getTableHeader().setReorderingAllowed(false);
     setViewportView(cmTable);
@@ -60,63 +64,65 @@ public final class ScTable extends JScrollPane {
     int lpSize = cmTable.getColumnModel().getColumnCount();
     return lpMasked > lpSize ? lpSize - 1 : lpMasked;
   }//+++
-
+  
   //===
   
   /**
-   * 
+   * no null check.<br>
    * @param pxFore text
    * @param pxBack background
    * @param pxGrid grid lines
    */
-  public final void ccSetColor
-    (Color pxFore, Color pxBack, Color pxGrid)
-  { cmTable.setForeground(pxFore);
+  public final
+  void ccSetColor(Color pxFore, Color pxBack, Color pxGrid){
+    cmTable.setForeground(pxFore);
     cmTable.setBackground(pxBack);
     cmTable.setGridColor(pxGrid);
   }//+++
-
-/**
- * 
- * @param pxState #
- */
-  public final void ccSetEnabled(boolean pxState)
-  {cmTable.setEnabled(pxState);}//+++
-
+  
   /**
-   * 
+   * ##
+   * @param pxState #
+   */
+  public final void ccSetEnabled(boolean pxState){
+    cmTable.setEnabled(pxState);
+  }//+++
+  
+  /**
+   * ##
    * @param pxIndex #
    * @param pxWidth #
    */
-  public final void ccSetColumnWidth
-    (int pxIndex, int pxWidth)
-  { TableColumn lpColumn = cmTable.getColumnModel()
-      .getColumn(ccFixIndex(pxIndex));
+  public final void ccSetColumnWidth(int pxIndex, int pxWidth){
+    TableColumn lpColumn
+      = cmTable.getColumnModel().getColumn(ccFixIndex(pxIndex));
     lpColumn.setMinWidth(0x04);
     lpColumn.setMaxWidth(0xFF);
     lpColumn.setPreferredWidth(pxWidth);
   }//+++
-
+  
   /**
-   * 
-   * @param pxModel #
+   * ##
+   * @param pxModel do not pass null
    */
   public final void ccSetModel(TableModel pxModel) {
+    if(pxModel == null){return;}
     cmTable.setModel(pxModel);
   }//+++
   
   //===
   
   /**
-   * 
-   * @return #
+   * should not get called outside EDT but this does NOT check.<br>
+   * @return the table component
    */
   public final JTable ccGetTable(){
     return cmTable;
   }//+++
   
   /**
-   * does NOT check for EDT.
+   * alias to JTable::getSelectedRow().<br>
+   * should not get called outside EDT but this does NOT check.<br>
    * @return getSelectedRow() of JTable.
    */
   public final int ccGetSelectedRowIndex(){
@@ -148,5 +154,5 @@ public final class ScTable extends JScrollPane {
         + "PrinterException:"+ex.getLocalizedMessage());
     }//..%
   }//+++
-
+  
 }//***eof
