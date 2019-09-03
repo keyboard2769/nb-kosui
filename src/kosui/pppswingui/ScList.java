@@ -81,6 +81,11 @@ public final class ScList extends JScrollPane {
     cmList.addMouseListener(pxListener);
   }//+++
   
+  /**
+   * thus the implementation of DefaultListModel might not match every 
+   * situation this is the watch-back solution.<br>
+   * @param pxModel #
+   */
   public final void ccSetModel(ListModel<String> pxModel){
     if(pxModel==null){return;}
     cmList.setModel(pxModel);

@@ -144,6 +144,12 @@ public class ScConst {
     );
   }//+++
   
+  /**
+   * will get blocked out from event dispatch thread.<br>
+   * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
+   * @param pxMessage does not check for null or emptiness
+   * @return false by default
+   */
   public static final boolean ccYesOrNoBox(String pxMessage){
     if(!ccIsEDT()){return false;}
     int i=JOptionPane.showConfirmDialog(

@@ -33,7 +33,10 @@ public class McLineChartModel implements MiByteExchangeable{
   private final int[] cmDesOffsetX = new int[C_MAX_CAPACITY];
   private final int[] cmDesOffsetY = new int[C_MAX_CAPACITY];
   
-  private int cmHeadIndex = 0 ;
+  private int
+    cmNoseIndex = 0,
+    cmTailIndex = 0
+  ;//...
 
   /**
    * all logged data will get initiated as 0.<br>
@@ -55,8 +58,9 @@ public class McLineChartModel implements MiByteExchangeable{
   //===
   
   public final void ccOfferData(int pxByte){
-    cmDesData[cmHeadIndex]=pxByte&0xFF;
-    cmHeadIndex++;
+    cmDesData[cmNoseIndex]=pxByte&0xFF;
+    ssRollupTailIndex();
+    //[notdone]::
   }//+++
   
   public final void ccOfferData(float pxProportion){
@@ -64,8 +68,8 @@ public class McLineChartModel implements MiByteExchangeable{
   }//+++
   
   public final void ccSetDataAt(int pxIndex, int pxByte){
-    if(pxIndex<0 && pxIndex>cmHeadIndex){return;}
-    cmDesData[cmHeadIndex]=pxByte;
+    if(pxIndex<0 && pxIndex>cmNoseIndex){return;}
+    cmDesData[cmNoseIndex]=pxByte;
   }//+++
   
   public final void ccSetDataAt(int pxIndex, float pxProportion){
@@ -73,9 +77,9 @@ public class McLineChartModel implements MiByteExchangeable{
   }//+++
   
   public final void ccBreakDataAt(int pxIndex){
-    if(pxIndex<0 && pxIndex>cmHeadIndex){return;}
-    cmHeadIndex=pxIndex;
-    cmDesData[cmHeadIndex]=0;
+    if(pxIndex<0 && pxIndex>cmNoseIndex){return;}
+    cmNoseIndex=pxIndex;
+    cmDesData[cmNoseIndex]=0;
   }//+++
   
   public final void ccClearData(){
@@ -84,6 +88,7 @@ public class McLineChartModel implements MiByteExchangeable{
   
   public final int ccPollData(){
     
+    
     //[head]::
     
     /* 6 */return 0;
@@ -91,7 +96,31 @@ public class McLineChartModel implements MiByteExchangeable{
   
   public final int ccRetrieveData(int pxIndex){/* 6 */return 0;}//+++
   
-  public final int ccGetValidSize(){/* 6 */return 0;}//+++
+  public final int ccGetValidSize(){
+    if(cmTailIndex>cmNoseIndex){
+      return cmTailIndex-cmNoseIndex;
+    }else
+    if(cmTailIndex<cmNoseIndex){
+      return (C_MAX_CAPACITY-cmNoseIndex)+cmTailIndex;
+    }else{
+      return 0;
+    }//..?
+  }//+++
+  
+  //===
+  
+  private final void ssRollupNoseIndex(){
+    cmNoseIndex++;cmNoseIndex&=0xFF;
+    
+    //[notdone]::
+  }//+++
+  
+  private final void ssRollupTailIndex(){
+    cmTailIndex++;cmTailIndex&=0xFF;
+    
+    //[notdone]::
+  
+  }//+++
   
   //===
   

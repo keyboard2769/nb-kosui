@@ -19,6 +19,10 @@ package kosui.ppplocalui;
 
 import processing.core.PApplet;
 
+/**
+ * so what actually was a PAppler? graphic? frame? owner? or just "applet"?<br>
+ * you can not hope a interface work without know what it is facing.<br>
+ */
 public abstract class EcComponent extends EcRect{
   
   /**

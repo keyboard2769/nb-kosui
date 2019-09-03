@@ -42,6 +42,11 @@ public class ScCanvas extends JPanel{
     }//+++
   };
   
+  /**
+   * pass minus value to void the size setting.<br>
+   * @param pxW pix
+   * @param pxH pix
+   */
   public ScCanvas(int pxW, int pxH) {
     super(new BorderLayout());
     add(cmCanvas,BorderLayout.CENTER);

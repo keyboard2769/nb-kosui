@@ -35,9 +35,17 @@ import kosui.ppputil.VcTranslator;
  */
 public final class McConst {
   
+  /**
+   * all file this frame work deal with shall be tiny enough
+   * to get recognized as a "config" file.<br>
+   */
   public static final int C_MAX_FILESIE_FOR_LOADING
     = 0xFFFF;
   
+  /**
+   * supposed to get registered to the dictionary.<br>
+   * maybe hard code it is not a good idea.<br>
+   */
   public static final String C_KEY_OVERWRITE_COMFIRMATION
     = "--sys-msg-overwite-confirmation";
   
@@ -243,7 +251,11 @@ public final class McConst {
   
   //===
   
-  public static final void tstReadupFolderContent(File pxFolder){
+  /**
+   * @param pxFolder do note pass null
+   * @deprecated test use only
+   */
+  @Deprecated public static final void tstReadupFolderContent(File pxFolder){
     if(!ccVerifyFolder(pxFolder)){return;}
     for(File it:pxFolder.listFiles()){
       VcConst.ccPrintln("r-subf", it.getName());
