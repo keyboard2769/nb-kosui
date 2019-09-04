@@ -16,7 +16,6 @@
  */
 package kosui.pppmodel;
 
-import java.util.Arrays;
 import kosui.ppputil.VcNumericUtility;
 
 /**
@@ -25,49 +24,54 @@ import kosui.ppputil.VcNumericUtility;
  */
 public class McLineChartModel {
   
-  
-  //===
-  
   private final int[] cmDesOffsetX;
   private final int[] cmDesOffsetY;
+  private final McSimpleRingBuffer cmData;
   
-
-
-  /**
-   * all logged data will get initiated as 0.<br>
-   * all offset point will get initiated as 0.<br>
-   */
-  public McLineChartModel() {
-    
-    cmDesOffsetX  = new int[0];
-    cmDesOffsetY = new int[0];
-    
-
+  public McLineChartModel(int pxSize) {
+    cmData=new McSimpleRingBuffer(pxSize);
+    cmDesOffsetX  = new int[cmData.ccGetCapacity()];
+    cmDesOffsetY = new int[cmData.ccGetCapacity()];
     ccValidateOffsets(0, 0);
   }//+++
   
   //===
   
   public final void ccValidateOffsets(int pxDivisionWidth, int pxFullHeight){
-    /* 6 */
-    Arrays.fill(cmDesOffsetX, -1);
-    Arrays.fill(cmDesOffsetY, -1);
+    for(int i=0,s=cmData.ccGetTailIndex();i<s;i++){
+      cmDesOffsetX[i&cmData.ccGetIndexMask()]=i*pxDivisionWidth;
+      cmDesOffsetY[(s-i)&cmData.ccGetIndexMask()]=(int)(
+        VcNumericUtility.ccProportion(cmData.ccGet(s-i))*pxFullHeight
+      );
+    }//..~
   }//+++
   
   //===
   
-
+  public final void ccOffer(int pxValue){
+    cmData.ccOffer(pxValue&0xFF);
+  }//+++
+  
+  public final void ccOffer(float pxValue){
+    cmData.ccOffer(VcNumericUtility.ccProportion(pxValue));
+  }//+++
   
   //===
   
-
-  //===
+  public final int ccGetSize(){
+    return cmData.ccGetCapacity();
+  }//+++
   
-  public final int ccGetOffsetX(int pxIndex){/* 6 */return 0;}//+++
+  public final McSimpleRingBuffer ccGetData(){
+    return cmData;
+  }//+++
   
-  public final int ccGetOffsetY(int pxIndex){/* 6 */return 0;}//+++
+  public final int ccGetOffsetX(int pxIndex){
+    return cmDesOffsetX[pxIndex&cmData.ccGetIndexMask()];
+  }//+++
   
-  //===
-
+  public final int ccGetOffsetY(int pxIndex){
+    return cmDesOffsetY[pxIndex&cmData.ccGetIndexMask()];
+  }//+++
   
 }//***eof

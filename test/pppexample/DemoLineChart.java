@@ -27,6 +27,7 @@ import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.pppmodel.McSemirigidTable;
 import kosui.pppswingui.ScCanvas;
+import kosui.pppswingui.ScChanneldLineChart;
 import kosui.pppswingui.ScTable;
 import kosui.pppswingui.ScTitledWindow;
 import kosui.pppswingui.SiPaintable;
@@ -47,6 +48,14 @@ public class DemoLineChart extends PApplet{
     }//+++
   };
   
+  private final EiTriggerable cmMemoryDumping = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      
+      System.out.println("NOT YET!!");
+      
+    }//+++
+  };
+    
   //=== model
   
   private final McSemirigidTable cmLogModel = new McSemirigidTable() {
@@ -86,7 +95,7 @@ public class DemoLineChart extends PApplet{
     @Override public Object ccRetrieveRowAt(int pxIndex){return null;}//+++
     @Override public Object ccRetrieveRowLast() {return null;}//+++
     
-  };
+  };//.
   
   //=== swing
   
@@ -94,19 +103,30 @@ public class DemoLineChart extends PApplet{
   
   private final ScCanvas cmCanvas = new ScCanvas(240, 240);
   
+  private final ScChanneldLineChart cmChart
+    = new ScChanneldLineChart(220, 100);
+  
   private final ScTitledWindow cmWindow = new ScTitledWindow(frame);
   
   private final Runnable cmSwingSetupRunner = new Runnable() {
     @Override public void run() {
       
-      /* 6 */cmCanvas.ccAddPaintObject(new SiPaintable() {
+      /* 6 *
+      cmCanvas.ccAddPaintObject(new SiPaintable() {
         @Override public void ccPaint(Graphics pxGraphic) {
           pxGraphic.setColor(Color.DARK_GRAY);
           pxGraphic.drawRect(16, 16, 16, 16);
           pxGraphic.setColor(Color.RED);
           pxGraphic.drawRect(18, 18, 32, 32);
         }//+++
-      });
+      });//.
+      */
+      
+      
+      
+      //-- register
+      cmChart.ccSetLocation(10, 10);
+      cmCanvas.ccAddPaintObject(cmChart);
       
       //-- layout
       JPanel lpContentPanel = new JPanel(new BorderLayout());
@@ -119,8 +139,19 @@ public class DemoLineChart extends PApplet{
       cmWindow.ccAddCenter(lpContentPanel);
       cmWindow.ccFinish(true, 100, 100);
       
+      //-- post
+      cmChart.ccGetModel(0).ccOffer(0.2f);
+      cmChart.ccGetModel(0).ccOffer(0.25f);
+      cmChart.ccGetModel(0).ccOffer(0.3f);
+      cmChart.ccGetModel(0).ccOffer(0.35f);
+      cmChart.ccGetModel(0).ccOffer(0.5f);
+      cmChart.ccGetModel(0).ccOffer(0.7f);
+      cmChart.ccGetModel(0).ccOffer(0.9f);
+      cmChart.ccValidataOffsets(0);
+      cmCanvas.ccRefresh();
+      
     }//+++
-  };
+  };//.
   
   //=== overridden
   
@@ -139,14 +170,14 @@ public class DemoLineChart extends PApplet{
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     
-    
-    
     //-- swing
     SwingUtilities.invokeLater(cmSwingSetupRunner);
     
     //-- bind
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_Q, cmQuitting);
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_SPACE, cmMemoryDumping);
     
     //-- post
     VcConst.ccPrintln(".setup()::over");

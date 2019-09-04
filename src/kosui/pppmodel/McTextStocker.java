@@ -25,7 +25,7 @@ import static processing.core.PApplet.join;
  * stacks lines as a combined huge string for showing logs.<br>
  * you might want to link a bunch of them together.<br>
  */
-public class McLineStacker {
+public class McTextStocker {
   
   private int cmTrimSize=512;
   private int cmTrimDivisor=2;

@@ -57,7 +57,7 @@ public class CaseRingBuffer {
   //=== model
   
   private static final McSimpleRingBuffer O_BUFFER
-    = new McSimpleRingBuffer(255);
+    = new McSimpleRingBuffer(15);
   
   private static final McTableAdapter O_MODEL = new McTableAdapter(){
     @Override public int getColumnCount() {

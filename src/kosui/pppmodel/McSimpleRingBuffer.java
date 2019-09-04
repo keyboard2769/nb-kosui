@@ -158,7 +158,7 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
     /* 6 */throw new UnsupportedOperationException("Not supported yet.");
     //To change body of generated methods, choose Tools | Templates.
   }//+++
-
+  
   /**
    * {@inheritDoc }
    */
@@ -166,7 +166,7 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
     /* 6 */throw new UnsupportedOperationException("Not supported yet.");
     //To change body of generated methods, choose Tools | Templates.
   }//+++
-
+  
   /**
    * @return packed up indicators
    */

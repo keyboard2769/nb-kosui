@@ -22,7 +22,7 @@ import static processing.core.PConstants.BOTTOM;
 import static processing.core.PConstants.LEFT;
 import static processing.core.PApplet.constrain;
 
-import kosui.pppmodel.McLineStacker;
+import kosui.pppmodel.McTextStocker;
 
 /**
  * i used to wonder how should i handle the in window print problem, 
@@ -61,8 +61,8 @@ public final class VcStacker {
     pbCharCount=48
   ;//...
   
-  private final McLineStacker O_STK
-    = new McLineStacker();
+  private final McTextStocker O_STK
+    = new McTextStocker();
   
   //===
   

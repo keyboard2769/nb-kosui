@@ -241,7 +241,17 @@ public final class VcNumericUtility {
     return (int)pxVal;
   }//+++
   
-  //===
+  //=== 
+  
+  public static final int[] ccToIntegerArray(byte[] pxData){
+    
+    //[head]::
+    
+    return null;
+    
+  }//+++
+  
+  //=== pack
   
   /**
    * pack up a big string for print.<br>
