@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ppptest;
+package pppcase;
 
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;

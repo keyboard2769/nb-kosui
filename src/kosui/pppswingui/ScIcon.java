@@ -21,39 +21,50 @@ import kosui.pppmodel.MiPixillatable;
 import kosui.pppmodel.MiPixillated;
 
 /**
- * .<>
- * .<>
+ * actually i tried the windres.exe of MinGW before.<br>
+ * i never made it.<br>
  */
-public class ScIcon extends BufferedImage implements MiPixillated{
+public final class ScIcon extends BufferedImage implements MiPixillated{
   
-  
-
+  /**
+   * 32x32 by default.<br>
+   */
   public ScIcon() {
     super(32, 32, BufferedImage.TYPE_INT_RGB);
     for(int x=0;x<32;x++){for(int y=0;y<32;y++){
       setRGB(x, y, y);
     }}
-  }
+  }//..!
   
-  
-  
+  //===
 
-  @Override
-  public void ccFillPixel(int pxColor, MiPixillatable pxFilter) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+  /**
+   * {@inheritDoc }
+   */
+  @Override public void ccFillPixel(int pxColor, MiPixillatable pxFilter) {
+    if(pxFilter==null){return;}
+    for(int x=0,w=getWidth();x<w;x++){for(int y=0,h=getHeight();y<h;y++){
+      if(pxFilter.ccPixillate(x, y)){ccSetPixel(x, y, pxColor);}
+    }}//..~
+    
+  }//+++
 
-  @Override
-  public int ccGetPixel(int pxX, int pxY) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+  /**
+   * @param pxX pix of offset
+   * @param pxY pix of offset 
+   * @return BufferedImage::getRGB()
+   */
+  @Override public int ccGetPixel(int pxX, int pxY) {
+    return getRGB(pxY, pxY);
+  }//+++
 
-  @Override
-  public void ccSetPixel(int pxX, int pxY, int pxColor) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-  
-  
-  
+  /**
+   * @param pxX pix of offset
+   * @param pxY pix of offset
+   * @param pxColor RGB
+   */
+  @Override public void ccSetPixel(int pxX, int pxY, int pxColor) {
+    setRGB(pxX, pxY, pxColor);
+  }//+++
   
 }//***eof

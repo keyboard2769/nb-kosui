@@ -30,7 +30,7 @@ import processing.core.PImage;
  *   well a programmatically drawable image as background would be handy.
  * </pre>
  */
-public class EcImage extends EcShape implements MiPixillated{
+public final class EcImage extends EcShape implements MiPixillated{
   
   private final PImage cmImage;
   
