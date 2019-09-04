@@ -217,7 +217,7 @@ public class TestRingBuffer {
     ScFactory.ccSetupStatusBar(O_STATUS_BAR, -1, -1);
     
     //-- pack
-    JPanel lpLeftWing = ScFactory.ccCreateGridPanel(16, 1);
+    JPanel lpLeftWing = ScFactory.ccCreateGridPanel(6, 1);
     lpLeftWing.add(O_POLL_BOX);
     lpLeftWing.add(lpPollSW);
     lpLeftWing.add(O_OFFER_BOX);
@@ -305,7 +305,7 @@ public class TestRingBuffer {
     //-- frame ** packup
     Point lpOrigin=ScConst.ccGetScreenInitPoint();
     Dimension lpScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension lpWindowSize = new Dimension(640, 480);
+    Dimension lpWindowSize = new Dimension(320, 240);
     O_FRAME.setLocation(
       lpOrigin.x+lpScreenSize.width/2-lpWindowSize.width/2,
       lpOrigin.y+lpScreenSize.height/2-lpWindowSize.height/2
