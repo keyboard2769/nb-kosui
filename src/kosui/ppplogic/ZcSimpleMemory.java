@@ -21,7 +21,7 @@ package kosui.ppplogic;
  * a case by case implement base on integer and boolean array. <br>
  * local demo use only. <br>
  */
-public class ZcSimplifiedMemory implements ZiMemory {
+public class ZcSimpleMemory implements ZiMemory {
 
   private final int[] cmWordArray;
 
@@ -31,7 +31,7 @@ public class ZcSimplifiedMemory implements ZiMemory {
    * the default size is 256 and is immutable.<br>
    * word area and bit area is totally separated.<br>
    */
-  public ZcSimplifiedMemory() {
+  public ZcSimpleMemory() {
     cmWordArray = new int[256];
     cmBitArray = new boolean[256][16];
   }//+++

@@ -363,7 +363,9 @@ public final class VcNumericUtility {
    * @return fixed value
    */
   static public final int ccToPowerOfTwo(int pxSource){
-    int lpMasked=pxSource&0xFFFF;
+    if(pxSource<=0x0002){return 0x00000002;}
+    if(pxSource>=0x8000){return 0x00008000;}
+    int lpMasked=pxSource&0x0000FFFF;
     int lpTester=0x00008000;
     while(lpTester!=1){
       if( (lpTester&lpMasked)!=0 ){break;}
@@ -400,6 +402,14 @@ public final class VcNumericUtility {
     lpRes|=(((int)pxLow)&0x00FF);
     lpRes|=(((int)pxHigh)&0x00FF)<<8;
     return lpRes;
+  }//+++
+  
+  /**
+   * @param pxSource
+   * @return 16-31th bits
+   */
+  static final int ccBinaryTrimH(int pxSource){
+    return (pxSource&=0xFFFF0000)>>16;
   }//+++
   
   /**
@@ -440,6 +450,14 @@ public final class VcNumericUtility {
     return (byte)(
       (pxSource&0x000000FF)
     );
+  }//+++
+  
+  /**
+   * @param pxSource
+   * @return 0-15th bits
+   */
+  static final int ccBinaryTrimL(int pxSource){
+    return pxSource&0x0000FFFF;
   }//+++
   
   //[plan]::ccMaskedShiftL(int , int)

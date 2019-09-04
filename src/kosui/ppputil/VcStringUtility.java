@@ -102,9 +102,26 @@ public final class VcStringUtility {
     return pxSource.substring(lpLength-pxCharCount, lpLength);
   }//+++
   
-  //===
+  //=== packing
   
   //        ..pack up a big string for print
   //[plan]::String ccPackupStringList(Object[] pxData){}
+  
+  /**
+   * in the same manner of VcConst.ccPrintln() with square bracket.<br>
+   * @param pxTag must have something
+   * @param pxValue can be anything
+   * @return #
+   */
+  static public final
+  String ccPackupParedTag(String pxTag, Object pxValue){
+      if(!VcConst.ccIsValidString(pxTag)){return "[:]";}
+      StringBuilder lpRes=new StringBuilder("[");
+      lpRes.append(pxTag);
+      lpRes.append(':');
+      lpRes.append(pxValue==null?"<null>":pxValue.toString());
+      lpRes.append(']');
+      return lpRes.toString();
+  }//+++
   
  }//***eof

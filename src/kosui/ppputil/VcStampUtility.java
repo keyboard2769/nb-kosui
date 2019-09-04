@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import java.util.Calendar;
 import static processing.core.PApplet.day;
 import static processing.core.PApplet.hour;
 import static processing.core.PApplet.minute;
@@ -32,6 +33,32 @@ import static processing.core.PApplet.year;
 public final class VcStampUtility {
   
   private VcStampUtility(){}//..!
+  
+  //===
+  
+  static public final int ccYear(){
+   return Calendar.getInstance().get(Calendar.YEAR);
+  }//+++
+  
+  static public final int ccMonth() {
+    return Calendar.getInstance().get(Calendar.MONTH) + 1;
+  }//+++
+  
+  static public final int ccDay() {
+    return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+  }//+++
+  
+  static public int ccHour() {
+    return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+  }//+++
+  
+  static public int ccMinute() {
+    return Calendar.getInstance().get(Calendar.MINUTE);
+  }//+++
+  
+  static public int ccSecond() {
+    return Calendar.getInstance().get(Calendar.SECOND);
+  }//+++
   
   //===
 

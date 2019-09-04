@@ -23,27 +23,26 @@ import kosui.ppputil.VcNumericUtility;
  *.<br>
  *.<br>
  */
-public class McLineChartModel implements MiByteExchangeable{
+public class McLineChartModel {
   
-  public static final int C_MAX_CAPACITY = 256;
   
   //===
   
-  private final int[] cmDesData = new int[C_MAX_CAPACITY];
-  private final int[] cmDesOffsetX = new int[C_MAX_CAPACITY];
-  private final int[] cmDesOffsetY = new int[C_MAX_CAPACITY];
+  private final int[] cmDesOffsetX;
+  private final int[] cmDesOffsetY;
   
-  private int
-    cmNoseIndex = 0,
-    cmTailIndex = 0
-  ;//...
+
 
   /**
    * all logged data will get initiated as 0.<br>
    * all offset point will get initiated as 0.<br>
    */
   public McLineChartModel() {
-    ccClearData();
+    
+    cmDesOffsetX  = new int[0];
+    cmDesOffsetY = new int[0];
+    
+
     ccValidateOffsets(0, 0);
   }//+++
   
@@ -57,71 +56,11 @@ public class McLineChartModel implements MiByteExchangeable{
   
   //===
   
-  public final void ccOfferData(int pxByte){
-    cmDesData[cmNoseIndex]=pxByte&0xFF;
-    ssRollupTailIndex();
-    //[notdone]::
-  }//+++
-  
-  public final void ccOfferData(float pxProportion){
-    ccOfferData(VcNumericUtility.ccProportion(pxProportion));
-  }//+++
-  
-  public final void ccSetDataAt(int pxIndex, int pxByte){
-    if(pxIndex<0 && pxIndex>cmNoseIndex){return;}
-    cmDesData[cmNoseIndex]=pxByte;
-  }//+++
-  
-  public final void ccSetDataAt(int pxIndex, float pxProportion){
-    ccSetDataAt(pxIndex, VcNumericUtility.ccProportion(pxProportion));
-  }//+++
-  
-  public final void ccBreakDataAt(int pxIndex){
-    if(pxIndex<0 && pxIndex>cmNoseIndex){return;}
-    cmNoseIndex=pxIndex;
-    cmDesData[cmNoseIndex]=0;
-  }//+++
-  
-  public final void ccClearData(){
-    Arrays.fill(cmDesData, 0);
-  }//+++
-  
-  public final int ccPollData(){
-    
-    
-    //[head]::
-    
-    /* 6 */return 0;
-  }//+++
-  
-  public final int ccRetrieveData(int pxIndex){/* 6 */return 0;}//+++
-  
-  public final int ccGetValidSize(){
-    if(cmTailIndex>cmNoseIndex){
-      return cmTailIndex-cmNoseIndex;
-    }else
-    if(cmTailIndex<cmNoseIndex){
-      return (C_MAX_CAPACITY-cmNoseIndex)+cmTailIndex;
-    }else{
-      return 0;
-    }//..?
-  }//+++
+
   
   //===
   
-  private final void ssRollupNoseIndex(){
-    cmNoseIndex++;cmNoseIndex&=0xFF;
-    
-    //[notdone]::
-  }//+++
-  
-  private final void ssRollupTailIndex(){
-    cmTailIndex++;cmTailIndex&=0xFF;
-    
-    //[notdone]::
-  
-  }//+++
-  
+
   //===
   
   public final int ccGetOffsetX(int pxIndex){/* 6 */return 0;}//+++
@@ -130,14 +69,5 @@ public class McLineChartModel implements MiByteExchangeable{
   
   //===
 
-  @Override public void ccTakeByteArray(byte[] pxData) {
-    /* 6 */throw new UnsupportedOperationException("Not supported yet.");
-    //To change body of generated methods, choose Tools | Templates.
-  }//+++
-
-  @Override public byte[] ccToByteArray() {
-    /* 6 */throw new UnsupportedOperationException("Not supported yet.");
-    //To change body of generated methods, choose Tools | Templates.
-  }//+++
   
 }//***eof

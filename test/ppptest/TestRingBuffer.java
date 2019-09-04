@@ -24,6 +24,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,10 +37,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.pppmodel.McSimpleRingBuffer;
 import kosui.pppmodel.McTableAdapter;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTable;
+import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcSwingCoordinator;
 
 /**
@@ -64,6 +68,9 @@ public class TestRingBuffer {
   
   //=== model
   
+  private static final McSimpleRingBuffer O_BUFFER
+    = new McSimpleRingBuffer(255);
+  
   private static final McTableAdapter O_MODEL = new McTableAdapter(){
     @Override public int getColumnCount() {
       return 2;
@@ -76,12 +83,12 @@ public class TestRingBuffer {
       }//..?
     }//+++
     @Override public int getRowCount() {
-      /* 6 */return 3;
+      return O_BUFFER.ccGetCapacity();
     }//+++
     @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
       switch (pxColumnIndex) {
         case 0:return Integer.toString(pxRowIndex);
-        /* 6 */case 1:return "<6>";
+        case 1:return Integer.toString(O_BUFFER.ccGet(pxRowIndex));
         default:return "?";
       }//...?
     }//+++
@@ -112,6 +119,9 @@ public class TestRingBuffer {
   private static final JTextField O_STATUS_BAR
     = new JTextField("[;]");
   
+  private static final Random O_RGEN
+    = new Random(VcStampUtility.ccSecond()*23);
+  
   //=== inner ** console
   
   private static final JPanel O_CONSOLE_PANE
@@ -125,17 +135,57 @@ public class TestRingBuffer {
   
   //=== action
   
-  private static final EiTriggerable O_INFO_POPPING = new EiTriggerable() {
+  private static final EiTriggerable T_QUITTING = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      System.out.println(
+        "pppmain.MainActionManager.actionPerformed()::sys_exit <- 0"
+      );System.exit(0);
+    }//+++
+  };
+  
+  private static final EiTriggerable T_INFO_POPPING = new EiTriggerable() {
     @Override public void ccTrigger() {
       ScConst.ccMessageBox("IN THE NAME OF TEST");
     }//+++
   };
   
-  private static final EiTriggerable O_QUITTING = new EiTriggerable() {
+  //===
+  
+  private static final EiTriggerable T_UI_REFRESHING = new EiTriggerable() {
     @Override public void ccTrigger() {
-      System.out.println(
-        "pppmain.MainActionManager.actionPerformed()::sys_exit <- 0"
-      );System.exit(0);
+      O_STATUS_BAR.setText(O_BUFFER.toString());
+      O_TABLE.ccRefresh();
+    }//+++
+  };
+  
+  private static final EiTriggerable T_OFFERING = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      String lpInputed=O_OFFER_BOX.getText();
+      int lpNewData;
+      if(VcNumericUtility.ccIsIntegerString(lpInputed)){
+        lpNewData=Integer.valueOf(lpInputed);
+      }else{
+        lpNewData=O_RGEN.nextInt()&0xFFFF;
+      }//..?
+      O_BUFFER.ccOffer(lpNewData);
+      O_OFFER_BOX.setText("");
+      O_OFFER_BOX.requestFocus();
+      T_UI_REFRESHING.ccTrigger();
+    }//+++
+  };
+  
+  private static final EiTriggerable T_POLLING = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpRetrieved=O_BUFFER.ccPoll();
+      O_POLL_BOX.setText(Integer.toString(lpRetrieved));
+      T_UI_REFRESHING.ccTrigger();
+    }//+++
+  };
+  
+  private static final EiTriggerable T_CLEARING = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      O_BUFFER.ccClear();
+      T_UI_REFRESHING.ccTrigger();
     }//+++
   };
   
@@ -154,19 +204,26 @@ public class TestRingBuffer {
   
   private static void ssSetupRingPane(){
     
-    ScFactory.ccSetupTextLamp(O_OFFER_BOX, 100, 24);
+    //-- trigger
+    JButton lpOfferSW = ScFactory.ccCreateCommandButton(">>");
+    VcSwingCoordinator.ccRegisterComponent(lpOfferSW, T_OFFERING);
+    JButton lpPollSW = ScFactory.ccCreateCommandButton("<<");
+    VcSwingCoordinator.ccRegisterComponent(lpPollSW, T_POLLING);
+    JButton lpClearSW = ScFactory.ccCreateCommandButton("-X-");
+    VcSwingCoordinator.ccRegisterComponent(lpClearSW, T_CLEARING);
+    
+    //-- reserved
     ScFactory.ccSetupTextLamp(O_POLL_BOX, 100, 24);
     ScFactory.ccSetupStatusBar(O_STATUS_BAR, -1, -1);
     
-    JButton lpOfferSW = ScFactory.ccCreateCommandButton(">>");
-    JButton lpPollSW = ScFactory.ccCreateCommandButton("<<");
-    
-    JPanel lpLeftWing = ScFactory.ccCreateGridPanel(4, 1);
+    //-- pack
+    JPanel lpLeftWing = ScFactory.ccCreateGridPanel(16, 1);
     lpLeftWing.add(O_POLL_BOX);
     lpLeftWing.add(lpPollSW);
     lpLeftWing.add(O_OFFER_BOX);
     lpLeftWing.add(lpOfferSW);
-    
+    lpLeftWing.add(ScFactory.ccCreateSeparator(false));
+    lpLeftWing.add(lpClearSW);
     O_RING_PANE.add(lpLeftWing,BorderLayout.LINE_START);
     O_RING_PANE.add(O_TABLE,BorderLayout.CENTER);
     O_RING_PANE.add(O_STATUS_BAR,BorderLayout.PAGE_END);
@@ -207,12 +264,12 @@ public class TestRingBuffer {
     JMenuItem lpInfoItem = new JMenuItem("Info");
     lpInfoItem.setActionCommand("--action-info");
     lpInfoItem.setMnemonic(KeyEvent.VK_I);
-    VcSwingCoordinator.ccRegisterComponent(lpInfoItem, O_INFO_POPPING);
+    VcSwingCoordinator.ccRegisterComponent(lpInfoItem, T_INFO_POPPING);
     
     JMenuItem lpQuitItem = new JMenuItem("Quit");
     lpQuitItem.setActionCommand("--action-quit");
     lpQuitItem.setMnemonic(KeyEvent.VK_Q);
-    VcSwingCoordinator.ccRegisterComponent(lpQuitItem, O_QUITTING);
+    VcSwingCoordinator.ccRegisterComponent(lpQuitItem, T_QUITTING);
     
     //-- menu ** bar
     JMenu lpFileMenu=new JMenu("File");
@@ -237,6 +294,7 @@ public class TestRingBuffer {
     lpContentPane.setBorder(BorderFactory.createEtchedBorder());
     lpContentPane.add("Ring", O_RING_PANE);
     lpContentPane.add("Console", O_CONSOLE_PANE);
+    lpContentPane.updateUI();
     
     //-- frame ** setup
     O_FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -247,7 +305,7 @@ public class TestRingBuffer {
     //-- frame ** packup
     Point lpOrigin=ScConst.ccGetScreenInitPoint();
     Dimension lpScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension lpWindowSize = new Dimension(320, 240);
+    Dimension lpWindowSize = new Dimension(640, 480);
     O_FRAME.setLocation(
       lpOrigin.x+lpScreenSize.width/2-lpWindowSize.width/2,
       lpOrigin.y+lpScreenSize.height/2-lpWindowSize.height/2
@@ -263,11 +321,11 @@ public class TestRingBuffer {
     ccStackln("from", C_V_PWD);
     ccStackln("*** have fun ***");
     O_FIELD.requestFocus();
+    T_UI_REFRESHING.ccTrigger();
     
   }//+++
   
   //=== utility
-  
   
   public static final void ccStackln(String pxLine){
     ccStackln(pxLine, null);
@@ -295,8 +353,8 @@ public class TestRingBuffer {
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         ssSetupFrame();
-        VcSwingCoordinator.ccRegisterCommand("quit",O_QUITTING);
-        VcSwingCoordinator.ccRegisterCommand("info",O_INFO_POPPING);
+        VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
+        VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
       }//+++
     });
     System.out.println("TestRingBuffer.main()::over");

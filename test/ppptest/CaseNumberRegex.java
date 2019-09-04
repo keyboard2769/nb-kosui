@@ -19,6 +19,7 @@ package ppptest;
 
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
 
 public class CaseNumberRegex{
@@ -33,14 +34,14 @@ public class CaseNumberRegex{
     "2.3.4"
   };
   
-  private static final int[] O_CASE_II={
+  private static final int[] O_CASE_INT={
     1,2,3,4,11,12,13,14,123,1234,1235,123456,1234567,12345678,
     -1,-2,-3,-4,-11,-12,-13,-14,-123,-1234,-1235,-123456,-1234567,-12345678,
     0xFEDC,0xBA98,0x7654,0x3210,
     0xFE,0xDC,0xBA,0x98,0x76,0x54,0x32,0x10
   };
   
-  private static final float[] O_CASE_III = {
+  private static final float[] O_CASE_FLOAT = {
     1f,2f,3f,4f,
     1.2f,1.2f,1.23f,1.234f
   };
@@ -102,12 +103,24 @@ public class CaseNumberRegex{
     VcConst.ccPrintln("== <<");
   }//+++
   
+  static private void ssTestToPowerOfTwo(){
+    VcConst.ccPrintln("== ssTestBinarySet >>");
+    for(int i:O_CASE_INT){
+      VcConst.ccPrintln(
+        VcStringUtility.ccPackupParedTag("before", i),
+        VcStringUtility.ccPackupParedTag("after ", VcNumericUtility.ccToPowerOfTwo(i))
+      );
+    }
+    VcConst.ccPrintln("== <<");
+  }//+++
+  
   //=== entry
   
   public static void main(String[] args){
     System.out.println("CaseNumberRegex.main()::start");
     //--
     
+    ssTestToPowerOfTwo();
     
     //--
     System.out.println("CaseNumberRegex.main()::over");

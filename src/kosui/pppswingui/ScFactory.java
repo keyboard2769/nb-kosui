@@ -30,10 +30,12 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import kosui.ppputil.VcConst;
 
 /**
@@ -356,6 +358,35 @@ public final class ScFactory {
   //== input UI ** text box
   
   //[plan]::ccSetupInputBox()
+  
+  //== outout UI ** stucked 
+  
+  /**
+   * alias to constructor.<br>
+   * @return #
+   */
+  public static JSeparator ccCreateHrizontalSeparator(){
+    return new JSeparator(SwingConstants.HORIZONTAL);
+  }//+++
+  
+  /**
+   * alias to constructor.<br>
+   * @return #
+   */
+  public static JSeparator ccCreateVerticalSeparator(){
+    return new JSeparator(SwingConstants.VERTICAL);
+  }//+++
+  
+  /**
+   * alias to constructor.<br>
+   * @param ccIsVertical #
+   * @return #
+   */
+  public static JSeparator ccCreateSeparator(boolean ccIsVertical){
+    return ccIsVertical?
+      ccCreateVerticalSeparator()
+     :ccCreateHrizontalSeparator();
+  }//+++
   
   //== outout UI ** text lamp
   
