@@ -257,7 +257,7 @@ public final class VcNumericUtility {
    * pack up a big string for print.<br>
    * @param pxData must have something 
    * @param pxWrap where the line breaks
-   * @return 
+   * @return # 
    */
   static public final String ccPackupHexStringTable(byte[] pxData, int pxWrap){
     if(pxData==null){return "";}
