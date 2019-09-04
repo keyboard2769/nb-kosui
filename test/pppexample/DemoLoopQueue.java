@@ -160,7 +160,7 @@ public class DemoLoopQueue extends PApplet {
     self=this;
     
     //-- init ** swing
-    VcSwingCoordinator.ccGetReference().ccInit(this);
+    VcSwingCoordinator.ccGetInstance().ccInit(this);
     SwingUtilities.invokeLater(cmInitSwingUI);
 
     //-- init ** manager

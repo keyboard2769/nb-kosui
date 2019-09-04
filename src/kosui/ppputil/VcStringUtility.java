@@ -30,6 +30,15 @@ public final class VcStringUtility {
   //===
   
   /**
+   * if you think REGEX is heavy you should NOT use this.<br>
+   * @param pxNum #
+   * @return only underscore and alphabet
+   */
+  static public final boolean ccIsCommandString(String pxNum){
+    return pxNum.matches("^[_a-zA-Z]{1,64}$");
+  }//+++
+  
+  /**
    * @param pxInput #
    * @return empty string if null passed
    */

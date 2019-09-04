@@ -108,7 +108,6 @@ public class CaseNumberRegex{
     System.out.println("CaseNumberRegex.main()::start");
     //--
     
-    ssTestBinarySet();
     
     //--
     System.out.println("CaseNumberRegex.main()::over");

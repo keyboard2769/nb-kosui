@@ -61,7 +61,8 @@ public final class VcNumericUtility {
    * @return ture for zero suppressed 10 digit decimal number
    */
   static public final boolean ccIsIntegerString(String pxNum){
-    return pxNum.matches("^[+-]?(([1-9][0-9]{0,9})|(0))$");
+    return VcStringUtility.ccNulloutString(pxNum)
+      .matches("^[+-]?(([1-9][0-9]{0,9})|(0))$");
   }//+++
   
   /**
@@ -71,7 +72,8 @@ public final class VcNumericUtility {
    * with two digit under point
    */
   static public final boolean ccIsFloatString(String pxNum){
-    return pxNum.matches("^[+-]?(([1-9][0-9]{0,9})|(0))([.][0-9]{1,2})?$");
+    return VcStringUtility.ccNulloutString(pxNum)
+      .matches("^[+-]?(([1-9][0-9]{0,9})|(0))([.][0-9]{1,2})?$");
   }//+++
   
   //=== conversion

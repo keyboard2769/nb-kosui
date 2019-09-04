@@ -46,13 +46,28 @@ public final class ScFactory {
   
   //=== container
   
+  
   /**
-   * alias for constructor
+   * alias for both constructor.<br>
+   * has an etched border by default.<br>
+   * @return #
+   */
+  public static final JPanel ccCreateBorderPanel(){
+    JPanel lpRes=new JPanel(new BorderLayout());
+    lpRes.setBorder(BorderFactory.createEtchedBorder());
+    return lpRes;
+  }//+++
+  
+  /**
+   * alias for both constructor.<br>
+   * has an etched border by default.<br>
    * @param pxGap will be passed to both v and h for border layout
    * @return #
    */
   public static final JPanel ccCreateBorderPanel(int pxGap){
-    return new JPanel(new BorderLayout(pxGap, pxGap));
+    JPanel lpRes=new JPanel(new BorderLayout(pxGap, pxGap));
+    lpRes.setBorder(BorderFactory.createEtchedBorder());
+    return lpRes;
   }//+++
   
   /**
@@ -345,7 +360,7 @@ public final class ScFactory {
   //== outout UI ** text lamp
   
   /**
-   * color and ability and text align is configured
+   * color and ability and text align is configured.<br>
    * @param pxTarget don't pass null
    * @param pxW pix
    * @param pxH pix
@@ -363,7 +378,27 @@ public final class ScFactory {
       pxTarget.setPreferredSize(new Dimension(pxW, pxH));
     }//..?
   }//+++
-
+  
+  /**
+   * color and ability and text align is configured.<br>
+   * @param pxTarget don't pass null
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public static final
+  void ccSetupStatusBar(JTextField pxTarget, int pxW, int pxH){
+    if(pxTarget==null){return;}
+    pxTarget.setEditable(false);
+    pxTarget.setEnabled(false);
+    pxTarget.setBackground(Color.LIGHT_GRAY);
+    pxTarget.setForeground(ScConst.DARK_GREEN);
+    pxTarget.setDisabledTextColor(ScConst.DARK_GREEN);
+    pxTarget.setHorizontalAlignment(JTextField.RIGHT);
+    if(pxW>0 && pxH>0){
+      pxTarget.setPreferredSize(new Dimension(pxW, pxH));
+    }//..?
+  }//+++
+  
   /**
    * alias for ccSetupCommandButton() with construction
    * @param pxText if nothing is it we set something for you

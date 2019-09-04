@@ -36,11 +36,14 @@ public final class VcSwingCoordinator {
   /**
    * @return instance
    */
-  public static VcSwingCoordinator ccGetReference(){return SELF;}//+++
+  public static VcSwingCoordinator ccGetInstance(){return SELF;}//+++
   private static final VcSwingCoordinator SELF = new VcSwingCoordinator();
   private VcSwingCoordinator(){}//..!
 
   //===
+  
+  private final HashMap<String, EiTriggerable> cmMapOfCommandTrigger
+    = new HashMap<String, EiTriggerable>();
   
   private final HashMap<JComponent, EiTriggerable> cmMapOfSwingTrigger
     = new HashMap<JComponent, EiTriggerable>();
@@ -54,6 +57,10 @@ public final class VcSwingCoordinator {
       }//..?
     }//+++
   };
+  
+  private String cmLastAccepted="";
+  
+  //===
   
   /**
    * alias to ScConst.ccSetOwner()
@@ -94,6 +101,46 @@ public final class VcSwingCoordinator {
       ((AbstractButton)pxComponent).addActionListener(SELF.cmTheLister);
     }//..?
     SELF.cmMapOfSwingTrigger.put(pxComponent,pxTrigger);
+  }//+++
+  
+  /**
+   * @param pxCommand something only contains alphabet and underscore 
+   * @param pxTrigger do not pass null
+   */
+  static public final void
+  ccRegisterCommand(String pxCommand, EiTriggerable pxTrigger){
+    if(!VcStringUtility.ccIsCommandString(pxCommand)){return;}
+    if(pxTrigger==null){return;}
+    if(SELF.cmMapOfCommandTrigger.containsKey(pxCommand)){return;}
+    SELF.cmMapOfCommandTrigger.put(pxCommand,pxTrigger);
+  }//+++
+  
+  /**
+   * @return accepted or empty string
+   */
+  static public final String ccGetLastAcceped(){
+    return SELF.cmLastAccepted;
+  }//+++
+  
+  /**
+   * <pre>
+   * trigger a registered trigger for you.
+   * its up to you when it is about to get triggered.
+   * </pre>
+   * @param pxCommand can be any thing
+   * @return a tag with input
+   */
+  static public final String ccExecute(String pxCommand){
+    if(!VcConst.ccIsValidString(pxCommand)){return "[>]"+VcConst.C_V_NEWLINE;}
+    String[] lpSplit = pxCommand.split(" ");
+    if(SELF.cmMapOfCommandTrigger.containsKey(lpSplit[0])){
+       SELF.cmLastAccepted=pxCommand;
+       SELF.cmMapOfCommandTrigger.get(lpSplit[0]).ccTrigger();
+      return "[OK]accepted:"+lpSplit[0];
+    }else{
+       SELF.cmLastAccepted="";
+      return "[BAD]unhandled:"+pxCommand;
+    }//..?
   }//+++
   
  }//***eof
