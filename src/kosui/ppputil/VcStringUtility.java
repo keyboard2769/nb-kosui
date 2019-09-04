@@ -18,6 +18,7 @@
 package kosui.ppputil;
 
 import static kosui.ppputil.VcConst.ccIsValidString;
+import processing.core.PApplet;
 
 /**
  *
@@ -122,6 +123,21 @@ public final class VcStringUtility {
       lpRes.append(pxValue==null?"<null>":pxValue.toString());
       lpRes.append(']');
       return lpRes.toString();
+  }//+++
+  
+  /**
+   * @param pxPoleA like width or something
+   * @param pxPoleB like height or something
+   * @return formatted at four digit by default
+   */
+  static public final
+  String ccPackupDimensionValue(int pxPoleA, int pxPoleB){
+    StringBuilder lpRes=new StringBuilder("(");
+    lpRes.append(PApplet.nf(pxPoleA, 4));
+    lpRes.append(':');
+    lpRes.append(PApplet.nf(pxPoleB, 4));
+    lpRes.append(')');
+    return lpRes.toString();
   }//+++
   
  }//***eof

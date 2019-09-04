@@ -380,7 +380,8 @@ public class ScConst {
           System.out.println(it.getClassName());
         }//..~
       }//..?
-      lpTarget=lpInfos[pxIndex].getClassName();
+      int lpFixedIndex=pxIndex>=lpInfos.length?lpInfos.length-1:pxIndex;
+      lpTarget=lpInfos[lpFixedIndex].getClassName();
     }//..?
     
     //-- applying

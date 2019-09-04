@@ -24,14 +24,30 @@ import kosui.ppplocalui.EcRect;
 import kosui.pppmodel.McLineChartModel;
 
 /**
- * .<br>
- * .<br>
+ * if it is not for the burner trending stuff implement a bar chart 
+ * would be far more easier, but useless.<br>
+ * maybe we will have a ScBarChart as a base class 
+ * and spread them to the local UI world some day.<br>
  */
 public class ScChanneldLineChart extends EcRect implements SiPaintable{
   
+  /**
+   * you can not get more line than this value
+   */
   static public final int C_MAX_CHANNEL = 16;
+  
+  /**
+   * stuck with the max value
+   */
   static public final int C_MAX_MASK = 15;
+  
+  /**
+   * at this point it is hard coded.<br>
+   * it looked great applied to a 200x100 graph.<br>
+   */
   static public final int C_DIVISION = 32;
+  
+  //===
   
   private boolean cmHasBorder=true;
   private int cmShowMask = 1;
@@ -46,6 +62,18 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
   private final List<Color> cmListOfChannelColor
     = new ArrayList<Color>();
   
+  /**
+   * <pre>
+   * line chart model as channel is also constructed.
+   * every channel is colored black by default.
+   * we just keep value as pixel point as well, for drawing.
+   * if you need to keey those actual value, or name these channels,
+   *   or even more, like specify a unit,
+   *   think about maintain your own hash map some where.
+   * </pre>
+   * @param pxW pix
+   * @param pxH pix
+   */
   public ScChanneldLineChart(int pxW, int pxH) {
     super(pxW, pxH);
     for(int i=0;i<C_MAX_CHANNEL;i++){
@@ -56,6 +84,9 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
   
   //===
 
+  /**
+   * {@inheritDoc }
+   */
   @Override public void ccPaint(Graphics pxGraphic) {
     
     //-- border
@@ -77,6 +108,8 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
         cmBufNextX=cmBufM.ccGetOffsetX(i+1);
         cmBufFaceY=cmBufM.ccGetOffsetY(i);
         cmBufNextY=cmBufM.ccGetOffsetY(i+1);
+        if(cmBufFaceX>cmBufFaceX){continue;}
+        if(cmBufFaceY==0 || cmBufNextY==0){continue;}
         pxGraphic.drawLine(
           cmX+cmBufFaceX, ccEndY()-cmBufFaceY,
           cmX+cmBufNextX, ccEndY()-cmBufNextY
@@ -85,31 +118,52 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
     }//..~
     
   }//+++
-  
+
   //===
   
+  /**
+   * @param pxChannel index
+   */
   public final void ccValidataOffsets(int pxChannel){
-    cmListOfChannel.get(pxChannel&C_MAX_MASK).ccValidateOffsets(
-      5, cmH
-    );
+    cmListOfChannel.get(pxChannel&C_MAX_MASK)
+      .ccValidateOffsets(cmW/C_DIVISION, cmH);
   }//+++
   
+  /**
+   * @param pxValue will only get drawn once per update
+   */
   public final void ccSetHasBorder(boolean pxValue){
     cmHasBorder=pxValue;
   }//+++
   
+  /**
+   * @param pxColor never pass null
+   */
   public final void ccSetBorderColor(Color pxColor){
     cmBorderColor=pxColor;
   }//+++
   
+  /**
+   * @param pxChannel index
+   * @param pxColor never pass null
+   */
   public final void ccSetChannelColor(int pxChannel, Color pxColor){
     cmListOfChannelColor.set(pxChannel, pxColor);
   }//+++
   
+  /**
+   * not serve for "masking" actually but for limiting.<br>
+   * like if 4 is passed, only channel number 0-4 will get drawn.<br>
+   * @param pxCount #
+   */
   public final void ccSetChannelMask(int pxCount){
     cmShowMask=pxCount&C_MAX_MASK;
   }//+++
   
+  /**
+   * @param pxChannel index
+   * @return user is supposed to access actual data through buffer of model
+   */
   public final McLineChartModel ccGetModel(int pxChannel){
     return cmListOfChannel.get(pxChannel&C_MAX_MASK);
   }//+++

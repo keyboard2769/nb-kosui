@@ -64,7 +64,7 @@ public class TestFrame {
   private static final EiTriggerable T_INFO_POPPING = new EiTriggerable() {
     @Override public void ccTrigger() {
       ScConst.ccMessageBox(
-        "IN THE NAME OF TEST"+VcConst.C_V_NEWLINE
+        "CAST IN THE NAME OF TEST"+VcConst.C_V_NEWLINE
        +"YA NOT GUILTY"
       );
     }//+++

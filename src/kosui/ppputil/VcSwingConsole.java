@@ -29,8 +29,10 @@ import javax.swing.JTextField;
 import kosui.pppswingui.ScFactory;
 
 /**
- *
- * @author Key Parker from K.I.C
+ * this was my template of swing application, i thought this is the best way 
+ * for triggering and watching.<br>
+ * for normal static building, i think you should avoid using this 
+ * manager class directly.<br>
  */
 public final class VcSwingConsole extends JPanel{
   
@@ -74,12 +76,24 @@ public final class VcSwingConsole extends JPanel{
     cmField.addKeyListener(cmListener);
     add(lpCenterPane,BorderLayout.CENTER);
     add(cmField,BorderLayout.PAGE_END);
-  }//++!
+  }//..!
   
+  //===
+  
+  /**
+   * might get passed to JTextArea::append() eventually.<br>
+   * @param pxLine must have some thing.
+   */
   public static final void ccStackln(String pxLine){
     ccStackln(pxLine, null);
   }//+++
   
+  /**
+   * alias for JTextArea::append().<br>
+   * re-direct viewport location via text selection setting.<br>
+   * @param pxTag must have something
+   * @param pxVal can be any thing
+   */
   public static final void ccStackln(String pxTag, Object pxVal){
     if(pxTag==null){return;}
     if(pxVal==null){
@@ -92,10 +106,16 @@ public final class VcSwingConsole extends JPanel{
     self.cmArea.setSelectionEnd(lpLength);
   }//+++
   
+  /**
+   * for input field
+   */
   public static final void ccRequestFocus(){
     self.cmField.requestFocus();
   }//+++
   
+  /**
+   * @return directly from input field
+   */
   public static final String ccGetFieldText(){
     return self.cmField.getText();
   }//+++

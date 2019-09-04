@@ -14,13 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package kosui.pppmodel;
 
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcStringUtility;
 
 /**
- *.<br>
- *.<br>
+ * the only reason i am stuck on the line chart is that burner 
+ * trending problem.<br>
+ * but this model does not have to, bar chart or just point chart 
+ * might also be capable of.<br>
  */
 public class McLineChartModel {
   
@@ -28,6 +33,10 @@ public class McLineChartModel {
   private final int[] cmDesOffsetY;
   private final McSimpleRingBuffer cmData;
   
+  /**
+   * buffer size is unchangeable.<br>
+   * @param pxSize will get fixed to the value of power of two
+   */
   public McLineChartModel(int pxSize) {
     cmData=new McSimpleRingBuffer(pxSize);
     cmDesOffsetX  = new int[cmData.ccGetCapacity()];
@@ -37,41 +46,96 @@ public class McLineChartModel {
   
   //===
   
+  /**
+   * please note that this division is absolute.<br>
+   * this means if you passed something just dividing the width in the
+   * manner of integer, you might not get what you want.<br>
+   * now i see why PApplet made everything float.<br>
+   * <b>BUT I WON'T.</b><br>
+   * @param pxDivisionWidth pix
+   * @param pxFullHeight pix
+   */
   public final void ccValidateOffsets(int pxDivisionWidth, int pxFullHeight){
-    for(int i=0,s=cmData.ccGetTailIndex();i<s;i++){
-      cmDesOffsetX[i&cmData.ccGetIndexMask()]=i*pxDivisionWidth;
-      cmDesOffsetY[(s-i)&cmData.ccGetIndexMask()]=(int)(
-        VcNumericUtility.ccProportion(cmData.ccGet(s-i))*pxFullHeight
+    for(int i=0,s=cmData.ccGetCapacity();i<s;i++){
+      cmDesOffsetX[i&cmData.ccGetMask()]=i*pxDivisionWidth;
+      cmDesOffsetY[i&cmData.ccGetMask()]=(int)(
+        VcNumericUtility.ccProportion(cmData.ccGetLogical(i))*pxFullHeight
       );
     }//..~
   }//+++
   
   //===
   
-  public final void ccOffer(int pxValue){
-    cmData.ccOffer(pxValue&0xFF);
+  /**
+   * @param pxByte 0-255
+   */
+  public final void ccOffer(int pxByte){
+    int lpFix = pxByte&0xFF;
+    cmData.ccOffer(lpFix<=0?1:lpFix);
   }//+++
   
-  public final void ccOffer(float pxValue){
-    cmData.ccOffer(VcNumericUtility.ccProportion(pxValue));
+  /**
+   * @param pxProportion 0.0-1.0
+   */
+  public final void ccOffer(float pxProportion){
+    int lpFix = VcNumericUtility.ccProportion(pxProportion);
+    cmData.ccOffer(lpFix<=0?1:lpFix);
   }//+++
   
   //===
   
+  /**
+   * @return size of buffer
+   */
   public final int ccGetSize(){
     return cmData.ccGetCapacity();
   }//+++
   
+  /**
+   * @return the buffer
+   */
   public final McSimpleRingBuffer ccGetData(){
     return cmData;
   }//+++
   
+  /**
+   * @param pxIndex smaller is older
+   * @return pix
+   */
   public final int ccGetOffsetX(int pxIndex){
-    return cmDesOffsetX[pxIndex&cmData.ccGetIndexMask()];
+    return cmDesOffsetX[pxIndex&cmData.ccGetMask()];
   }//+++
   
+  /**
+   * @param pxIndex smaller is older
+   * @return pix
+   */
   public final int ccGetOffsetY(int pxIndex){
-    return cmDesOffsetY[pxIndex&cmData.ccGetIndexMask()];
+    return cmDesOffsetY[pxIndex&cmData.ccGetMask()];
+  }//+++
+  
+  //===
+  
+  /**
+   * @param pxWrap #
+   * @return #
+   * @deprecated for test use only
+   */
+  @Deprecated public final String tstPackupData(int pxWrap){
+    StringBuilder lpRes
+      = new StringBuilder(super.toString()+VcConst.C_V_NEWLINE);
+    int lpWrapCount=0;
+    for(int i=0,s=cmData.ccGetCapacity();i<s;i++){
+      lpRes.append(VcStringUtility
+        .ccPackupDimensionValue(ccGetOffsetX(i), ccGetOffsetY(i)));
+      lpRes.append(" ");
+      lpWrapCount++;
+      if(lpWrapCount==pxWrap){
+        lpWrapCount=0;
+        lpRes.append(VcConst.C_V_NEWLINE);
+      }//..?
+    }//..~
+    return lpRes.toString();
   }//+++
   
 }//***eof

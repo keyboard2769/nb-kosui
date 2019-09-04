@@ -243,13 +243,10 @@ public final class VcNumericUtility {
   
   //=== 
   
-  public static final int[] ccToIntegerArray(byte[] pxData){
-    
-    //[head]::
-    
-    return null;
-    
-  }//+++
+  //[plan]::ccArrayCopyLE(int[] from, byte[])
+  //[plan]::ccArrayCopySE(int[] from, byte[])
+  //[plan]::ccArrayCopyLE(byte[] from, int[])
+  //[plan]::ccArrayCopySE(byte[] from, int[])
   
   //=== pack
   

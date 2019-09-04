@@ -76,7 +76,7 @@ public class CaseRingBuffer {
     @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
       switch (pxColumnIndex) {
         case 0:return Integer.toString(pxRowIndex);
-        case 1:return Integer.toString(O_BUFFER.ccGet(pxRowIndex));
+        case 1:return Integer.toString(O_BUFFER.ccGetAbsolute(pxRowIndex));
         default:return "?";
       }//...?
     }//+++
@@ -118,25 +118,25 @@ public class CaseRingBuffer {
         "pppmain.MainActionManager.actionPerformed()::sys_exit <- 0"
       );System.exit(0);
     }//+++
-  };
+  };//***
   
   private static final EiTriggerable T_INFO_POPPING = new EiTriggerable() {
     @Override public void ccTrigger() {
       ScConst.ccMessageBox(
-        "IN THE NAME OF TEST"+VcConst.C_V_NEWLINE
+        "CAST IN THE NAME OF TEST"+VcConst.C_V_NEWLINE
        +"YA NOT GUILTY"
       );
     }//+++
-  };
+  };//***
   
   //===
   
   private static final EiTriggerable T_UI_REFRESHING = new EiTriggerable() {
     @Override public void ccTrigger() {
-      O_STATUS_BAR.setText(O_BUFFER.toString());
+      O_STATUS_BAR.setText(O_BUFFER.ccFormat());
       O_TABLE.ccRefresh();
     }//+++
-  };
+  };//***
   
   private static final EiTriggerable T_OFFERING = new EiTriggerable() {
     @Override public void ccTrigger() {
@@ -152,7 +152,19 @@ public class CaseRingBuffer {
       O_OFFER_BOX.requestFocus();
       T_UI_REFRESHING.ccTrigger();
     }//+++
-  };
+  };//***
+  
+  private static final EiTriggerable T_ABS_DUMPING = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      VcSwingConsole.ccStackln(O_BUFFER.tstPackupAbsolute(6));
+    }//+++
+  };//***
+  
+  private static final EiTriggerable T_LOGICAL_DUMPING = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      VcSwingConsole.ccStackln(O_BUFFER.tstPackupLogical(6));
+    }//+++
+  };//***
   
   private static final EiTriggerable T_POLLING = new EiTriggerable() {
     @Override public void ccTrigger() {
@@ -160,7 +172,7 @@ public class CaseRingBuffer {
       O_POLL_BOX.setText(Integer.toString(lpRetrieved));
       T_UI_REFRESHING.ccTrigger();
     }//+++
-  };
+  };//***
   
   private static final EiTriggerable T_CLEARING = new EiTriggerable() {
     @Override public void ccTrigger() {
@@ -168,7 +180,7 @@ public class CaseRingBuffer {
       O_OFFER_BOX.setText("");
       T_UI_REFRESHING.ccTrigger();
     }//+++
-  };
+  };//***
   
   //=== setup
   
@@ -292,12 +304,15 @@ public class CaseRingBuffer {
 
   public static void main(String[] args) {
     System.out.println("TestRingBuffer.main()::activate");
-    ScConst.ccApplyLookAndFeel(4, false);
+    ScConst.ccApplyLookAndFeel(0, true);
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         ssSetupFrame();
         VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
         VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
+        VcSwingCoordinator.ccRegisterCommand("dump",T_ABS_DUMPING);
+        VcSwingCoordinator.ccRegisterCommand("dumpl",T_LOGICAL_DUMPING);
+        
       }//+++
     });
     System.out.println("TestRingBuffer.main()::over");

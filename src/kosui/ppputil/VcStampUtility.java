@@ -36,26 +36,44 @@ public final class VcStampUtility {
   
   //===
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public final int ccYear(){
    return Calendar.getInstance().get(Calendar.YEAR);
   }//+++
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public final int ccMonth() {
     return Calendar.getInstance().get(Calendar.MONTH) + 1;
   }//+++
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public final int ccDay() {
     return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
   }//+++
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public int ccHour() {
     return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
   }//+++
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public int ccMinute() {
     return Calendar.getInstance().get(Calendar.MINUTE);
   }//+++
   
+  /**
+   * @return aliasing Calender::get()
+   */
   static public int ccSecond() {
     return Calendar.getInstance().get(Calendar.SECOND);
   }//+++

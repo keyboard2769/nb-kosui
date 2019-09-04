@@ -18,8 +18,6 @@
 package pppexample;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -30,7 +28,6 @@ import kosui.pppswingui.ScCanvas;
 import kosui.pppswingui.ScChanneldLineChart;
 import kosui.pppswingui.ScTable;
 import kosui.pppswingui.ScTitledWindow;
-import kosui.pppswingui.SiPaintable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import processing.core.PApplet;
@@ -39,24 +36,19 @@ public class DemoLineChart extends PApplet{
   
   private static int cmRoller = 0;
   
-  //=== action
+  private static final String C_INFO
+    = "..press F to start log";
   
-  private final EiTriggerable cmQuitting = new EiTriggerable() {
-    @Override public void ccTrigger(){
-      println(".cmQuitting::call PApplet.exit");
-      exit();
-    }//+++
-  };
-  
-  private final EiTriggerable cmMemoryDumping = new EiTriggerable() {
-    @Override public void ccTrigger(){
-      
-      System.out.println("NOT YET!!");
-      
-    }//+++
-  };
-    
   //=== model
+  
+  public volatile float pbMarker = 0f;
+  
+  float cmLiner = 120f;
+  float cmSiner = 0f;
+  float cmMarker = -1f;
+  int cmMarkerColor = 0xFF;
+  
+  boolean cmDoLog=false;
   
   private final McSemirigidTable cmLogModel = new McSemirigidTable() {
     
@@ -108,21 +100,34 @@ public class DemoLineChart extends PApplet{
   
   private final ScTitledWindow cmWindow = new ScTitledWindow(frame);
   
+  //=== action
+  
+  private final EiTriggerable cmQuitting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      println(".cmQuitting::call PApplet.exit");
+      exit();
+    }//+++
+  };
+  
+  private final EiTriggerable cmLogModeFlipping = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      cmDoLog=!cmDoLog;
+    }//+++
+  };
+  
+  private final EiTriggerable cmMemoryDumping = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      /* 6 */VcConst.ccPrintln(cmChart.ccGetModel(0)
+        .ccGetData().tstPackupLogical(6));
+      /* 6 */VcConst.ccPrintln(cmChart.ccGetModel(0)
+        .tstPackupData(6));
+      /* 6 */VcConst.ccPrintln(cmChart.ccGetModel(0)
+        .ccGetData().tstPackupAbsolute(6));
+    }//+++
+  };
+    
   private final Runnable cmSwingSetupRunner = new Runnable() {
     @Override public void run() {
-      
-      /* 6 *
-      cmCanvas.ccAddPaintObject(new SiPaintable() {
-        @Override public void ccPaint(Graphics pxGraphic) {
-          pxGraphic.setColor(Color.DARK_GRAY);
-          pxGraphic.drawRect(16, 16, 16, 16);
-          pxGraphic.setColor(Color.RED);
-          pxGraphic.drawRect(18, 18, 32, 32);
-        }//+++
-      });//.
-      */
-      
-      
       
       //-- register
       cmChart.ccSetLocation(10, 10);
@@ -140,27 +145,25 @@ public class DemoLineChart extends PApplet{
       cmWindow.ccFinish(true, 100, 100);
       
       //-- post
-      cmChart.ccGetModel(0).ccOffer(0.2f);
-      cmChart.ccGetModel(0).ccOffer(0.25f);
-      cmChart.ccGetModel(0).ccOffer(0.3f);
-      cmChart.ccGetModel(0).ccOffer(0.35f);
-      cmChart.ccGetModel(0).ccOffer(0.5f);
-      cmChart.ccGetModel(0).ccOffer(0.7f);
-      cmChart.ccGetModel(0).ccOffer(0.9f);
+      
+      /* [test]::
+      for(int i=0;i<60;i++){cmChart.ccGetModel(0).ccOffer(0.1f+i*0.01f);}
       cmChart.ccValidataOffsets(0);
       cmCanvas.ccRefresh();
+      */
       
     }//+++
-  };//.
+  };//***
+  
+  private final Runnable cmSwingLogRunner = new Runnable() {
+    @Override public void run(){
+      cmChart.ccGetModel(0).ccOffer(pbMarker);
+      cmChart.ccValidataOffsets(0);
+      cmCanvas.ccRefresh();
+    }//++++
+  };//***
   
   //=== overridden
-  
-  public volatile int pbMarker = 0;
-  
-  float cmLiner = 120f;
-  float cmSiner = 0f;
-  float cmMarker = -1f;
-  int cmMarkerColor = 0xFF;
   
   @Override public void setup() {
     
@@ -177,6 +180,8 @@ public class DemoLineChart extends PApplet{
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_F, cmLogModeFlipping);
+    VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_SPACE, cmMemoryDumping);
     
     //-- post
@@ -190,10 +195,17 @@ public class DemoLineChart extends PApplet{
     background(0);
     ccRoll();
     
+    //-- blink
+    fill(0xFF33EE33);
+    if(ccIsRollingAbove(7)){text(C_INFO,5,5);}
+    
     //-- updating
     ccSine();
-    ccMark();
     ccDamping();
+    
+    if(!cmDoLog){return;}
+    ccMark();
+    cmLiner+=random(2f,16f);
     
   }//+++
 
@@ -204,7 +216,6 @@ public class DemoLineChart extends PApplet{
   //=== subroutine
   
   private void ccSine(){
-    cmLiner+=random(2f,16f);
     if(cmLiner>=314.15926f){cmLiner=0f;}
     stroke(0xFF33EE33);
     cmSiner=sin(cmLiner/100f)*height;
@@ -214,8 +225,8 @@ public class DemoLineChart extends PApplet{
   private void ccMark(){
     if(ccIsRollingAt(9)){
       cmMarker=cmSiner;cmMarkerColor=0xFF;
-      pbMarker=(int)(cmMarker*100f);
-      /* 4 */VcConst.ccLogln("marker", pbMarker);
+      pbMarker=1.1f-0.8f*(cmMarker/height);
+      SwingUtilities.invokeLater(cmSwingLogRunner);
     }//..?
     if(cmMarkerColor>0){
       stroke(cmMarkerColor&0xFF);
