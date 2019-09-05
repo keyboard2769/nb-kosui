@@ -183,7 +183,7 @@ public class DemoLineChart extends PApplet{
       
       //-- toolbar ** button
       JButton lpQuitSW=ScFactory.ccCreateCommandButton("Quit");
-      VcSwingCoordinator.ccRegisterComponent(lpQuitSW, cmQuitting);
+      VcSwingCoordinator.ccRegisterAction(lpQuitSW, cmQuitting);
       
       //-- toolbar ** bar
       JToolBar lpBar=ScFactory.ccCreateStuckedToolBar();

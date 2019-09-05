@@ -26,10 +26,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScConst;
+import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScIcon;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcSwingConsole;
@@ -50,6 +53,10 @@ public class TestFrame {
   
   private static final JFrame O_FRAME
    = new JFrame("Console Frame v0.1.0");
+  
+  //=== guest
+  
+  private static final JTextField O_PTT =ScFactory.ccCreateTextLamp("003");
 
   //=== action
   
@@ -98,12 +105,12 @@ public class TestFrame {
     JMenuItem lpInfoItem = new JMenuItem("Info");
     lpInfoItem.setActionCommand("--action-info");
     lpInfoItem.setMnemonic(KeyEvent.VK_I);
-    VcSwingCoordinator.ccRegisterComponent(lpInfoItem, T_INFO_POPPING);
+    VcSwingCoordinator.ccRegisterAction(lpInfoItem, T_INFO_POPPING);
     
     JMenuItem lpQuitItem = new JMenuItem("Quit");
     lpQuitItem.setActionCommand("--action-quit");
     lpQuitItem.setMnemonic(KeyEvent.VK_Q);
-    VcSwingCoordinator.ccRegisterComponent(lpQuitItem, T_QUITTING);
+    VcSwingCoordinator.ccRegisterAction(lpQuitItem, T_QUITTING);
     
     //-- menu ** bar
     JMenu lpFileMenu=new JMenu("File");
@@ -118,9 +125,14 @@ public class TestFrame {
     lpMenuBar.add(lpFileMenu);
     lpMenuBar.add(lpHelpMenu);
     
+    //-- test ** packup
+    JPanel lpTestTab = ScFactory.ccCreateGridPanel(6, 1);
+    lpTestTab.add(O_PTT);
+    
     //-- content ** packup
     JTabbedPane lpContentPane = new JTabbedPane();
     lpContentPane.setBorder(BorderFactory.createEtchedBorder());
+    lpContentPane.add("Test", lpTestTab);
     lpContentPane.add("Console", VcSwingConsole.ccGetInstance());
     lpContentPane.updateUI();
     
@@ -148,6 +160,15 @@ public class TestFrame {
     
     //-- coordination
     VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
+    
+    VcSwingCoordinator.ccRegisterPressing(O_PTT, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        String lpD=ScConst.ccGetStringByInputBox("give something", "hellow?");
+        if(!VcConst.ccIsValidString(lpD)){return;}
+        O_PTT.setText(lpD);
+      }
+    });
+    
     VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
     VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
     

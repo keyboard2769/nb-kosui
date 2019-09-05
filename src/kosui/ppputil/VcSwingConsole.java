@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 package kosui.ppputil;
 
 import java.awt.BorderLayout;
@@ -36,6 +35,9 @@ import kosui.pppswingui.ScFactory;
  */
 public final class VcSwingConsole extends JPanel{
   
+  private static final String C_INIT_TEXT
+    = "kosui standby::"+VcConst.C_V_NEWLINE;
+  
   /**
    * @return instance
    */
@@ -48,7 +50,7 @@ public final class VcSwingConsole extends JPanel{
   //===
   
   private final JTextArea cmArea 
-    = new JTextArea("kosui standby::"+VcConst.C_V_NEWLINE);
+    = new JTextArea(C_INIT_TEXT);
   
   private final JTextField cmField
    = new JTextField("");
@@ -81,14 +83,6 @@ public final class VcSwingConsole extends JPanel{
   //===
   
   /**
-   * might get passed to JTextArea::append() eventually.<br>
-   * @param pxLine must have some thing.
-   */
-  public static final void ccStackln(String pxLine){
-    ccStackln(pxLine, null);
-  }//+++
-  
-  /**
    * alias for JTextArea::append().<br>
    * re-direct viewport location via text selection setting.<br>
    * @param pxTag must have something
@@ -107,6 +101,21 @@ public final class VcSwingConsole extends JPanel{
   }//+++
   
   /**
+   * might get passed to JTextArea::append() eventually.<br>
+   * @param pxLine must have some thing.
+   */
+  public static final void ccStackln(String pxLine){
+    ccStackln(pxLine, null);
+  }//+++
+  
+  /**
+   * reset output area content
+   */
+  public static final void ccClear(){
+    self.cmArea.setText(C_INIT_TEXT);
+  }//+++
+  
+  /**
    * for input field
    */
   public static final void ccRequestFocus(){
@@ -118,6 +127,13 @@ public final class VcSwingConsole extends JPanel{
    */
   public static final String ccGetFieldText(){
     return self.cmField.getText();
+  }//+++
+  
+  /**
+   * @return directly from output area
+   */
+  public static final String ccGetAreaText(){
+    return self.cmArea.getText();
   }//+++
   
  }//***eof

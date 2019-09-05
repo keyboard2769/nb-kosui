@@ -71,15 +71,15 @@ i know it is a nonsense name, but anyway.
 
 - [ ] $ let's define more awt color!!
 - [ ] $ fill up those array packup methods.
-- [ ] $ split indexing handling from ring buffer class
+- [ ] $ a new test case framed with reflection
 
 #### onfire
 
-- [ ] $ a click-able map for swing ui
+- [ ] $ split indexing handling from ring buffer class
+- [ ] $ imporve line chart drawer to give more information
 
 #### currently
 
-- [x] $ re-implemented EcSlider to make EcGauge intentionally drag-able
 - [x] $ merged EcTip into EcTipMamager, make it a real manager.
 - [x] $ rewritten all swing dialog method comment
 - [x] $ a new EcImage class
@@ -87,5 +87,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ make a class and demo for line chart.
 - [x] $ a line chart class
 - [x] $ a multi screen mechanism for local ui
+- [x] $ a click-able map for swing ui
 
 <hr><!--EOF-->

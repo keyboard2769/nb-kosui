@@ -20,6 +20,8 @@ package kosui.ppputil;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
@@ -42,23 +44,38 @@ public final class VcSwingCoordinator {
 
   //===
   
-  private final HashMap<String, EiTriggerable> cmMapOfCommandTrigger
+  private String cmLastAccepted="";
+  
+  private final HashMap<String, EiTriggerable> cmMapOfCommandExecuting
     = new HashMap<String, EiTriggerable>();
   
-  private final HashMap<JComponent, EiTriggerable> cmMapOfSwingTrigger
+  private final HashMap<AbstractButton, EiTriggerable> cmMapOfActionPerforming
+    = new HashMap<AbstractButton, EiTriggerable>();
+  
+  private final HashMap<JComponent, EiTriggerable> cmMapOfMousePressing
     = new HashMap<JComponent, EiTriggerable>();
   
-  private final ActionListener cmTheLister = new ActionListener() {
+  private final ActionListener cmActionLister = new ActionListener() {
     @Override public void actionPerformed(ActionEvent ae){
       if(!ScConst.ccIsEDT()){return;}
-      JComponent lpSource = (JComponent)ae.getSource();
-      if(cmMapOfSwingTrigger.containsKey(lpSource)){
-        cmMapOfSwingTrigger.get(lpSource).ccTrigger();
+      AbstractButton lpSource = (AbstractButton)ae.getSource();
+      if(cmMapOfActionPerforming.containsKey(lpSource)){
+        cmMapOfActionPerforming.get(lpSource).ccTrigger();
       }//..?
     }//+++
-  };
+  };//***
   
-  private String cmLastAccepted="";
+  private final MouseAdapter cmMouseAdaptor = new MouseAdapter() {
+    @Override  public void mousePressed(MouseEvent me){
+      if(!ScConst.ccIsEDT()){return;}
+      //..by now we don't support right click
+      if(me.getButton()!=MouseEvent.BUTTON1){return;}
+      JComponent lpSource = (JComponent)me.getSource();
+      if(cmMapOfMousePressing.containsKey(lpSource)){
+        cmMapOfMousePressing.get(lpSource).ccTrigger();
+      }//..?
+    }//+++
+  };//***
   
   //===
   
@@ -81,26 +98,25 @@ public final class VcSwingCoordinator {
   //===
   
   /**
-   * @return #
-   * @deprecated you are not supposed to get to need it 
-   */
-  @Deprecated public final ActionListener ccGetTheListener(){
-    return cmTheLister;
-  }//+++
-  
-  /**
-   * @param pxComponent just don't pass null
+   * @param pxButton just don't pass null
    * @param pxTrigger just don't pass null
    */
   static public final void
-  ccRegisterComponent(JComponent pxComponent, EiTriggerable pxTrigger){
+  ccRegisterAction(AbstractButton pxButton, EiTriggerable pxTrigger){
+    if(pxButton==null){return;}
+    if(pxTrigger==null){return;}
+    if(SELF.cmMapOfActionPerforming.containsKey(pxButton)){return;}
+    pxButton.addActionListener(SELF.cmActionLister);
+    SELF.cmMapOfActionPerforming.put(pxButton,pxTrigger);
+  }//+++
+  
+  static public final void
+  ccRegisterPressing(JComponent pxComponent, EiTriggerable pxTrigger){
     if(pxComponent==null){return;}
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfSwingTrigger.containsKey(pxComponent)){return;}
-    if(pxComponent instanceof AbstractButton){
-      ((AbstractButton)pxComponent).addActionListener(SELF.cmTheLister);
-    }//..?
-    SELF.cmMapOfSwingTrigger.put(pxComponent,pxTrigger);
+    if(SELF.cmMapOfMousePressing.containsKey(pxComponent)){return;}
+    pxComponent.addMouseListener(SELF.cmMouseAdaptor);
+    SELF.cmMapOfMousePressing.put(pxComponent,pxTrigger);
   }//+++
   
   /**
@@ -111,8 +127,8 @@ public final class VcSwingCoordinator {
   ccRegisterCommand(String pxCommand, EiTriggerable pxTrigger){
     if(!VcStringUtility.ccIsCommandString(pxCommand)){return;}
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfCommandTrigger.containsKey(pxCommand)){return;}
-    SELF.cmMapOfCommandTrigger.put(pxCommand,pxTrigger);
+    if(SELF.cmMapOfCommandExecuting.containsKey(pxCommand)){return;}
+    SELF.cmMapOfCommandExecuting.put(pxCommand,pxTrigger);
   }//+++
   
   /**
@@ -133,9 +149,9 @@ public final class VcSwingCoordinator {
   static public final String ccExecute(String pxCommand){
     if(!VcConst.ccIsValidString(pxCommand)){return "[>]"+VcConst.C_V_NEWLINE;}
     String[] lpSplit = pxCommand.split(" ");
-    if(SELF.cmMapOfCommandTrigger.containsKey(lpSplit[0])){
+    if(SELF.cmMapOfCommandExecuting.containsKey(lpSplit[0])){
        SELF.cmLastAccepted=pxCommand;
-       SELF.cmMapOfCommandTrigger.get(lpSplit[0]).ccTrigger();
+       SELF.cmMapOfCommandExecuting.get(lpSplit[0]).ccTrigger();
       return "[OK]accepted:"+lpSplit[0];
     }else{
        SELF.cmLastAccepted="";

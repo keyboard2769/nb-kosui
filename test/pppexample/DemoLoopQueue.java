@@ -107,25 +107,25 @@ public class DemoLoopQueue extends PApplet {
       
       if(cmOperateWindow.ccIsFinished()){return;}
       
-      VcSwingCoordinator.ccRegisterComponent(cmAddSW, new EiTriggerable() {
+      VcSwingCoordinator.ccRegisterAction(cmAddSW, new EiTriggerable() {
         @Override public void ccTrigger(){
           VcLocalCoordinator.ccInvokeLater(cmAddBlinker);
         }//+++
       });
       
-      VcSwingCoordinator.ccRegisterComponent(cmRemoveSW,
+      VcSwingCoordinator.ccRegisterAction(cmRemoveSW,
         new EiTriggerable(){ @Override public void ccTrigger(){
           VcLocalCoordinator.ccInvokeLater(cmRemoveBlinker);
         }}//+++
       );
       
-      VcSwingCoordinator.ccRegisterComponent(cmClearSW,
+      VcSwingCoordinator.ccRegisterAction(cmClearSW,
         new EiTriggerable(){ @Override public void ccTrigger(){
           VcLocalCoordinator.ccInvokeLater(cmClearBlinker);
         }}//+++
       );
       
-      VcSwingCoordinator.ccRegisterComponent(cmQuitSW,
+      VcSwingCoordinator.ccRegisterAction(cmQuitSW,
         new EiTriggerable(){ @Override public void ccTrigger(){
           VcLocalCoordinator.ccInvokeLater(cmQuit);
         }}//+++

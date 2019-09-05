@@ -208,11 +208,11 @@ public class CaseRingBuffer {
     
     //-- trigger
     JButton lpOfferSW = ScFactory.ccCreateCommandButton(">>");
-    VcSwingCoordinator.ccRegisterComponent(lpOfferSW, T_OFFERING);
+    VcSwingCoordinator.ccRegisterAction(lpOfferSW, T_OFFERING);
     JButton lpPollSW = ScFactory.ccCreateCommandButton("<<");
-    VcSwingCoordinator.ccRegisterComponent(lpPollSW, T_POLLING);
+    VcSwingCoordinator.ccRegisterAction(lpPollSW, T_POLLING);
     JButton lpClearSW = ScFactory.ccCreateCommandButton("-X-");
-    VcSwingCoordinator.ccRegisterComponent(lpClearSW, T_CLEARING);
+    VcSwingCoordinator.ccRegisterAction(lpClearSW, T_CLEARING);
     
     //-- reserved
     ScFactory.ccSetupTextLamp(O_POLL_BOX, 100, 24);
@@ -238,12 +238,12 @@ public class CaseRingBuffer {
     JMenuItem lpInfoItem = new JMenuItem("Info");
     lpInfoItem.setActionCommand("--action-info");
     lpInfoItem.setMnemonic(KeyEvent.VK_I);
-    VcSwingCoordinator.ccRegisterComponent(lpInfoItem, T_INFO_POPPING);
+    VcSwingCoordinator.ccRegisterAction(lpInfoItem, T_INFO_POPPING);
     
     JMenuItem lpQuitItem = new JMenuItem("Quit");
     lpQuitItem.setActionCommand("--action-quit");
     lpQuitItem.setMnemonic(KeyEvent.VK_Q);
-    VcSwingCoordinator.ccRegisterComponent(lpQuitItem, T_QUITTING);
+    VcSwingCoordinator.ccRegisterAction(lpQuitItem, T_QUITTING);
     
     //-- menu ** bar
     JMenu lpFileMenu=new JMenu("File");
