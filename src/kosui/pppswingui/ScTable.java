@@ -146,7 +146,7 @@ public final class ScTable extends JScrollPane {
    * wrapper for JTable::print(). <br>
    * for advanced use you should create a print job outside.
    */
-  public final void ccPrint(){
+  public final void ccViewPortPrint(){
     try{
       cmTable.print();
     }catch(PrinterException ex){

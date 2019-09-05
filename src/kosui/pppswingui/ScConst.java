@@ -32,6 +32,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -323,6 +324,20 @@ public class ScConst {
     if(lpModel==null){return;}
     int lpMax=lpModel.getMaximum();
     lpModel.setValue(lpMax+lpModel.getExtent());
+  }//+++
+  
+  /**
+   * sets scroll bar model of given scroll pane to maximum. <br>
+   * will get blocked out for EDT.
+   * @param pxTarget don't pass null
+   */
+  public static final void ccScrollToLast(JTextArea pxTarget){
+    if(!ccIsEDT()){return;}
+    if(pxTarget==null){return;}
+    int lpLength = pxTarget.getText().length();
+    if(lpLength<=4){return;}//..then it cant be out bounded
+    pxTarget.setSelectionStart(lpLength - 2);
+    pxTarget.setSelectionEnd(lpLength - 1);
   }//+++
   
   //=== system

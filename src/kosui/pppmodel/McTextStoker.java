@@ -46,7 +46,7 @@ public class McTextStoker {
    * @param pxTag must have something
    * @param pxVal can be any thing
    */
-  public final void ccStack(String pxTag, Object pxVal){
+  public final void ccStokeln(String pxTag, Object pxVal){
     if(!VcConst.ccIsValidString(pxTag)){return;}
     StringBuilder lpBuilder=new StringBuilder(pxTag);
     if(pxVal!=null){
@@ -61,8 +61,8 @@ public class McTextStoker {
    * add given text to tail and rolls index up.<br>
    * @param pxLine must have something
    */
-  public final void ccStack(String pxLine){
-    ccStack(pxLine,null);
+  public final void ccStokeln(String pxLine){
+    McTextStoker.this.ccStokeln(pxLine,null);
   }//+++
   
   /**
@@ -80,18 +80,32 @@ public class McTextStoker {
   public final void ccClear(String pxDefault){
     ccClear();
     if(!VcConst.ccIsValidString(pxDefault)){return;}
-    ccStack(pxDefault);
+    ccStokeln(pxDefault);
   }//+++
   
+  /**
+   * @param pxLogicalIndex smaller is younger
+   * @return per stack
+   */
   public final String ccGet(int pxLogicalIndex){
-    String lpRes=cmData[cmIndex.ccToAbsoluteAddress(pxLogicalIndex)];
+    String lpRes=cmData[cmIndex.ccToReversedAddress(pxLogicalIndex)];
     return VcStringUtility.ccNulloutString(lpRes);
   }//+++
   
+  /**
+   * pack up as a giant string of all lines stoked.<br>
+   * aliasing to PApplet.join(), may cause big overhead.<br>
+   * @return #
+   */
   public final String ccGet(){
     return PApplet.join(cmData, VcConst.C_V_NEWLINE.charAt(0));
   }//+++
   
+  /**
+   * get and logically remove oldest stoked.<br>
+   * actually it just rolls up the index.<br>
+   * @return never null
+   */
   public final String ccRetrieve(){
     String lpRes=cmData[cmIndex.ccGetNose()];
     cmIndex.ccRollupNoseIndex();

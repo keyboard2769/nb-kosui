@@ -76,11 +76,23 @@ public class McRingedIndex {
   
   /**
    * usage may vary per implement.<br>
+   * count from nose.<br>
    * @param pxLogicalIndex seen from out side
    * @return offset to the actual data 
    */
   public final int ccToAbsoluteAddress(int pxLogicalIndex){
+    //[figureout]::why we have to minus one here to make that char work??
     return (pxLogicalIndex+cmNose-1)&cmMask;
+  }//+++
+  
+  /**
+   * usage may vary per implement.<br>
+   * count from tail.<br>
+   * @param pxLogicalIndex seen from out side
+   * @return offset to the actual data
+   */
+  public final int ccToReversedAddress(int pxLogicalIndex){
+    return (cmTail-pxLogicalIndex+1)&cmMask;
   }//+++
   
   /**

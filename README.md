@@ -72,12 +72,10 @@ i know it is a nonsense name, but anyway.
 - [ ] $ let's define more awt color!!
 - [ ] $ fill up those array packup methods.
 - [ ] $ a new test case framed with reflection
-- [ ] $ imporve line chart drawer to give more information
 
 #### onfire
 
-- [ ] $ split indexing handling from ring buffer class
-- [ ] $ re-implement local text stoker with ring buffer
+- [ ] $ imporve line chart drawer to give more information
 
 #### currently
 
@@ -89,5 +87,7 @@ i know it is a nonsense name, but anyway.
 - [x] $ a line chart class
 - [x] $ a multi screen mechanism for local ui
 - [x] $ a click-able map for swing ui
+- [x] $ split indexing handling from ring buffer class
+- [x] $ re-implement local text stoker with ring buffer
 
 <hr><!--EOF-->

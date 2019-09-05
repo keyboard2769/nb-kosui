@@ -27,9 +27,9 @@ import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalStoker;
 import kosui.ppputil.VcLocalTagger;
 
-public class DemoCommonUsage extends PApplet {
+public class DemoLocalUtility extends PApplet {
   
-  static private DemoCommonUsage self = null;
+  static private DemoLocalUtility self = null;
 
   static private int cmRoller=0;
   
@@ -63,7 +63,7 @@ public class DemoCommonUsage extends PApplet {
   private final EiTriggerable cmEchoInput = new EiTriggerable() {
     @Override public void ccTrigger(){
       
-      VcLocalStoker.ccStack(VcLocalConsole.ccGetLastAccepted());
+      VcLocalStoker.ccStokeln(VcLocalConsole.ccGetLastAccepted());
       
       
       
@@ -147,14 +147,14 @@ public class DemoCommonUsage extends PApplet {
     return cmRoller==pxZeroToFifteen;
   }//+++
   
-  static public DemoCommonUsage ccGetSketch(){return self;}//+++
+  static public DemoLocalUtility ccGetSketch(){return self;}//+++
   
   static public PApplet ccGetApplet(){return self;}//+++
   
   static public Frame ccGetFrame(){return self.frame;}//+++
 
   static public void main(String[] passedArgs) {
-    PApplet.main(DemoCommonUsage.class.getCanonicalName());
+    PApplet.main(DemoLocalUtility.class.getCanonicalName());
   }//+++
 
 }//***eof

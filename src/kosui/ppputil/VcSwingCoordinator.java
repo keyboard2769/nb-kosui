@@ -147,7 +147,7 @@ public final class VcSwingCoordinator {
    * @return a tag with input
    */
   static public final String ccExecute(String pxCommand){
-    if(!VcConst.ccIsValidString(pxCommand)){return "[>]"+VcConst.C_V_NEWLINE;}
+    if(!VcConst.ccIsValidString(pxCommand)){return "[>]";}
     String[] lpSplit = pxCommand.split(" ");
     if(SELF.cmMapOfCommandExecuting.containsKey(lpSplit[0])){
        SELF.cmLastAccepted=pxCommand;

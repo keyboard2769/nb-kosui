@@ -60,14 +60,13 @@ public final class VcLocalStoker {
   
   private int
     //-- color
-    cmBaseColor=0xFF33EE33,
+    //[abort]::cmConsoleColor,cmStackColor
+    cmThemeColor=0xFF33EE33,
     //-- pix
-    cmReversedOffsetY=40,
-    //-- count
-    cmCharCount=48
+    cmBaseLineOffsetY=40
   ;//...
   
-  private int cmMaxLine;
+  private int cmMaxLine,cmMaxLength;
   
   private final McTextStoker cmModel = new McTextStoker(C_BUFFER_SIZE);
   
@@ -84,13 +83,14 @@ public final class VcLocalStoker {
     if(pxOwner==null){return;}
     if(cmOwner==null){cmOwner=pxOwner;}
     cmMaxLine=cmOwner.height/EcConst.C_DEFAULT_TEXT_HEIGHT;
+    cmMaxLength=64;//[abort]::cmOwner.width/EcConst.C_DEFAULT_TEXT_WIDTH
   }//..!
   
   /**
    * @param pxColor both text and base line will be this color
    */
-  public final void ccSetBaseColor(int pxColor){
-    cmBaseColor=pxColor;
+  public final void ccSetColor(int pxColor){
+    cmThemeColor=pxColor;
   }//+++
   
   /**
@@ -100,29 +100,29 @@ public final class VcLocalStoker {
    * </pre>
    * @param pxOffsetY to the bottom
    */
-  public final void ccSetReversedOffsetY(int pxOffsetY){
-    cmReversedOffsetY=pxOffsetY;
+  public final void ccSetBaseLineOffsetY(int pxOffsetY){
+    cmBaseLineOffsetY=pxOffsetY;
   }//+++
   
   /**
    * max character number of a single line.<br>
    * @param pxCount 3~512
    */
-  public final void ccSetCharCount(int pxCount){
-    cmCharCount=constrain(pxCount, 3, 512);
+  public final void ccMaxLineLength(int pxCount){
+    cmMaxLength=constrain(pxCount, 3, 512);
   }//+++
   
   /**
    * @param pxState #
    */
-  public final void ccSetVisible(boolean pxState){
+  public final void ccSetIsVisible(boolean pxState){
     cmIsVisible=pxState;
   }//+++
   
   /**
    * flip version
    */
-  public final void ccFlipVisible(){
+  public final void ccSetIsVisible(){
     cmIsVisible=!cmIsVisible;
   }//+++
   
@@ -137,19 +137,16 @@ public final class VcLocalStoker {
   
   private void ssUpdate(){
     if(cmOwner==null || !cmIsVisible){return;}
-    int lpOffset=cmOwner.height-cmReversedOffsetY;
+    int lpOffset=cmOwner.height-cmBaseLineOffsetY;
     cmOwner.pushStyle();{
-      cmOwner.fill(cmBaseColor);
+      cmOwner.fill(cmThemeColor);
       cmOwner.textAlign(LEFT, BOTTOM);
       for(int i=0;i<cmMaxLine;i++){
-        
-        //[head]:: what s wrong with you!!?
-        
         cmOwner.text(cmModel.ccGet(i), 5,
           lpOffset-i*EcConst.C_DEFAULT_TEXT_HEIGHT
         );
       }//..~
-      cmOwner.stroke(cmBaseColor);
+      cmOwner.stroke(cmThemeColor);
       cmOwner.line(0,lpOffset,cmOwner.width,lpOffset);
     }cmOwner.popStyle();
   }//+++
@@ -159,16 +156,16 @@ public final class VcLocalStoker {
    * @param pxTag #
    * @param pxVal #
    */
-  static public final void ccStack(String pxTag, Object pxVal){
-    self.cmModel.ccStack(pxTag, pxVal);
+  static public final void ccStokeln(String pxTag, Object pxVal){
+    self.cmModel.ccStokeln(pxTag, pxVal);
   }//+++
   
   /**
    * a wrapped input will get passed to McLineStacker.ccStack() directly.<br>
    * @param pxLine #
    */
-  static public final void ccStack(String pxLine){
-    self.cmModel.ccStack(VcStringUtility.ccWrap(pxLine, self.cmCharCount));
+  static public final void ccStokeln(String pxLine){
+    self.cmModel.ccStokeln(VcStringUtility.ccWrap(pxLine, self.cmMaxLength));
   }//+++
   
   /**
@@ -184,7 +181,5 @@ public final class VcLocalStoker {
   static public final void ccClear(String pxClearMessage){
     self.cmModel.ccClear(pxClearMessage);
   }//+++
-  
-  //===
   
 }//***eof

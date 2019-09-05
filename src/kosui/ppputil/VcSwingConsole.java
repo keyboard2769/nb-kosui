@@ -22,10 +22,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import kosui.pppswingui.ScFactory;
+import kosui.pppswingui.ScStoker;
 
 /**
  * this was my template of swing application, i thought this is the best way 
@@ -49,8 +47,8 @@ public final class VcSwingConsole extends JPanel{
   
   //===
   
-  private final JTextArea cmArea 
-    = new JTextArea(C_INIT_TEXT);
+  private final ScStoker cmStoker 
+    = new ScStoker(C_INIT_TEXT, -1, -1);
   
   private final JTextField cmField
    = new JTextField("");
@@ -73,46 +71,37 @@ public final class VcSwingConsole extends JPanel{
   private VcSwingConsole(){
     super(new BorderLayout());
     setBorder(BorderFactory.createEtchedBorder());
-    ScFactory.ccSetupConsoleArea(cmArea);
-    JScrollPane lpCenterPane=new JScrollPane(cmArea);
     cmField.addKeyListener(cmListener);
-    add(lpCenterPane,BorderLayout.CENTER);
+    add(cmStoker,BorderLayout.CENTER);
     add(cmField,BorderLayout.PAGE_END);
   }//..!
   
   //===
   
   /**
-   * alias for JTextArea::append().<br>
-   * re-direct viewport location via text selection setting.<br>
+   * alias for ScStoker::ccPrintln().<br>
+   * might get passed to JTextArea::append() eventually.<br>
    * @param pxTag must have something
    * @param pxVal can be any thing
    */
   public static final void ccStackln(String pxTag, Object pxVal){
-    if(pxTag==null){return;}
-    if(pxVal==null){
-      self.cmArea.append(pxTag+VcConst.C_V_NEWLINE);
-    }else{
-      self.cmArea.append(pxTag+":"+pxVal.toString()+VcConst.C_V_NEWLINE);
-    }//..?
-    int lpLength = self.cmArea.getText().length();
-    self.cmArea.setSelectionStart(lpLength-1);
-    self.cmArea.setSelectionEnd(lpLength);
+    self.cmStoker.ccStokeln(pxTag, pxVal);
   }//+++
   
   /**
+   * alias for ScStoker::ccPrintln().<br>
    * might get passed to JTextArea::append() eventually.<br>
    * @param pxLine must have some thing.
    */
   public static final void ccStackln(String pxLine){
-    ccStackln(pxLine, null);
+    self.cmStoker.ccStokeln(pxLine);
   }//+++
   
   /**
    * reset output area content
    */
   public static final void ccClear(){
-    self.cmArea.setText(C_INIT_TEXT);
+    self.cmStoker.ccClear(C_INIT_TEXT);
   }//+++
   
   /**
@@ -133,7 +122,7 @@ public final class VcSwingConsole extends JPanel{
    * @return directly from output area
    */
   public static final String ccGetAreaText(){
-    return self.cmArea.getText();
+    return self.cmStoker.ccGetText();
   }//+++
   
  }//***eof
