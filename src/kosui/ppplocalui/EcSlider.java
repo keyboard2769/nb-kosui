@@ -53,6 +53,8 @@ public class EcSlider extends EcGauge{
   
   @Override public void ccUpdate(){
     
+    if(!ccIsVisible()){return;}
+    
     //-- pre
     int lpPosition=ccTellScale(cmIsVertical?cmH:cmW);
     ccApplyClickedValue();

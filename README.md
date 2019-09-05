@@ -71,21 +71,21 @@ i know it is a nonsense name, but anyway.
 
 - [ ] $ let's define more awt color!!
 - [ ] $ fill up those array packup methods.
-- [ ] $ a ScImage class
+- [ ] $ split indexing handling from ring buffer class
 
 #### onfire
 
-- [ ] $ make a class and demo for line chart.
-- [ ] $ a LineChart class
+- [ ] $ a click-able map for swing ui
 
 #### currently
 
-- [x] $ built a local ui example using given type of ui component.
-- [x] $ merged binary method from wm monitor to numeric utilities
-- [x] $ merged ccGetFileByFileChooser from xml specifier to swing dialog
 - [x] $ re-implemented EcSlider to make EcGauge intentionally drag-able
 - [x] $ merged EcTip into EcTipMamager, make it a real manager.
 - [x] $ rewritten all swing dialog method comment
 - [x] $ a new EcImage class
+- [x] $ a ScIcon class
+- [x] $ make a class and demo for line chart.
+- [x] $ a line chart class
+- [x] $ a multi screen mechanism for local ui
 
 <hr><!--EOF-->

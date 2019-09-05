@@ -24,7 +24,8 @@ import java.util.List;
  * @param <R> a row, supposedly some class implemented the record interface
  * @param <C> a column, supposedly an array list of certain data type
  */
-public abstract class McArbitaryTable<R extends List,C extends List> extends McSemirigidTable {
+public abstract class McArbitaryTable<R extends List,C extends List>
+  extends McSemirigidTable {
   
   //=== inserting
   

@@ -26,17 +26,17 @@ import processing.data.StringList;
  * actually i got this idea from VSCode.<br>
  * but this is even less than a status bar.<br>
  */
-public final class VcResponsiveBar {
+public final class VcLocalConsole {
   
   /**
    * @return instance
    */
-  static public final VcResponsiveBar ccGetInstance(){
-    if(self==null){self= new VcResponsiveBar();}
+  static public final VcLocalConsole ccGetInstance(){
+    if(self==null){self= new VcLocalConsole();}
     return self;
   }//+++
-  static private VcResponsiveBar self = null;
-  private VcResponsiveBar (){}//..!
+  static private VcLocalConsole self = null;
+  private VcLocalConsole (){}//..!
   
   //===
   

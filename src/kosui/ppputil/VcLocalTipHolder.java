@@ -31,7 +31,7 @@ import processing.core.PApplet;
  * outside from a coordinator. <br>
  * but actually it is just a rectangle with text. <br>
  */
-public class VcTipManager {
+public class VcLocalTipHolder {
   
   private static final int 
     C_TEXT_ADJ_X = 2,
@@ -41,12 +41,12 @@ public class VcTipManager {
   /**
    * @return instance
    */
-  public static VcTipManager ccGetInstance(){
-    if(self == null){self = new VcTipManager();}
+  public static VcLocalTipHolder ccGetInstance(){
+    if(self == null){self = new VcLocalTipHolder();}
     return self;
   }//..!
-  private static VcTipManager self = null;
-  private VcTipManager(){}//..!
+  private static VcLocalTipHolder self = null;
+  private VcLocalTipHolder(){}//..!
   
   //=== 
   

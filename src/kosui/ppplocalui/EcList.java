@@ -124,6 +124,8 @@ public class EcList extends EcElement{
    */
   @Override public void ccUpdate(){
     
+    if(!ccIsVisible()){return;}
+    
     //-- draw pane
     ccActFill();
     pbOwner.rect(cmX, cmY, cmW, cmH);

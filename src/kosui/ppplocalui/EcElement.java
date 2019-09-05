@@ -69,9 +69,7 @@ public class EcElement extends EcComponent{
    * basic field
    */
   protected boolean
-    cmIsActivated = false,
-    cmIsEnabled   = true,
-    cmIsVisible   = true
+    cmIsActivated = false
   ;//...
   
   /**
@@ -110,7 +108,8 @@ public class EcElement extends EcComponent{
   /**
    * {@inheritDoc}
    */
-  @Override public void ccUpdate(){if(!cmIsVisible){return;}
+  @Override public void ccUpdate(){
+    if(!ccIsVisible()){return;}
     drawRect(ccActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
@@ -299,22 +298,6 @@ public class EcElement extends EcComponent{
     cmIsActivated=(cmID==pxFocusedID);
   }//+++
   
-  /**
-   * an enabled one is a mouse click able one.<br>
-   * @param pxStatus #
-   */
-  public final void ccSetIsEnabled(boolean pxStatus){
-    cmIsEnabled=pxStatus;
-  }//+++
-  
-  /**
-   * the visibility only means the ccUpdate() will get bypassed or not.<br>
-   * @param pxStatus #
-   */
-  public final void ccSetIsVisible(boolean pxStatus){
-    cmIsVisible=pxStatus;
-  }//+++
-  
   //===
 
   /**
@@ -350,13 +333,12 @@ public class EcElement extends EcComponent{
   }//+++
 
   /**
-   * color and alignment and enability well get fetched.<br>
+   * color and alignment and well get fetched.<br>
    * @param pxTarget #
    */
   public void ccSetupStyle(EcElement pxTarget){
     cmOnColor=pxTarget.cmOnColor;
     cmOffColor=pxTarget.cmOffColor;
-    cmIsEnabled=pxTarget.cmIsEnabled;
     cmNameAlign=pxTarget.cmNameAlign;
     cmNameColor=pxTarget.cmNameColor;
     cmTextAlign=pxTarget.cmTextAlign;
@@ -386,8 +368,8 @@ public class EcElement extends EcComponent{
    * @return true only when enabled
    */
   public final boolean ccIsMouseHovered(){
-    return ccContains(pbOwner.mouseX, pbOwner.mouseY)
-         &&cmIsEnabled;
+    if(!ccIsEnabled()){return false;}
+    return ccContains(pbOwner.mouseX, pbOwner.mouseY);
   }//+++
   
   /**

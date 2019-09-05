@@ -21,11 +21,11 @@ import java.awt.Frame;
 import processing.core.PApplet;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EiTriggerable;
-import kosui.ppputil.VcAxis;
+import kosui.ppputil.VcLocalAxis;
 import kosui.ppputil.VcLocalCoordinator;
-import kosui.ppputil.VcResponsiveBar;
-import kosui.ppputil.VcStacker;
-import kosui.ppputil.VcTagger;
+import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcLocalStoker;
+import kosui.ppputil.VcLocalTagger;
 
 public class DemoCommonUsage extends PApplet {
   
@@ -44,25 +44,25 @@ public class DemoCommonUsage extends PApplet {
   
   private final EiTriggerable cmFlipAxis = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcAxis.ccGetInstance().ccSetIsEnabled();
+      VcLocalAxis.ccGetInstance().ccSetIsEnabled();
     }//+++
   };
   
   private final EiTriggerable cmAnchorAxis = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcAxis.ccGetInstance().ccSetAnchor(mouseX, mouseY);
+      VcLocalAxis.ccGetInstance().ccSetAnchor(mouseX, mouseY);
     }//+++
   };
   
   private final EiTriggerable cmFlipHelper = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcResponsiveBar.ccGetInstance().ccSetHelperVisible();
+      VcLocalConsole.ccGetInstance().ccSetHelperVisible();
     }//+++
   };
   
   private final EiTriggerable cmEchoInput = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcStacker.ccStack(VcResponsiveBar.ccGetLastAccepted());
+      VcLocalStoker.ccStack(VcLocalConsole.ccGetLastAccepted());
     }//+++
   };
   
@@ -78,10 +78,10 @@ public class DemoCommonUsage extends PApplet {
     self=this;
 
     //-- init ** managers
-    VcAxis.ccGetInstance().ccInit(self, true);
-    VcTagger.ccGetInstance().ccInit(this, 7);
-    VcResponsiveBar.ccGetInstance().ccInit(this);
-    VcStacker.ccGetInstance().ccInit(this);
+    VcLocalAxis.ccGetInstance().ccInit(self, true);
+    VcLocalTagger.ccGetInstance().ccInit(this, 7);
+    VcLocalConsole.ccGetInstance().ccInit(this);
+    VcLocalStoker.ccGetInstance().ccInit(this);
     
     //-- register ** key
     VcLocalCoordinator.ccRegisterKeyTrigger
@@ -92,10 +92,10 @@ public class DemoCommonUsage extends PApplet {
       (java.awt.event.KeyEvent.VK_N, cmAnchorAxis);
     
     //-- register ** command
-    VcResponsiveBar.ccAddHelpMessage("help unavailable");
-    VcResponsiveBar.ccRegisterTrigger("quit", cmQuit);
-    VcResponsiveBar.ccRegisterTrigger("help", cmFlipHelper);
-    VcResponsiveBar.ccRegisterTrigger("echo", cmEchoInput);
+    VcLocalConsole.ccAddHelpMessage("help unavailable");
+    VcLocalConsole.ccRegisterTrigger("quit", cmQuit);
+    VcLocalConsole.ccRegisterTrigger("help", cmFlipHelper);
+    VcLocalConsole.ccRegisterTrigger("echo", cmEchoInput);
     
     //-- post setting
     println(".setup()::over");
@@ -111,19 +111,19 @@ public class DemoCommonUsage extends PApplet {
     background(0);
     
     //-- update ** system
-    VcStacker.ccUpdate();
-    VcResponsiveBar.ccUpdate();
-    VcAxis.ccUpdate();
+    VcLocalStoker.ccUpdate();
+    VcLocalConsole.ccUpdate();
+    VcLocalAxis.ccUpdate();
     
     //-- tag
-    VcTagger.ccTag("roller", cmRoller);
-    VcTagger.ccTag("rate", String.format("%.2f", frameRate));
-    VcTagger.ccStabilize();
+    VcLocalTagger.ccTag("roller", cmRoller);
+    VcLocalTagger.ccTag("rate", String.format("%.2f", frameRate));
+    VcLocalTagger.ccStabilize();
 
   }//+++
   
   @Override public void keyPressed() {
-    if(VcResponsiveBar.ccKeyTyped(key, keyCode)){return;}
+    if(VcLocalConsole.ccKeyTyped(key, keyCode)){return;}
     VcLocalCoordinator.ccKeyPressed(keyCode);
   }//+++
   

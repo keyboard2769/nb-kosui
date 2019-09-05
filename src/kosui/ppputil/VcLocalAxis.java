@@ -29,17 +29,17 @@ import static processing.core.PConstants.TOP;
  * i wish you have a better way to determine any location and size.
  * </pre>
  */
-public final class VcAxis {
+public final class VcLocalAxis {
   
   /**
    * @return instance
    */
-  public static final VcAxis ccGetInstance(){
-    if(self==null){self = new VcAxis();}
+  public static final VcLocalAxis ccGetInstance(){
+    if(self==null){self = new VcLocalAxis();}
     return self;
   }
-  private static VcAxis self = null;
-  private VcAxis(){}//..!
+  private static VcLocalAxis self = null;
+  private VcLocalAxis(){}//..!
   
   //===
 

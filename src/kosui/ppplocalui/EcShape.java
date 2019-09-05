@@ -62,6 +62,7 @@ public class EcShape extends EcComponent{
    * even it might works
    */
   @Override public void ccUpdate(){
+    if(!ccIsVisible()){return;}
     drawRect(cmBaseColor);
   }//+++
 

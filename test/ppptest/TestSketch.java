@@ -4,8 +4,8 @@
 
 package ppptest;
 
-import kosui.ppputil.VcTagger;
-import kosui.ppputil.VcResponsiveBar;
+import kosui.ppputil.VcLocalTagger;
+import kosui.ppputil.VcLocalConsole;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -34,7 +34,11 @@ public class TestSketch extends PApplet {
   
   //=== overridden
   
-  EcImage t = new EcImage(32, 32);
+  
+  private final EcButton cmSWI = new EcButton("I", 0xAAA1);
+  private final EcButton cmSWII = new EcButton("II", 0xAAA2);
+  private final EcButton cmSWIII = new EcButton("III", 0xAAA3);
+  private final EcButton cmSWIV = new EcButton("IV", 0xAAA4);
   
   
   @Override public void setup() {
@@ -42,44 +46,76 @@ public class TestSketch extends PApplet {
     //-- init
     size(320, 240);
     EcConst.ccSetupSketch(this);
-    VcTagger.ccGetInstance().ccInit(this, 7);
+    VcLocalTagger.ccGetInstance().ccInit(this, 7);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     
     //-- laytout
     
     
-    t.ccFillPixel(0xFF33EE33, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY){
-        return true;
-      }//+++
+    cmSWI.ccSetBound(60, 60, 40, 40);
+    cmSWII.ccSetSize(cmSWI);
+    cmSWIII.ccSetSize(cmSWI);
+    cmSWIV.ccSetSize(cmSWI);
+    
+    cmSWII.ccSetLocation(cmSWI, 5, 0);
+    cmSWIII.ccSetLocation(cmSWI, 0, 5);
+    cmSWIV.ccSetLocation(cmSWII, 0, 5);
+    
+    cmSWI.ccSetPage(1);
+    cmSWII.ccSetPage(2);
+    cmSWIII.ccSetPage(3);
+    cmSWIV.ccSetPage(4);
+    
+    
+    VcLocalCoordinator.ccAddElement(cmSWI);
+    VcLocalCoordinator.ccAddElement(cmSWII);
+    VcLocalCoordinator.ccAddElement(cmSWIII);
+    VcLocalCoordinator.ccAddElement(cmSWIV);
+    
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWI, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        VcConst.ccPrintln("uno!!");
+      }
     });
     
-    t.ccFillPixel(0xFF999999, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY){
-        return pxX>pxY;
-      }//+++
-    });
     
-    t.ccFillPixel(0xFFEEEEEE, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY){
-        return pxX<3 || pxX>28;
-      }//+++
-    });
-    
-    t.ccFillPixel(0xFFEEEEEE, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY){
-        return pxY<3 || pxY>28;
-      }//+++
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWII, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        VcConst.ccPrintln("dos!!");
+      }
     });
     
     
-    VcLocalCoordinator.ccAddShape(t);
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWIII, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        VcConst.ccPrintln("tre!!");
+      }
+    });
     
+    
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWIV, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        VcConst.ccPrintln("cool!!");
+      }
+    });
     
     
     //-- bind
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_Q, cmQuitting);
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_D, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        EcComponent.ccShiftCurrentPage(1);
+      }
+    });
+    
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (java.awt.event.KeyEvent.VK_A, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        EcComponent.ccShiftCurrentPage(-1);
+      }
+    });
     
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
@@ -93,19 +129,25 @@ public class TestSketch extends PApplet {
     ccRoll();
     
     //-- scan
-    t.ccSetLocation(mouseX, mouseY);
+    
     
     //-- update
     VcLocalCoordinator.ccUpdate();
     
     //-- finishing
-    VcTagger.ccTag("roller",cmRoller);
-    VcTagger.ccStabilize();
+    VcLocalTagger.ccTag("roller",cmRoller);
+    VcLocalTagger.ccTag("page",EcComponent.ccGetCurrentPage());
+    VcLocalTagger.ccTag("mouse",VcLocalCoordinator.ccGetMouseOverID());
+    VcLocalTagger.ccStabilize();
     
   }//+++
   
   @Override public void keyPressed() {
     VcLocalCoordinator.ccKeyPressed(keyCode);
+  }//+++
+
+  @Override public void mousePressed(){
+    VcLocalCoordinator.ccMousePressed();
   }//+++
   
   //=== entry

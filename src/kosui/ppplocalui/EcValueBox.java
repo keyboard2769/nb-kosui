@@ -90,11 +90,10 @@ public class EcValueBox extends EcElement{
    * {@inheritDoc} 
    */
   @Override public void ccUpdate(){
-
+    if(!ccIsVisible()){return;}
     drawDefaultValueBox();
     drawText(cmTextColor);
     drawName(cmNameColor);
-    
   }//+++
   
   /**

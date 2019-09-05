@@ -31,11 +31,10 @@ public class EcTriangleLamp extends EcElement{
    * {@inheritDoc }
    */
   @Override public void ccUpdate(){
-  
+    if(!ccIsVisible()){return;}
     drawTriangleLamp(ccActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
-    
   }//+++
   
 

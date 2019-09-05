@@ -65,6 +65,8 @@ public class EcPane extends EcShape{
    */
   @Override public void ccUpdate() {
     
+    if(!ccIsVisible()){return;}
+    
     pbOwner.fill(EcConst.C_WHITE);
     pbOwner.rect(cmX,cmY,cmW,cmH);
     

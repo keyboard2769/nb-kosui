@@ -31,6 +31,16 @@ public abstract class EcComponent extends EcRect{
   static protected PApplet pbOwner=null;
   
   /**
+   * un-paged component still exists but not visible nor click-able.<r>
+   */
+  static private int pbCurrentPage=0;
+  
+  /**
+   * max page amount is 32
+   */
+  static public final int C_PAGE_MASK = 0x1F;
+  
+  /**
    * <pre>
    * it is NOT SAFE if an illegal PApplet has been initiated
    * make sure it is your RUNNING PApplet passed to this class
@@ -56,6 +66,22 @@ public abstract class EcComponent extends EcRect{
   }//+++
   
   /**
+   * ##
+   * @param pxOffset will get added and masked
+   */
+  static public final void ccShiftCurrentPage(int pxOffset){
+    pbCurrentPage=(pxOffset+pbCurrentPage)&C_PAGE_MASK;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxPage will get masked
+   */
+  static public final void ccSetCurrentPage(int pxPage){
+    pbCurrentPage=pxPage&C_PAGE_MASK;
+  }//+++
+  
+  /**
    * supposedly might get called from draw() loop.<br>
    * @param pxKey #
    * @return #
@@ -65,7 +91,23 @@ public abstract class EcComponent extends EcRect{
     return pbOwner.keyPressed && (pbOwner.key==pxKey);
   }//+++
   
+  /**
+   * @return ##
+   */
+  static public final int ccGetCurrentPage(){
+    return pbCurrentPage;
+  }//+++
+  
   //===
+  
+  private int
+    cmPage = 0
+  ;//...
+  
+  private boolean 
+    cmIsEnabled   = true,
+    cmIsVisible   = true
+  ;//...
   
   /**
    * supposedly get called from draw() of a PApplet.
@@ -101,6 +143,57 @@ public abstract class EcComponent extends EcRect{
     pbOwner.stroke(pxColor);
     pbOwner.line(cmX, cmY, ccEndX(), ccEndY());
     pbOwner.noStroke();
+  }//+++
+  
+  //===
+  
+  /**
+   * <pre>
+   * paging is a status of component and the component class.
+   * unpaged component is not visible nor clickable but still
+   *   exists to occupy your memory.
+   * </pre>
+   * @param pxPage #
+   */
+  public final void ccSetPage(int pxPage){
+    cmPage=pxPage&C_PAGE_MASK;
+  }//+++
+  
+  /**
+   * an enabled one is a mouse click able one.<br>
+   * @param pxStatus #
+   */
+  public final void ccSetIsEnabled(boolean pxStatus){
+    cmIsEnabled=pxStatus;
+  }//+++
+  
+  /**
+   * the visibility only means the ccUpdate() will get bypassed or not.<br>
+   * @param pxStatus #
+   */
+  public final void ccSetIsVisible(boolean pxStatus){
+    cmIsVisible=pxStatus;
+  }//+++
+  
+  /**
+   * @return #
+   */
+  public final boolean ccIsAtCurrentPage(){
+    return cmPage==pbCurrentPage;
+  }//+++
+  
+  /**
+   * @return also affected with the paging mechanism.<br>
+   */
+  public final boolean ccIsEnabled(){
+    return cmIsEnabled&ccIsAtCurrentPage();
+  }//+++
+  
+  /**
+   * @return also affected with the paging mechanism.<br>
+   */
+  public final boolean ccIsVisible(){
+    return cmIsVisible&ccIsAtCurrentPage();
   }//+++
   
 }//***eof

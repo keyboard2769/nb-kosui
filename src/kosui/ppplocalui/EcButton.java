@@ -58,11 +58,10 @@ public class EcButton extends EcElement {
    * {@inheritDoc}
    */
   @Override public void ccUpdate() {
-    
+    if(!ccIsVisible()){return;}
     drawDefualtButton();
     drawName(cmNameColor);
     drawText(ccActColor());
-    
   }//+++
   
   /**

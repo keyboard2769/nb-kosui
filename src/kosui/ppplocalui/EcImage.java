@@ -53,6 +53,7 @@ public final class EcImage extends EcShape implements MiPixillated{
    * {@inheritDoc }
    */
   @Override public void ccUpdate(){
+    if(!ccIsVisible()){return;}
     pbOwner.image(cmImage, cmX, cmY);
   }//+++
   

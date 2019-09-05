@@ -133,6 +133,8 @@ public class EcGauge extends EcElement {
    */
   @Override public void ccUpdate() {
     
+    if(!ccIsVisible()){return;}
+    
     //-- pre
     int lpLength=ccTellScale(cmIsVertical?cmH:cmW);
     ccApplyClickedValue();
@@ -199,7 +201,7 @@ public class EcGauge extends EcElement {
    * mouse location will affect the content value.<br>
    */
   protected final void ccApplyClickedValue(){
-    if(!cmIsEnabled){return;}
+    if(!ccIsVisible()){return;}
     if(!ccIsMousePressed()){return;}
     cmContentValue=cmIsVertical?
        (255-ccGetMouseOffsetY()*255/cmH)

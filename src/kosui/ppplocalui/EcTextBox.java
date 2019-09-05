@@ -77,11 +77,10 @@ public class EcTextBox extends EcElement{
   //===
   
   @Override public void ccUpdate() {
-    
+    if(!ccIsVisible()){return;}
     drawDefaultTextBox();
     drawText(cmTextColor);
     drawName(cmNameColor);
-  
   }//+++
   
   /**

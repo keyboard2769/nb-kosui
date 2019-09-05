@@ -43,6 +43,7 @@ import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
+import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcSwingCoordinator;
 import processing.core.PApplet;
 
@@ -53,6 +54,8 @@ public class DemoLineChart extends PApplet{
   private static final String C_INFO
     = "..press F to start log"+VcConst.C_V_NEWLINE
      +"  press 1 to bring up the trend window";
+  
+  private static final int C_LOG_MAX = 64;
   
   private static final List O_EMPTY_ROW = new ArrayList<Object>();
   
@@ -69,10 +72,9 @@ public class DemoLineChart extends PApplet{
   
   private final McBufferTable cmLogModel = new McBufferTable() {
     
-    
-    private final Deque<String> cmStampQueue
+    private final Deque<String> cmQueueOfStamp
       = new LinkedList<String>();
-    private final Deque<Float> cmValueQueue
+    private final Deque<Float> cmQueueOfValue
       = new LinkedList<Float>();
     
     //===
@@ -90,14 +92,14 @@ public class DemoLineChart extends PApplet{
     }//+++
 
     @Override public int getRowCount() {
-      return cmStampQueue.size();
+      return cmQueueOfStamp.size();
     }//+++
 
     @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
     
       switch (pxColumnIndex) {
-        case 0:return cmStampQueue.toArray()[pxRowIndex];
-        case 1:return cmValueQueue.toArray()[pxRowIndex];
+        case 0:return cmQueueOfStamp.toArray()[pxRowIndex];
+        case 1:return cmQueueOfValue.toArray()[pxRowIndex];
         default:return "<?>";
       }//...?
     }//+++
@@ -108,21 +110,23 @@ public class DemoLineChart extends PApplet{
       if(pxRow==null){return;}
       if(pxRow.isEmpty()){return;}
       if(pxRow.size()!=2){return;}
-      cmStampQueue.add(pxRow.get(0).toString());
+      cmQueueOfStamp.add(pxRow.get(0).toString());
       Object lpV=pxRow.get(1);
       if(lpV instanceof Float){
-        cmValueQueue.add((Float)lpV);
+        cmQueueOfValue.add((Float)lpV);
       }else{
-        cmValueQueue.add(VcNumericUtility.ccParseFloatString(lpV.toString()));
+        cmQueueOfValue.add(VcNumericUtility.ccParseFloatString(lpV.toString()));
       }//..?
     }//+++
 
     @Override synchronized public List ccRetrieveRowFirst() {
-      VcConst.ccErrln("not yet!!");
-      return O_EMPTY_ROW;
+      if(getRowCount()<=2){return O_EMPTY_ROW;}
+      String lpStamp=cmQueueOfStamp.poll();
+      Float lpValue=cmQueueOfValue.poll();
+      return Collections.unmodifiableList(Arrays.asList(lpStamp,lpValue));
     }//+++
     
-  };
+  };//***
   
   //=== swing
   
@@ -144,20 +148,20 @@ public class DemoLineChart extends PApplet{
       cmWindow.setVisible(true);
       cmWindow.toFront();
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
       println(".cmQuitting::call PApplet.exit");
       exit();
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmLogModeFlipping = new EiTriggerable() {
     @Override public void ccTrigger(){
       cmDoLog=!cmDoLog;
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmMemoryDumping = new EiTriggerable() {
     @Override public void ccTrigger(){
@@ -168,7 +172,7 @@ public class DemoLineChart extends PApplet{
       /* 6 */VcConst.ccPrintln(cmChart.ccGetModel(0)
         .ccGetData().tstPackupAbsolute(6));
     }//+++
-  };
+  };//***
     
   private final Runnable cmSwingSetupRunner = new Runnable() {
     @Override public void run() {
@@ -215,15 +219,37 @@ public class DemoLineChart extends PApplet{
       cmChart.ccValidataOffsets(0);
       cmCanvas.ccRefresh();
       
+      //-- retrieve
+      int lpLogged = cmLogModel.getRowCount();
+      if(lpLogged>C_LOG_MAX){
+        int lpRetrievedCount=0;
+        List lpRetrievedRow;
+        VcConst.ccPrintln("max_reched >>>");
+        for(int i=0;i<C_LOG_MAX;i++){
+          lpRetrievedRow=cmLogModel.ccRetrieveRowFirst();
+          if(lpRetrievedRow.equals(O_EMPTY_ROW)){break;}
+          lpRetrievedCount++;
+          VcConst.ccPrintln
+            (lpRetrievedRow.get(0).toString(), lpRetrievedRow.get(1));
+        }//..~
+        VcConst.ccPrintln("<<< retrieved", lpRetrievedCount);
+      }//+++
+      
       //-- table
       cmLogModel.ccInsertRowLast(
         Collections.unmodifiableList(Arrays.asList(
           VcStampUtility.ccDataLogTypeI(),
-          Float.valueOf(pbMarker)
+          Float.valueOf(VcNumericUtility.ccRoundForTwoAfter(pbMarker))
         ))
       );
       ScConst.ccScrollToLast(cmTable);
       cmTable.ccRefresh();
+      
+      //-- status
+      cmStatusBar.setText(
+        VcStringUtility.ccPackupParedTag("size", cmLogModel.getRowCount())
+      );
+      
       
     }//++++
   };//***
@@ -292,7 +318,7 @@ public class DemoLineChart extends PApplet{
   private void ccMark(){
     if(ccIsRollingAt(9)){
       cmMarker=cmSiner;cmMarkerColor=0xFF;
-      pbMarker=1.1f-0.8f*(cmMarker/height);
+      pbMarker=0.99f-0.66f*(cmMarker/height);
       SwingUtilities.invokeLater(cmSwingLogRunner);
     }//..?
     if(cmMarkerColor>0){

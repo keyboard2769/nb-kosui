@@ -25,17 +25,17 @@ import static kosui.ppputil.VcConst.ccIsValidString;
  * draw string and value as tags on the screen.<br>
  * vertically flows down(raw) the screen and turns to right(column).<br>
  */
-public final class VcTagger{
+public final class VcLocalTagger{
   
   /**
    * @return instance
    */
-  public static final VcTagger ccGetInstance(){
-    if(self==null){self=new VcTagger();}
+  public static final VcLocalTagger ccGetInstance(){
+    if(self==null){self=new VcLocalTagger();}
     return self;
   }//+++
-  private static VcTagger self = null;
-  private VcTagger(){}//..!
+  private static VcLocalTagger self = null;
+  private VcLocalTagger(){}//..!
   
   //===
   

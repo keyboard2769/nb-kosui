@@ -29,17 +29,17 @@ import kosui.pppmodel.McTextStocker;
  * i gave the scroll thing up, and i got this.<br>
  * this is a wrapper for McLineStacker.<br>
  */
-public final class VcStacker {
+public final class VcLocalStoker {
   
   /**
    * @return instance
    */
-  public static final VcStacker ccGetInstance(){
-    if(self==null){self=new VcStacker();}
+  public static final VcLocalStoker ccGetInstance(){
+    if(self==null){self=new VcLocalStoker();}
     return self;
   }//+++
-  private static VcStacker self = null;
-  private VcStacker (){}//..!
+  private static VcLocalStoker self = null;
+  private VcLocalStoker (){}//..!
   
   //===
   

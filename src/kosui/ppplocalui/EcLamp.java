@@ -63,6 +63,7 @@ public class EcLamp extends EcElement{
    * {@inheritDoc }
    */
   @Override public void ccUpdate() {
+    if(!ccIsVisible()){return;}
     drawRoundLamp(ccActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
