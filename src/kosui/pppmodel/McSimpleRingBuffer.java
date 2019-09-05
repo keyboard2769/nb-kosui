@@ -18,65 +18,40 @@ package kosui.pppmodel;
 
 import java.util.Arrays;
 import kosui.ppputil.VcConst;
-import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 
 /**
  * push to the tail and pop from nose, just like a giant nollie laser flip.<br>
  * for something you need to pick quit and soon toss away.<br>
  */
-public class McSimpleRingBuffer implements MiByteExchangeable{
+public class McSimpleRingBuffer{
   
   private final int[] cmData;
-  private final int cmMask;
-  private int cmNoseIndex,cmTailIndex;//...
-  private int cmUsed;
+  
+  /**
+   * hold a nose and a tail
+   */
+  public final McRingedIndex cmIndex;
   
   /**
    * implemented on an integer array.<br>
    * @param pxSize will be fixed to the value of power of two
    */
   public McSimpleRingBuffer(int pxSize){
-    cmData=new int[VcNumericUtility.ccToPowerOfTwo(pxSize)];
-    cmMask=cmData.length-1;
+    cmIndex=new McRingedIndex(pxSize);
+    cmData=new int[cmIndex.cmSize];
     ccClear();
   }//..!
   
   //===
   
   /**
+   * this might be equal to the size
+   * only if implemented correctly.<br>
    * @return length of data held
    */
   public final int ccGetCapacity(){
     return cmData.length;
-  }//+++
-  
-  /**
-   * @return an easy way to cut the out of bound facts
-   */
-  public final int ccGetMask(){
-    return cmMask;
-  }//+++
-  
-  /**
-   * @return based on poll and offer counting and might be wrong
-   */
-  public final int ccGetUsedSize(){
-    return cmUsed;
-  }//+++
-  
-  /**
-   * @return the oldest
-   */
-  public final int ccGetNoseIndex(){
-    return cmNoseIndex;
-  }//+++
-  
-  /**
-   * @return the youngest
-   */
-  public final int ccGetTailIndex(){
-    return cmTailIndex;
   }//+++
   
   //===
@@ -86,8 +61,8 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @param pxValue #
    */
   public final void ccOffer(int pxValue){
-    ccSetAbsolute(cmTailIndex, pxValue);
-    ssRollupTailIndex();
+    ccSetAbsolute(cmIndex.ccGetTail(), pxValue);
+    cmIndex.ccRollupTailIndex();
   }//+++
   
   /**
@@ -95,14 +70,11 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @return #
    */
   public final int ccPoll(){
-    int lpRes=ccGetAbsolute(cmNoseIndex);
-    ccSetAbsolute(cmNoseIndex, 0);
-    ssRollupNoseIndex();
+    int lpRes=ccGetAbsolute(cmIndex.ccGetNose());
+    ccSetAbsolute(cmIndex.ccGetNose(), 0);
+    cmIndex.ccRollupNoseIndex();
     return lpRes;
   }//+++
-  
-  //[plan]::public final void ccBreakTo(int pxIndex)
-  //[plan]::public final void ccBreakFrom(int pxIndex)
   
   /**
    * set data to given address in the random access way.<br>
@@ -110,7 +82,7 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @param pxValue no matter target is marked used or not
    */
   public final void ccSetAbsolute(int pxAddr, int pxValue){
-    cmData[pxAddr&cmMask]=pxValue;
+    cmData[pxAddr&cmIndex.cmMask]=pxValue;
   }//+++
   
   /**
@@ -119,7 +91,7 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @return no matter it is marked used or not
    */
   public final int ccGetAbsolute(int pxAddr){
-    return cmData[pxAddr&cmMask];
+    return cmData[pxAddr&cmIndex.cmMask];
   }//+++
   
   /**
@@ -128,7 +100,7 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @param pxValue no matter target is marked used or not
    */
   public final void ccSetLogical(int pxIndex, int pxValue){
-    cmData[ssToAbsoluteAddress(pxIndex)]=pxValue;
+    cmData[cmIndex.ccToAbsoluteAddress(pxIndex)]=pxValue;
   }//+++
   
   /**
@@ -137,59 +109,15 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    * @return no matter it is marked used or not
    */
   public final int ccGetLogical(int pxIndex){
-    return cmData[ssToAbsoluteAddress(pxIndex)];
+    return cmData[cmIndex.ccToAbsoluteAddress(pxIndex)];
   }//+++
   
   /**
-   * initiate everything
+   * clear every thing
    */
   public final void ccClear(){
+    cmIndex.ccClear();
     Arrays.fill(cmData, 0);
-    cmNoseIndex=cmMask;
-    cmTailIndex=0;
-    cmUsed=0;
-  }//+++
-  
-  //===
-  
-  private int ssToAbsoluteAddress(int pxLogicalIndex){
-    return (pxLogicalIndex+cmNoseIndex-1)&cmMask;
-  }//+++
-  
-  private void ssRollupNoseIndex(){
-    cmNoseIndex++;cmNoseIndex&=cmMask;
-    cmUsed--;
-    if(cmNoseIndex==cmTailIndex){
-      cmTailIndex++;cmTailIndex&=cmMask;
-      cmUsed=0;
-    }//..?
-  }//+++
-  
-  private void ssRollupTailIndex(){
-    cmTailIndex++;cmTailIndex&=cmMask;
-    cmUsed++;
-    if(cmTailIndex==cmNoseIndex){
-      cmNoseIndex++;cmNoseIndex&=cmMask;
-      cmUsed=ccGetCapacity();
-    }//..?  
-  }//+++
-  
-  //===
-
-  /**
-   * {@inheritDoc }
-   */
-  @Override public void ccTakeByteArray(byte[] pxData) {
-    /* 6 */throw new UnsupportedOperationException("Not supported yet.");
-    //To change body of generated methods, choose Tools | Templates.
-  }//+++
-  
-  /**
-   * {@inheritDoc }
-   */
-  @Override public byte[] ccToByteArray() {
-    /* 6 */throw new UnsupportedOperationException("Not supported yet.");
-    //To change body of generated methods, choose Tools | Templates.
   }//+++
   
   //===
@@ -199,10 +127,10 @@ public class McSimpleRingBuffer implements MiByteExchangeable{
    */
   public final String ccFormat() {
     StringBuilder lpRes = new StringBuilder("|");
-    lpRes.append(VcStringUtility.ccPackupParedTag("nose",cmNoseIndex));
-    lpRes.append(VcStringUtility.ccPackupParedTag("tail",cmTailIndex));
-    lpRes.append(VcStringUtility.ccPackupParedTag("used",ccGetUsedSize()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("mask",cmMask));
+    lpRes.append(VcStringUtility.ccPackupParedTag("nose",cmIndex.ccGetNose()));
+    lpRes.append(VcStringUtility.ccPackupParedTag("tail",cmIndex.ccGetTail()));
+    lpRes.append(VcStringUtility.ccPackupParedTag("used",cmIndex.ccGetUsed()));
+    lpRes.append(VcStringUtility.ccPackupParedTag("mask",cmIndex.cmMask));
     lpRes.append(VcStringUtility.ccPackupParedTag("total",cmData.length));
     return lpRes.toString();
   }//+++

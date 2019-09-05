@@ -57,8 +57,8 @@ public class McLineChartModel {
    */
   public final void ccValidateOffsets(int pxDivisionWidth, int pxFullHeight){
     for(int i=0,s=cmData.ccGetCapacity();i<s;i++){
-      cmDesOffsetX[i&cmData.ccGetMask()]=i*pxDivisionWidth;
-      cmDesOffsetY[i&cmData.ccGetMask()]=(int)(
+      cmDesOffsetX[i&cmData.cmIndex.cmMask]=i*pxDivisionWidth;
+      cmDesOffsetY[i&cmData.cmIndex.cmMask]=(int)(
         VcNumericUtility.ccProportion(cmData.ccGetLogical(i))*pxFullHeight
       );
     }//..~
@@ -103,7 +103,7 @@ public class McLineChartModel {
    * @return pix
    */
   public final int ccGetOffsetX(int pxIndex){
-    return cmDesOffsetX[pxIndex&cmData.ccGetMask()];
+    return cmDesOffsetX[pxIndex&cmData.cmIndex.cmMask];
   }//+++
   
   /**
@@ -111,7 +111,7 @@ public class McLineChartModel {
    * @return pix
    */
   public final int ccGetOffsetY(int pxIndex){
-    return cmDesOffsetY[pxIndex&cmData.ccGetMask()];
+    return cmDesOffsetY[pxIndex&cmData.cmIndex.cmMask];
   }//+++
   
   //===

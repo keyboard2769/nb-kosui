@@ -72,11 +72,12 @@ i know it is a nonsense name, but anyway.
 - [ ] $ let's define more awt color!!
 - [ ] $ fill up those array packup methods.
 - [ ] $ a new test case framed with reflection
+- [ ] $ imporve line chart drawer to give more information
 
 #### onfire
 
 - [ ] $ split indexing handling from ring buffer class
-- [ ] $ imporve line chart drawer to give more information
+- [ ] $ re-implement local text stoker with ring buffer
 
 #### currently
 

@@ -62,7 +62,11 @@ public class DemoCommonUsage extends PApplet {
   
   private final EiTriggerable cmEchoInput = new EiTriggerable() {
     @Override public void ccTrigger(){
+      
       VcLocalStoker.ccStack(VcLocalConsole.ccGetLastAccepted());
+      
+      
+      
     }//+++
   };
   

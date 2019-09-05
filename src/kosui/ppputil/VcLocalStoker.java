@@ -17,12 +17,13 @@
 
 package kosui.ppputil;
 
+import kosui.ppplocalui.EcConst;
 import processing.core.PApplet;
 import static processing.core.PConstants.BOTTOM;
 import static processing.core.PConstants.LEFT;
 import static processing.core.PApplet.constrain;
 
-import kosui.pppmodel.McTextStocker;
+import kosui.pppmodel.McTextStoker;
 
 /**
  * i used to wonder how should i handle the in window print problem, 
@@ -30,6 +31,16 @@ import kosui.pppmodel.McTextStocker;
  * this is a wrapper for McLineStacker.<br>
  */
 public final class VcLocalStoker {
+  
+  /**
+   * you can decide when to retrieve and save based on this size
+   */
+  public static final int C_BUFFER_SIZE = 64;
+  
+  /**
+   * get stacked after clear by default
+   */
+  private static final String C_DEFAULT_MESSAGE=".kosui::";
   
   /**
    * @return instance
@@ -43,26 +54,22 @@ public final class VcLocalStoker {
   
   //===
   
-  private PApplet pbOwner=null;
+  private PApplet cmOwner=null;
   
-  /**
-   * will be shown after cleared 
-   */
-  private  String pbDefaultMessage="::";
-  
-  private boolean pbIsVisible=true;
+  private boolean cmIsVisible=true;
   
   private int
     //-- color
-    pbBaseColor=0xFF33EE33,
+    cmBaseColor=0xFF33EE33,
     //-- pix
-    pbReversedOffsetY=40,
+    cmReversedOffsetY=40,
     //-- count
-    pbCharCount=48
+    cmCharCount=48
   ;//...
   
-  private final McTextStocker O_STK
-    = new McTextStocker();
+  private int cmMaxLine;
+  
+  private final McTextStoker cmModel = new McTextStoker(C_BUFFER_SIZE);
   
   //===
   
@@ -75,22 +82,15 @@ public final class VcLocalStoker {
    */
   public final void ccInit(PApplet pxOwner){
     if(pxOwner==null){return;}
-    if(pbOwner==null){pbOwner=pxOwner;}
+    if(cmOwner==null){cmOwner=pxOwner;}
+    cmMaxLine=cmOwner.height/EcConst.C_DEFAULT_TEXT_HEIGHT;
   }//..!
   
   /**
    * @param pxColor both text and base line will be this color
    */
   public final void ccSetBaseColor(int pxColor){
-    pbBaseColor=pxColor;
-  }//+++
-  
-  /**
-   * @param pxSize #
-   * @param pxDivisor #
-   */
-  public final void ccSetTrim(int pxSize, int pxDivisor){
-    O_STK.ccSetTrim(pxSize, pxDivisor);
+    cmBaseColor=pxColor;
   }//+++
   
   /**
@@ -101,7 +101,7 @@ public final class VcLocalStoker {
    * @param pxOffsetY to the bottom
    */
   public final void ccSetReversedOffsetY(int pxOffsetY){
-    pbReversedOffsetY=pxOffsetY;
+    cmReversedOffsetY=pxOffsetY;
   }//+++
   
   /**
@@ -109,21 +109,21 @@ public final class VcLocalStoker {
    * @param pxCount 3~512
    */
   public final void ccSetCharCount(int pxCount){
-    pbCharCount=constrain(pxCount, 3, 512);
+    cmCharCount=constrain(pxCount, 3, 512);
   }//+++
   
   /**
    * @param pxState #
    */
   public final void ccSetVisible(boolean pxState){
-    pbIsVisible=pxState;
+    cmIsVisible=pxState;
   }//+++
   
   /**
    * flip version
    */
   public final void ccFlipVisible(){
-    pbIsVisible=!pbIsVisible;
+    cmIsVisible=!cmIsVisible;
   }//+++
   
   //===
@@ -136,15 +136,22 @@ public final class VcLocalStoker {
   }//+++
   
   private void ssUpdate(){
-    if(pbOwner==null || !pbIsVisible){return;}
-    int lpOffset=pbOwner.height-pbReversedOffsetY;
-    pbOwner.pushStyle();{
-      pbOwner.fill(pbBaseColor);
-      pbOwner.textAlign(LEFT, BOTTOM);
-      pbOwner.text(O_STK.ccGetStacked(),2,lpOffset);
-      pbOwner.stroke(pbBaseColor);
-      pbOwner.line(0,lpOffset,pbOwner.width,lpOffset);
-    }pbOwner.popStyle();
+    if(cmOwner==null || !cmIsVisible){return;}
+    int lpOffset=cmOwner.height-cmReversedOffsetY;
+    cmOwner.pushStyle();{
+      cmOwner.fill(cmBaseColor);
+      cmOwner.textAlign(LEFT, BOTTOM);
+      for(int i=0;i<cmMaxLine;i++){
+        
+        //[head]:: what s wrong with you!!?
+        
+        cmOwner.text(cmModel.ccGet(i), 5,
+          lpOffset-i*EcConst.C_DEFAULT_TEXT_HEIGHT
+        );
+      }//..~
+      cmOwner.stroke(cmBaseColor);
+      cmOwner.line(0,lpOffset,cmOwner.width,lpOffset);
+    }cmOwner.popStyle();
   }//+++
   
   /**
@@ -153,7 +160,7 @@ public final class VcLocalStoker {
    * @param pxVal #
    */
   static public final void ccStack(String pxTag, Object pxVal){
-    self.O_STK.ccStack(pxTag, pxVal);
+    self.cmModel.ccStack(pxTag, pxVal);
   }//+++
   
   /**
@@ -161,31 +168,23 @@ public final class VcLocalStoker {
    * @param pxLine #
    */
   static public final void ccStack(String pxLine){
-    self.O_STK.ccStack(VcStringUtility.ccWrap(pxLine, self.pbCharCount));
+    self.cmModel.ccStack(VcStringUtility.ccWrap(pxLine, self.cmCharCount));
   }//+++
   
   /**
    * set stacked to default message held by the system stacker.
    */
   static public final void ccClear(){
-    self.O_STK.ccClear(self.pbDefaultMessage);
+    self.cmModel.ccClear(C_DEFAULT_MESSAGE);
   }//+++
   
   /**
-   * @param pxDefault will replace current default message
+   * @param pxClearMessage clear with this alternatively
    */
-  static public final void ccClear(String pxDefault){
-    self.pbDefaultMessage=VcStringUtility.ccWrap(pxDefault, self.pbCharCount);
-    self.O_STK.ccClear(self.pbDefaultMessage);
+  static public final void ccClear(String pxClearMessage){
+    self.cmModel.ccClear(pxClearMessage);
   }//+++
   
   //===
-  
-  /**
-   * @return McLineStacker.ccGetSize()
-   */
-  public final int ccGetSize(){
-    return O_STK.ccGetSize();
-  }//+++
   
 }//***eof
