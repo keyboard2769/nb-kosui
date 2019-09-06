@@ -28,8 +28,8 @@ public interface SiPaintable {
   
   /**
    * might get called inside any JComponent::paint().<br>
-   * @param pxGraphic the "g" from JComponent::paint()
+   * @param pxGI the "g" from JComponent::paint()
    */
-  public void ccPaint(Graphics pxGraphic);
+  public void ccPaint(Graphics pxGI);
   
 }//***eof

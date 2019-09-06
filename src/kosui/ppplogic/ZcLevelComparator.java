@@ -17,25 +17,42 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcNumericUtility;
+
 /**
  * ranks a given value in a preset serial of values as level. <br>
- * for some reason we just have eight levels here. <br>
+ * for some reason we just have a fixed levels here. <br>
  */
 public class ZcLevelComparator{
   
-  private static final int C_SIZE = 8;//..have to set this manually
+  private static final int C_SIZE = 32;//..arbitary
+  
+  private static final int C_MASK = 31;//..arbitary
   
   //===
 
-  private final int[] cmLevel={0, 0, 0, 0, 0, 0, 0, 0};
+  private final int[] cmLevel;
   private int cmCurrentValue=0, cmCurrentLevel=0;
 
+  /**
+   * level range is arbitrarily hard coded as 0-32.<br>
+   * @param pxMaxLevel will get fine split by default
+   */
+  public ZcLevelComparator(int pxMaxLevel){
+    cmLevel=VcNumericUtility.ccFineSplit(pxMaxLevel, C_SIZE);
+  }//+++
+  
   //===
   
   /**
-   * supposedly should be called from the draw() loop
+   * 
+   * supposedly should be called from the draw() loop.<br>
+   * <em>BUT THIS IS A PROBLEM</em><br>
    */
   public final void ccRun(){
+    
+    //[todo]::refine this to make it can get comparated any where
+    
     cmCurrentLevel=-1;
     for(int i=1; i<C_SIZE; i++){
       if(cmCurrentValue<=cmLevel[i]){
@@ -105,7 +122,7 @@ public class ZcLevelComparator{
    * @return #
    */
   public final boolean ccIsFull(){
-    return cmCurrentValue>=cmLevel[C_SIZE-1];
+    return cmCurrentValue>=cmLevel[C_MASK];
   }//+++
   
   //=== test

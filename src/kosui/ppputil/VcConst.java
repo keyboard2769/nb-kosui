@@ -71,6 +71,42 @@ public final class VcConst {
     return pxArray.length!=0;
   }//+++
   
+  /**
+   * @param pxArray #
+   * @return no null no empty
+   */
+  static public final boolean ccIsValidArray(boolean[] pxArray){
+    if(pxArray==null){return false;}
+    return pxArray.length!=0;
+  }//+++
+  
+  /**
+   * @param pxArray #
+   * @return no null no empty
+   */
+  static public final boolean ccIsValidArray(byte[] pxArray){
+    if(pxArray==null){return false;}
+    return pxArray.length!=0;
+  }//+++
+  
+  /**
+   * @param pxArray #
+   * @return no null no empty
+   */
+  static public final boolean ccIsValidArray(int[] pxArray){
+    if(pxArray==null){return false;}
+    return pxArray.length!=0;
+  }//+++
+  
+  /**
+   * @param pxArray #
+   * @return no null no empty
+   */
+  static public final boolean ccIsValidArray(float[] pxArray){
+    if(pxArray==null){return false;}
+    return pxArray.length!=0;
+  }//+++
+  
   //===
   
   /**

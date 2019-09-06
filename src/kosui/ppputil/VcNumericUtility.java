@@ -183,6 +183,36 @@ public final class VcNumericUtility {
     return String.format("%.2f", pxValue);
   }//+++
   
+  //=== calculation
+  
+  /**
+   * interval of results might be equal.<br>
+   * @param pxSource passing big value may cause overflow
+   * @param pxSplit up to 63
+   * @return never null?
+   */  
+  public final static float[] ccFineSplit(float pxSource, int pxSplit){
+    if(pxSplit<=1){return new float[]{pxSource};}
+    int lpFix=pxSplit&0x3F;
+    float[] lpRes=new float[lpFix];
+    for(int i=0;i<lpFix;i++){lpRes[i]=pxSource*i/(float)lpFix;}
+    return lpRes;
+  }//+++
+  
+  /**
+   * interval of results might be equal.<br>
+   * @param pxSource passing big value may cause overflow
+   * @param pxSplit up to 63
+   * @return never null?
+   */  
+  public final static int[] ccFineSplit(int pxSource, int pxSplit){
+    if(pxSplit<=1){return new int[]{pxSource};}
+    int lpFix=pxSplit&0x3F;
+    int[] lpRes=new int[lpFix];
+    for(int i=0;i<lpFix;i++){lpRes[i]=pxSource*i/lpFix;}
+    return lpRes;
+  }//+++
+  
   /**
    * a simple combination of multiplying and dividing and casting with 10
    * @param pxSource #

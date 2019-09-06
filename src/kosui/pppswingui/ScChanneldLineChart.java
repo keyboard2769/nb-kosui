@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplocalui.EcRect;
 import kosui.pppmodel.McLineChartModel;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcNumericUtility;
 
 /**
  * if it is not for the burner trending stuff implement a bar chart 
@@ -67,6 +69,9 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
   private int cmShowMask = 1;
   private Color cmBorderColor=Color.GRAY;
   
+  private int[] cmDesSplitH = null;
+  private int[] cmDesSplitV = null;
+  
   private int cmBufFaceX, cmBufNextX;
   private int cmBufFaceY, cmBufNextY;
   private McLineChartModel cmBufM;
@@ -84,6 +89,8 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
    * if you need to keey those actual value, or name these channels,
    *   or even more, like specify a unit,
    *   think about maintain your own hash map some where.
+   * vertical split line is fine split in 4 by default.
+   * horizontal split line is fine split in 2 by default.
    * </pre>
    * @param pxW pix
    * @param pxH pix
@@ -94,6 +101,8 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
       cmListOfChannel.add(new McLineChartModel(C_DIVISION));
       cmListOfChannelColor.add(Color.DARK_GRAY);
     }//..~
+    cmDesSplitV=VcNumericUtility.ccFineSplit(pxW, 4);
+    cmDesSplitH=VcNumericUtility.ccFineSplit(pxH, 2);
   }//..!!
   
   //===
@@ -101,26 +110,30 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
   /**
    * {@inheritDoc }
    */
-  @Override public void ccPaint(Graphics pxGraphic) {
+  @Override public void ccPaint(Graphics pxGI) {
     
     //-- force cast
-    Graphics2D lpGII=(Graphics2D)pxGraphic;
+    //..[tofigureout]::i dont know why they have to do this
+    Graphics2D lpGII=(Graphics2D)pxGI;
     
     //-- border
     if(cmHasBorder){
       lpGII.setStroke(O_BORDER_STROKE);
-      pxGraphic.setColor(cmBorderColor);
-      pxGraphic.drawRect(cmX, cmY, cmW, cmH);
+      pxGI.setColor(cmBorderColor);
+      pxGI.drawRect(cmX, cmY, cmW, cmH);
     }//..?
     
     //-- splitter
-    //[plan]::drawVerticalSplitter
+    lpGII.setStroke(O_DASH_STROKE);
+    lpGII.setColor(cmBorderColor);
+    ssDrawHorizontalSplit(lpGII);
+    ssDrawVerticalSplit(lpGII);
     
     //-- line
     if(cmShowMask==0){return;}
     lpGII.setStroke(O_CHANNEL_STROKE);
     for(int lpChannel=0;lpChannel<=cmShowMask;lpChannel++){
-      pxGraphic.setColor(cmListOfChannelColor.get(lpChannel));
+      pxGI.setColor(cmListOfChannelColor.get(lpChannel));
       cmBufM=cmListOfChannel.get(lpChannel);
       for(int i=0,s=cmBufM.ccGetSize()-1;i<s;i++){
         cmBufFaceX=cmBufM.ccGetOffsetX(i);
@@ -129,13 +142,33 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
         cmBufNextY=cmBufM.ccGetOffsetY(i+1);
         if(cmBufFaceX>cmBufFaceX){continue;}
         if(cmBufFaceY==0 || cmBufNextY==0){continue;}
-        pxGraphic.drawLine(
+        pxGI.drawLine(
           C_TEXT_ADJUST_X+cmX+cmBufFaceX, ccEndY()-cmBufFaceY,
           C_TEXT_ADJUST_X+cmX+cmBufNextX, ccEndY()-cmBufNextY
         );
       }//..~
     }//..~
     
+  }//+++
+  
+  private void ssDrawHorizontalSplit(Graphics2D pxGII){
+    if(cmDesSplitH==null){return;}
+    if(cmDesSplitH.length<=1){return;}
+    for(int i=1,s=cmDesSplitH.length;i<s;i++){
+      int lpAbsolute=cmY+cmY+cmDesSplitH[i];
+      if(lpAbsolute<=cmY||lpAbsolute>=ccEndY()){continue;}
+      pxGII.drawLine(cmX, lpAbsolute, ccEndX(), lpAbsolute);
+    }//..~
+  }//+++
+  
+  private void ssDrawVerticalSplit(Graphics2D pxGII){
+    if(cmDesSplitV==null){return;}
+    if(cmDesSplitV.length<=1){return;}
+    for(int i=1,s=cmDesSplitV.length;i<s;i++){
+      int lpAbsolute=cmX+cmDesSplitV[i];
+      if(lpAbsolute<=cmX||lpAbsolute>=ccEndX()){continue;}
+      pxGII.drawLine(lpAbsolute, cmY, lpAbsolute, ccEndY());
+    }//..~
   }//+++
 
   //===
@@ -160,6 +193,24 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
    */
   public final void ccSetBorderColor(Color pxColor){
     cmBorderColor=pxColor;
+  }//+++
+  
+  /**
+   * the chart only holds a reference.<br>
+   * @param pxOffsets must have something
+   */
+  public final void ccSetVerticalSplitOffsets(int[] pxOffsets){
+    if(!VcConst.ccIsValidArray(pxOffsets)){return;}
+    cmDesSplitV=pxOffsets;
+  }//+++
+  
+  /**
+   * the chart only holds a reference.<br>
+   * @param pxOffsets must have something
+   */
+  public final void ccSetHorizontalSplitOffsets(int[] pxOffsets){
+    if(!VcConst.ccIsValidArray(pxOffsets)){return;}
+    cmDesSplitH=pxOffsets;
   }//+++
   
   /**

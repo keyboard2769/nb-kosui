@@ -75,12 +75,12 @@ i know it is a nonsense name, but anyway.
 
 #### onfire
 
-- [ ] $ imporve line chart drawer to give more information
+- [x] $ a new algorithm for fine splitting value
+- [ ] $ refactor level compare with fine split-able
+- [ ] $ improve line chart drawer to give more information
 
 #### currently
 
-- [x] $ merged EcTip into EcTipMamager, make it a real manager.
-- [x] $ rewritten all swing dialog method comment
 - [x] $ a new EcImage class
 - [x] $ a ScIcon class
 - [x] $ make a class and demo for line chart.

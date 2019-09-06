@@ -23,12 +23,16 @@ import kosui.ppplocalui.*;
 import kosui.ppplogic.*;
 import kosui.pppswingui.*;
 import kosui.ppputil.*;
+import processing.core.PApplet;
 
 public class TestMain{
+
   
   public static void main(String[] args){
     System.out.println("TestMain.main()::hellow:");
     //--
+    
+    
     
     //--
     System.out.println("TestMain.main()::over");

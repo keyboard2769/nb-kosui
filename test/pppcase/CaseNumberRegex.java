@@ -24,6 +24,10 @@ import processing.core.PApplet;
 
 public class CaseNumberRegex{
   
+  
+  
+  //===
+  
   private static final String[] O_CASE_I={
     "0","00","000","0000",
     "1","12","123","12345","","","","","",
@@ -115,6 +119,10 @@ public class CaseNumberRegex{
   }//+++
   
   //=== entry
+  
+  private static void ssIteratorFields(){
+    
+  }//+++
   
   public static void main(String[] args){
     System.out.println("CaseNumberRegex.main()::start");
