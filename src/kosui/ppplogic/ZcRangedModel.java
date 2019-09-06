@@ -66,9 +66,7 @@ public class ZcRangedModel {
    * @return will get stuck at range bounds
    */
   public final int ccLimit(int pxSource){
-    int lpRes=pxSource>cmMax?cmMax:pxSource;
-    lpRes=lpRes<cmMin?cmMin:lpRes;
-    return lpRes;
+    return ccLimitInclude(pxSource, cmMin, cmMax);
   }//+++
   
   /**
@@ -87,10 +85,10 @@ public class ZcRangedModel {
   /**
    * ##
    * @param pxSource #
-   * @return [min,max)
+   * @return [min,max]
    */
   public final boolean ccContains(int pxSource){
-    return (pxSource>=cmMin)&&(pxSource<cmMax);
+    return ccContains(pxSource, cmMin, cmMax);
   }//+++
   
   /**
@@ -118,6 +116,48 @@ public class ZcRangedModel {
    */
   public final int ccGetRange(){
     return cmMax-cmMin;
+  }//+++
+  
+  //===
+  
+  /**
+   * @param pxValue to be tested
+   * @param pxRangeNose included
+   * @param pxRangeTail included
+   * @return [nose,tail]
+   */
+  public static final
+  boolean ccContains(int pxValue, int pxRangeNose, int pxRangeTail){
+    if(pxRangeNose>=pxRangeTail){return false;}
+    return (pxValue>=pxRangeNose)&&(pxValue<=pxRangeTail);
+  }//+++
+  
+  /**
+   * @param pxSource to be limited
+   * @param pxRangeNose included
+   * @param pxRangeTail included
+   * @return if passed nose is smaller than passed tail then it is nose
+   */
+  public static final
+  int ccLimitInclude(int pxSource, int pxRangeNose, int pxRangeTail){
+    if((pxRangeTail-pxRangeNose)<2){return pxRangeNose;}
+    int lpRes=pxSource>=pxRangeNose?pxSource:pxRangeNose;
+    lpRes=lpRes<=pxRangeTail?lpRes:pxRangeTail;
+    return lpRes;
+  }//+++
+  
+  /**
+   * @param pxSource to be limited
+   * @param pxRangeNose exclude
+   * @param pxRangeTail exclude
+   * @return if passed nose is smaller than passed tail then it is mid
+   */
+  public static final
+  int ccLimitExclude(int pxSource, int pxRangeNose, int pxRangeTail){
+    if((pxRangeTail-pxRangeNose)<2){return pxRangeNose+1;}
+    int lpRes=pxSource>pxRangeNose?pxSource:(pxRangeNose+1);
+    lpRes=lpRes<pxRangeTail?lpRes:(pxRangeTail-1);
+    return lpRes;
   }//+++
   
 }//***eof

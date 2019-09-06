@@ -22,7 +22,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
 
-public class CaseNumberRegex{
+public class CaseNumericUtility{
   
   
   

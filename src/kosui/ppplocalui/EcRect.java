@@ -18,6 +18,7 @@
 package kosui.ppplocalui;
 
 import java.util.List;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcConst;
 
 /**
@@ -264,8 +265,8 @@ public class EcRect extends EcPoint{
    * @return true if the passed point is inside the bound
    */
   public final boolean ccContains(int pxX, int pxY){
-    return (pxX>cmX)&&(pxX<(cmX+cmW))
-         &&(pxY>cmY)&&(pxY<(cmY+cmH));
+    return ZcRangedModel.ccContains(pxX, cmX, ccEndX())
+         &&ZcRangedModel.ccContains(pxY, cmY, ccEndY());
   }//+++
   
   //===

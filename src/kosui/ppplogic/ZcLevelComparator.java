@@ -17,7 +17,9 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import processing.core.PApplet;
 
 /**
  * ranks a given value in a preset serial of values as level. <br>
@@ -25,44 +27,67 @@ import kosui.ppputil.VcNumericUtility;
  */
 public class ZcLevelComparator{
   
-  private static final int C_SIZE = 32;//..arbitary
+  private static final int C_LEVEL_MAX  = 32;//..arbitary
   
-  private static final int C_MASK = 31;//..arbitary
+  private static final int C_LEVEL_MASK = 31;//..arbitary
+  
+  private static final int C_VALUE_MASK = 0x0000FFFF;//..arbitary
   
   //===
 
-  private final int[] cmLevel;
-  private int cmCurrentValue=0, cmCurrentLevel=0;
+  private final int[] cmDesPartitionValue;
+  private final int[] cmDesPartitionLevel;
 
   /**
    * level range is arbitrarily hard coded as 0-32.<br>
-   * @param pxMaxLevel will get fine split by default
+   * @param pxMaxValue will get masked upto 65535 then split 
    */
-  public ZcLevelComparator(int pxMaxLevel){
-    cmLevel=VcNumericUtility.ccFineSplit(pxMaxLevel, C_SIZE);
+  public ZcLevelComparator(int pxMaxValue){
+    cmDesPartitionValue=VcNumericUtility
+      .ccFineSplit(pxMaxValue&C_VALUE_MASK, C_LEVEL_MAX);
+    cmDesPartitionLevel=VcNumericUtility
+      .ccFineSplit(C_LEVEL_MAX, 4);
   }//+++
   
   //===
   
   /**
-   * 
-   * supposedly should be called from the draw() loop.<br>
-   * <em>BUT THIS IS A PROBLEM</em><br>
+   * @param pxSource will get masked to 0-65535 arbitraryly
+   * @return level
    */
-  public final void ccRun(){
-    
-    //[todo]::refine this to make it can get comparated any where
-    
-    cmCurrentLevel=-1;
-    for(int i=1; i<C_SIZE; i++){
-      if(cmCurrentValue<=cmLevel[i]){
-        cmCurrentLevel=i;
-        break;
+  public final int ccComparate(int pxSource){
+    int lpFixed=pxSource&C_VALUE_MASK;
+    int lpBeginLV,lpEndLV;
+    if(lpFixed==0){return 0;}
+    if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[2]]){
+      if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[3]]){
+        lpBeginLV=cmDesPartitionLevel[3];
+        lpEndLV=C_LEVEL_MAX;
+      }else{
+        lpBeginLV=cmDesPartitionLevel[2];
+        lpEndLV=cmDesPartitionLevel[3];
       }//..?
+    }else{
+      if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[1]]){
+        lpBeginLV=cmDesPartitionLevel[1];
+        lpEndLV=cmDesPartitionLevel[2];
+      }else{
+        lpBeginLV=cmDesPartitionLevel[0];
+        lpEndLV=cmDesPartitionLevel[1];
+      }//..?
+    }//..?
+    int lpRes;
+    for(lpRes=lpBeginLV+1;lpRes<lpEndLV;lpRes++){
+      //VcConst.ccPrintln("begin", lpRes-1);
+      //VcConst.ccPrintln("end", lpRes);
+      if(ZcRangedModel.ccContains(
+        lpFixed,
+        cmDesPartitionValue[lpRes-1],
+        cmDesPartitionValue[lpRes  ]
+      )){break;}//..?
     }//..~
+    return lpRes;
   }//+++
-  
-  //===
   
   /**
    * will get blocked out if passed level is out of boundary
@@ -70,88 +95,69 @@ public class ZcLevelComparator{
    * @param pxLevel #
    * @param pxValue #
    */
-  public final void ccSetCompareLevel(int pxLevel, int pxValue){
-    if(pxLevel<0){return;}
-    if(pxLevel>=C_SIZE){return;}
-    if(pxLevel==0){cmLevel[0]=pxValue;}
-    if(pxLevel>0){
-      if(pxValue<cmLevel[pxLevel-1])
-        {cmLevel[pxLevel]=cmLevel[pxLevel-1];}
-      else
-        {cmLevel[pxLevel]=pxValue;}
+  public final void ccSetLevelValue(int pxLevel, int pxValue){
+    if(!ZcRangedModel.ccContains(pxLevel, 0, C_LEVEL_MASK)){return;}
+    if(pxLevel==0){return;}
+    switch(pxLevel){
+      case 0:break;
+      case 1:
+        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
+          pxValue,
+          cmDesPartitionValue[0],
+          cmDesPartitionValue[pxLevel+1]
+        );
+      break;
+      case C_LEVEL_MASK:
+        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
+          pxValue,
+          cmDesPartitionValue[pxLevel-1],
+          cmDesPartitionValue[C_LEVEL_MASK]
+        );
+      break;
+      default:
+        VcConst.ccPrintln("so?",pxLevel);
+        VcConst.ccPrintln("pre?",cmDesPartitionValue[pxLevel - 1]);
+        VcConst.ccPrintln("next?",cmDesPartitionValue[pxLevel+1]);
+        VcConst.ccPrintln("so?",ZcRangedModel.ccLimitExclude(
+          pxValue,
+          cmDesPartitionValue[pxLevel-1],
+          cmDesPartitionValue[pxLevel+1]
+        ));
+        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
+          pxValue,
+          cmDesPartitionValue[pxLevel-1],
+          cmDesPartitionValue[pxLevel+1]
+        );
+      break;
     }//..?
   }//+++
 
-  /**
-   * 
-   * @param pxValue or, say, input value
-   */
-  public final void ccSetCurrentLevel(int pxValue){
-    cmCurrentValue=pxValue;
-  }//+++
-  
   //===
 
   /**
-   * 
-   * @return #
-   */
-  public final int ccGetCurrentLevel(){
-    return cmCurrentLevel;
-  }//+++
-
-  /**
-   * 
+   * tell if the given value matches given level.<br>
+   * @param pxValue #
    * @param pxLevel #
    * @return #
    */
-  public final boolean ccIsAtLevel(int pxLevel){
-    return pxLevel==cmCurrentLevel;
-  }//+++
-
-  /**
-   * 
-   * @return #
-   */
-  public final boolean ccIsZero(){
-    return cmCurrentValue<=cmLevel[0];
-  }//+++
-
-  /**
-   * compared with the max level, AKA, eighth.
-   * @return #
-   */
-  public final boolean ccIsFull(){
-    return cmCurrentValue>=cmLevel[C_MASK];
+  public final boolean ccIsAtLevel(int pxValue, int pxLevel){
+    return pxLevel==ccComparate(pxValue);
   }//+++
   
   //=== test
   
   /**
-   * 
-   * @return #
+   * prints contents to system out.<br>
    * @deprecated for test use
    */
-  @Deprecated public final int[] tstGetLevelSetting(){
-    return cmLevel;
+  @Deprecated public final void tstReadup(){
+    VcConst.ccPrintln(super.toString(),"value >>>");
+    VcConst.ccPrintln
+      (VcNumericUtility.ccPackupDecStringTable(cmDesPartitionValue, 8));
+    VcConst.ccPrintln("level >>>");
+    VcConst.ccPrintln
+      (VcNumericUtility.ccPackupDecStringTable(cmDesPartitionLevel, 8));
+    VcConst.ccPrintln("<<<");
   }//+++
   
-  /**
-   * 
-   * @return #
-   * @deprecated for test use
-   */
-  @Deprecated public final int tstGetValue(){
-    return cmCurrentValue;
-  }//+++
-  
-  /**
-   * 
-   * @return #
-   * @deprecated for test use
-   */
-  @Deprecated public final int tstGetLevel(){
-    return cmCurrentLevel;
-  }//+++
-
 }//***eof

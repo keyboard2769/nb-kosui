@@ -289,8 +289,7 @@ public final class VcNumericUtility {
   static public final String ccPackupHexStringTable(byte[] pxData, int pxWrap){
     if(pxData==null){return "";}
     if(pxData.length==0){return "";}
-    StringBuilder lpBuilder
-      = new StringBuilder("byte array:");
+    StringBuilder lpBuilder = new StringBuilder(".ccPackupHexStringTable()::");
     lpBuilder.append(VcConst.C_V_NEWLINE);
     int lpWrapCount=0;
     for(int i=0,s=pxData.length;i<s;i++){
@@ -308,17 +307,16 @@ public final class VcNumericUtility {
     return lpBuilder.toString();
   }//+++
   
-  
   /**
    * pack up a big string for print.<br>
    * @param pxData must have something 
    * @param pxWrap where the line breaks
-   * @return 
+   * @return #
    */
   public static String ccPackupHexStringTable(int[] pxData, int pxWrap){
     if(pxData==null){return ".[0]";}
     if(pxData.length<=1){return ".[1]";}
-    StringBuilder lpBuilder = new StringBuilder(".ccToHexTableString()::");
+    StringBuilder lpBuilder = new StringBuilder(".ccPackupHexStringTable()::");
     lpBuilder.append(VcConst.C_V_NEWLINE);
     int lpWrapCNT=0;
     int lpWrap=pxWrap<4?4:pxWrap;
@@ -342,7 +340,8 @@ public final class VcNumericUtility {
    */
   public static String ccPackupHexStringTable(ZiMemory pxData, int pxWrap){
     if(pxData==null){return ".[0]";}
-    StringBuilder lpBuilder = new StringBuilder(".ccToHexTableString()::\n");
+    StringBuilder lpBuilder
+      = new StringBuilder(".ccPackupHexStringTable()::\n");
     lpBuilder.append(VcConst.C_V_NEWLINE);
     int lpWrapCNT=0;
     int lpWrap=pxWrap<4?4:pxWrap;
@@ -357,6 +356,33 @@ public final class VcNumericUtility {
     }//..~
     return lpBuilder.toString();
   }//+++
+  
+  /**
+   * pack up a big string for print.<br>
+   * @param pxData must have something 
+   * @param pxWrap where the line breaks
+   * @return #
+   */
+  public static String ccPackupDecStringTable(int[] pxData, int pxWrap){
+    if(pxData==null){return ".[0]";}
+    if(pxData.length<=1){return ".[1]";}
+    StringBuilder lpBuilder = new StringBuilder(".ccPackupDecStringTable()::");
+    lpBuilder.append(VcConst.C_V_NEWLINE);
+    int lpWrapCNT=0;
+    int lpWrap=pxWrap<4?4:pxWrap;
+    for(int i:pxData){
+      lpBuilder.append(PApplet.nf(i,6));
+      lpBuilder.append(" ");
+      lpWrapCNT++;
+      if(lpWrapCNT==lpWrap){
+        lpBuilder.append(VcConst.C_V_NEWLINE);
+        lpWrapCNT=0;
+      }//..?
+    }//..~
+    return lpBuilder.toString();
+  }//+++
+  
+  //[plan]::ccPackupFloatStringTable
   
   //=== proportion
   

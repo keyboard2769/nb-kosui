@@ -71,23 +71,21 @@ i know it is a nonsense name, but anyway.
 
 - [ ] $ let's define more awt color!!
 - [ ] $ fill up those array packup methods.
-- [ ] $ a new test case framed with reflection
+- [ ] $ improve line chart drawer to give more information
 
 #### onfire
 
-- [x] $ a new algorithm for fine splitting value
-- [ ] $ refactor level compare with fine split-able
-- [ ] $ improve line chart drawer to give more information
+- [ ] $ a new test case framed with reflection
 
 #### currently
 
-- [x] $ a new EcImage class
-- [x] $ a ScIcon class
 - [x] $ make a class and demo for line chart.
 - [x] $ a line chart class
 - [x] $ a multi screen mechanism for local ui
 - [x] $ a click-able map for swing ui
 - [x] $ split indexing handling from ring buffer class
 - [x] $ re-implement local text stoker with ring buffer
+- [x] $ a new algorithm for fine splitting value
+- [x] $ refactor level compare with fine split-able
 
 <hr><!--EOF-->
