@@ -70,16 +70,13 @@ i know it is a nonsense name, but anyway.
 #### plan 
 
 - [ ] $ let's define more awt color!!
-- [ ] $ fill up those array packup methods.
-- [ ] $ improve line chart drawer to give more information
 
 #### onfire
 
-- [ ] $ a new test case framed with reflection
+- [ ] $ improve line chart drawer to give more information
 
 #### currently
 
-- [x] $ make a class and demo for line chart.
 - [x] $ a line chart class
 - [x] $ a multi screen mechanism for local ui
 - [x] $ a click-able map for swing ui
@@ -87,5 +84,7 @@ i know it is a nonsense name, but anyway.
 - [x] $ re-implement local text stoker with ring buffer
 - [x] $ a new algorithm for fine splitting value
 - [x] $ refactor level compare with fine split-able
+- [x] $ a new test case framed with reflection
+- [x] $ fill up those array packing up methods.
 
 <hr><!--EOF-->

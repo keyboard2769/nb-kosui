@@ -60,7 +60,7 @@ public final class VcSwingConsole extends JPanel{
         int lpCharCode=(int)ke.getKeyChar();
         switch(lpCharCode){
           case 0x0A:
-            ccStackln(VcSwingCoordinator.ccExecute(cmField.getText()));
+            ccStokeln(VcSwingCoordinator.ccExecute(cmField.getText()));
             cmField.setText("");
           break;
           default:break;
@@ -84,7 +84,7 @@ public final class VcSwingConsole extends JPanel{
    * @param pxTag must have something
    * @param pxVal can be any thing
    */
-  public static final void ccStackln(String pxTag, Object pxVal){
+  public static final void ccStokeln(String pxTag, Object pxVal){
     self.cmStoker.ccStokeln(pxTag, pxVal);
   }//+++
   
@@ -93,7 +93,7 @@ public final class VcSwingConsole extends JPanel{
    * might get passed to JTextArea::append() eventually.<br>
    * @param pxLine must have some thing.
    */
-  public static final void ccStackln(String pxLine){
+  public static final void ccStokeln(String pxLine){
     self.cmStoker.ccStokeln(pxLine);
   }//+++
   

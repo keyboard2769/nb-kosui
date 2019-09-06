@@ -23,12 +23,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -46,7 +49,27 @@ public final class ScFactory {
   
   private ScFactory(){}//++!
   
-  //=== container
+  //=== container ** frame
+  
+  public static final void ccSetupMainFrame(JFrame pxFrame, int pxW ,int pxH){
+    if(pxFrame==null){return;}
+    pxFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    Point lpOrigin=ScConst.ccGetScreenInitPoint();
+    Dimension lpScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension lpFrameSize = new Dimension(
+      pxW<=100?320:pxW,
+      pxH<=100?240:pxH
+    );
+    pxFrame.setLocation(
+      lpOrigin.x+lpScreenSize.width/2-lpFrameSize.width/2,
+      lpOrigin.y+lpScreenSize.height/2-lpFrameSize.height/2
+    );
+    pxFrame.setPreferredSize(lpFrameSize);
+    pxFrame.setResizable(false);
+  }//+++
+  
+  
+  //=== container ** panel ** border
   
   
   /**
@@ -103,7 +126,7 @@ public final class ScFactory {
     return lpRes;
   }//+++
   
-  //== container ** flow panel
+  //== container ** panel ** flow
   
   /**
    * alias for constructor
@@ -152,7 +175,7 @@ public final class ScFactory {
     return lpRes;
   }//+++
   
-  //== container ** grid panel
+  //== container ** panel ** grid
   
   /**
    * alias of construction

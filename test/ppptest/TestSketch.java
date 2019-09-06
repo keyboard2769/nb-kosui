@@ -130,7 +130,6 @@ public class TestSketch extends PApplet {
     
     //-- scan
     
-    
     //-- update
     VcLocalCoordinator.ccUpdate();
     

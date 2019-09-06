@@ -17,6 +17,8 @@
 
 package kosui.ppputil;
 
+import java.lang.reflect.Field;
+
 /**
  * an utility class should never use such a nonsense name.<br>
  * i don't know from where i got this idea.<br>
@@ -171,5 +173,29 @@ public final class VcConst {
     System.err.print(VcStampUtility.ccErrStampTypeI());
     ccPrintln(pxTag,pxValue);
   }//..?
+  
+  //=== reflection
+  
+  /**
+   * wrapping Filed.get and swallow exception for you.<br>
+   * @param pxReflected do not pass null
+   * @param pxOwner do not pass null
+   * @return could be null
+   */
+  public static final Object ccRetrieveField(Field pxReflected, Object pxOwner){
+    if(pxReflected==null){return null;}
+    if(pxOwner==null){return null;}
+    Object lpRes=null;
+    try{
+      lpRes = pxReflected.get(pxOwner);
+    } catch(IllegalArgumentException iage){
+      System.err.println("kosui.ppputil.VcConst.ccRetrieveField()"
+        +iage.getMessage());
+    } catch(IllegalAccessException iace){
+      System.err.println("kosui.ppputil.VcConst.ccRetrieveField()"
+        + iace.getMessage());
+    }//..?
+    return lpRes;
+  }//+++
   
 }//***eof

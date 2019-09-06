@@ -17,9 +17,6 @@
 
 package ppptest;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -30,10 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import kosui.ppplocalui.EiTriggerable;
-import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
-import kosui.pppswingui.ScIcon;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcSwingConsole;
 import kosui.ppputil.VcSwingCoordinator;
@@ -47,9 +42,6 @@ public class TestFrame {
   private TestFrame(){}//..!
   
   //=== host
-  
-  private static final ScIcon O_ICON
-    = new ScIcon();
   
   private static final JFrame O_FRAME
    = new JFrame("Console Frame v0.1.0");
@@ -78,26 +70,6 @@ public class TestFrame {
   };
   
   //=== setup
-  
-  private static void ssSetupIcon(){
-    O_ICON.ccFillPixel(0xFF339999, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY) {
-        return true;
-      }//+++
-    });
-    O_ICON.ccFillPixel(0xFFEEEEEE, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY) {
-        return pxX>pxY;
-      }//+++
-    });
-    O_ICON.ccFillPixel(0xFF111111, new MiPixillatable() {
-      @Override public boolean ccPixillate(int pxX, int pxY) {
-        return         
-          (pxX<=2 || pxX>=29)||
-          (pxY<=2 || pxY>=29);
-      }//+++
-    });
-  }//+++
   
   private static void ssSetupFrame() {
 
@@ -137,30 +109,14 @@ public class TestFrame {
     lpContentPane.updateUI();
     
     //-- frame ** setup
-    O_FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    ScFactory.ccSetupMainFrame(O_FRAME, 320, 240);
     O_FRAME.setJMenuBar(lpMenuBar);
     O_FRAME.setContentPane(lpContentPane);
-    
-    //-- frame ** icon
-    ssSetupIcon();
-    O_FRAME.setIconImage(O_ICON);
-    
-    //-- frame ** packup
-    Point lpOrigin=ScConst.ccGetScreenInitPoint();
-    Dimension lpScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension lpWindowSize = new Dimension(320, 240);
-    O_FRAME.setLocation(
-      lpOrigin.x+lpScreenSize.width/2-lpWindowSize.width/2,
-      lpOrigin.y+lpScreenSize.height/2-lpWindowSize.height/2
-    );
-    O_FRAME.setPreferredSize(lpWindowSize);
-    O_FRAME.setResizable(false);
     O_FRAME.pack();
     O_FRAME.setVisible(true);
     
-    //-- coordination
+    //-- coordinating
     VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
-    
     VcSwingCoordinator.ccRegisterPressing(O_PTT, new EiTriggerable() {
       @Override public void ccTrigger(){
         String lpD=ScConst.ccGetStringByInputBox("give something", "hellow?");
@@ -173,9 +129,9 @@ public class TestFrame {
     VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
     
     //-- post
-    VcSwingConsole.ccStackln("on", VcConst.C_V_OS);
-    VcSwingConsole.ccStackln("at", VcConst.C_V_PWD);
-    VcSwingConsole.ccStackln("*** have fun ***");
+    VcSwingConsole.ccStokeln("on", VcConst.C_V_OS);
+    VcSwingConsole.ccStokeln("at", VcConst.C_V_PWD);
+    VcSwingConsole.ccStokeln("*** have fun ***");
     VcSwingConsole.ccRequestFocus();
     
   }//+++

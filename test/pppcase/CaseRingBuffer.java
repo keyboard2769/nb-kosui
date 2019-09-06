@@ -156,13 +156,13 @@ public class CaseRingBuffer {
   
   private static final EiTriggerable T_ABS_DUMPING = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStackln(O_BUFFER.tstPackupAbsolute(6));
+      VcSwingConsole.ccStokeln(O_BUFFER.tstPackupAbsolute(6));
     }//+++
   };//***
   
   private static final EiTriggerable T_LOGICAL_DUMPING = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStackln(O_BUFFER.tstPackupLogical(6));
+      VcSwingConsole.ccStokeln(O_BUFFER.tstPackupLogical(6));
     }//+++
   };//***
   
@@ -290,9 +290,9 @@ public class CaseRingBuffer {
     VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
     
     //-- post
-    VcSwingConsole.ccStackln("on", VcConst.C_V_OS);
-    VcSwingConsole.ccStackln("at", VcConst.C_V_PWD);
-    VcSwingConsole.ccStackln("*** have fun ***");
+    VcSwingConsole.ccStokeln("on", VcConst.C_V_OS);
+    VcSwingConsole.ccStokeln("at", VcConst.C_V_PWD);
+    VcSwingConsole.ccStokeln("*** have fun ***");
     VcSwingConsole.ccRequestFocus();
     T_UI_REFRESHING.ccTrigger();
     
