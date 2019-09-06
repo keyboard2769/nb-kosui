@@ -65,20 +65,17 @@ i know it is a nonsense name, but anyway.
 - [ ] $ dos
 - [ ] $ quatro? 
 - [ ] $ tre!!
-- [ ] $ a "drawing" package handles PDF and print stuff
 
 #### plan 
 
-- [ ] $ let's define more awt color!!
+- [ ] $ a "drawing" package handles PDF and print stuff
 
 #### onfire
 
-- [ ] $ improve line chart drawer to give more information
+- none
 
 #### currently
 
-- [x] $ a line chart class
-- [x] $ a multi screen mechanism for local ui
 - [x] $ a click-able map for swing ui
 - [x] $ split indexing handling from ring buffer class
 - [x] $ re-implement local text stoker with ring buffer
@@ -86,5 +83,7 @@ i know it is a nonsense name, but anyway.
 - [x] $ refactor level compare with fine split-able
 - [x] $ a new test case framed with reflection
 - [x] $ fill up those array packing up methods.
+- [x] $ improve line chart drawer to give more information
+- [x] $ let's define more awt color!!
 
 <hr><!--EOF-->

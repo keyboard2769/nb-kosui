@@ -106,7 +106,7 @@ public final class ScFactory {
   JPanel ccCreateBoderPanel(int pxGap, Color pxColor,int pxWeight){
     JPanel lpRes=ScFactory.ccCreateBorderPanel(pxGap);
     lpRes.setBorder(BorderFactory.createLineBorder(
-      pxColor==null?ScConst.DIM_WHITE:pxColor, pxWeight
+      pxColor==null?ScConst.C_LIT_GRAY:pxColor, pxWeight
     ));
     return lpRes;
   }//+++
@@ -154,7 +154,7 @@ public final class ScFactory {
   ){
     JPanel lpRes=ScFactory.ccCreateFlowPanel(pxGap, pxDoesAlignRight);
     lpRes.setBorder(BorderFactory.createLineBorder(
-      pxBorderColor==null?ScConst.DIM_WHITE:pxBorderColor, pxBorderWeight
+      pxBorderColor==null?ScConst.C_LIT_GRAY:pxBorderColor, pxBorderWeight
     ));
     return lpRes;
   }//+++
@@ -200,7 +200,7 @@ public final class ScFactory {
   ){
     JPanel lpRes=ScFactory.ccCreateGridPanel(pxRow, pxColumn);
     lpRes.setBorder(BorderFactory.createLineBorder(
-      pxBorderColor==null?ScConst.DIM_WHITE:pxBorderColor, pxBorderWeight
+      pxBorderColor==null?ScConst.C_LIT_GRAY:pxBorderColor, pxBorderWeight
     ));
     return lpRes;
   }//+++
@@ -477,8 +477,8 @@ public final class ScFactory {
     pxTarget.setEditable(false);
     pxTarget.setEnabled(false);
     pxTarget.setBackground(Color.LIGHT_GRAY);
-    pxTarget.setForeground(ScConst.DARK_GREEN);
-    pxTarget.setDisabledTextColor(ScConst.DARK_GREEN);
+    pxTarget.setForeground(ScConst.C_DARK_GREEN);
+    pxTarget.setDisabledTextColor(ScConst.C_DARK_GREEN);
     pxTarget.setHorizontalAlignment(JTextField.RIGHT);
     if(pxW>0 && pxH>0){
       pxTarget.setPreferredSize(new Dimension(pxW, pxH));

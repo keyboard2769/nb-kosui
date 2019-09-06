@@ -17,6 +17,7 @@
 
 package kosui.pppswingui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -53,7 +54,16 @@ public class ScConst {
    * preset but not necessarily as an empty string. <br>
    */
   public static final String
-    C_M_INVALID = "";
+    C_M_INVALID = ""
+  ;//...
+  
+  /**
+   * in case you don't how trim informations from font matrix
+   */
+  public static final int 
+    C_CHAR_DEFAULT_HEIGHT = 18,
+    C_CHAR_DEFAULT_WIDTH = 4
+  ;//...
   
   /**
    * predefined colors
@@ -73,17 +83,54 @@ public class ScConst {
     //-- named
     WATER         =Color.decode("#6699CC"),
     //-- pole
-    DIM_WHITE     =Color.decode("#DDDDDD"),
-    DARK_YELLOW   =Color.decode("#666633"),
-    DARK_PURPLE   =Color.decode("#663366"),
-    DARK_ORANGE   =Color.decode("#996633"),
-    DARK_BLUE     =Color.decode("#336666"),
-    DARK_RED      =Color.decode("#991111"),
-    DARK_GREEN    =Color.decode("#119911")
+    C_WHITE        = Color.decode("#EEEEEE"),
+    //-- lit
+    C_LIT_RED      = Color.decode("#EE6666"),
+    C_LIT_ORANGE   = Color.decode("#EE9966"),
+    C_LIT_YELLOW   = Color.decode("#EEEE66"),
+    C_LIT_GREEN    = Color.decode("#66EE66"),
+    C_LIT_WATER    = Color.decode("#66EEEE"),
+    C_LIT_BLUE     = Color.decode("#6699EE"),
+    C_LIT_PURPLE   = Color.decode("#EE66EE"),
+    C_LIT_GRAY     = Color.decode("#CCCCCC"),
     //-- normal
-    //-- light
+    C_RED          = Color.decode("#EE3333"),
+    C_ORANGE       = Color.decode("#EE6633"),
+    C_YELLOW       = Color.decode("#EEEE33"),
+    C_GREEN        = Color.decode("#33EE33"),
+    C_WATER        = Color.decode("#33EEEE"),
+    C_BLUE         = Color.decode("#3366EE"),
+    C_PURPLE       = Color.decode("#EE33EE"),
+    C_GRAY         = Color.decode("#999999"),
+    //-- dim
+    C_DIM_RED      = Color.decode("#991111"),
+    C_DIM_ORANGE   = Color.decode("#993311"),
+    C_DIM_YELLOW   = Color.decode("#999911"),
+    C_DIM_GREEN    = Color.decode("#119911"),
+    C_DIM_WATER    = Color.decode("#119999"),
+    C_DIM_BLUE     = Color.decode("#116699"),
+    C_DIM_PURPLE   = Color.decode("#991199"),
+    C_DIM_GRAY     = Color.decode("#666666"),
+    //-- dark
+    C_DARK_RED     = Color.decode("#660000"),
+    C_DARK_ORANGE  = Color.decode("#663300"),
+    C_DARK_YELLOW  = Color.decode("#666600"),
+    C_DARK_GREEN   = Color.decode("#006600"),
+    C_DARK_WATER   = Color.decode("#006666"),
+    C_DARK_BLUE    = Color.decode("#003366"),
+    C_DARK_PURPLE  = Color.decode("#660066"),
+    C_DARK_GRAY    = Color.decode("#333333"),
     //-- pole
-  ;//--
+    C_BLACK        = Color.decode("#111111")
+  ;//...
+  
+  /**
+   * plain 1 pix straight line
+   */
+  public static final BasicStroke C_DEFAULT_STROKE
+    = new BasicStroke(1.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_BUTT);
+  
+  //===
   
   private static final JFileChooser O_FILE_CHOOSER
     = new JFileChooser(VcConst.C_V_PWD);

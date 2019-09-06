@@ -37,6 +37,7 @@ import kosui.pppswingui.ScCanvas;
 import kosui.pppswingui.ScChanneldLineChart;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
+import kosui.pppswingui.ScLabel;
 import kosui.pppswingui.ScTable;
 import kosui.pppswingui.ScTitledWindow;
 import kosui.ppputil.VcConst;
@@ -130,12 +131,16 @@ public class DemoLineChart extends PApplet{
   
   //=== swing
   
-  private final ScTable cmTable = new ScTable(cmLogModel, 200, 200);
+  private final ScTable cmTable = new ScTable(cmLogModel, 200, 220);
   
-  private final ScCanvas cmCanvas = new ScCanvas(240, 240);
+  private final ScCanvas cmCanvas = new ScCanvas(240, 220);
   
   private final ScChanneldLineChart cmChart
-    = new ScChanneldLineChart(220, 220);
+    = new ScChanneldLineChart(220, 180);
+  
+  private final ScLabel cmDecorateLabel = new ScLabel(
+    "elder <- younger", 48, 22
+  );
   
   private final JTextField cmStatusBar = ScFactory.ccCreateStatusBar(-1, -1);
   
@@ -178,8 +183,10 @@ public class DemoLineChart extends PApplet{
     @Override public void run() {
       
       //-- canvas
+      cmDecorateLabel.ccSetLocation(cmChart, 0, 4);
       cmChart.ccSetLocation(10, 10);
       cmCanvas.ccAddPaintObject(cmChart);
+      cmCanvas.ccAddPaintObject(cmDecorateLabel);
       
       //-- toolbar ** button
       JButton lpQuitSW=ScFactory.ccCreateCommandButton("Quit");
@@ -249,7 +256,6 @@ public class DemoLineChart extends PApplet{
       cmStatusBar.setText(
         VcStringUtility.ccPackupParedTag("size", cmLogModel.getRowCount())
       );
-      
       
     }//++++
   };//***

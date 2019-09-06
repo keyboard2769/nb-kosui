@@ -176,8 +176,8 @@ public final class ScToolBarWindow extends JWindow {
    * @param pxStatus defaultly true for dark red and false for dark gray
    */
   public final void ccSetRunLampStatus(boolean pxStatus) {
-    if (SwingUtilities.isEventDispatchThread()) {
-      cmRunPL.setBackground(pxStatus ? ScConst.DARK_RED : Color.DARK_GRAY);
+    if (SwingUtilities.isEventDispatchThread()){
+      cmRunPL.setBackground(pxStatus?ScConst.C_DARK_RED:ScConst.C_DARK_GRAY);
     }//..?
   }//+++
   
