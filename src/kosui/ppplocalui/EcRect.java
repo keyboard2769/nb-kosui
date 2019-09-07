@@ -199,14 +199,14 @@ public class EcRect extends EcPoint{
   /**
    * reset size value based on end point of passed target. 
    * @param pxTarget if passed null offset value will be applied directly
-   * @param pxOffsetX #
-   * @param pxOffsetY #
+   * @param pxOffsetX value that bigger than 65535 is invalid
+   * @param pxOffsetY value that bigger than 65535 is invalid
    */
   public final
   void ccSetEndPoint(EcRect pxTarget, int pxOffsetX, int pxOffsetY){
     if(pxTarget==null){ccSetEndPoint(pxOffsetX, pxOffsetY);return;}
-    cmW=pxTarget.ccEndX()-cmX+pxOffsetX;
-    cmH=pxTarget.ccEndY()-cmY+pxOffsetY;
+    if(pxOffsetX<=65535){cmW=pxTarget.ccEndX()-cmX+pxOffsetX;}
+    if(pxOffsetY<=65535){cmH=pxTarget.ccEndY()-cmY+pxOffsetY;}
   }//+++
   
   /**

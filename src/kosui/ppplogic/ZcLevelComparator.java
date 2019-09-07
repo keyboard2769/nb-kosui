@@ -19,7 +19,6 @@ package kosui.ppplogic;
 
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
-import processing.core.PApplet;
 
 /**
  * ranks a given value in a preset serial of values as level. <br>

@@ -47,14 +47,18 @@ public class EcGauge extends EcElement {
   protected int cmContentValue = 99;
 
   /**
-   * inherited default
+   * inherited default.<br>
+   * has stroke by default.<br>
+   * is vertical by default.<br>
    */
   public EcGauge(){
     super();
   }//..!
   
   /**
-   * inherited
+   * inherited.<br>
+   * has stroke by default.<br>
+   * is vertical by default.<br>
    * @param pxKey # but please note that a gauge don't have to have a name
    * @param pxID #
    */
@@ -64,7 +68,9 @@ public class EcGauge extends EcElement {
   }//..!
   
   /**
-   * 
+   * inherited.<br>
+   * has stroke by default.<br>
+   * is vertical by default.<br>
    * output component can have no identical id.<br>
    * @param pxKey will get passed to setter directly and this is a GAUGE?!
    */
@@ -72,6 +78,21 @@ public class EcGauge extends EcElement {
     super();
     ccSetupKey(pxKey);
     ccSetIsEnabled(false);
+  }//..!
+  
+  /**
+   * inherited.<br>
+   * has stroke by default.<br>
+   * is vertical by default.<br>
+   * @param pxKey will get passed to setter directly and this is a GAUGE?!
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public EcGauge(String pxKey, int pxW, int pxH){
+    super();
+    ccSetupKey(pxKey);
+    ccSetIsEnabled(false);
+    ccSetSize(pxW, pxH);
   }//..!
   
   //===

@@ -29,12 +29,12 @@ public interface EiGroup {
    * 
    * @return only component registered here is considered in the group.
    */
-  public List<EcShape> ccGiveShapeList();
+  public List<? extends EcShape> ccGiveShapeList();
   
   /**
    * 
    * @return only component registered here is considered in the group.
    */
-  public List<EcElement> ccGiveElementList();
+  public List<? extends EcElement> ccGiveElementList();
   
 }//***eof

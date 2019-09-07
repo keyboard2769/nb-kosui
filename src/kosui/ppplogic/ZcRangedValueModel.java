@@ -77,11 +77,43 @@ public class ZcRangedValueModel extends ZcRangedModel{
   //===
   
   /**
-   * 
-   * @return #
+   * @return actual value
    */
   public final int ccGetValue(){
     return cmValue;
+  }//+++
+  
+  /**
+   * @return value - min
+   */
+  public final int ccGetRelative(){
+    return cmValue-cmMin;
+  }//+++
+  
+  /**
+   * @param pxGivenValue #
+   * @return exclusive
+   */
+  public final boolean ccIsAbove(int pxGivenValue){
+    return cmValue>pxGivenValue;
+  }//+++
+  
+  /**
+   * @param pxGivenValue #
+   * @return exclusive
+   */
+  public final boolean ccIsBelow(int pxGivenValue){
+    return cmValue<pxGivenValue;
+  }//+++
+  
+  /**
+   * @param pxLowBound #
+   * @param pxUpBound #
+   * @return inclusive
+   */
+  public final boolean ccIsInRangeOf(int pxLowBound, int pxUpBound){
+    if(pxLowBound>=pxUpBound){return false;}
+    return cmValue>=pxLowBound&&cmValue<=pxUpBound;
   }//+++
     
 }//***eof

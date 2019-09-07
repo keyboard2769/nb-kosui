@@ -145,27 +145,36 @@ public class EcElement extends EcComponent{
    * @param pxColor #
    */
   protected final void drawName(int pxColor){
+    
     int lpX=ccCenterX();
     int lpY=ccCenterY();
+    
     switch (cmNameAlign) {
+      
       case 'a':
         lpY=cmY-C_NAME_GAP;pbOwner.textAlign(CENTER, BOTTOM);
-        break;
+      break;
+      
       case 'b':
         lpY=C_NAME_GAP+cmY+cmH;pbOwner.textAlign(CENTER, TOP);
-        break;
+      break;
+      
       case 'l':
         lpX=cmX-C_NAME_GAP;pbOwner.textAlign(RIGHT , CENTER);
-        break;
+      break;
+      
       case 'r':
         lpX=C_NAME_GAP+cmX+cmW;pbOwner.textAlign(LEFT  , CENTER);
-        break;
+      break;
+      
       default:return;
-    }
-    //--
+      
+    }//..?
+    
     pbOwner.fill(pxColor);
     pbOwner.text(cmName,lpX,C_TEXT_ADJ_Y+lpY);
     pbOwner.textAlign(LEFT,TOP);
+    
   }//+++
 
   /**

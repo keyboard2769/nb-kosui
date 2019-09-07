@@ -17,15 +17,13 @@
 
 package kosui.ppplogic;
 
-import java.util.ArrayList;
-
 /**
  * a water tank with water can be considered as a ranged value model.<br>
  * and with some leveler, it becomes checked value model.<br>
  */
 public class ZcCheckedValueModel extends ZcRangedValueModel{
   
-  private final ArrayList<ZcRangedModel> cmCheckList;
+  private final ZcLevelComparator cmLevel;
   
   /**
    * value will be set to minimum
@@ -34,38 +32,34 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    */
   public ZcCheckedValueModel(int pxMin, int pxRange){
     super(pxMin, pxRange);
-    cmCheckList=new ArrayList();
+    cmLevel=new ZcLevelComparator(ccGetRange());
   }//+++
   
   /**
-   * 
-   * @param pxMin for the checker
-   * @param pxRange for the checker
+   * you have to remember which level stands for what your self
+   * @param pxLevel 0-31
+   * @return true if current level matches
    */
-  public final void ccAddChecker(int pxMin, int pxRange){
-    cmCheckList.add(new ZcRangedModel(pxMin, pxRange));
+  public final boolean ccIsLevelAt(int pxLevel) {
+    return cmLevel.ccComparate(ccGetRelative())==pxLevel;
   }//+++
   
   /**
-   * you have to remember which index stands for what your self
-   * @param pxIndex #
-   * @return true if current value is in range of the indexed checker
+   * you have to remember which level stands for what your self
+   * @param pxLevel 0-31
+   * @return true if current level is higher
    */
-  public final boolean ccCheckFor(int pxIndex) {
-    ZcRangedModel lpChecker=ccGetChecker(pxIndex);
-    if(lpChecker==null){return false;}
-    return lpChecker.ccContains(cmValue);
+  public final boolean ccIsLevelAbove(int pxLevel){
+    return cmLevel.ccComparate(ccGetRelative())>pxLevel;
   }//+++
   
   /**
-   * use this to reset the position of checker 
-   * @param pxIndex #
-   * @return #
+   * you have to remember which level stands for what your self
+   * @param pxLevel 0-31
+   * @return true if current level is lower
    */
-  public final ZcRangedModel ccGetChecker(int pxIndex){
-    if(cmCheckList.isEmpty()){return null;}
-    if(pxIndex>cmCheckList.size()){return null;}
-    return cmCheckList.get(pxIndex&0xFF);
+  public final boolean ccIsLevelBelow(int pxLevel){
+    return cmLevel.ccComparate(ccGetRelative())<pxLevel;
   }//+++
   
 }//***eof
