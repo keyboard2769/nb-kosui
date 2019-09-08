@@ -17,15 +17,21 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcStringUtility;
+
 /**
  * a lamp don't react at you, it just shows you if it is on. <br>
  * there is no any difference with element, what a horrible hierarchy. <br>
  */
 public class EcLamp extends EcElement{
   
-  private static final int
+  /**
+   * for inner use
+   */
+  public static final int
     //-- pix
     C_STROKE_THICK   = 4,
+    C_DEFAULT_SCALE  = 18,
     //-- color
     C_COLOR_STROKE   = 0xFF555555
   ;//...
@@ -35,7 +41,7 @@ public class EcLamp extends EcElement{
    */
   public EcLamp(){
     super();
-    ccSetSize(18, 18);
+    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
   }//..!
   
   /**
@@ -44,8 +50,11 @@ public class EcLamp extends EcElement{
    * @param pxID #
    */
   public EcLamp(String pxKey, int pxID){
-    super(pxKey, pxID);
-    ccSetSize(18, 18);
+    super();
+    ccSetupKey(VcStringUtility.ccNulloutString(pxKey));
+    ccSetID(pxID);
+    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
+    if(cmText.length()>1){cmText=cmText.substring(0, 1);}
   }//..!
   
   /**
@@ -55,6 +64,8 @@ public class EcLamp extends EcElement{
   public EcLamp(String pxKey){
     super();
     ccSetupKey(pxKey);
+    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
+    if(cmText.length()>1){cmText=cmText.substring(0, 1);}
   }//..!
   
   //===

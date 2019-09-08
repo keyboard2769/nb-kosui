@@ -17,13 +17,8 @@
 
 package kosui.ppplocalui;
 
+import processing.core.PApplet;
 import kosui.ppputil.VcConst;
-
-import static processing.core.PApplet.TOP;
-import static processing.core.PApplet.BOTTOM;
-import static processing.core.PApplet.LEFT;
-import static processing.core.PApplet.RIGHT;
-import static processing.core.PApplet.CENTER;
 
 /**
  * <pre>
@@ -90,6 +85,12 @@ public class EcElement extends EcComponent{
     super();
   }//..!
   
+  public EcElement(String pxKey){
+    super();
+    ccSetupKey(pxKey);
+    ccSetSize();
+  }//+++
+  
   /**
    * rest of those initiated values might be eight.
    * @param pxKey will get passed to setter directly
@@ -103,7 +104,6 @@ public class EcElement extends EcComponent{
   }//..!
   
   //===
-  
   
   /**
    * {@inheritDoc}
@@ -121,23 +121,23 @@ public class EcElement extends EcComponent{
    */
   protected final void drawText(int pxColor){
     int lpX=ccCenterX();
-    pbOwner.textAlign(CENTER, CENTER);
+    pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
     switch(cmTextAlign){
       
       case 'l':
         lpX=cmX+C_TEXT_MARG_X;
-        pbOwner.textAlign(LEFT, CENTER);
+        pbOwner.textAlign(PApplet.LEFT, PApplet.CENTER);
       break;
       
       case 'r':
         lpX=ccEndX()-C_TEXT_MARG_X;
-        pbOwner.textAlign(RIGHT, CENTER);
+        pbOwner.textAlign(PApplet.RIGHT, PApplet.CENTER);
       break;
       
     }//..?
     pbOwner.fill(pxColor);
     pbOwner.text(cmText,lpX,ccCenterY()+C_TEXT_ADJ_Y);
-    pbOwner.textAlign(LEFT,TOP);
+    pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
   }//+++
 
   /**
@@ -152,19 +152,19 @@ public class EcElement extends EcComponent{
     switch (cmNameAlign) {
       
       case 'a':
-        lpY=cmY-C_NAME_GAP;pbOwner.textAlign(CENTER, BOTTOM);
+        lpY=cmY-C_NAME_GAP;pbOwner.textAlign(PApplet.CENTER, PApplet.BOTTOM);
       break;
       
       case 'b':
-        lpY=C_NAME_GAP+cmY+cmH;pbOwner.textAlign(CENTER, TOP);
+        lpY=C_NAME_GAP+cmY+cmH;pbOwner.textAlign(PApplet.CENTER, PApplet.TOP);
       break;
       
       case 'l':
-        lpX=cmX-C_NAME_GAP;pbOwner.textAlign(RIGHT , CENTER);
+        lpX=cmX-C_NAME_GAP;pbOwner.textAlign(PApplet.RIGHT , PApplet.CENTER);
       break;
       
       case 'r':
-        lpX=C_NAME_GAP+cmX+cmW;pbOwner.textAlign(LEFT  , CENTER);
+        lpX=C_NAME_GAP+cmX+cmW;pbOwner.textAlign(PApplet.LEFT  , PApplet.CENTER);
       break;
       
       default:return;
@@ -173,7 +173,7 @@ public class EcElement extends EcComponent{
     
     pbOwner.fill(pxColor);
     pbOwner.text(cmName,lpX,C_TEXT_ADJ_Y+lpY);
-    pbOwner.textAlign(LEFT,TOP);
+    pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
     
   }//+++
 

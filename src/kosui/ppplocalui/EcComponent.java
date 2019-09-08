@@ -36,9 +36,9 @@ public abstract class EcComponent extends EcRect{
   static private int pbCurrentPage=0;
   
   /**
-   * max page amount is 32
+   * max page amount is 255
    */
-  static public final int C_PAGE_MASK = 0x1F;
+  static public final int C_PAGE_MASK = 0xFF;
   
   /**
    * <pre>
@@ -153,7 +153,7 @@ public abstract class EcComponent extends EcRect{
    * unpaged component is not visible nor clickable but still
    *   exists to occupy your memory.
    * </pre>
-   * @param pxPage #
+   * @param pxPage 0-255
    */
   public final void ccSetPage(int pxPage){
     cmPage=pxPage&C_PAGE_MASK;
@@ -176,6 +176,10 @@ public abstract class EcComponent extends EcRect{
   }//+++
   
   /**
+   * <pre>
+   * page zero is the default page, they are always visible and click-able.
+   * but zero paged element will still be there it is not at current page.
+   * </pre>
    * @return #
    */
   public final boolean ccIsAtCurrentPage(){
@@ -186,14 +190,14 @@ public abstract class EcComponent extends EcRect{
    * @return also affected with the paging mechanism.<br>
    */
   public final boolean ccIsEnabled(){
-    return cmIsEnabled&ccIsAtCurrentPage();
+    return cmIsEnabled&(ccIsAtCurrentPage()||cmPage==0);
   }//+++
   
   /**
    * @return also affected with the paging mechanism.<br>
    */
   public final boolean ccIsVisible(){
-    return cmIsVisible&ccIsAtCurrentPage();
+    return cmIsVisible&(ccIsAtCurrentPage()||cmPage==0);
   }//+++
   
 }//***eof

@@ -4,6 +4,8 @@
 
 package ppptest;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcLocalConsole;
 import java.util.ArrayList;
@@ -34,13 +36,16 @@ public class TestSketch extends PApplet {
   
   //=== overridden
   
+  EcButton lpPSWI=new EcButton("P1", 0x3111);
+  EcButton lpPSWII=new EcButton("P2", 0x3112);
+  EcButton lpPSWIII=new EcButton("P3", 0x3113);
+  EcButton lpPSWIV=new EcButton("P4", 0x3114);
   
-  private final EcButton cmSWI = new EcButton("I", 0xAAA1);
-  private final EcButton cmSWII = new EcButton("II", 0xAAA2);
-  private final EcButton cmSWIII = new EcButton("III", 0xAAA3);
-  private final EcButton cmSWIV = new EcButton("IV", 0xAAA4);
-  
-  
+  EcButton lpTSWI=new EcButton("T1", 0x3211);
+  EcButton lpTSWII=new EcButton("T2", 0x3212);
+  EcButton lpTSWIII=new EcButton("T3", 0x3213);
+  EcButton lpTSWIV=new EcButton("T4", 0x3214);
+
   @Override public void setup() {
     
     //-- init
@@ -51,52 +56,41 @@ public class TestSketch extends PApplet {
     
     //-- laytout
     
+    lpPSWI.ccSetLocation(100, 5);
+    lpPSWII.ccSetLocation(lpPSWI, 2, 0);
+    lpPSWIII.ccSetLocation(lpPSWII, 2, 0);
+    lpPSWIV.ccSetLocation(lpPSWIII, 2, 0);
     
-    cmSWI.ccSetBound(60, 60, 40, 40);
-    cmSWII.ccSetSize(cmSWI);
-    cmSWIII.ccSetSize(cmSWI);
-    cmSWIV.ccSetSize(cmSWI);
+    lpTSWI.ccSetLocation(100, 66);lpTSWI.ccSetPage(1);
+    lpTSWII.ccSetLocation(lpTSWI, 2, 0);lpTSWII.ccSetPage(2);
+    lpTSWIII.ccSetLocation(lpTSWII, 2, 0);lpTSWIII.ccSetPage(3);
+    lpTSWIV.ccSetLocation(lpTSWIII, 2, 0);lpTSWIV.ccSetPage(99);
     
-    cmSWII.ccSetLocation(cmSWI, 5, 0);
-    cmSWIII.ccSetLocation(cmSWI, 0, 5);
-    cmSWIV.ccSetLocation(cmSWII, 0, 5);
+    VcLocalCoordinator.ccAddElement(Arrays.asList(
+      lpPSWI,lpPSWII,lpPSWIII,lpPSWIV,
+      lpTSWI,lpTSWII,lpTSWIII,lpTSWIV
+    ));
     
-    cmSWI.ccSetPage(1);
-    cmSWII.ccSetPage(2);
-    cmSWIII.ccSetPage(3);
-    cmSWIV.ccSetPage(4);
-    
-    
-    VcLocalCoordinator.ccAddElement(cmSWI);
-    VcLocalCoordinator.ccAddElement(cmSWII);
-    VcLocalCoordinator.ccAddElement(cmSWIII);
-    VcLocalCoordinator.ccAddElement(cmSWIV);
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWI, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWI, new EiTriggerable() {
       @Override public void ccTrigger(){
-        VcConst.ccPrintln("uno!!");
-      }
+        EcComponent.ccSetCurrentPage(1);
+      }//+++
     });
     
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWII, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWII, new EiTriggerable() {
       @Override public void ccTrigger(){
-        VcConst.ccPrintln("dos!!");
-      }
+        EcComponent.ccSetCurrentPage(2);
+      }//+++
     });
-    
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWIII, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWIII, new EiTriggerable() {
       @Override public void ccTrigger(){
-        VcConst.ccPrintln("tre!!");
-      }
+        EcComponent.ccSetCurrentPage(3);
+      }//+++
     });
-    
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmSWIV, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWIV, new EiTriggerable() {
       @Override public void ccTrigger(){
-        VcConst.ccPrintln("cool!!");
-      }
+        EcComponent.ccSetCurrentPage(4);
+      }//+++
     });
     
     

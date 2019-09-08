@@ -69,6 +69,8 @@ public final class EcConst {
    */
   public static final int
     //-- color
+    C_TRANSPARENT = 0x00FFFFFF,
+    //--
     C_WHITE = 0xFFEEEEEE,
     //--
     C_LIT_RED      = 0xFFEE6666,
@@ -172,7 +174,7 @@ public final class EcConst {
    * constrain() from PApplet is involved.
    * @param pxSource in processing color format
    * @param pxLight plus value to get brighter while minus is darker
-   * @return #
+   * @return 0-255
    */
   static public int ccAdjustColor(int pxSource, int pxLight){
     int lpMasked= pxLight &0xFF;

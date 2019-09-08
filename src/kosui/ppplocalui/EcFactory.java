@@ -17,6 +17,10 @@
 
 package kosui.ppplocalui;
 
+import java.lang.reflect.Constructor;
+import kosui.ppputil.VcConst;
+import processing.core.PGraphics;
+
 /**
  * a factory is not a all mighty all knowing something.<br>
  * it only constructs and setups products.<br>
@@ -131,6 +135,34 @@ public final class EcFactory {
     pxTarget.ccSetHasStroke(pxHasStroke);
     pxTarget.ccSetGaugeColor(EcConst.C_DIM_GRAY, EcConst.C_LIT_GRAY);
     pxTarget.ccSetPercentage(63);
+  }//+++
+  
+  //=== processing essential
+  
+  /**
+   * <pre>
+   * snatching the PApplet::makeGraphics() for its none-static nature.
+   * the key of renderer is hard coded to "processing.core.PGraphicsJava2D".
+   * the primary field is hard coded to null.
+   * </pre>
+   * @param pxW will get masked to 0-65535
+   * @param pxH will get masked to 0-65535
+   * @return could be null if any exception occurred
+   */
+  public static final PGraphics ccCreatePGraphics(int pxW, int pxH){
+    PGraphics lpRes=null;
+    try{
+      Class<?> rendererClass=Thread.currentThread()
+        .getContextClassLoader().loadClass("processing.core.PGraphicsJava2D");
+      Constructor<?> constructor=rendererClass.getConstructor(new Class[0]);
+      lpRes=(PGraphics)constructor.newInstance(new Object[0]);
+    }catch(Exception e){
+      VcConst.ccErrln(".ccCreatePGraphics()", e.getMessage());
+    }//..?
+    if(lpRes==null){return null;}
+    lpRes.setSize(pxW&0xFFFF, pxH&0xFFFF);
+    lpRes.setPrimary(false);
+    return lpRes;
   }//+++
   
 }//***eof

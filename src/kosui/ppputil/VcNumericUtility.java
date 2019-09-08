@@ -418,6 +418,28 @@ public final class VcNumericUtility {
     return ccRoundForTwoAfter((ccFloat(pxValue)/ccFloat(pxSpan)));
   }//+++
   
+  //=== compare
+  
+  /**
+   * i just don't know how to inline this.<br>
+   * @param pxSourceA #
+   * @param pxSourceB #
+   * @return inclusive
+   */
+  public static final int ccGreater(int pxSourceA, int pxSourceB){
+    return pxSourceA>=pxSourceB?pxSourceA:pxSourceB;
+  }//+++
+  
+  /**
+   * i just don't know how to inline this.<br>
+   * @param pxSourceA #
+   * @param pxSourceB #
+   * @return inclusive
+   */
+  public static final int ccLesser(int pxSourceA, int pxSourceB){
+    return pxSourceA<=pxSourceB?pxSourceA:pxSourceB;
+  }//+++
+  
   //=== binary
 
   /**

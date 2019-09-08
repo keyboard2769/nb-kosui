@@ -76,7 +76,6 @@ i know it is a nonsense name, but anyway.
 
 #### currently
 
-- [x] $ a click-able map for swing ui
 - [x] $ split indexing handling from ring buffer class
 - [x] $ re-implement local text stoker with ring buffer
 - [x] $ a new algorithm for fine splitting value
@@ -85,5 +84,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ fill up those array packing up methods.
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
+- [x] $ two new class for PGraphics based composing mechanism
 
 <hr><!--EOF-->
