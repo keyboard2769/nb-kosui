@@ -20,7 +20,6 @@ package kosui.ppputil;
 import java.util.HashMap;
 import kosui.ppplocalui.EiTriggerable;
 import processing.core.PApplet;
-import processing.data.StringList;
 
 /**
  * actually i got this idea from VSCode.<br>
@@ -40,15 +39,13 @@ public final class VcLocalConsole {
   
   //===
   
-  private static final String
-    C_T_NUM     = "<N>",
-    C_INVALID     = ""
-  ;//...
+  private static final String C_T_NUM = "<N>" ;
   
   private static final int
     //-- length
     C_MAX_CHAR_L = 32,
     //-- pix
+    C_TEXT_ADJ_X = 2,
     C_TEXT_ADJ_Y = 2,
     C_BAR_H = 18
   ;//...
@@ -60,33 +57,33 @@ public final class VcLocalConsole {
   private final HashMap<String, EiTriggerable> cmMapOfCommand
     = new HashMap<String, EiTriggerable>();
   
-  private final StringList cmListOfHelpMessage
-    = new StringList();
-  
   private boolean
-    cmIsHelperVisible     = false,
-    cmIsWatchBarVisible   = false,
     cmIsTypeMode          = false,
     cmIsMessageBarVisible = true
   ;//...
   
   private int
     //-- color
-    cmForeColor =0xFFEEEEEE,
-    cmBarColor  =0xFF331133,
-    cmTypeColor =0xCC333333,
-    //-- pix
-    cmWidth  =800,
-    cmHeight =600,
-    //-- count
-    cmHelperIndex=0
+    cmTextColor =0xFFEEEEEE,
+    cmMessageBarColor  =0xFF331133,
+    cmFieldBarColor =0xCC333333,
+    //-- pix ** window
+    cmOwnerWidth    = 800,//.. arbitrary by default value
+    cmOwnerHeight   = 600,//.. arbitrary by default value
+    //-- pix ** field bar
+    cmFieldBarX  = 0,  //.. arbitrary by default value
+    cmFieldBarY  = 40, //.. arbitrary by default value
+    cmFieldBarW     = 800,
+    //-- pix ** message bar
+    cmMessageBarX = 0,  //.. arbitrary by default value
+    cmMessageBarY = 0,  //.. arbitrary by default value
+    cmMessageBarW   = 800
   ;//...
   
   private String
     cmField="  $ ",
-    cmMessage="standby::",
-    cmLastAccepted="<none>",
-    cmWatchBarContent=""
+    cmMessage="kosui::",
+    cmLastAccepted="<none>"
   ;//...
   
   private String[] cmDesAccepted = null;
@@ -104,8 +101,10 @@ public final class VcLocalConsole {
     if(pxOwner==null){return;}
     if(cmOwner==null){
       cmOwner=pxOwner;
-      cmWidth=cmOwner.width;
-      cmHeight=cmOwner.height;
+      cmOwnerWidth=cmOwner.width;
+      cmOwnerHeight=cmOwner.height;
+      ccSetFieldBarAnchor(0, cmOwnerHeight-C_BAR_H*2);
+      ccSetMessageBarAnchor(0, cmOwnerHeight-C_BAR_H);
     }//..?
   }//++!
   
@@ -119,35 +118,27 @@ public final class VcLocalConsole {
   }//+++
   
   private void ssUpdate(){
-    
-    if(cmIsHelperVisible && cmListOfHelpMessage.size()>0){
-      cmOwner.fill(cmTypeColor);
-      cmOwner.rect(cmWidth/4,cmHeight/4,cmWidth/2,cmHeight/2);
-      cmOwner.fill(cmForeColor);
-      cmOwner.text(cmListOfHelpMessage.get(cmHelperIndex)
-        ,cmWidth/4+2,cmHeight/4+2+C_TEXT_ADJ_Y
+
+    if(cmIsTypeMode){
+      cmOwner.fill(cmFieldBarColor);
+      cmOwner.rect(cmFieldBarX,cmFieldBarY,
+        cmFieldBarW,C_BAR_H
+      );
+      cmOwner.fill(cmTextColor);
+      cmOwner.text(cmField+"_",
+        cmFieldBarX+C_TEXT_ADJ_X,cmFieldBarY+C_TEXT_ADJ_Y
       );
     }//..?
     
-    if(cmIsWatchBarVisible){
-      cmOwner.fill(cmTypeColor);
-      cmOwner.rect(0,0,cmWidth,C_BAR_H);
-      cmOwner.fill(cmForeColor);
-      cmOwner.text(cmWatchBarContent,2,2+C_TEXT_ADJ_Y);
-    }//..?
-    
-    if(cmIsTypeMode){
-      cmOwner.fill(cmTypeColor);
-      cmOwner.rect(0,cmHeight-C_BAR_H*2,cmWidth,C_BAR_H);
-      cmOwner.fill(cmForeColor);
-      cmOwner.text(cmField+"_",2,cmHeight-C_BAR_H*2+C_TEXT_ADJ_Y);
-    }//..?
-    
     if(cmIsMessageBarVisible){
-      cmOwner.fill(cmBarColor);
-      cmOwner.rect(0,cmHeight-C_BAR_H,cmWidth,C_BAR_H);
-      cmOwner.fill(cmForeColor);
-      cmOwner.text(cmMessage,2,cmHeight-C_BAR_H+C_TEXT_ADJ_Y);
+      cmOwner.fill(cmMessageBarColor);
+      cmOwner.rect(cmMessageBarX,cmMessageBarY,
+        cmMessageBarW,C_BAR_H
+      );
+      cmOwner.fill(cmTextColor);
+      cmOwner.text(cmMessage,
+        cmMessageBarX+C_TEXT_ADJ_X,cmMessageBarY+C_TEXT_ADJ_Y
+      );
     }//..?
     
   }//+++
@@ -192,7 +183,7 @@ public final class VcLocalConsole {
     
     //-- empty action
     if(cmLastAccepted.isEmpty()){
-      cmIsHelperVisible=false;
+      //[tofix]::VcLocalHelper.ccGetInstance.ccSetIsVisible(false);
       ccSetMessage("--");
       if(cmMapOfCommand.containsKey("")){cmMapOfCommand.get("").ccTrigger();}
       return;
@@ -217,25 +208,6 @@ public final class VcLocalConsole {
       ccSetMessage("[BAD]unhandled:"+cmDesAccepted[0]);
     }//..?
     
-  }//+++
-  
-  /**
-   * <pre>
-   * will be stacked to show on watch bar.
-   * supposedly to get called from PApplet.draw() loop.
-   * an alternative way to the VcTagger for tagger is basically for test use. 
-   * </pre>
-   * @param pxTag must have something
-   * @param pxValue don't pass null
-   */
-  public static void ccWatch(String pxTag, Object pxValue){
-    if(!VcConst.ccIsValidString(pxTag)){return;}
-    if(pxValue==null){return;}
-    if(self.cmWatchBarContent.length()>=512){return;}
-    StringBuilder lpBuilder=new StringBuilder("[");
-    lpBuilder.append(pxTag);lpBuilder.append(":");
-    lpBuilder.append(pxValue);lpBuilder.append("]");
-    self.cmWatchBarContent+=lpBuilder.toString();
   }//+++
   
   //===
@@ -277,38 +249,75 @@ public final class VcLocalConsole {
     ccRegisterTrigger(C_T_NUM,pxOperation);
   }//+++
   
-  /**
-   * will be shown as a whole page of helper box. 
-   * @param pxMessage #
-   */
-  public static void ccAddHelpMessage(String pxMessage){
-    self.cmListOfHelpMessage.append(pxMessage);
-  }//+++
-  
   //===
   
   /**
-   * @param pxFore ARGB
-   * @param pxBar ARGB
-   * @param pxType ARGB
+   * bar width will get adjust based on current owner.<br>
+   * blocking minus value.<br>
+   * @param pxX pix
+   * @param pxY pix
    */
-  public final void ccSetColor(int pxFore, int pxBar, int pxType){
-    cmForeColor=pxFore;
-    cmBarColor=pxBar;
-    cmTypeColor=pxType;
-  }//+++
-    
-  /**
-   * 
-   * @param pxMessage #
-   */
-  public final void ccSetMessage(String pxMessage){
-    if(!VcConst.ccIsValidString(pxMessage)){return;}
-    cmMessage=pxMessage;
+  public final void ccSetFieldBarAnchor(int pxX, int pxY){
+    if(pxX<0 || pxY<0){return;}
+    cmFieldBarX=pxX;
+    cmFieldBarY=pxY;
+    cmFieldBarW=cmOwnerWidth-pxX;
   }//+++
   
   /**
-   * 
+   * bar width will get adjust based on current owner.<br>
+   * blocking minus value.<br>
+   * @param pxX pix
+   * @param pxY pix
+   */
+  public final void ccSetMessageBarAnchor(int pxX, int pxY){
+    if(pxX<0 || pxY<0){return;}
+    cmMessageBarX=pxX;
+    cmMessageBarY=pxY;
+    cmMessageBarW=cmOwnerWidth-pxX;
+  }//+++
+  
+  /**
+   * @param pxText ARGB
+   * @param pxMessageBar ARGB
+   * @param pxFieldBar ARGB
+   */
+  public final void ccSetupColor(int pxText, int pxMessageBar, int pxFieldBar){
+    cmTextColor=pxText;
+    cmMessageBarColor=pxMessageBar;
+    cmFieldBarColor=pxFieldBar;
+  }//+++
+  
+  /**
+   * @param pxColor ARGB
+   */
+  public final void ccSetTextColor(int pxColor){
+    cmTextColor=pxColor;
+  }//+++
+  
+  /**
+   * @param pxColor ARGB
+   */
+  public final void ccSetMessageBarColor(int pxColor){
+    cmMessageBarColor=pxColor;
+  }//+++
+  
+  /**
+   * @param pxColor ARGB
+   */
+  public final void ccSetFieldBarColor(int pxColor){
+    cmFieldBarColor=pxColor;
+  }//+++
+  
+  /**
+   * @param pxMessage #
+   */
+  static public final void ccSetMessage(String pxMessage){
+    if(!VcConst.ccIsValidString(pxMessage)){return;}
+    self.cmMessage=pxMessage;
+  }//+++
+  
+  /**
    * @param pxState #
    */
   public final void ccSetMessageBarVisible(boolean pxState){
@@ -318,79 +327,11 @@ public final class VcLocalConsole {
   /**
    * flip version 
    */
-  public final void ccSetIsMessageBarVisible(){
+  public final void ccSetMessageBarVisible(){
     cmIsMessageBarVisible=!cmIsMessageBarVisible;
   }//+++
-  
-  /**
-   * 
-   * @param pxStatus #
-   */
-  public final void ccSetIsMessageBarVisible(boolean pxStatus){
-    cmIsMessageBarVisible=pxStatus;
-  }//+++
-  
-  /**
-   * 
-   * @param pxState #
-   */
-  public final void ccSetWatchBarVisible(boolean pxState){
-    cmIsWatchBarVisible=pxState;
-  }//+++
-  
-  /**
-   * flip version 
-   */
-  public final void ccSetIsWatchBarVisible(){
-    cmIsWatchBarVisible=!cmIsWatchBarVisible;
-  }//+++
-  
-  /**
-   * 
-   * @param pxState #
-   */
-  public final void ccSetIsWatchBarVisible(boolean pxState){
-    cmIsWatchBarVisible=pxState;
-  }//+++
-  
-  /**
-   * flip version. index will also be set to zero.<br>
-   */
-  public final void ccSetHelperVisible(){
-    cmIsHelperVisible=!cmIsHelperVisible;
-    cmHelperIndex=0;
-  }//+++
-  
-  /**
-   * index will also be set to zero.<br>
-   * @param pxState #
-   */
-  public final void ccSetHelperVisible(boolean pxState){
-    cmIsHelperVisible=pxState;
-    cmHelperIndex=0;
-  }//+++
-  
+
   //===
-  
-  /**
-   * supposedly can be called from key pressed
-   * @param pxOffset will be constrained to fit size
-   */
-  public final void ccShiftHelperIndex(int pxOffset){
-    if(!cmIsHelperVisible){return;}
-    if(cmListOfHelpMessage.size()<=0){return;}
-    cmHelperIndex+=pxOffset;
-    cmHelperIndex=PApplet.constrain(cmHelperIndex,
-      0, cmListOfHelpMessage.size()-1
-    );
-  }//+++
-  
-  /**
-   * must get called at the end of draw()
-   */
-  public final void ccStabilize(){
-    cmWatchBarContent=C_INVALID;
-  }//+++
   
   /**
    * @return #

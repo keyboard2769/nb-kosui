@@ -21,9 +21,11 @@ import java.awt.Frame;
 import processing.core.PApplet;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalAxis;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcLocalHelper;
 import kosui.ppputil.VcLocalStoker;
 import kosui.ppputil.VcLocalTagger;
 
@@ -35,12 +37,19 @@ public class DemoLocalUtility extends PApplet {
   
   //=== inner
   
-  private final EiTriggerable cmQuit = new EiTriggerable() {
+  private final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
       println(".cmTriggerOfQuit::call PApplet.exit()");
       exit();
     }//+++
   };
+  
+  private final EiTriggerable cmConsoleRefreshing = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      VcLocalHelper.ccGetInstance().ccSetVisible(false);
+    }//+++
+  };
+  
   
   private final EiTriggerable cmFlipAxis = new EiTriggerable() {
     @Override public void ccTrigger(){
@@ -54,52 +63,55 @@ public class DemoLocalUtility extends PApplet {
     }//+++
   };
   
-  private final EiTriggerable cmFlipHelper = new EiTriggerable() {
+  private final EiTriggerable cmHelperFlipping = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalConsole.ccGetInstance().ccSetHelperVisible();
+      //VcLocalConsole.ccGetInstance().ccSetHelperVisible();
+      VcLocalHelper.ccGetInstance().ccSetVisible();
     }//+++
   };
   
-  private final EiTriggerable cmEchoInput = new EiTriggerable() {
+  private final EiTriggerable cmEchoing = new EiTriggerable() {
     @Override public void ccTrigger(){
-      
       VcLocalStoker.ccStokeln(VcLocalConsole.ccGetLastAccepted());
-      
-      
-      
     }//+++
   };
   
   //=== overridden
-
+  
   @Override public void setup() {
     println(".setup()::start");
-
+    
     //-- pre
     size(320, 240);
     frame.setTitle("Common Usage");
     EcConst.ccSetupSketch(this);
     self=this;
-
+    
     //-- init ** managers
     VcLocalAxis.ccGetInstance().ccInit(self, true);
     VcLocalTagger.ccGetInstance().ccInit(this, 7);
     VcLocalConsole.ccGetInstance().ccInit(this);
     VcLocalStoker.ccGetInstance().ccInit(this);
+    VcLocalHelper.ccGetInstance().ccInit(this);
     
     //-- register ** key
     VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_Q, cmQuit);
+      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_M, cmFlipAxis);
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_N, cmAnchorAxis);
     
     //-- register ** command
-    VcLocalConsole.ccAddHelpMessage("help unavailable");
-    VcLocalConsole.ccRegisterTrigger("quit", cmQuit);
-    VcLocalConsole.ccRegisterTrigger("help", cmFlipHelper);
-    VcLocalConsole.ccRegisterTrigger("echo", cmEchoInput);
+    VcLocalHelper.ccAddHelpMessage(
+      "CASE IN THE NAME"+VcConst.C_V_NEWLINE
+     +"  OF TEST"+VcConst.C_V_NEWLINE
+     +"YA NOT GUILTY"
+    );
+    VcLocalConsole.ccRegisterTrigger("quit", cmQuitting);
+    VcLocalConsole.ccRegisterTrigger("help", cmHelperFlipping);
+    VcLocalConsole.ccRegisterTrigger("echo", cmEchoing);
+    VcLocalConsole.ccRegisterEmptyTrigger(cmConsoleRefreshing);
     
     //-- post setting
     println(".setup()::over");
@@ -110,20 +122,21 @@ public class DemoLocalUtility extends PApplet {
 
     //-- pre
     ssRoll();
-
+    
     //-- update
     background(0);
     
     //-- update ** system
     VcLocalStoker.ccUpdate();
     VcLocalConsole.ccUpdate();
+    VcLocalHelper.ccUpdate();
     VcLocalAxis.ccUpdate();
     
     //-- tag
     VcLocalTagger.ccTag("roller", cmRoller);
     VcLocalTagger.ccTag("rate", String.format("%.2f", frameRate));
     VcLocalTagger.ccStabilize();
-
+    
   }//+++
   
   @Override public void keyPressed() {

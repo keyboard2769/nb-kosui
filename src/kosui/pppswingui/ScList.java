@@ -39,7 +39,9 @@ public final class ScList extends JScrollPane {
   /**
    * auto size version
    */
-  public ScList() {this(0, 0);}
+  public ScList() {
+    this(0, 0);
+  }//..!
   
   /**
    * #
@@ -54,7 +56,24 @@ public final class ScList extends JScrollPane {
       setPreferredSize(new Dimension(pxW, pxH));
     }//..?
   }//+++
-
+  
+  /**
+   * @param cmMode if null passed an empty default list model will be set
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public ScList(ListModel<String> cmMode,int pxW, int pxH){
+    super();
+    if(cmMode==null){
+      cmList = new JList(new DefaultListModel());
+    }else{
+      cmList = new JList(cmMode);
+    }//+++
+    if (pxW > 0 && pxH > 0) {
+      setPreferredSize(new Dimension(pxW, pxH));
+    }//..?
+  }//+++
+  
   //===
   
   /**
@@ -102,22 +121,6 @@ public final class ScList extends JScrollPane {
     if(lpModel == null){return ;}
     if(lpModel instanceof DefaultListModel){
       ((DefaultListModel)lpModel).addElement(pxElement);
-    }//..?
-  }//+++
-
-  /**
-   * loops given array manually, alias them to DefaultListModel::addElement(), 
-   * may cause huge overheads.<br>
-   * if current model is not DefaultListModel it will do nothing.<br>
-   * @param pxList do not pass null
-   */
-  public final void ccSetModel(String[] pxList) {
-    if(!VcConst.ccIsValidArray(pxList)){return;}
-    ListModel lpModel=cmList.getModel();
-    if(lpModel == null){return ;}
-    if(lpModel instanceof DefaultListModel){
-      ((DefaultListModel)lpModel).clear();
-      for (String it : pxList) {((DefaultListModel)lpModel).addElement(it);}
     }//..?
   }//+++
   
