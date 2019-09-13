@@ -108,10 +108,10 @@ public class DemoLocalUtility extends PApplet {
      +"  OF TEST"+VcConst.C_V_NEWLINE
      +"YA NOT GUILTY"
     );
-    VcLocalConsole.ccRegisterTrigger("quit", cmQuitting);
-    VcLocalConsole.ccRegisterTrigger("help", cmHelperFlipping);
-    VcLocalConsole.ccRegisterTrigger("echo", cmEchoing);
-    VcLocalConsole.ccRegisterEmptyTrigger(cmConsoleRefreshing);
+    VcLocalConsole.ccRegisterCommand("quit", cmQuitting);
+    VcLocalConsole.ccRegisterCommand("help", cmHelperFlipping);
+    VcLocalConsole.ccRegisterCommand("echo", cmEchoing);
+    VcLocalConsole.ccRegisterEmptiness(cmConsoleRefreshing);
     
     //-- post setting
     println(".setup()::over");

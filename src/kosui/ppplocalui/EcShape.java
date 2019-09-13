@@ -26,10 +26,10 @@ public class EcShape extends EcComponent{
   /**
    * the fill of the shape
    */
-  protected int cmBaseColor=EcConst.C_LIT_GRAY;
+  protected int cmBaseColor=EcConst.C_BLACK;
 
   /**
-   * inherited default
+   * base color is black by default.<br>
    */
   public EcShape(){
     super();

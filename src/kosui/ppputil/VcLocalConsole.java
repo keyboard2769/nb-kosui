@@ -41,7 +41,10 @@ public final class VcLocalConsole {
   
   private static final String C_T_NUM = "<N>" ;
   
-  private static final int
+  /**
+   * location constants
+   */
+  public static final int
     //-- length
     C_MAX_CHAR_L = 32,
     //-- pix
@@ -61,6 +64,8 @@ public final class VcLocalConsole {
     cmIsTypeMode          = false,
     cmIsMessageBarVisible = true
   ;//...
+  
+  private EiTriggerable cmSettling = null;
   
   private int
     //-- color
@@ -159,6 +164,9 @@ public final class VcLocalConsole {
         self.cmIsTypeMode=false;
         self.ssReadInput();
         self.ssFireOperation();
+        if(self.cmSettling!=null){
+          self.cmSettling.ccTrigger();
+        }//..?
       }else{
         self.cmIsTypeMode=true;
       }//..?
@@ -181,8 +189,16 @@ public final class VcLocalConsole {
     //-- null action
     if(cmLastAccepted==null){return;}
     
+    //-- space action
+    if(cmLastAccepted.equals(" ")){return;}
+    if(cmLastAccepted.equals(" ")){return;}
+    
     //-- empty action
-    if(cmLastAccepted.isEmpty()){
+    if(
+      cmLastAccepted.isEmpty()||
+      cmLastAccepted.equals(" ")||
+      cmLastAccepted.matches("( )+")
+    ){
       //[tofix]::VcLocalHelper.ccGetInstance.ccSetIsVisible(false);
       ccSetMessage("--");
       if(cmMapOfCommand.containsKey("")){cmMapOfCommand.get("").ccTrigger();}
@@ -217,10 +233,18 @@ public final class VcLocalConsole {
    * @param pxTrigger # 
    */
   public static final 
-  void ccRegisterTrigger(String pxCommand, EiTriggerable pxTrigger){
+  void ccRegisterCommand(String pxCommand, EiTriggerable pxTrigger){
     if(pxTrigger==null){return;}
     if(self.cmMapOfCommand.containsKey(pxCommand)){return;}
     self.cmMapOfCommand.put(pxCommand, pxTrigger);
+  }//+++
+  
+  /**
+   * @param pxTrigger will get fired every time a command get inputted
+   */
+  public static final
+  void ccRegisterSettlement(EiTriggerable pxTrigger){
+    self.cmSettling=pxTrigger;
   }//+++
   
   /**
@@ -236,8 +260,8 @@ public final class VcLocalConsole {
    * @param pxOperation #
    */
   public static final 
-  void ccRegisterEmptyTrigger(EiTriggerable pxOperation){
-    ccRegisterTrigger("",pxOperation);
+  void ccRegisterEmptiness(EiTriggerable pxOperation){
+    ccRegisterCommand("",pxOperation);
   }//+++
   
   /**
@@ -245,8 +269,8 @@ public final class VcLocalConsole {
    * @param pxOperation #
    */
   public static final 
-  void ccRegisterNumericOperation(EiTriggerable pxOperation){
-    ccRegisterTrigger(C_T_NUM,pxOperation);
+  void ccRegisterNumeric(EiTriggerable pxOperation){
+    ccRegisterCommand(C_T_NUM,pxOperation);
   }//+++
   
   //===

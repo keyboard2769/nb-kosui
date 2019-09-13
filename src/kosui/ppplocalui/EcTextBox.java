@@ -41,6 +41,7 @@ public class EcTextBox extends EcElement{
     super();
     ccSetTextAlign('l');
     ccSetTextColor(EcConst.C_LIT_GRAY);
+    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
   }//++!
   
   /**
@@ -57,6 +58,7 @@ public class EcTextBox extends EcElement{
     ccSetTextAlign('l');
     ccSetTextColor(EcConst.C_LIT_GRAY);
     ccSetSize();
+    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
   }//..!
   
   /**
@@ -72,6 +74,7 @@ public class EcTextBox extends EcElement{
     ccSetTextAlign('l');
     ccSetTextColor(EcConst.C_LIT_GRAY);
     ccSetSize();
+    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
   }//..!
   
   //===

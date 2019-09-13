@@ -17,19 +17,15 @@
 
 package kosui.ppplocalui;
 
-import kosui.ppputil.VcConst;
-
 /**
  * a pane with title just lies under elements.<br>
  * may looks like some window.<br>
  */
-public class EcPane extends EcShape{
+public class EcPane extends EcLabel{
   
   private static final int C_TEXT_ADJ_Y=2;
   
   //===
-  
-  private String cmTitle="<title/>";
   
   /**
    * inherited default
@@ -39,12 +35,13 @@ public class EcPane extends EcShape{
   }//..!
   
   /**
-   * inherited plus alpha
+   * inherited plus alpha.<br>
+   * size is 100x100 pix by default.<br>
    * @param pxTitle will get passed to setter directly
    */
   public EcPane(String pxTitle){
-    super();
-    ccSetTitle(pxTitle);
+    super(pxTitle);
+    ccSetSize(100, 100);
   }//..!
   
   /**
@@ -54,8 +51,12 @@ public class EcPane extends EcShape{
    * @param pxH pix
    */
   public EcPane(String pxTitle, int pxW, int pxH){
-    super(pxW, pxH);
-    ccSetTitle(pxTitle);
+    super(pxTitle);
+    if(pxW > 0 || pxH > 0){
+      ccSetSize(pxW, pxH);
+    }else{
+      ccSetSize(100, 100);
+    }//..?
   }//..!
   
   //===
@@ -67,23 +68,15 @@ public class EcPane extends EcShape{
     
     if(!ccIsVisible()){return;}
     
-    pbOwner.fill(EcConst.C_WHITE);
+    pbOwner.fill(cmBorderColor);
     pbOwner.rect(cmX,cmY,cmW,cmH);
     
-    pbOwner.fill(EcConst.C_BLACK);
+    pbOwner.fill(cmBaseColor);
     pbOwner.rect(cmX+2,cmY+18,cmW-4,cmH-21);
     
-    pbOwner.text(cmTitle, cmX+2, cmY+2+C_TEXT_ADJ_Y);
+    pbOwner.fill(cmTextColor);
+    pbOwner.text(cmText, cmX+2, cmY+2+C_TEXT_ADJ_Y);
   
-  }//+++
-  
-  /**
-   * if you want a empty title, pass a space.<br>
-   * @param pxTitle must have something
-   */
-  public final void ccSetTitle(String pxTitle){
-    if(!VcConst.ccIsValidString(pxTitle)){return;}
-    cmTitle=pxTitle;
   }//+++
   
 }//***eof
