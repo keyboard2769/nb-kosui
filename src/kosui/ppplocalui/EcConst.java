@@ -174,17 +174,18 @@ public final class EcConst {
    * constrain() from PApplet is involved.
    * @param pxSource in processing color format
    * @param pxLight plus value to get brighter while minus is darker
-   * @return 0-255
+   * @return ARGB 
    */
   static public int ccAdjustColor(int pxSource, int pxLight){
-    int lpMasked= pxLight &0xFF;
+    int lpOrientation=pxLight>=0?1:-1;
+    int lpMasked= PApplet.constrain(PApplet.abs(pxLight), 1, 254) ;
     int lpAlpha = pxSource&0xFF000000;
     int lpRed   =(pxSource&0x00FF0000)>>16;
     int lpGreen =(pxSource&0x0000FF00)>>8;
     int lpBlue  = pxSource&0x000000FF;
-    lpRed=PApplet.constrain(lpRed+lpMasked, 1, 254);
-    lpGreen=PApplet.constrain(lpGreen+lpMasked, 1, 254);
-    lpBlue=PApplet.constrain(lpBlue+lpMasked, 1, 254);
+    lpRed=PApplet.constrain(lpRed+lpOrientation*lpMasked, 1, 254);
+    lpGreen=PApplet.constrain(lpGreen+lpOrientation*lpMasked, 1, 254);
+    lpBlue=PApplet.constrain(lpBlue+lpOrientation*lpMasked, 1, 254);
     int lpRes=lpBlue|(lpGreen<<8)|(lpRed<<16);
     return lpRes|=lpAlpha;
   }//+++

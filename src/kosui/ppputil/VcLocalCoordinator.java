@@ -386,6 +386,13 @@ public final class VcLocalCoordinator {
   }//+++
   
   /**
+   * @return ture if focus id is ignored
+   */
+  public final boolean ccIsInputCurrentlyFocused(){
+    return cmInputFocusID!=EcConst.C_ID_IGNORE;
+  }//+++
+  
+  /**
    * set input focus to current mouse hovered element.
    * supposedly should be called from mousePressed().
    */

@@ -49,8 +49,7 @@ public final class VcLocalConsole {
     C_MAX_CHAR_L = 32,
     //-- pix
     C_TEXT_ADJ_X = 2,
-    C_TEXT_ADJ_Y = 2,
-    C_BAR_H = 18
+    C_TEXT_ADJ_Y = 2
   ;//...
   
   //===
@@ -75,6 +74,8 @@ public final class VcLocalConsole {
     //-- pix ** window
     cmOwnerWidth    = 800,//.. arbitrary by default value
     cmOwnerHeight   = 600,//.. arbitrary by default value
+    //-- pix ** bar
+    cmBarH = 18,
     //-- pix ** field bar
     cmFieldBarX  = 0,  //.. arbitrary by default value
     cmFieldBarY  = 40, //.. arbitrary by default value
@@ -108,8 +109,8 @@ public final class VcLocalConsole {
       cmOwner=pxOwner;
       cmOwnerWidth=cmOwner.width;
       cmOwnerHeight=cmOwner.height;
-      ccSetFieldBarAnchor(0, cmOwnerHeight-C_BAR_H*2);
-      ccSetMessageBarAnchor(0, cmOwnerHeight-C_BAR_H);
+      ccSetFieldBarAnchor(0, cmOwnerHeight-cmBarH*2);
+      ccSetMessageBarAnchor(0, cmOwnerHeight-cmBarH);
     }//..?
   }//++!
   
@@ -127,7 +128,7 @@ public final class VcLocalConsole {
     if(cmIsTypeMode){
       cmOwner.fill(cmFieldBarColor);
       cmOwner.rect(cmFieldBarX,cmFieldBarY,
-        cmFieldBarW,C_BAR_H
+        cmFieldBarW,cmBarH
       );
       cmOwner.fill(cmTextColor);
       cmOwner.text(cmField+"_",
@@ -138,7 +139,7 @@ public final class VcLocalConsole {
     if(cmIsMessageBarVisible){
       cmOwner.fill(cmMessageBarColor);
       cmOwner.rect(cmMessageBarX,cmMessageBarY,
-        cmMessageBarW,C_BAR_H
+        cmMessageBarW,cmBarH
       );
       cmOwner.fill(cmTextColor);
       cmOwner.text(cmMessage,
@@ -276,6 +277,21 @@ public final class VcLocalConsole {
   //===
   
   /**
+   * applied to both input field and message field.<br>
+   * @param pxHeight pix
+   */
+  public final void ccSetBarHeight(int pxHeight){
+    cmBarH=pxHeight;
+  }//+++
+  
+  /**
+   * @return ##
+   */
+  public final int ccGetBarHeight(){
+    return cmBarH;
+  }//+++
+  
+  /**
    * bar width will get adjust based on current owner.<br>
    * blocking minus value.<br>
    * @param pxX pix
@@ -354,7 +370,7 @@ public final class VcLocalConsole {
   public final void ccSetMessageBarVisible(){
     cmIsMessageBarVisible=!cmIsMessageBarVisible;
   }//+++
-
+  
   //===
   
   /**
