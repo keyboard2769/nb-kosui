@@ -391,7 +391,17 @@ public final class VcLocalCoordinator {
    */
   public final void ccSetCurrentInputFocus(){
     cmInputFocusID=cmMouseOverID;
+    ssTransferInputIndex();
+  }//+++
+  
+  private void ssTransferInputIndex(){
     cmInputIndex=cmMapOfInputtable.size();
+    EcElement lpSource=ccGetCurrentFocusedBox();
+    int lpTester=0;
+    for(EcElement it:cmMapOfInputtable.values()){
+      if(it==lpSource){cmInputIndex=lpTester;break;}
+      lpTester++;
+    }//..~
   }//+++
   
   /**

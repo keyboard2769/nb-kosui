@@ -65,9 +65,11 @@ public class EcValueBox extends EcElement{
     ccSetTextAlign('r');
     ccSetID(pxID);
     ccSetSize();
-    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
     ccSetTextColor(EcConst.C_LIT_GRAY);
     ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
+    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
+    cmDigit=(cmText.length()-cmUnit.length()-1);
+    if(cmDigit<0){cmDigit=0;}
   }//..!
   
   /**
@@ -82,9 +84,11 @@ public class EcValueBox extends EcElement{
     ccSetText(pxForm);
     ccSetTextAlign('r');
     ccSetSize();
-    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
     ccSetTextColor(EcConst.C_LIT_GRAY);
     ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
+    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
+    cmDigit=(cmText.length()-cmUnit.length());
+    if(cmDigit<0){cmDigit=0;}
   }//..!
   
   //===
