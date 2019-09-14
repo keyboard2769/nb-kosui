@@ -31,10 +31,13 @@ public class EcLamp extends EcElement{
   public static final int
     //-- pix
     C_STROKE_THICK   = 4,
-    C_DEFAULT_SCALE  = 18,
-    //-- color
-    C_COLOR_STROKE   = 0xFF555555
+    C_DEFAULT_SCALE  = 18
   ;//...
+  
+  /**
+   * can get applied to a line or just a bigger rectangle
+   */
+  protected int cmBorderColor = 0xFF555555;
 
   /**
    * the default size is 18*18 pix;
@@ -89,7 +92,7 @@ public class EcLamp extends EcElement{
     int lpCenterX=ccCenterX();
     int lpCenterY=ccCenterY();
     
-    pbOwner.fill(C_COLOR_STROKE);
+    pbOwner.fill(cmBorderColor);
     pbOwner.ellipse(lpCenterX,lpCenterY,cmW,cmH);
 
     pbOwner.fill(pxColor);
@@ -100,6 +103,13 @@ public class EcLamp extends EcElement{
       cmH-C_STROKE_THICK
     );
     
+  }//+++
+  
+  /**
+   * @param pxColor ARPG
+   */
+  public final void ccSetBorderColor(int pxColor){
+    cmBorderColor=pxColor;
   }//+++
   
 }//***eof

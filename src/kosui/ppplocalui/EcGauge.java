@@ -161,12 +161,20 @@ public class EcGauge extends EcElement {
     ccApplyClickedValue();
     
     //-- draw
-    if(cmHasStroke){pbOwner.stroke(cmStrokeColor);}
+    int lpAdjust=0;
+    if(cmHasStroke){
+      pbOwner.stroke(cmStrokeColor);
+      lpAdjust=1;
+      {lpLength-=1;if(lpLength<1){lpLength=1;}}//..we will see
+    }//..?
     pbOwner.fill(cmBackColor);
-    pbOwner.rect(cmX,cmY,cmW,cmH);
+    pbOwner.rect(cmX,cmY,cmW-lpAdjust,cmH-lpAdjust);
     ccActFill();
-    if(cmIsVertical){pbOwner.rect(cmX,cmY+cmH,cmW,-lpLength);}
-    else{pbOwner.rect(cmX,cmY,lpLength,cmH);}
+    if(cmIsVertical){
+      pbOwner.rect(cmX,cmY+cmH,cmW-lpAdjust,-1*lpLength);
+    }else{
+      pbOwner.rect(cmX,cmY,lpLength,cmH-lpAdjust);
+    }//..?
     if(cmHasStroke){pbOwner.noStroke();}
     drawName(cmNameColor);
   

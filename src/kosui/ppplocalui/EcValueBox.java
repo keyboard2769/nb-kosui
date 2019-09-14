@@ -110,7 +110,8 @@ public class EcValueBox extends EcElement{
     
     pbOwner.stroke(0xCC);
     pbOwner.fill(cmIsActivated?cmOnColor:cmOffColor);
-    pbOwner.rect(cmX, cmY, cmW, cmH);
+    pbOwner.rect(cmX, cmY, cmW-1, cmH-1);
+    // ^.. adjust is needed whenever there is a stroke 
     pbOwner.noStroke();
 
   }//+++

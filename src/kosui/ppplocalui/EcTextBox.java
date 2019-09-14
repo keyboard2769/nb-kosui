@@ -28,7 +28,7 @@ public class EcTextBox extends EcElement{
     //-- pix
     C_SHADOW_THICK = 2,
     //-- color
-    C_COLOR_SHADOW = 0xFF555555
+    C_COLOR_SHADOW = 0xFF444444
   ;//...
   
   //===

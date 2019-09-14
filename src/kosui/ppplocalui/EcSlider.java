@@ -60,16 +60,20 @@ public class EcSlider extends EcGauge{
     ccApplyClickedValue();
     
     //-- draw
-    if(cmHasStroke){pbOwner.stroke(cmStrokeColor);}
+    int lpAdjust=0;
+    if(cmHasStroke){
+      pbOwner.stroke(cmStrokeColor);
+      lpAdjust=1;
+    }//..?
     pbOwner.fill(cmBackColor);
     if(cmIsVertical){
-      pbOwner.rect(ccCenterX()-2, cmY, 4, cmH);
+      pbOwner.rect(ccCenterX()-2, cmY, 4-lpAdjust, cmH-lpAdjust);
       ccActFill();
-      pbOwner.rect(cmX,ccEndY()-lpPosition-8,cmW,8);
+      pbOwner.rect(cmX,ccEndY()-lpPosition-8,cmW-lpAdjust,8-lpAdjust);
     }else{
-      pbOwner.rect(cmX, ccCenterY()-2, cmW, 4);
+      pbOwner.rect(cmX, ccCenterY()-2, cmW-lpAdjust, 4-lpAdjust);
       ccActFill();
-      pbOwner.rect(cmX+lpPosition-4, cmY, 8, cmH);
+      pbOwner.rect(cmX+lpPosition-4, cmY, 8-lpAdjust, cmH-lpAdjust);
     }//..?
     if(cmHasStroke){pbOwner.noStroke();}
     
