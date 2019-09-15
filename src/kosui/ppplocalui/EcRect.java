@@ -93,11 +93,58 @@ public class EcRect extends EcPoint{
       cmY+=pxTarget.cmY+(pxOffsetX==0?pxTarget.cmH:0);
     }//..?
   }//+++
+  
+  /**
+   * <pre>
+   * get relocated right next to given target rect.
+   * there will be no offset.
+   * mode:
+   *  - [a]:above
+   *  - [b]:below
+   *  - [l]:left
+   *  - [r]:right
+   * </pre>
+   * @param pxTarget ##
+   * @param pxMode_ablrx ##
+   */
+  public final void ccSetLocation(
+    EcRect pxTarget, char pxMode_ablrx
+  ){
+    if(pxTarget==null){return;}
+    switch(pxMode_ablrx){
+      case 'a':
+        ccSetX(pxTarget.ccGetX());
+        ccSetY(pxTarget.ccGetY()-ccGetH());
+      break;
+      case 'b':
+        ccSetX(pxTarget.ccGetX());
+        ccSetY(pxTarget.ccEndY());
+      break;
+      case 'l':
+        ccSetX(pxTarget.ccGetX()-ccGetW());
+        ccSetY(pxTarget.ccEndY());
+      break;
+      case 'r':
+        ccSetX(pxTarget.ccEndX());
+        ccSetY(pxTarget.ccGetY());
+      break;
+      default:break;
+    }//..?
+  }//+++
+  
+  /**
+   * makes it a square.<br>
+   * @param pxScale pix
+   */
+  public final void ccSetSize(int pxScale){
+    ccSetW(pxScale);
+    ccSetH(pxScale);
+  }//+++
     
   /**
    * will not be set if passed zero
-   * @param pxW #
-   * @param pxH #
+   * @param pxW pix
+   * @param pxH pix
    */
   public final void ccSetSize(int pxW, int pxH){
     ccSetW(pxW);
@@ -105,7 +152,6 @@ public class EcRect extends EcPoint{
   }//+++
   
   /**
-   * 
    * @param pxTarget this does check null
    */
   public final void ccSetSize(EcRect pxTarget){

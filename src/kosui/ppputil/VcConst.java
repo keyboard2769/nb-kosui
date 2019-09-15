@@ -18,6 +18,7 @@
 package kosui.ppputil;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * an utility class should never use such a nonsense name.<br>
@@ -62,6 +63,16 @@ public final class VcConst {
   static public final boolean ccIsValidString(String pxLine){
     if(pxLine==null){return false;}
     else{return !pxLine.isEmpty();}
+  }//+++
+  
+  /**
+   * @param pxList #
+   * @param pxMinimal size
+   * @return no null no lesser
+   */
+  public static final boolean ccIsValidList(List pxList, int pxMinimal){
+    if(pxList==null){return false;}
+    return pxList.size()>=pxMinimal;
   }//+++
   
   /**

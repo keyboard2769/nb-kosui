@@ -183,6 +183,20 @@ public final class VcNumericUtility {
     return String.format("%.2f", pxValue);
   }//+++
   
+  //=== comparating
+  
+  /**
+   * @param pxA ##
+   * @param pxB ##
+   * @param pxC ##
+   * @return if all equals
+   */
+  public static final boolean ccEquals(int pxA, int pxB, int pxC){
+    boolean lpA=pxA==pxC;
+    boolean lpB=pxB==pxC;
+    return lpA&lpB;
+  }//+++
+  
   //=== calculation
   
   /**
