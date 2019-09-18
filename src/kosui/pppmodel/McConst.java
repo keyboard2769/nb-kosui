@@ -67,20 +67,6 @@ public final class McConst {
   }//+++
   
   /**
-   * with null check, absolution check, existence check, 
-   * identical check, and size length check (hard coded).<br>
-   * @param pxFile #
-   * @return #
-   */
-  public static final boolean ccVerifyFileForLoading(File pxFile){
-    if(pxFile==null){return false;}
-    if(!pxFile.isAbsolute()){return false;}
-    if(!pxFile.exists()){return false;}
-    if(pxFile.length()>C_MAX_FILESIE_FOR_LOADING){return false;}//..?
-    return true;
-  }//+++
-  
-  /**
    * <pre>
    * with null check and absolution check.
    * also does existence check and automatically invokes 
@@ -110,15 +96,29 @@ public final class McConst {
    * @return true if matches
    */
   public static final
-  boolean ccVerifyFileForLoading(File pxFile, String pxExtension){
+  boolean ccVerifyFileForSaving(File pxFile, String pxExtension){
     if(pxFile==null){return false;}
     if(!VcConst.ccIsValidString(pxExtension)){return false;}
-    boolean lpJustFile=ccVerifyFileForLoading(pxFile);
+    boolean lpJustFile=ccVerifyFileForSaving(pxFile);
     if(lpJustFile){
       return pxFile.getName().endsWith(pxExtension);
     }else{
       return false;
     }//..?
+  }//+++
+  
+  /**
+   * with null check, absolution check, existence check, 
+   * identical check, and size length check (hard coded).<br>
+   * @param pxFile #
+   * @return #
+   */
+  public static final boolean ccVerifyFileForLoading(File pxFile){
+    if(pxFile==null){return false;}
+    if(!pxFile.isAbsolute()){return false;}
+    if(!pxFile.exists()){return false;}
+    if(pxFile.length()>C_MAX_FILESIE_FOR_LOADING){return false;}//..?
+    return true;
   }//+++
   
   /**
@@ -128,10 +128,10 @@ public final class McConst {
    * @return true if matches
    */
   public static final
-  boolean ccVerifyFileForSaving(File pxFile, String pxExtension){
+  boolean ccVerifyFileForLoading(File pxFile, String pxExtension){
     if(pxFile==null){return false;}
     if(!VcConst.ccIsValidString(pxExtension)){return false;}
-    boolean lpJustFile=ccVerifyFileForSaving(pxFile);
+    boolean lpJustFile=ccVerifyFileForLoading(pxFile);
     if(lpJustFile){
       return pxFile.getName().endsWith(pxExtension);
     }else{
@@ -145,7 +145,7 @@ public final class McConst {
    * @return true if all matched
    */
   public static final
-  boolean ccVerifyResourceFileExistence(File pxFolder, String[] pxDesFileName){
+  boolean ccVerifyFileExistence(File pxFolder, String[] pxDesFileName){
     if(!ccVerifyFolder(pxFolder)){return false;}
     if(pxDesFileName==null){return false;}
     LinkedList<String> lpFolderList = new LinkedList<String>();

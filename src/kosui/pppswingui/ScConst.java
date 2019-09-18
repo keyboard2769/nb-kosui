@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -334,6 +335,26 @@ public class ScConst {
   }//+++
     
   //=== operate
+  
+  /**
+   * alias for JFrame::setState.<br>
+   * @param pxFrame do not pass null
+   */
+  public static final void ccRestoreFrame(JFrame pxFrame){
+    if(!ccIsEDT()){return;}
+    if(pxFrame==null){return;}
+    pxFrame.setState(JFrame.NORMAL);
+  }//+++
+  
+  /**
+   * alias for JFrame::setState.<br>
+   * @param pxFrame do not pass null
+   */
+  public static final void ccMinimizeFrame(JFrame pxFrame){
+    if(!ccIsEDT()){return;}
+    if(pxFrame==null){return;}
+    pxFrame.setState(JFrame.ICONIFIED);
+  }//+++
   
   /**
    * change the back color to predefined one.<br>
