@@ -17,8 +17,13 @@
 
 package kosui.ppputil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.List;
+import processing.core.PApplet;
+import processing.data.StringList;
 
 /**
  * an utility class should never use such a nonsense name.<br>
@@ -207,6 +212,72 @@ public final class VcConst {
         + iace.getMessage());
     }//..?
     return lpRes;
+  }//+++
+  
+  //=== local
+  
+  /**
+   * <pre>
+   * wrapper for Runtime::exec and swallows lots of IOException.
+   * pack up string results for you. 
+   * for the package manner we choose to return a processing based data type.
+   * CAUTION: may block caller thread via Runtime::waitFor
+   * </pre>
+   * @param pxCommand must have something
+   * @param pxReadCount we have an upper bound for BufferedReader::readLine
+   * @return never null
+   */
+  synchronized public static final
+  StringList ccRuntimeExecute(String pxCommand, int pxReadCount){
+    
+    StringList lpRes=new StringList();
+    lpRes.append("-> runtime execute ->");
+    
+    //-- checkin
+    if(!ccIsValidString(pxCommand)){return lpRes;}
+    int lpFixedCount=PApplet.constrain(pxReadCount, 1, 255);
+    
+    //-- execute
+    lpRes.append("-> command:"+pxCommand);
+    Runtime lpRuntime = Runtime.getRuntime();
+    Process lpProcess = null;
+    BufferedReader lpReader = null;
+    try {
+      lpProcess = lpRuntime.exec(pxCommand);
+      lpReader = new BufferedReader(new InputStreamReader(lpProcess.getInputStream()));
+    } catch (IOException e) {
+      System.err.println(".ccRuntimeExecute()::"+e.getMessage());
+    }//..?
+    if (lpProcess == null) {return lpRes;}
+    if (lpReader == null) {return lpRes;}
+    
+    //-- wait
+    int lpReturn = 0;
+    try {
+      lpReturn = lpProcess.waitFor();
+    } catch (InterruptedException e) {
+      System.err.println(".ccRuntimeExecute()::"+e.getMessage());
+    }//+++
+    
+    //-- read
+    for (int i = 0; i <= lpFixedCount; i++) {
+      String lpLine = null;
+      try {
+        lpLine = lpReader.readLine();
+      } catch (IOException e) {
+        System.err.println(".ccRuntimeExecute()::"+e.getMessage());
+      }//..?
+      if (lpLine != null) {
+        lpRes.append(lpLine);
+      } else {
+        lpRes.append("-> exited with:"+PApplet.nf(lpReturn, 8));
+        break;
+      }//..?
+    }//..~
+    
+    //-- post
+    return lpRes;
+    
   }//+++
   
 }//***eof
