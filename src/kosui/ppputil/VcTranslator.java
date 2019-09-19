@@ -17,13 +17,27 @@
 
 package kosui.ppputil;
 
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Locale;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * holds lots of maps as "dictionary" for you.<br>
  * add word from file should be implement separately.<br>
  */
 public final class VcTranslator {
+  
+  private static final String
+    Q_TR="tr",
+    Q_EN="en",
+    Q_JP="jp",
+    Q_ZH="zh",
+    Q_ATTR_KEY="key"
+  ;//...
   
   /**
    * @return instance
@@ -44,16 +58,117 @@ public final class VcTranslator {
   private final HashMap<String, String> cmJapaneseDict
     = new HashMap<String, String>();
   
+  private String cmCurrentKey;
+  private String cmCurrentEN;
+  private String cmCurrentJP;
+  private String cmCurrentZH;
   private char cmMode='c';
+  
+  private static final DefaultHandler O_HANDLER = new DefaultHandler(){
+    
+    @Override public void startElement(
+      String pxURI, String pxLocalName, String pxQName,
+      Attributes pxAttributes
+    )throws SAXException
+    {
+      if(pxQName.equals(Q_TR)){
+        String lpKey=pxAttributes.getValue(Q_ATTR_KEY);
+        if(lpKey==null){return;}
+        self.cmMode='x';
+      }else
+      if(pxQName.equals(Q_EN)){
+        self.cmMode='e';
+      }else
+      if(pxQName.equals(Q_JP)){
+        self.cmMode='j';
+      }else
+      if(pxQName.equals(Q_ZH)){
+        self.cmMode='c';
+      }//..?
+    }//+++
+
+    @Override public void characters(
+      char[] arg0, int arg1, int arg2
+    )throws SAXException
+    {
+      String lpText = new String(arg0,arg1,arg2);
+      if(!VcConst.ccIsAllNoneSpace(lpText)){return;}
+      lpText=lpText.trim();
+      switch(self.cmMode){
+        case 'e':self.cmCurrentEN=lpText;break;
+        case 'j':self.cmCurrentJP=lpText;break;
+        case 'c':self.cmCurrentZH=lpText;break;
+        default:break;
+      }//..?
+    }//+++
+
+    @Override public void endElement(
+      String pxURI, String pxLocalName, String pxQName
+    ) throws SAXException {
+      if(!pxQName.equals(Q_TR)){return;}
+      self.ccRegisterEnglishWord(self.cmCurrentKey, self.cmCurrentEN);
+      self.ccRegisterJapaneseWord(self.cmCurrentKey, self.cmCurrentJP);
+      self.ccRegisterChineseWord(self.cmCurrentKey, self.cmCurrentZH);
+      self.cmCurrentKey="";
+      self.cmMode='x';
+    }//+++
+    
+  };//***
+  
+  //===
   
   /**
    * empty string will get registered by default.
    */
   public final void ccInit(){
+    
+    //-- emptiness
     cmEnglishDict.put("", "");
-    cmChineseDict.put("", "");
     cmJapaneseDict.put("", "");
+    cmChineseDict.put("", "");
+    
   }//..!
+  
+  //===
+  
+  /**
+   * ##
+   * @param pxStream from Class<?>.getResourceAsStream()
+   * @return if nothing is wrong
+   */
+  public final boolean ccParseXML(InputStream pxStream){
+    boolean lpRes;
+    if(pxStream==null){return false;}
+    try{
+      SAXParserFactory.newInstance().newSAXParser().parse(pxStream, O_HANDLER);
+      lpRes=true;
+    }catch (Exception e) {
+      System.err.println(".ccParseXMl()::"+e.getMessage());
+      lpRes=false;
+    }//..?
+    return lpRes;
+  }//+++
+  
+  //[plan]::boolean ccParseCSV
+  //[plan]::boolean ccParseINI
+  //[plan]::boolean ccParseJSON ..do we actually need it ??
+  
+  /**
+   * simply compare string from DefaultLocale::getCountry.<br>
+   * supposedly should get call after ccInit();
+   */
+  public final void ccApplyLocale(){
+    String lpCountry = Locale.getDefault().getCountry();
+    /* 4 */VcConst.ccPrintln("locale",lpCountry);
+    if(!(lpCountry==null)){
+      if(lpCountry.equals("JP")){
+        cmMode='j';
+      }else
+      /* 7 */if(lpCountry.equals("ZH")){//.. we need a test machine
+        cmMode='c';
+      }//..?
+    }//..?
+  }//+++
   
   //===
   
@@ -124,6 +239,20 @@ public final class VcTranslator {
       case 'c':return self.cmChineseDict.getOrDefault(pxSource, pxSource);
       default:return pxSource;
     }//..?
+  }//+++
+  
+  //=== test
+  
+  /**
+   * @deprecated for test use only
+   */
+  @Deprecated public static void tstReadupCurrent(){
+    System.out.print(self.cmCurrentKey);
+    System.out.print("->");
+    System.out.print(self.cmCurrentEN);System.out.print("|");
+    System.out.print(self.cmCurrentJP);System.out.print("|");
+    System.out.print(self.cmCurrentZH);System.out.print("|");
+    System.out.println("<<<");
   }//+++
   
  }//***eof

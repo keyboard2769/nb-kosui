@@ -68,8 +68,8 @@ public class CaseNumericUtility extends JFrame{
   
   public final EiTriggerable lvcomp = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("ZcLevelCompatator::ccComparate >>>");
-      VcSwingConsole.ccStokeln("value","level");
+      VcSwingConsole.ccWriteln("ZcLevelCompatator::ccComparate >>>");
+      VcSwingConsole.ccWriteln("value","level");
       int[] lpCase=new int[]{
         -3,-992,-1,0,1,12,123,
         234,345,456,567,678,789,899,987,
@@ -81,79 +81,79 @@ public class CaseNumericUtility extends JFrame{
       };//...
       ZcLevelComparator lpController= new ZcLevelComparator(3200);
       for(int it:lpCase){
-        VcSwingConsole.ccStokeln(Integer.toString(it), lpController.ccComparate(it));
+        VcSwingConsole.ccWriteln(Integer.toString(it), lpController.ccComparate(it));
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
   public final EiTriggerable isfloat = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("IsFloatString >>>");
+      VcSwingConsole.ccWriteln("IsFloatString >>>");
       for(String it:O_CASE_NUMERIC_STRING){
-        VcSwingConsole.ccStokeln(it, VcNumericUtility.ccIsFloatString(it));
+        VcSwingConsole.ccWriteln(it, VcNumericUtility.ccIsFloatString(it));
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
   public final EiTriggerable isint = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("ccIsIntegerString >>>");
+      VcSwingConsole.ccWriteln("ccIsIntegerString >>>");
       for(String it:O_CASE_NUMERIC_STRING){
-        VcSwingConsole.ccStokeln(it, VcNumericUtility.ccIsIntegerString(it));
+        VcSwingConsole.ccWriteln(it, VcNumericUtility.ccIsIntegerString(it));
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
   public final EiTriggerable binld = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("== ssTestBinaryLoad >>");
+      VcSwingConsole.ccWriteln("== ssTestBinaryLoad >>");
       for(int i=-1;i<17;i++){
-        VcSwingConsole.ccStokeln(
+        VcSwingConsole.ccWriteln(
           Integer.toString(i), 
           VcNumericUtility.ccBinaryLoad(7, i)
         );
       }//..~
-      VcSwingConsole.ccStokeln("== <<");
+      VcSwingConsole.ccWriteln("== <<");
     }//+++
   };//***
   
   public final EiTriggerable binset = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("ccBinarySet >>>");
+      VcSwingConsole.ccWriteln("ccBinarySet >>>");
       int lpSource=1;
       for(int i=-1;i<17;i++){
         lpSource=VcNumericUtility.ccBinarySet(lpSource, i, true);
-        VcSwingConsole.ccStokeln(
+        VcSwingConsole.ccWriteln(
           Integer.toString(i), 
           PApplet.hex(lpSource,16)
         );
       }//..~
       for(int i=-1;i<17;i++){
         lpSource=VcNumericUtility.ccBinarySet(lpSource, i, false);
-        VcSwingConsole.ccStokeln(
+        VcSwingConsole.ccWriteln(
           Integer.toString(i), 
           PApplet.hex(lpSource,16)
         );
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
   public final EiTriggerable topowii = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("ccToPowerOfTwo >>>");
+      VcSwingConsole.ccWriteln("ccToPowerOfTwo >>>");
       for(int i:O_CASE_INT){
-        VcSwingConsole.ccStokeln(
+        VcSwingConsole.ccWriteln(
           VcStringUtility.ccPackupParedTag
             ("before", i),
           VcStringUtility.ccPackupParedTag
             ("after ", VcNumericUtility.ccToPowerOfTwo(i))
         );
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
@@ -178,11 +178,11 @@ public class CaseNumericUtility extends JFrame{
   
   private static final EiTriggerable T_LIST_TEST = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcSwingConsole.ccStokeln("registerd >>>");
+      VcSwingConsole.ccWriteln("registerd >>>");
       for(String it:O_TEST_LIST){
-        VcSwingConsole.ccStokeln(it);
+        VcSwingConsole.ccWriteln(it);
       }//..~
-      VcSwingConsole.ccStokeln("<<<");
+      VcSwingConsole.ccWriteln("<<<");
     }//+++
   };//***
   
@@ -263,11 +263,11 @@ public class CaseNumericUtility extends JFrame{
       VcSwingCoordinator.ccRegisterCommand("clear",T_CLEAR);
       
       //-- post
-      VcSwingConsole.ccStokeln("on", VcConst.C_V_OS);
-      VcSwingConsole.ccStokeln("at", VcConst.C_V_PWD);
-      VcSwingConsole.ccStokeln
+      VcSwingConsole.ccWriteln("on", VcConst.C_V_OS);
+      VcSwingConsole.ccWriteln("at", VcConst.C_V_PWD);
+      VcSwingConsole.ccWriteln
         ("*** all registered test item can be invoked via comand input ***");
-      VcSwingConsole.ccStokeln("*** have fun ***");
+      VcSwingConsole.ccWriteln("*** have fun ***");
       T_LIST_TEST.ccTrigger();
       VcSwingConsole.ccRequestFocus();
       

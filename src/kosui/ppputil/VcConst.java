@@ -71,6 +71,16 @@ public final class VcConst {
   }//+++
   
   /**
+   * from oracle tutorial : whitespace character : [\t\n\x0B\f\r].<br>
+   * @param pxLine #
+   * @return no null no empty
+   */
+  static public final boolean ccIsAllNoneSpace(String pxLine){
+    return VcStringUtility.ccNulloutString(pxLine)
+      .matches("^\\s+$");
+  }//+++
+  
+  /**
    * @param pxList #
    * @param pxMinimal size
    * @return no null no lesser

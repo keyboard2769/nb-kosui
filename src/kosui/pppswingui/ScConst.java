@@ -33,6 +33,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -388,10 +389,25 @@ public class ScConst {
   public static final void ccScrollToLast(JScrollPane pxTarget){
     if(!ccIsEDT()){return;}
     if(pxTarget==null){return;}
+    
+    
+    
+    /*
+    */
+    
+    /*
+    JScrollBar lpBar=pxTarget.getVerticalScrollBar();
+    pxTarget.validate();
+    lpBar.validate();
+    lpBar.setValue(lpBar.getMaximum()+20);
+    */
+    
+    //[head]::what the hell is the problem ? ?
     BoundedRangeModel lpModel = pxTarget.getVerticalScrollBar().getModel();
     if(lpModel==null){return;}
     int lpMax=lpModel.getMaximum();
     lpModel.setValue(lpMax+lpModel.getExtent());
+    
   }//+++
   
   /**

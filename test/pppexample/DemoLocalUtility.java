@@ -72,7 +72,7 @@ public class DemoLocalUtility extends PApplet {
   
   private final EiTriggerable cmEchoing = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalStoker.ccStokeln(VcLocalConsole.ccGetLastAccepted());
+      VcLocalStoker.ccWriteln(VcLocalConsole.ccGetLastAccepted());
     }//+++
   };
   

@@ -18,6 +18,7 @@
 package kosui.pppmodel;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ import processing.data.XML;
 import processing.data.Table;
 import processing.data.TableRow;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
 
 /**
@@ -50,6 +52,22 @@ public final class McConst {
     = "--sys-msg-overwite-confirmation";
   
   private McConst(){}//+++ 
+  
+  //===
+  
+  /**
+   * alias for Class<?>::getResourceAsStream.<br>
+   * @param pxProjectClass do not pass null
+   * @param pxResourceIdentifier can be anything
+   * @return could be null
+   */
+  public static final InputStream ccGetPackageResource(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    if(pxProjectClass==null){return null;}
+    return pxProjectClass.getResourceAsStream
+      (VcStringUtility.ccNulloutString(pxResourceIdentifier));
+  }//+++
   
   //===
   

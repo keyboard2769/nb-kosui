@@ -129,9 +129,9 @@ public class TestFrame {
     VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
     
     //-- post
-    VcSwingConsole.ccStokeln("on", VcConst.C_V_OS);
-    VcSwingConsole.ccStokeln("at", VcConst.C_V_PWD);
-    VcSwingConsole.ccStokeln("*** have fun ***");
+    VcSwingConsole.ccWriteln("on", VcConst.C_V_OS);
+    VcSwingConsole.ccWriteln("at", VcConst.C_V_PWD);
+    VcSwingConsole.ccWriteln("*** have fun ***");
     VcSwingConsole.ccRequestFocus();
     
   }//+++

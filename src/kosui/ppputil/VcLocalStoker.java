@@ -156,16 +156,16 @@ public final class VcLocalStoker {
    * @param pxTag #
    * @param pxVal #
    */
-  static public final void ccStokeln(String pxTag, Object pxVal){
-    self.cmModel.ccStokeln(pxTag, pxVal);
+  static public final void ccWriteln(String pxTag, Object pxVal){
+    self.cmModel.ccWriteln(pxTag, pxVal);
   }//+++
   
   /**
    * a wrapped input will get passed to McLineStacker.ccStack() directly.<br>
    * @param pxLine #
    */
-  static public final void ccStokeln(String pxLine){
-    self.cmModel.ccStokeln(VcStringUtility.ccWrap(pxLine, self.cmMaxLength));
+  static public final void ccWriteln(String pxLine){
+    self.cmModel.ccWriteln(VcStringUtility.ccWrap(pxLine, self.cmMaxLength));
   }//+++
   
   /**

@@ -58,7 +58,7 @@ public class ScStoker extends JScrollPane {
    * @param pxTag must have something
    * @param pxValue can be any thing
    */
-  public final void ccStokeln(String pxTag, Object pxValue){
+  public final void ccWriteln(String pxTag, Object pxValue){
     if(!ScConst.ccIsEDT()){return;}
     if(!VcConst.ccIsValidString(pxTag)){return;}
     if(pxValue==null){
@@ -77,8 +77,8 @@ public class ScStoker extends JScrollPane {
    * might get passed to JTextArea::append() eventually.<br>
    * @param pxLine must have some thing.
    */
-  public final void ccStokeln(String pxLine) {
-    ScStoker.this.ccStokeln(pxLine, null);
+  public final void ccWriteln(String pxLine) {
+    ScStoker.this.ccWriteln(pxLine, null);
   }//+++
   
   /**
