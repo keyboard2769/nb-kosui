@@ -89,6 +89,9 @@ public class ScLabel extends EcRect implements SiPaintable{
     cmText=pxText;
   }//+++
   
+  /**
+   * @return ##
+   */
   public final String ccGetText(){
     return cmText;
   }//+++

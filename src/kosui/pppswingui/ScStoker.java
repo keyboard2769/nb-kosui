@@ -89,7 +89,8 @@ public class ScStoker extends JScrollPane {
   }//+++
   
   /**
-   * clear with a new hello message
+   * clear with a initiation message
+   * @param pxHello do not pass null
    */
   public final void ccClear(String pxHello){
     if(pxHello==null){ccClear();return;}

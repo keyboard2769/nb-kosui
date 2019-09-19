@@ -28,6 +28,7 @@ import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalHelper;
 import kosui.ppputil.VcLocalStoker;
 import kosui.ppputil.VcLocalTagger;
+import kosui.ppputil.VcNumericUtility;
 
 public class DemoLocalUtility extends PApplet {
   
@@ -87,12 +88,17 @@ public class DemoLocalUtility extends PApplet {
     EcConst.ccSetupSketch(this);
     self=this;
     
-    //-- init ** managers
+    //-- managers ** init
     VcLocalAxis.ccGetInstance().ccInit(self, true);
     VcLocalTagger.ccGetInstance().ccInit(this, 7);
     VcLocalConsole.ccGetInstance().ccInit(this);
     VcLocalStoker.ccGetInstance().ccInit(this);
     VcLocalHelper.ccGetInstance().ccInit(this);
+    
+    //-- managers ** config
+    VcLocalTagger.ccGetInstance().ccSetAsBar(true);
+    VcLocalTagger.ccGetInstance().ccSetLocationOffset(1, 1);
+    VcLocalTagger.ccGetInstance().ccSetGap(85, 20);
     
     //-- register ** key
     VcLocalCoordinator.ccRegisterKeyTrigger
@@ -133,8 +139,14 @@ public class DemoLocalUtility extends PApplet {
     VcLocalAxis.ccUpdate();
     
     //-- tag
-    VcLocalTagger.ccTag("roller", cmRoller);
-    VcLocalTagger.ccTag("rate", String.format("%.2f", frameRate));
+    VcLocalTagger.ccTag("roller", PApplet.nf(cmRoller, 3));
+    VcLocalTagger.ccTag
+      ("rate", VcNumericUtility.ccFormatPointTwoFloat(frameRate));
+    VcLocalTagger.ccTag("keyC", 
+      Character.isLetterOrDigit(key)?
+      Character.toString(key):"<NUC>"
+    );
+    VcLocalTagger.ccTag("keyI", PApplet.hex(keyCode, 4));
     VcLocalTagger.ccStabilize();
     
   }//+++

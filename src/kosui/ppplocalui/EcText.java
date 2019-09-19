@@ -26,7 +26,14 @@ import processing.core.PApplet;
  */
 public class EcText extends EcShape{
   
+  /**
+   * ##
+   */
   protected String cmText="<?>";
+  
+  /**
+   * ##
+   */
   protected int cmTextColor=EcConst.C_DARK_GRAY;
   
   /**

@@ -19,6 +19,11 @@ package kosui.pppmodel;
 
 import kosui.ppputil.VcNumericUtility;
 
+/**
+ * at first i thought about making a tons of ring buffer
+ * with primitive types.<br>
+ * than i realize that a buffer is all about its indexes.<br>
+ */
 public class McRingedIndex {
   
   /**

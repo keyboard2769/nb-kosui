@@ -51,6 +51,13 @@ public final class ScFactory {
   
   //=== container ** frame
   
+  /**
+   * place the frame at center for you.<br>
+   * maybe we will have a multi monitor version later.<br>
+   * @param pxFrame do not pass null
+   * @param pxW value under 100 will get ignored
+   * @param pxH value under 100 will get ignored
+   */
   public static final void ccSetupMainFrame(JFrame pxFrame, int pxW ,int pxH){
     if(pxFrame==null){return;}
     pxFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,9 +75,7 @@ public final class ScFactory {
     pxFrame.setResizable(false);
   }//+++
   
-  
   //=== container ** panel ** border
-  
   
   /**
    * alias for both constructor.<br>

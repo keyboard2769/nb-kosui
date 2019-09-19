@@ -31,12 +31,16 @@ public class McTextStoker {
   private final McRingedIndex cmIndex;
   private final String[] cmData;
   
+  /**
+   * ##
+   * @param pxSize buffer size
+   */
   public McTextStoker(int pxSize){
     cmIndex=new McRingedIndex(pxSize);
     cmData=new String[cmIndex.cmSize];
     Arrays.fill(cmData, "");
-    VcConst.ccPrintln("i size?", cmIndex.cmSize);
-    VcConst.ccPrintln("d size?", cmData.length);
+    /* 4 */VcConst.ccLogln("i size?", cmIndex.cmSize);
+    /* 4 */VcConst.ccLogln("d size?", cmData.length);
   }//..!
   
   //===

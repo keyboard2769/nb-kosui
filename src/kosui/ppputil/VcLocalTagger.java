@@ -42,20 +42,26 @@ public final class VcLocalTagger{
   private PApplet cmOwner=null;
   
   private int
+    //-- count
     cmCounter=0,
+    cmWrap=8,
+    //-- pix
     cmTagHeight=16,
-    cmRow=8,
     cmGapX=100,
     cmGapY=20,
     cmOffsetX=5,
     cmOffsetY=20,
+    //-- ARGB
     cmBackground=0x99666666,
     cmForeround =0xFF33EE33
   ;//...
   
   private float cmTagWidthCoeff=1.02f;
   
-  private boolean cmIsVisible=true;
+  private boolean
+    cmIsVisible = true,
+    cmAsBar = false
+  ;//..?
   
   /**
    * <pre>
@@ -91,7 +97,7 @@ public final class VcLocalTagger{
    * @param pxRow 1~31
    */
   public final void ccSetRow(int pxRow){
-    cmRow=(pxRow&0x1F)|0x1;
+    cmWrap=(pxRow&0x1F)|0x1;
   }//+++
   
   /**
@@ -140,6 +146,14 @@ public final class VcLocalTagger{
     cmIsVisible=pxStatus;
   }//+++
   
+  /**
+   * this is a compromise to replace the old "watch bar" style 
+   * @param pxStatus #
+   */
+  public final void ccSetAsBar(boolean pxStatus){
+    cmAsBar=pxStatus;
+  }//+++
+  
   //===
   
   private void ssUpdate(String pxTag){
@@ -147,9 +161,16 @@ public final class VcLocalTagger{
     if(cmOwner==null){return;}
     if(!ccIsValidString(pxTag)){return;}
     //--
-    int lpX=(cmCounter/cmRow)*cmGapX+cmOffsetX;
-    int lpY=(cmCounter%cmRow)*cmGapY+cmOffsetY;
     int lpW=ceil(cmOwner.textWidth(pxTag)*cmTagWidthCoeff);
+    int lpX;
+    int lpY;
+    if(cmAsBar){
+      lpX=(cmCounter%cmWrap)*cmGapX+cmOffsetX;
+      lpY=(cmCounter/cmWrap)*cmGapY+cmOffsetY;
+    }else{
+      lpX=(cmCounter/cmWrap)*cmGapX+cmOffsetX;
+      lpY=(cmCounter%cmWrap)*cmGapY+cmOffsetY;
+    }//..?
     //--
     cmOwner.fill(cmBackground);
     cmOwner.rect(lpX, lpY, lpW, cmTagHeight);

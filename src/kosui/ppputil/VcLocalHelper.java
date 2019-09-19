@@ -129,6 +129,10 @@ public final class VcLocalHelper {
     cmBaseColor=pxColor;
   }//+++
   
+  /**
+   * @param pxBase ##
+   * @param pxText ##
+   */
   public final void ccSetupColor(int pxBase, int pxText){
     cmBaseColor=pxBase;
     cmTextColor=pxText;

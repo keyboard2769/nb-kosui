@@ -85,6 +85,11 @@ public class EcElement extends EcComponent{
     super();
   }//..!
   
+  /**
+   * auto sizing.<br>
+   * rest of those initiated values might be eight.<br>
+   * @param pxKey will get passed to setter directly
+   */
   public EcElement(String pxKey){
     super();
     ccSetupKey(pxKey);
@@ -92,7 +97,8 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * rest of those initiated values might be eight.
+   * auto sizing.<br>
+   * rest of those initiated values might be eight.<br>
    * @param pxKey will get passed to setter directly
    * @param pxID will get passed to setter directly
    */

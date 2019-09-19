@@ -98,6 +98,7 @@ public final class VcSwingCoordinator {
   //===
   
   /**
+   * registered action will get triggered from the main action listener.<br>
    * @param pxButton just don't pass null
    * @param pxTrigger just don't pass null
    */
@@ -110,6 +111,11 @@ public final class VcSwingCoordinator {
     SELF.cmMapOfActionPerforming.put(pxButton,pxTrigger);
   }//+++
   
+  /**
+   * registered action will get triggered from the main mouse adaptor.<br>
+   * @param pxComponent do not pass null
+   * @param pxTrigger do not pass null
+   */
   static public final void
   ccRegisterPressing(JComponent pxComponent, EiTriggerable pxTrigger){
     if(pxComponent==null){return;}
@@ -120,6 +126,7 @@ public final class VcSwingCoordinator {
   }//+++
   
   /**
+   * registered action will get triggered from any where calls ccExecute().<br>
    * @param pxCommand something only contains alphabet and underscore 
    * @param pxTrigger do not pass null
    */
