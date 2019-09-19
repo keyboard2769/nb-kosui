@@ -17,8 +17,11 @@
 
 package ppptest;
 
+import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
+import javax.swing.BoundedRangeModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,11 +30,14 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.pppmodel.McTableAdapter;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
+import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcSwingConsole;
 import kosui.ppputil.VcSwingCoordinator;
+import processing.core.PApplet;
 
 /**
  *
@@ -46,10 +52,8 @@ public class TestFrame {
   private static final JFrame O_FRAME
    = new JFrame("Console Frame v0.1.0");
   
-  //=== guest
+  //=== test
   
-  private static final JTextField O_PTT =ScFactory.ccCreateTextLamp("003");
-
   //=== action
   
   private static final EiTriggerable T_QUITTING = new EiTriggerable() {
@@ -70,6 +74,44 @@ public class TestFrame {
   };
   
   //=== setup
+  
+  private static JPanel ssCreateTestPane(){
+    JPanel lpPane = ScFactory.ccCreateBorderPanel();
+    
+    final McTableAdapter lpModel=new McTableAdapter(){
+      @Override public int getRowCount() {return 255;}//+++
+      @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
+        return "eat my short!"+PApplet.nf(pxRowIndex, 4);
+      }//+++
+    };//***
+    final ScTable lpTable = new ScTable(lpModel, -1, -1);
+    
+    final JButton lpRead = new JButton("read");
+    VcSwingCoordinator.ccRegisterPressing(lpRead, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        
+        BoundedRangeModel lpModel = lpTable.getVerticalScrollBar().getModel();
+        VcConst.ccPrintln("max", lpModel.getMaximum());
+        VcConst.ccPrintln("min", lpModel.getMinimum());
+        VcConst.ccPrintln("ext", lpModel.getExtent());
+        VcConst.ccPrintln("val", lpModel.getValue());
+        
+      }//+++
+    });
+    
+    final JButton lpScroll = new JButton("scroll");
+    VcSwingCoordinator.ccRegisterPressing(lpScroll, new EiTriggerable() {
+      @Override public void ccTrigger(){
+        ScConst.ccScrollToLast(lpTable);
+      }//+++
+    });
+    
+    lpPane.add(lpRead,BorderLayout.PAGE_START);
+    lpPane.add(lpTable,BorderLayout.CENTER);
+    lpPane.add(lpScroll,BorderLayout.PAGE_END);
+    
+    return lpPane;
+  }//+++
   
   private static void ssSetupFrame() {
 
@@ -97,14 +139,10 @@ public class TestFrame {
     lpMenuBar.add(lpFileMenu);
     lpMenuBar.add(lpHelpMenu);
     
-    //-- test ** packup
-    JPanel lpTestTab = ScFactory.ccCreateGridPanel(6, 1);
-    lpTestTab.add(O_PTT);
-    
     //-- content ** packup
     JTabbedPane lpContentPane = new JTabbedPane();
     lpContentPane.setBorder(BorderFactory.createEtchedBorder());
-    lpContentPane.add("Test", lpTestTab);
+    lpContentPane.add("Test", ssCreateTestPane());
     lpContentPane.add("Console", VcSwingConsole.ccGetInstance());
     lpContentPane.updateUI();
     
@@ -117,14 +155,6 @@ public class TestFrame {
     
     //-- coordinating
     VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
-    VcSwingCoordinator.ccRegisterPressing(O_PTT, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        String lpD=ScConst.ccGetStringByInputBox("give something", "hellow?");
-        if(!VcConst.ccIsValidString(lpD)){return;}
-        O_PTT.setText(lpD);
-      }
-    });
-    
     VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
     VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
     

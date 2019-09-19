@@ -382,32 +382,18 @@ public class ScConst {
   }//+++
   
   /**
-   * sets scroll bar model of given scroll pane to maximum. <br>
-   * will get blocked out for EDT.
+   * sets scroll bar model of given scroll pane to maximum.<br>
+   * should get called after refreshing targeted scroll pane.<br>
+   * will get blocked out for EDT.<br>
    * @param pxTarget don't pass null
    */
   public static final void ccScrollToLast(JScrollPane pxTarget){
     if(!ccIsEDT()){return;}
     if(pxTarget==null){return;}
-    
-    
-    
-    /*
-    */
-    
-    /*
-    JScrollBar lpBar=pxTarget.getVerticalScrollBar();
     pxTarget.validate();
-    lpBar.validate();
-    lpBar.setValue(lpBar.getMaximum()+20);
-    */
-    
-    //[head]::what the hell is the problem ? ?
     BoundedRangeModel lpModel = pxTarget.getVerticalScrollBar().getModel();
     if(lpModel==null){return;}
-    int lpMax=lpModel.getMaximum();
-    lpModel.setValue(lpMax+lpModel.getExtent());
-    
+    lpModel.setValue(lpModel.getMaximum()-lpModel.getExtent());
   }//+++
   
   /**

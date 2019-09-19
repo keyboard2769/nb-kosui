@@ -249,8 +249,8 @@ public class DemoLineChart extends PApplet{
           Float.valueOf(VcNumericUtility.ccRoundForTwoAfter(pbMarker))
         ))
       );
-      ScConst.ccScrollToLast(cmTable);
       cmTable.ccRefresh();
+      ScConst.ccScrollToLast(cmTable);
       
       //-- status
       cmStatusBar.setText(
