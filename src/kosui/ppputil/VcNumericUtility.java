@@ -597,4 +597,16 @@ public final class VcNumericUtility {
   //[plan]::ccBinaryReassemble(int[],bool reversed)
   //[plan]::ccBinaryReassemble(byte[],bool reversed)
   
- }//***eof
+  //=== backward
+  
+  /**
+   * pulled from unofficial OpenJDK repository.<br>
+   * for jre 1.6 capability.<br>
+   * @param  pxVal the value to convert to an unsigned
+   * @return unsigned conversion
+   */
+  public static int ccToUnsignedInt(byte pxVal) {
+    return ((int) pxVal) & 0xff;
+  }//+++
+  
+}//***eof
