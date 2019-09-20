@@ -272,12 +272,14 @@ public final class VcTranslator {
     if(pxSource==null){return pxSource;}
     if(pxSource.equals("")){return pxSource;}
     if(pxSource.equals("...")){return pxSource;}
+    String lpRes;
     switch(self.cmMode){
-      case 'e':return self.cmEnglishDict.getOrDefault(pxSource, pxSource);
-      case 'j':return self.cmJapaneseDict.getOrDefault(pxSource, pxSource);
-      case 'c':return self.cmChineseDict.getOrDefault(pxSource, pxSource);
-      default:return pxSource;
+      case 'e':lpRes=self.cmEnglishDict.get(pxSource);
+      case 'j':lpRes=self.cmJapaneseDict.get(pxSource);
+      case 'c':lpRes=self.cmChineseDict.get(pxSource);
+      default:lpRes=null;
     }//..?
+    return lpRes==null?pxSource:lpRes;
   }//+++
   
   //=== test
