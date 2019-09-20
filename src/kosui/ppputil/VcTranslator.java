@@ -20,6 +20,7 @@ package kosui.ppputil;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Scanner;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -129,18 +130,19 @@ public final class VcTranslator {
     
   }//..!
   
-  //===
+  //=== parsing
   
   /**
-   * ##
-   * @param pxStream from Class<?>.getResourceAsStream()
-   * @return if nothing is wrong
+   * for detailed schema information see the library repository site.<br>
+   * @param pxResource from Class<?>.getResourceAsStream()
+   * @return true if nothing went wrong
    */
-  public final boolean ccParseXML(InputStream pxStream){
+  public final boolean ccParseXML(InputStream pxResource){
     boolean lpRes;
-    if(pxStream==null){return false;}
+    if(pxResource==null){return false;}
     try{
-      SAXParserFactory.newInstance().newSAXParser().parse(pxStream, O_HANDLER);
+      SAXParserFactory.newInstance().newSAXParser()
+        .parse(pxResource, O_HANDLER);
       lpRes=true;
     }catch (Exception e) {
       System.err.println(".ccParseXMl()::"+e.getMessage());
@@ -149,9 +151,43 @@ public final class VcTranslator {
     return lpRes;
   }//+++
   
-  //[plan]::boolean ccParseCSV
-  //[plan]::boolean ccParseINI
+  /**
+   * for detailed order information see the library repository site.<br>
+   * @param pxResource from Class<?>.getResourceAsStream()
+   * @return true if nothing went wrong
+   */
+  static public final boolean ccParseCSV(InputStream pxResource){
+    if(pxResource==null){return false;}
+    Scanner lpSanner = new Scanner(pxResource);
+    boolean lpRes=false;
+    for(int i=0;i<255;i++){
+      if(!lpSanner.hasNext()){break;}
+      lpRes|=ccParseCSV(lpSanner.next());
+    }//..?
+    return lpRes;
+  }//+++
+  
+  private static boolean ccParseCSV(String pxSingleLine){
+    
+    //-- check in
+    if(!VcConst.ccIsValidString(pxSingleLine)){return false;}
+    String[] lpRow=pxSingleLine.split(",");
+    if(lpRow==null){return false;}
+    if(lpRow.length!=6){return false;}
+    if(!VcStringUtility.ccCompareQTagString(lpRow[0], Q_TR)){return false;}
+    
+    //-- register
+    self.ccRegisterEnglishWord(lpRow[1], lpRow[2]);
+    self.ccRegisterJapaneseWord(lpRow[1], lpRow[3]);
+    self.ccRegisterChineseWord(lpRow[1], lpRow[4]);
+    return true;
+  
+  }//+++
+  
+  //[plan]::boolean ccParseINI(InputStream pxResource, char pxMode)
   //[plan]::boolean ccParseJSON ..do we actually need it ??
+  
+  //=== 
   
   /**
    * simply compare string from DefaultLocale::getCountry.<br>
@@ -161,6 +197,9 @@ public final class VcTranslator {
     String lpCountry = Locale.getDefault().getCountry();
     /* 4 */VcConst.ccPrintln("locale",lpCountry);
     if(!(lpCountry==null)){
+      if(lpCountry.equals("US")){
+        cmMode='e';
+      }else
       if(lpCountry.equals("JP")){
         cmMode='j';
       }else

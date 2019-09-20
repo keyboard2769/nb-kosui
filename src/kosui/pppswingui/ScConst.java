@@ -33,7 +33,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -138,7 +137,7 @@ public class ScConst {
     = new JFileChooser(VcConst.C_V_PWD);
   
   private static final Font O_DEFAULT_FONT
-    = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);;
+    = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);
   
   private ScConst(){}//..!
   

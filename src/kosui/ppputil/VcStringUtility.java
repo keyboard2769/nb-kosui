@@ -48,6 +48,33 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * i do not know why sax is calling the thing "qName".<br>
+   * bur t thought it is COOL!<br>
+   * well im going to call it QTag.<br>
+   * @param pxQTag a XML tag like "</>"
+   * @return empty string if anything went wrong
+   */
+  static public final String ccExtractQTagString(String pxQTag){
+    if(pxQTag==null){return "";}
+    if(pxQTag.length()<=2){return "";}
+    if(!pxQTag.startsWith("<")){return "";}
+    if(!pxQTag.endsWith(">")){return "";}
+    return pxQTag.substring(1,pxQTag.length()-1);
+  }//+++
+  
+  /**
+   * extract first than simply compare.<br>
+   * @param pxQTag #
+   * @param pxName #
+   * @return String::equals
+   */
+  static public final
+  boolean ccCompareQTagString(String pxQTag, String pxName){
+    if(!VcConst.ccIsValidString(pxName)){return false;}
+    return ccExtractQTagString(pxQTag).equals(pxName);
+  }//+++
+  
+  /**
    * <b>WARN:</b>
    * <b>BY NOW IT IS MEANLY IMPLEMENTED AS JUST SPLITTING BY SPACE</b><br>
    * extract the unit representation from the given form.<br>
@@ -105,7 +132,7 @@ public final class VcStringUtility {
   
   //=== packing
   
-  //        ..pack up a big string for print
+  //       ..pack up a big string for print
   //[plan]::String ccPackupStringList(Object[] pxData){}
   
   /**
