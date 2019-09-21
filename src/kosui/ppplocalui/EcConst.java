@@ -17,8 +17,10 @@
 
 package kosui.ppplocalui;
 
+import java.util.List;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcTranslator;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.LEFT;
@@ -191,13 +193,86 @@ public final class EcConst {
   }//+++
   
   /**
+   * blend color in the adding manner.<br>
+   * alpha channel well be set to the biggest.<br>
+   * @param pxColorA ARGB
+   * @param pxColorB ARGB
+   * @return ARGB
+   */
+  static public int ccBlendColor(int pxColorA, int pxColorB){
+    int lpAlpha=VcNumericUtility.ccGreater(
+      VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimHH(pxColorA)),
+      VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimHH(pxColorB))
+    );
+    int lpRed=
+      VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimHL(pxColorA))
+     +VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimHL(pxColorB));
+    int lpGreen=
+      VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimLH(pxColorA))
+     +VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimLH(pxColorB));
+    int lpBlue=
+      VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimLL(pxColorA))
+     +VcNumericUtility.ccToUnsignedInt
+        (VcNumericUtility.ccBinaryTrimLL(pxColorB));
+    lpAlpha=PApplet.constrain(lpAlpha, 0, 255);
+    lpRed=PApplet.constrain(lpRed, 0, 255);
+    lpGreen=PApplet.constrain(lpGreen, 0, 255);
+    lpBlue=PApplet.constrain(lpBlue, 0, 255);
+    int lpRes=lpBlue|(lpGreen<<8)|(lpRed<<16);
+    return lpRes|=(lpAlpha<<24);
+  }//+++
+  
+  /**
    * only bit wise calculation involved
    * @param pxSource in processing color format
    * @param pxAlpha will be masked to 255
    * @return #
    */
-  static public int ccSetAlpha(int pxSource, int pxAlpha){
+  static public int ccSetColorAlpha(int pxSource, int pxAlpha){
     return (pxSource&0x00FFFFFF)|((pxAlpha&0xFF)<<24);
+  }//+++
+  
+  //=== translate
+  
+  /**
+   * reset text with current key.<br>
+   * @param pxList do not pass null
+   */
+  static public final void ccTranslateText(List<? extends EcElement> pxList){
+    if(pxList==null){return;}
+    if(pxList.isEmpty()){return;}
+    for(EcElement it : pxList){
+      ccTranslateText(it);
+    }//..~
+  }//+++
+  
+  /**
+   * reset text with current key.<br>
+   * @param pxSource do not pass null
+   */
+  static public final void ccTranslateText(EcElement pxSource){
+    if(pxSource==null){return;}
+    pxSource.ccSetText(
+      VcTranslator.tr(pxSource.ccGetKey())
+    );
+  }//+++
+  
+  /**
+   * reset text with current key.<br>
+   * @param pxSource do not pass null
+   */
+  static public final void ccTranslateName(EcElement pxSource){
+    if(pxSource==null){return;}
+    pxSource.ccSetName(
+      VcTranslator.tr(pxSource.ccGetKey())
+    );
   }//+++
     
   //== entry

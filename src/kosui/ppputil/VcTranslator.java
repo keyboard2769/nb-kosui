@@ -28,16 +28,22 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * holds lots of maps as "dictionary" for you.<br>
- * add word from file should be implement separately.<br>
+ * adding word from file should be implement separately.<br>
  */
 public final class VcTranslator {
   
   private static final String
+    //-- header or tag
     Q_TR="tr",
     Q_EN="en",
     Q_JP="jp",
     Q_ZH="zh",
     Q_ATTR_KEY="key"
+  ;//...
+  
+  private static final String
+    //-- escape
+    E_NEW_LINE = "<ln>"
   ;//...
   
   /**
@@ -119,7 +125,14 @@ public final class VcTranslator {
   //===
   
   /**
-   * empty string will get registered by default.
+   * empty string will get registered by default.<br>
+   * <pre>
+   * recommmend to call in this manner:
+   *   .ccInit();
+   *   .ccParse();
+   *   ..
+   *   .ccApplyLocale()/ccSetMode();
+   * </pre>
    */
   public final void ccInit(){
     
@@ -156,7 +169,7 @@ public final class VcTranslator {
    * @param pxResource from Class<?>.getResourceAsStream()
    * @return true if nothing went wrong
    */
-  static public final boolean ccParseCSV(InputStream pxResource){
+  public final boolean ccParseCSV(InputStream pxResource){
     if(pxResource==null){return false;}
     Scanner lpSanner = new Scanner(pxResource);
     boolean lpRes=false;
@@ -167,7 +180,7 @@ public final class VcTranslator {
     return lpRes;
   }//+++
   
-  private static boolean ccParseCSV(String pxSingleLine){
+  private boolean ccParseCSV(String pxSingleLine){
     
     //-- check in
     if(!VcConst.ccIsValidString(pxSingleLine)){return false;}
@@ -234,7 +247,8 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmEnglishDict.containsKey(pxKey)){return;}
-    cmEnglishDict.put(pxKey, pxWord);
+    cmEnglishDict.put
+      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
   }//+++
   
   /**
@@ -246,7 +260,8 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmJapaneseDict.containsKey(pxKey)){return;}
-    cmJapaneseDict.put(pxKey, pxWord);
+    cmJapaneseDict.put
+      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
   }//+++
   
   /**
@@ -258,7 +273,8 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmChineseDict.containsKey(pxKey)){return;}
-    cmChineseDict.put(pxKey, pxWord);
+    cmChineseDict.put
+      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
   }//+++
   
   //===
@@ -274,10 +290,10 @@ public final class VcTranslator {
     if(pxSource.equals("...")){return pxSource;}
     String lpRes;
     switch(self.cmMode){
-      case 'e':lpRes=self.cmEnglishDict.get(pxSource);
-      case 'j':lpRes=self.cmJapaneseDict.get(pxSource);
-      case 'c':lpRes=self.cmChineseDict.get(pxSource);
-      default:lpRes=null;
+      case 'e':lpRes=self.cmEnglishDict.get(pxSource);break;
+      case 'j':lpRes=self.cmJapaneseDict.get(pxSource);break;
+      case 'c':lpRes=self.cmChineseDict.get(pxSource);break;
+      default:lpRes=null;break;
     }//..?
     return lpRes==null?pxSource:lpRes;
   }//+++

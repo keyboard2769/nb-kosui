@@ -103,15 +103,17 @@ public class EcRect extends EcPoint{
    *  - [b]:below
    *  - [l]:left
    *  - [r]:right
+   *  - [v]:center in verticle
+   *  - [g]:center in horizontal
    * </pre>
    * @param pxTarget ##
-   * @param pxMode_ablrx ##
+   * @param pxMode_ablrvhx ##
    */
   public final void ccSetLocation(
-    EcRect pxTarget, char pxMode_ablrx
+    EcRect pxTarget, char pxMode_ablrvhx
   ){
     if(pxTarget==null){return;}
-    switch(pxMode_ablrx){
+    switch(pxMode_ablrvhx){
       case 'a':
         ccSetX(pxTarget.ccGetX());
         ccSetY(pxTarget.ccGetY()-ccGetH());
@@ -127,6 +129,18 @@ public class EcRect extends EcPoint{
       case 'r':
         ccSetX(pxTarget.ccEndX());
         ccSetY(pxTarget.ccGetY());
+      break;
+      case 'v':
+        ccSetX(
+          pxTarget.ccCenterX()
+           - ccGetW()/2
+        );
+      break;
+      case 'h':
+        ccSetY(
+          pxTarget.ccCenterY()
+           - ccGetH()/2
+        );
       break;
       default:break;
     }//..?

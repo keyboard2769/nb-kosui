@@ -601,7 +601,7 @@ public final class VcNumericUtility {
   
   /**
    * pulled from unofficial OpenJDK repository.<br>
-   * for jre 1.6 capability.<br>
+   * for JRE 1.6 capability.<br>
    * @param  pxVal the value to convert to an unsigned
    * @return unsigned conversion
    */

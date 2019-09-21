@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import processing.core.PApplet;
 import processing.data.StringList;
@@ -199,6 +200,29 @@ public final class VcConst {
     System.err.print(VcStampUtility.ccErrStampTypeI());
     ccPrintln(pxTag,pxValue);
   }//..?
+  
+  //=== backward
+  
+  /**
+   * for JRE 1.6 capability.<br>
+   * @param <K> ##
+   * @param <V> ##
+   * @param pxMap null to default
+   * @param pxKey null to default
+   * @param pxDefault ##
+   * @return default if contains not
+   */
+  public static final <K,V> V ccGetOrDefault(
+    HashMap<K,V> pxMap,K pxKey, V pxDefault
+  ){
+    if(pxMap==null){return pxDefault;}
+    if(pxKey==null){return pxDefault;}
+    if(pxMap.containsKey(pxKey)){
+      return pxMap.get(pxKey);
+    }else{
+      return pxDefault;
+    }//..?
+  }//+++
   
   //=== reflection
   

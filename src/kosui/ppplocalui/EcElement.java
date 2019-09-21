@@ -34,8 +34,7 @@ public class EcElement extends EcComponent{
   private static final int
     //-- pix
     C_NAME_GAP          =  2,
-    C_TEXT_MARG_X       =  3,
-    C_TEXT_ADJ_Y        = -2
+    C_TEXT_MARG_X       =  3
   ;//...
   
   //===
@@ -74,6 +73,8 @@ public class EcElement extends EcComponent{
     cmNameAlign = 'x',
     cmTextAlign = 'c'
   ;//...
+  
+  static private int pbTextAdjustY = 2;
   
   //===
 
@@ -142,7 +143,7 @@ public class EcElement extends EcComponent{
       
     }//..?
     pbOwner.fill(pxColor);
-    pbOwner.text(cmText,lpX,ccCenterY()+C_TEXT_ADJ_Y);
+    pbOwner.text(cmText,lpX,ccCenterY()+pbTextAdjustY);
     pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
   }//+++
 
@@ -178,7 +179,7 @@ public class EcElement extends EcComponent{
     }//..?
     
     pbOwner.fill(pxColor);
-    pbOwner.text(cmName,lpX,C_TEXT_ADJ_Y+lpY);
+    pbOwner.text(cmName,lpX,pbTextAdjustY+lpY);
     pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
     
   }//+++
@@ -207,6 +208,15 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetID(int pxID){
     cmID=pxID;
+  }//+++
+  
+  /**
+   * for different font there might need different adjust.
+   * @param pxX for future use
+   * @param pxY pix
+   */
+  static public final void ccSetTextAdjust(int pxX, int pxY){
+    pbTextAdjustY=pxY;
   }//+++
   
   /**
@@ -419,7 +429,6 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * 
    * @return #
    */
   public final int ccGetID(){
@@ -427,11 +436,17 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * 
    * @return #
    */
   public final String ccGetText(){
     return cmText;
+  }//+++
+  
+  /**
+   * @return ##
+   */
+  public final String ccGetKey(){
+     return cmKey;
   }//+++
   
 }//***eof

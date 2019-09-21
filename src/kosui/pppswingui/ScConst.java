@@ -169,6 +169,16 @@ public class ScConst {
   }//+++
   
   /**
+   * this is the version that check not EDT stuff.<br>
+   * owner is set to null.<br>
+   * @param pxMessage must have something.
+   */
+  public static final void ccMessage(String pxMessage){
+    if(!VcConst.ccIsValidString(pxMessage)){return;}
+    JOptionPane.showMessageDialog(null, pxMessage);
+  }//+++
+  
+  /**
    * will get blocked out from event dispatch thread.<br>
    * @param pxMessage must have something
    */

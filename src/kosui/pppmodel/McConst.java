@@ -126,20 +126,20 @@ public final class McConst {
   }//+++
   
   /**
-   * with null check, absolution check, existence check, 
-   * identical check, and size length check (hard coded).<br>
+   * with null check, absolution check, existence check, identical check.<br>
    * @param pxFile #
    * @return #
    */
   public static final boolean ccVerifyFileForLoading(File pxFile){
     if(pxFile==null){return false;}
     if(!pxFile.isAbsolute()){return false;}
+    if(!pxFile.isFile()){return false;}
     if(!pxFile.exists()){return false;}
-    if(pxFile.length()>C_MAX_FILESIE_FOR_LOADING){return false;}//..?
     return true;
   }//+++
   
   /**
+   * expanding ccVerifyFileForLoading(File).<br>
    * the extension check is performed via String.endWith().<br>
    * @param pxFile will get verified with the none extension version
    * @param pxExtension must have something
@@ -151,7 +151,27 @@ public final class McConst {
     if(!VcConst.ccIsValidString(pxExtension)){return false;}
     boolean lpJustFile=ccVerifyFileForLoading(pxFile);
     if(lpJustFile){
-      return pxFile.getName().endsWith(pxExtension);
+      return pxFile.getName().endsWith("."+pxExtension);
+    }else{
+      return false;
+    }//..?
+  }//+++
+  
+  /**
+   * expanding ccVerifyFileForLoading(File, String).<br>
+   * length check is performed via File.length().<br>
+   * @param pxFile will get verified with the none extension version
+   * @param pxExtension must have something
+   * @param pxMaxByteLength must be lesser than this
+   * @return true if all matches
+   */
+  public static final
+  boolean ccVerifyFileForLoading(
+    File pxFile, String pxExtension, long pxMaxByteLength
+  ){
+    boolean lpJustFile=ccVerifyFileForLoading(pxFile,pxExtension);
+    if(lpJustFile){
+      return pxFile.length()<=pxMaxByteLength;
     }else{
       return false;
     }//..?
