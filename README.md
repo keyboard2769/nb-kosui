@@ -71,6 +71,7 @@ i know it is a nonsense name, but anyway.
 - [ ] $ a "drawing" package handles PDF and print stuff
 - [ ] $ a floating JWindow aka "glass pane window"
 - [ ] $ elements for glass pane window
+- [ ] $ a esc guarding mechanism
 
 #### onfire
 

@@ -36,15 +36,17 @@ public class TestSketch extends PApplet {
   
   //=== overridden
   
-  EcButton lpPSWI=new EcButton("P1", 0x3111);
-  EcButton lpPSWII=new EcButton("P2", 0x3112);
-  EcButton lpPSWIII=new EcButton("P3", 0x3113);
-  EcButton lpPSWIV=new EcButton("P4", 0x3114);
+  EcButton cmPSWI=new EcButton("P1", 0x3111);
+  EcButton cmPSWII=new EcButton("P2", 0x3112);
+  EcButton cmPSWIII=new EcButton("P3", 0x3113);
+  EcButton cmPSWIV=new EcButton("P4", 0x3114);
   
-  EcButton lpTSWI=new EcButton("T1", 0x3211);
-  EcButton lpTSWII=new EcButton("T2", 0x3212);
-  EcButton lpTSWIII=new EcButton("T3", 0x3213);
-  EcButton lpTSWIV=new EcButton("T4", 0x3214);
+  EcButton cmTSWI=new EcButton("T1", 0x3211);
+  EcButton cmTSWII=new EcButton("T2", 0x3212);
+  EcButton cmTSWIII=new EcButton("T3", 0x3213);
+  EcButton cmTSWIV=new EcButton("T4", 0x3214);
+  
+  int cmTestColor;
 
   @Override public void setup() {
     
@@ -56,38 +58,37 @@ public class TestSketch extends PApplet {
     
     //-- laytout
     
-    lpPSWI.ccSetLocation(100, 5);
-    lpPSWII.ccSetLocation(lpPSWI, 2, 0);
-    lpPSWIII.ccSetLocation(lpPSWII, 2, 0);
-    lpPSWIV.ccSetLocation(lpPSWIII, 2, 0);
+    cmPSWI.ccSetLocation(100, 5);
+    cmPSWII.ccSetLocation(cmPSWI, 2, 0);
+    cmPSWIII.ccSetLocation(cmPSWII, 2, 0);
+    cmPSWIV.ccSetLocation(cmPSWIII, 2, 0);
     
-    lpTSWI.ccSetLocation(100, 66);lpTSWI.ccSetPage(1);
-    lpTSWII.ccSetLocation(lpTSWI, 2, 0);lpTSWII.ccSetPage(2);
-    lpTSWIII.ccSetLocation(lpTSWII, 2, 0);lpTSWIII.ccSetPage(3);
-    lpTSWIV.ccSetLocation(lpTSWIII, 2, 0);lpTSWIV.ccSetPage(99);
+    cmTSWI.ccSetLocation(100, 66);cmTSWI.ccSetPage(1);
+    cmTSWII.ccSetLocation(cmTSWI, 2, 0);cmTSWII.ccSetPage(2);
+    cmTSWIII.ccSetLocation(cmTSWII, 2, 0);cmTSWIII.ccSetPage(3);
+    cmTSWIV.ccSetLocation(cmTSWIII, 2, 0);cmTSWIV.ccSetPage(99);
     
-    VcLocalCoordinator.ccAddElement(Arrays.asList(
-      lpPSWI,lpPSWII,lpPSWIII,lpPSWIV,
-      lpTSWI,lpTSWII,lpTSWIII,lpTSWIV
+    VcLocalCoordinator.ccAddElement(Arrays.asList(cmPSWI,cmPSWII,cmPSWIII,cmPSWIV,
+      cmTSWI,cmTSWII,cmTSWIII,cmTSWIV
     ));
     
-    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWI, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWI, new EiTriggerable() {
       @Override public void ccTrigger(){
         EcComponent.ccSetCurrentPage(1);
       }//+++
     });
     
-    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWII, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWII, new EiTriggerable() {
       @Override public void ccTrigger(){
         EcComponent.ccSetCurrentPage(2);
       }//+++
     });
-    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWIII, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWIII, new EiTriggerable() {
       @Override public void ccTrigger(){
         EcComponent.ccSetCurrentPage(3);
       }//+++
     });
-    VcLocalCoordinator.ccRegisterMouseTrigger(lpPSWIV, new EiTriggerable() {
+    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWIV, new EiTriggerable() {
       @Override public void ccTrigger(){
         EcComponent.ccSetCurrentPage(4);
       }//+++
@@ -111,6 +112,10 @@ public class TestSketch extends PApplet {
       }
     });
     
+    //-- ???
+    cmTestColor=EcConst.ccBlendColor(EcConst.C_DARK_BLUE, EcConst.C_DARK_GREEN);
+    println(hex(cmTestColor,8));
+    
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
     
@@ -126,6 +131,10 @@ public class TestSketch extends PApplet {
     
     //-- update
     VcLocalCoordinator.ccUpdate();
+    
+    //-- ???
+    fill(cmTestColor);
+    rect(mouseX,mouseY,-18,-18);
     
     //-- finishing
     VcLocalTagger.ccTag("roller",cmRoller);
