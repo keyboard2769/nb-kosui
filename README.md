@@ -68,18 +68,15 @@ i know it is a nonsense name, but anyway.
 
 #### plan 
 
-- [ ] $ maybe we really need a roller class
 - [ ] $ a "drawing" package handles PDF and print stuff
-- [ ] $ elements for glass pane window
 - [ ] $ a esc guarding mechanism
 
 #### onfire
 
-- [ ] $ a floating JWindow aka "glass pane window"
+- [ ] $ maybe we really need a roller class
 
 #### currently
 
-- [x] $ split indexing handling from ring buffer class
 - [x] $ re-implement local text stoker with ring buffer
 - [x] $ a new algorithm for fine splitting value
 - [x] $ refactor level compare with fine split-able
@@ -88,5 +85,7 @@ i know it is a nonsense name, but anyway.
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
 - [x] $ two new class for PGraphics based composing mechanism
+- [x] $ a floating JWindow aka "glass pane window"
+- [x] $ re-arranged ScLabel for glass pane window
 
 <hr><!--EOF-->

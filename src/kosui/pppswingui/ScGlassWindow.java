@@ -29,14 +29,27 @@ import kosui.ppplogic.ZcRangedModel;
 import processing.core.PApplet;
 
 /**
- * .<br>
- * .<br>
+ * it is like a self encoding rain meter in java.<br>
+ * actually it is this idea get me out of the drag'n'drop gui builder.<br>
  */
 public class ScGlassWindow extends JWindow{
   
+  /**
+   * hard coded for back ground. supposedly can get pass the what it owns.
+   */
   public static final Color C_DEFAULT_PANE_COLOR = Color.BLACK;
-  public static final Color C_DEFAULT_THEME_COLOR = Color.GRAY;
+  
+  /**
+   * hard coded for general use. supposedly can get pass the what it owns.
+   */
+  public static final Color C_DEFAULT_THEME_COLOR = Color.GREEN;
+  
+  /**
+   * hard coded. the color of the window might not be changeable.
+   */
   public static final int C_DEFAULT_BORDER_WIDTH = 2;
+  
+  //===
   
   private final JWindow self;
   private int cmAnchorX=0;
@@ -45,12 +58,15 @@ public class ScGlassWindow extends JWindow{
   private float cmEngagedOpacity = 0.7f;
   private int cmEngagedCount = 0;
   private int cmEngagedMax = 16;
-  
   private final int cmWidth;
   private final int cmHeight;
   
-  public final ScCanvas cmCanvas;
-  public final JPopupMenu cmPopup;
+  //===
+  
+  private final ScCanvas cmCanvas;
+  private final JPopupMenu cmPopup;
+  
+  //===
   
   private final
   MouseAdapter cmMouseAdapter=new MouseAdapter() {
@@ -90,6 +106,13 @@ public class ScGlassWindow extends JWindow{
     }//+++
   };//***
   
+  //=== 
+  
+  /**
+   * @param pxOwner will get passed to Constructor of JWindows directly
+   * @param pxW pix
+   * @param pxH pix
+   */
   public ScGlassWindow(Frame pxOwner, int pxW, int pxH) {
     
     super(pxOwner);
@@ -111,14 +134,28 @@ public class ScGlassWindow extends JWindow{
     
   }//..!
   
+  /**
+   * default size is 100x100.<br>
+   * visible.<br>
+   */
   public final void ccFinish(){
     ccFinish(100, 100, true);
   }//..!
   
+  /**
+   * default size is 100x100.<br>
+   * @param pxVisible ##
+   */
   public final void ccFinish(boolean pxVisible){
     ccFinish(100, 100, pxVisible);
   }//..!
   
+  /**
+   * pack up the window.<br>
+   * @param pxX pix
+   * @param pxY pix
+   * @param pxVisible ## 
+   */
   public final void ccFinish(int pxX, int pxY, boolean pxVisible){
     self.pack();
     self.setOpacity(cmNormalOpacity);
@@ -129,52 +166,109 @@ public class ScGlassWindow extends JWindow{
     }//..?
   }//..!
   
+  //=== 
+  
+  /**
+   * if for a certain time it is not clicked the opacity is gonna turn
+   * back to this value.<br>
+   * supposedly this should be smaller than the engaged one.<br>
+   * @param pxZeroToOne will get trimmed via PApplet.constrain
+   */
   public final void ccSetNormalOpacity(float pxZeroToOne){
     cmNormalOpacity=PApplet.constrain(pxZeroToOne, 0.0f, 1.0f);
   }//+++
   
+  /**
+   * any time the windows is clicked the opacity is gonna get turn
+   * to this value.<br>
+   * supposedly this should be bigger than the engaged one.<br>
+   * @param pxZeroToOne will get trimmed via PApplet.constrain
+   */
   public final void ccSetEngagedOpacity(float pxZeroToOne){
     cmEngagedOpacity=PApplet.constrain(pxZeroToOne, 0.0f, 1.0f);
   }//+++
   
+  /**
+   * serve as an off delay timer span.<br>
+   * @param pxVal frame count
+   */
   public final void ccSetEngageMax(int pxVal){
     cmEngagedMax=pxVal&0xFFFF;
   }//+++
   
+  /**
+   * set the current count to given value.<br>
+   * will get masked to 0-65535.<br>
+   * @param pxVal frame count
+   */
   public final void ccSetEngageCount(int pxVal){
     cmEngagedCount=pxVal&0xFFFF;
     self.setOpacity(cmEngagedCount>0?cmEngagedOpacity:cmNormalOpacity);
   }//+++
   
+  /**
+   * simply adding.<br>
+   * do not pass plus value unless you really wanna make it stood longer.<br>
+   * @param pxOffset frame count
+   */
   public final void ccShiftEngageCount(int pxOffset){
     cmEngagedCount+=pxOffset;
     self.setOpacity(cmEngagedCount>0?cmEngagedOpacity:cmNormalOpacity);
   }//+++
   
+  /**
+   * supposedly to get called from a draw loop.<br>
+   * always one.<br>
+   */
   public final void ccDecrementEngageCount(){
     if(cmEngagedCount<=0){return;}
     ccShiftEngageCount(-1);
   }//+++
   
+  /**
+   * supposedly to get called from a draw loop.<br>
+   * will get masked to 0-255.<br>
+   * use the none parameter version unless you really needa make it shorter.<br>
+   * @param pxCount frame count.
+   */
   public final void ccDecrementEngageCount(int pxCount){
     if(cmEngagedCount<=0){return;}
     ccShiftEngageCount(-1*(pxCount&0xFF));
   }//+++
   
+  /**
+   * @param pxNormal 0-1f
+   * @param pxEngaged 0-1f
+   */
   public final void ccSetupOpacity(float pxNormal, float pxEngaged){
     ccSetNormalOpacity(pxNormal);
     ccSetEngagedOpacity(pxEngaged);
   }//+++
   
+  /**
+   * the window is not owning it.<br>
+   * have your reference some where else.<br>
+   * @param pxItem do not pass null
+   */
   public final void ccRegisterPopupItem(JMenuItem pxItem){
     if(pxItem==null){return;}
     cmPopup.add(pxItem);
   }//+++
   
+  /**
+   * alias to ScCanvas::ccAddPaintObject.<br>
+   * @param pxShape will get passed directly
+   */
+  public final void ccAddPaintObject(SiPaintable pxShape){
+    cmCanvas.ccAddPaintObject(pxShape);
+  }//+++
+  
+  /**
+   * calling repaint of the window also
+   */
   public final void ccRefresh(){
     cmCanvas.ccRefresh();
     self.repaint();
-  }
- 
+  }//+++
   
-}//***
+}//***eof

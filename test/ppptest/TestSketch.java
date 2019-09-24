@@ -4,26 +4,14 @@
 
 package ppptest;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import kosui.ppputil.VcLocalTagger;
-import kosui.ppputil.VcLocalConsole;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JMenuItem;
-
 import kosui.ppplocalui.*;
-import kosui.ppplogic.*;
 import kosui.pppswingui.*;
 import kosui.ppputil.*;
-
 import javax.swing.SwingUtilities;
-import kosui.pppmodel.MiPixillatable;
-
 import processing.core.*;
 
 public class TestSketch extends PApplet {
@@ -31,8 +19,6 @@ public class TestSketch extends PApplet {
   static private TestSketch self=null;
   
   static private volatile int cmRoller=0;
-  
-  static private volatile int cmEngageGlass=0;
   
   private static final ScGlassWindow O_GLASS
     = new ScGlassWindow(null, 320, 240);
@@ -56,23 +42,17 @@ public class TestSketch extends PApplet {
         }
       });
       
-      O_GLASS.cmCanvas.ccAddPaintObject(new SiPaintable() {
-        @Override public void ccPaint(Graphics pxGI) {
-          pxGI.setColor(Color.GREEN);
-          
-          pxGI.drawRect(100, 100, 50, 50);
-          
-          pxGI.drawString("XA",100,100);
-          pxGI.drawString("XB",100,150);
-          pxGI.drawString("XC",150,100);
-          pxGI.drawString("XD",150,150);
-          
-        }
-      });
+      ScLabel lpL = new ScLabel("XxXaaX", 48, 16);
+      lpL.ccSetLocation(100, 100);
+      lpL.ccSetupColor(
+        ScGlassWindow.C_DEFAULT_PANE_COLOR,
+        ScGlassWindow.C_DEFAULT_THEME_COLOR
+      );
+      lpL.ccSetHasBorder(true);
       
+      O_GLASS.ccAddPaintObject(lpL);
       O_GLASS.ccSetEngageMax(32);
       O_GLASS.ccRegisterPopupItem(lpQuitItem);
-      
       O_GLASS.ccFinish();
     
     }//+++
@@ -81,7 +61,7 @@ public class TestSketch extends PApplet {
   private static final Runnable R_SWING_LOOP = new Runnable() {
     @Override public void run() {
       O_GLASS.ccDecrementEngageCount();
-      O_GLASS.cmCanvas.ccRefresh();
+      O_GLASS.ccRefresh();
     }//+++
   };//***
   
@@ -131,11 +111,9 @@ public class TestSketch extends PApplet {
     //-- update
     VcLocalCoordinator.ccUpdate();
     
-    
     //-- ???
     SwingUtilities.invokeLater(R_SWING_LOOP);
     
-        
     //-- finishing
     VcLocalTagger.ccTag("roller",cmRoller);
     VcLocalTagger.ccTag("page",EcComponent.ccGetCurrentPage());

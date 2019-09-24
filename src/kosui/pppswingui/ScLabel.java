@@ -25,15 +25,22 @@ import kosui.ppputil.VcStringUtility;
 
 /**
  * you might ask what's wrong with JLabel then you need this one.<br>
- * well le'me tel'la, absolutely, nothing.<br>
+ * well le'me tel'lya, absolutely, nothing.<br>
  */
 public class ScLabel extends EcRect implements SiPaintable{
   
+  /**
+   * offset from left bottom corner
+   */
+  public static final int C_INPANE_MERGIN = 2;
+  
   private String cmText;
   
-  private Color cmColor;
+  private Color cmBaseColor,cmThemeColor;
   
-  private boolean cmHasStroke;
+  private boolean ccHasBorder;
+  
+  private boolean cmIsReversed;
 
   /**
    * <pre>
@@ -47,39 +54,83 @@ public class ScLabel extends EcRect implements SiPaintable{
   public ScLabel(String pxText, int pxW, int pxH){
     super(pxW, pxH);
     cmText = VcStringUtility.ccNulloutString(pxText);
-    cmColor=Color.BLACK;
-    cmHasStroke=false;
+    cmBaseColor=Color.GRAY;
+    cmThemeColor=Color.BLACK;
+    ccHasBorder=false;
+    cmIsReversed=false;
   }//..!
   
   //===
   
+  /**
+   * {@inheritDoc }
+   * @param pxGI ##
+   */
   @Override public void ccPaint(Graphics pxGI){
     
-    pxGI.setColor(cmColor);
-    //[todo]::can we make this thing better??
-    pxGI.drawString(cmText, cmX+2, cmY+20);
+    //-- border
+    if(ccHasBorder){
+      pxGI.setColor(cmThemeColor);
+      if(cmIsReversed){
+        pxGI.fillRect(cmX, cmY, cmW, cmH);
+      }else{
+        pxGI.drawRect(cmX, cmY, cmW, cmH);
+      }//..?
+    }//..?
     
-    if(!cmHasStroke){return;}
-    pxGI.drawRect(cmX, cmY, cmW, cmH);
+    //--
+    pxGI.setColor(cmIsReversed?cmBaseColor:cmThemeColor);
+    pxGI.drawString(cmText, cmX+2, ccEndY()-2);
     
   }//+++
   
   //===
   
   /**
-   * @param pxColor both border and text
+   * @param pxColor supposedly same as its owner's background
    */
-  public final void ccSetColor(Color pxColor){
+  public final void ccSetBaseColor(Color pxColor){
     if(pxColor==null){return;}
-    cmColor=pxColor;
+    cmBaseColor=pxColor;
   }//+++
   
   /**
-   * @param pxValue #
+   * @param pxColor supposedly for text and border color if not reversed
    */
-  public final void ccSetHasBorder(boolean pxValue){
-    cmHasStroke=pxValue;
-  }//++
+  public final void ccSetThemeColor(Color pxColor){
+    if(pxColor==null){return;}
+    cmThemeColor=pxColor;
+  }//+++
+  
+  /**
+   * @param pxBase ##
+   * @param pxTheme ##
+   */
+  public final void ccSetupColor(Color pxBase, Color pxTheme){
+    ccSetBaseColor(pxBase);
+    ccSetThemeColor(pxTheme);
+  }//+++
+  
+  /**
+   * @param pxStatus #
+   */
+  public final void ccSetHasBorder(boolean pxStatus){
+    ccHasBorder=pxStatus;
+  }//+++
+  
+  /**
+   * @param pxStatus #
+   */
+  public final void ccSetIsReversed(boolean pxStatus){
+    cmIsReversed=pxStatus;
+  }//+++
+  
+  /**
+   * flip version
+   */
+  public final void ccSetIsReversed(){
+    cmIsReversed=!cmIsReversed;
+  }//+++
   
   /**
    * @param pxText must have something
