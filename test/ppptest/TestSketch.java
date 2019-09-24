@@ -83,18 +83,12 @@ public class TestSketch extends PApplet {
     VcLocalCoordinator.ccRegisterKeyTrigger
       (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_D, new EiTriggerable() {
+      (java.awt.event.KeyEvent.VK_ESCAPE, new EiTriggerable() {
       @Override public void ccTrigger(){
-        EcComponent.ccShiftCurrentPage(1);
+        System.out.println("ESC is Disabled!!");
       }
     });
     
-    VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_A, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        EcComponent.ccShiftCurrentPage(-1);
-      }
-    });
     
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
@@ -124,6 +118,7 @@ public class TestSketch extends PApplet {
   }//+++
   
   @Override public void keyPressed() {
+    VcLocalCoordinator.ccGuardEscKey(this);
     VcLocalCoordinator.ccKeyPressed(keyCode);
   }//+++
 

@@ -72,11 +72,10 @@ i know it is a nonsense name, but anyway.
 
 #### onfire
 
-- [ ] $ a esc guarding mechanism ?
+- [ ] $ none
 
 #### currently
 
-- [x] $ a new test case framed with reflection
 - [x] $ fill up those array packing up methods.
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
@@ -84,5 +83,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ a floating JWindow aka "glass pane window"
 - [x] $ re-arranged ScLabel for glass pane window
 - [x] $ maybe we really need a roller class
+- [x] $ a ESC guarding mechanism!
 
 <hr><!--EOF-->

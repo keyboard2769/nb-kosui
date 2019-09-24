@@ -191,6 +191,16 @@ public final class VcLocalCoordinator {
   }//+++
   
   /**
+   * prevent from accidently quitting.<br>
+   * simply setting PApplet.key to zero.<br>
+   * @param pxSketch your main sketch
+   */
+  static public final void ccGuardEscKey(PApplet pxSketch){
+    if(pxSketch==null){return;}
+    if(pxSketch.key==27){pxSketch.key=0;}
+  }//+++
+  
+  /**
    * <pre>
    * supposedly should get called from PApplet.keyPressed().
    * if something goes wrong this can cause a null exception.
