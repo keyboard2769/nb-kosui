@@ -69,17 +69,13 @@ i know it is a nonsense name, but anyway.
 #### plan 
 
 - [ ] $ a "drawing" package handles PDF and print stuff
-- [ ] $ a esc guarding mechanism
 
 #### onfire
 
-- [ ] $ maybe we really need a roller class
+- [ ] $ a esc guarding mechanism ?
 
 #### currently
 
-- [x] $ re-implement local text stoker with ring buffer
-- [x] $ a new algorithm for fine splitting value
-- [x] $ refactor level compare with fine split-able
 - [x] $ a new test case framed with reflection
 - [x] $ fill up those array packing up methods.
 - [x] $ improve line chart drawer to give more information
@@ -87,5 +83,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ two new class for PGraphics based composing mechanism
 - [x] $ a floating JWindow aka "glass pane window"
 - [x] $ re-arranged ScLabel for glass pane window
+- [x] $ maybe we really need a roller class
 
 <hr><!--EOF-->

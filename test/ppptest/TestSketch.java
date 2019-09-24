@@ -12,13 +12,14 @@ import kosui.ppplocalui.*;
 import kosui.pppswingui.*;
 import kosui.ppputil.*;
 import javax.swing.SwingUtilities;
+import kosui.ppplogic.ZcRoller;
 import processing.core.*;
 
 public class TestSketch extends PApplet {
   
   static private TestSketch self=null;
   
-  static private volatile int cmRoller=0;
+  private static final ZcRoller O_ROLLER = new ZcRoller(16, 2);
   
   private static final ScGlassWindow O_GLASS
     = new ScGlassWindow(null, 320, 240);
@@ -104,7 +105,7 @@ public class TestSketch extends PApplet {
     
     //-- pre
     background(0);
-    ccRoll();
+    O_ROLLER.ccRoll();
     
     //-- scanq
     
@@ -115,7 +116,7 @@ public class TestSketch extends PApplet {
     SwingUtilities.invokeLater(R_SWING_LOOP);
     
     //-- finishing
-    VcLocalTagger.ccTag("roller",cmRoller);
+    VcLocalTagger.ccTag("roller",O_ROLLER.ccGetValue());
     VcLocalTagger.ccTag("page",EcComponent.ccGetCurrentPage());
     VcLocalTagger.ccTag("mouse",VcLocalCoordinator.ccGetMouseOverID());
     VcLocalTagger.ccStabilize();
@@ -128,20 +129,6 @@ public class TestSketch extends PApplet {
 
   @Override public void mousePressed(){
     VcLocalCoordinator.ccMousePressed();
-  }//+++
-  
-  //=== roll
-  
-  static private void ccRoll(){
-    cmRoller++;cmRoller&=0x0F;
-  }//+++
-  
-  static public boolean ccIsRollingAbove(int pxZeroToFifteen){
-    return cmRoller>pxZeroToFifteen;
-  }//+++
-  
-  static public boolean ccIsRollingAt(int pxZeroToFifteen){
-    return cmRoller==pxZeroToFifteen;
   }//+++
   
   //=== entry
