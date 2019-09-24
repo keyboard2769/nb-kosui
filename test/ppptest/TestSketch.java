@@ -4,12 +4,17 @@
 
 package ppptest;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcLocalConsole;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JMenuItem;
 
 import kosui.ppplocalui.*;
 import kosui.ppplogic.*;
@@ -23,7 +28,14 @@ import processing.core.*;
 
 public class TestSketch extends PApplet {
   
+  static private TestSketch self=null;
+  
   static private volatile int cmRoller=0;
+  
+  static private volatile int cmEngageGlass=0;
+  
+  private static final ScGlassWindow O_GLASS
+    = new ScGlassWindow(null, 320, 240);
   
   //=== action
   
@@ -34,66 +46,57 @@ public class TestSketch extends PApplet {
     }//+++
   };
   
+  private static final Runnable R_SWING_INIT = new Runnable() {
+    @Override public void run() {
+    
+      JMenuItem lpQuitItem=new JMenuItem("_quit");
+      lpQuitItem.addActionListener(new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+          self.cmQuitting.ccTrigger();
+        }
+      });
+      
+      O_GLASS.cmCanvas.ccAddPaintObject(new SiPaintable() {
+        @Override public void ccPaint(Graphics pxGI) {
+          pxGI.setColor(Color.GREEN);
+          
+          pxGI.drawRect(100, 100, 50, 50);
+          
+          pxGI.drawString("XA",100,100);
+          pxGI.drawString("XB",100,150);
+          pxGI.drawString("XC",150,100);
+          pxGI.drawString("XD",150,150);
+          
+        }
+      });
+      
+      O_GLASS.ccSetEngageMax(32);
+      O_GLASS.ccRegisterPopupItem(lpQuitItem);
+      
+      O_GLASS.ccFinish();
+    
+    }//+++
+  };//***
+  
+  private static final Runnable R_SWING_LOOP = new Runnable() {
+    @Override public void run() {
+      O_GLASS.ccDecrementEngageCount();
+      O_GLASS.cmCanvas.ccRefresh();
+    }//+++
+  };//***
+  
   //=== overridden
   
-  EcButton cmPSWI=new EcButton("P1", 0x3111);
-  EcButton cmPSWII=new EcButton("P2", 0x3112);
-  EcButton cmPSWIII=new EcButton("P3", 0x3113);
-  EcButton cmPSWIV=new EcButton("P4", 0x3114);
-  
-  EcButton cmTSWI=new EcButton("T1", 0x3211);
-  EcButton cmTSWII=new EcButton("T2", 0x3212);
-  EcButton cmTSWIII=new EcButton("T3", 0x3213);
-  EcButton cmTSWIV=new EcButton("T4", 0x3214);
-  
-  int cmTestColor;
-
   @Override public void setup() {
     
     //-- init
     size(320, 240);
+    self=this;
     EcConst.ccSetupSketch(this);
     VcLocalTagger.ccGetInstance().ccInit(this, 7);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     
     //-- laytout
-    
-    cmPSWI.ccSetLocation(100, 5);
-    cmPSWII.ccSetLocation(cmPSWI, 2, 0);
-    cmPSWIII.ccSetLocation(cmPSWII, 2, 0);
-    cmPSWIV.ccSetLocation(cmPSWIII, 2, 0);
-    
-    cmTSWI.ccSetLocation(100, 66);cmTSWI.ccSetPage(1);
-    cmTSWII.ccSetLocation(cmTSWI, 2, 0);cmTSWII.ccSetPage(2);
-    cmTSWIII.ccSetLocation(cmTSWII, 2, 0);cmTSWIII.ccSetPage(3);
-    cmTSWIV.ccSetLocation(cmTSWIII, 2, 0);cmTSWIV.ccSetPage(99);
-    
-    VcLocalCoordinator.ccAddElement(Arrays.asList(cmPSWI,cmPSWII,cmPSWIII,cmPSWIV,
-      cmTSWI,cmTSWII,cmTSWIII,cmTSWIV
-    ));
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWI, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        EcComponent.ccSetCurrentPage(1);
-      }//+++
-    });
-    
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWII, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        EcComponent.ccSetCurrentPage(2);
-      }//+++
-    });
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWIII, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        EcComponent.ccSetCurrentPage(3);
-      }//+++
-    });
-    VcLocalCoordinator.ccRegisterMouseTrigger(cmPSWIV, new EiTriggerable() {
-      @Override public void ccTrigger(){
-        EcComponent.ccSetCurrentPage(4);
-      }//+++
-    });
-    
     
     //-- bind
     VcLocalCoordinator.ccRegisterKeyTrigger
@@ -112,10 +115,6 @@ public class TestSketch extends PApplet {
       }
     });
     
-    //-- ???
-    cmTestColor=EcConst.ccBlendColor(EcConst.C_DARK_BLUE, EcConst.C_DARK_GREEN);
-    println(hex(cmTestColor,8));
-    
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
     
@@ -127,15 +126,16 @@ public class TestSketch extends PApplet {
     background(0);
     ccRoll();
     
-    //-- scan
+    //-- scanq
     
     //-- update
     VcLocalCoordinator.ccUpdate();
     
-    //-- ???
-    fill(cmTestColor);
-    rect(mouseX,mouseY,-18,-18);
     
+    //-- ???
+    SwingUtilities.invokeLater(R_SWING_LOOP);
+    
+        
     //-- finishing
     VcLocalTagger.ccTag("roller",cmRoller);
     VcLocalTagger.ccTag("page",EcComponent.ccGetCurrentPage());
@@ -152,7 +152,7 @@ public class TestSketch extends PApplet {
     VcLocalCoordinator.ccMousePressed();
   }//+++
   
-  //=== entry
+  //=== roll
   
   static private void ccRoll(){
     cmRoller++;cmRoller&=0x0F;
@@ -166,7 +166,10 @@ public class TestSketch extends PApplet {
     return cmRoller==pxZeroToFifteen;
   }//+++
   
+  //=== entry
+  
   static public void main(String[] passedArgs) {
+    SwingUtilities.invokeLater(R_SWING_INIT);
     PApplet.main(TestSketch.class.getCanonicalName());
   }//..!
   

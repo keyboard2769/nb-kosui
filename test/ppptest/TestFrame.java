@@ -28,7 +28,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.pppmodel.McTableAdapter;
 import kosui.pppswingui.ScConst;

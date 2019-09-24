@@ -40,7 +40,7 @@ public class ScCanvas extends JPanel{
       if(cmPaintList.isEmpty()){return;}
       for(SiPaintable it:cmPaintList){it.ccPaint(g);}
     }//+++
-  };
+  };//***
   
   /**
    * pass minus value to void the size setting.<br>
