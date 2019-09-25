@@ -17,10 +17,13 @@
 
 package kosui.ppplocalui;
 
+import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import kosui.ppplogic.ZcRangedModel;
+import kosui.pppmodel.McConst;
 import kosui.ppputil.VcConst;
+import processing.core.PFont;
 import processing.core.PGraphics;
 
 /**
@@ -140,6 +143,59 @@ public final class EcFactory {
   }//+++
   
   //=== processing essential
+  
+  //=== processing essential ** font
+  
+  /**
+   * bypassing AWT font construction for you.<br>
+   * loading formatting is hard coded to Font.TRUETYPE_FONT,
+   *   and this is supposed to work with a TTF file,
+   *   but i decide still to accept TTC extension.
+   * and i am not sure how this will perform with a TTC file.<br>
+   * @param pxFontFile will get verified via McConst.ccVerifyFileForLoading
+   * @return could be null
+   */
+  public static final
+  PFont ccLoadTrueTypeFont(File pxFontFile){
+    
+    //-- check in
+    if(!McConst.ccVerifyFileForLoading(pxFontFile)){
+      System.err.println("kosui.ppplocalui.EcFactory.ccLoadTrueTypeFont()"
+        + "failed to verify file for loading");
+      return null;
+    }//..?
+    String lpName=pxFontFile.getName();
+    boolean lpIsExtensionOK=false;
+    lpIsExtensionOK|=lpName.endsWith(".TTF");
+    lpIsExtensionOK|=lpName.endsWith(".ttf");
+    lpIsExtensionOK|=lpName.endsWith(".TTC");
+    lpIsExtensionOK|=lpName.endsWith(".ttc");
+    if(!lpIsExtensionOK){
+      System.err.println("kosui.ppplocalui.EcFactory.ccLoadTrueTypeFont()"
+        + "failed to verify file extension");
+      return null;
+    }//..?
+    
+    //-- to awt font
+    Font lpFont=null;
+    try {
+      lpFont = Font.createFont(Font.TRUETYPE_FONT, pxFontFile);
+    } catch (Exception e) {
+      System.err.println("kosui.ppplocalui.ccLoadTrueTypeFont()::"
+       + e.getMessage());
+    }//..?
+    
+    //-- to processing font
+    PFont lpPFont = null;
+    if(lpFont!=null){
+      lpPFont=new PFont(lpFont, false);
+    }//..?
+    
+    return lpPFont;
+    
+  }//+++
+  
+  //=== processing essential ** graphics
   
   private static PGraphics ccMakePGraphics(String pxRendererClass){
     if(!VcConst.ccIsValidString(pxRendererClass)){return null;}
