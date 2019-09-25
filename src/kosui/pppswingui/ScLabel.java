@@ -50,13 +50,30 @@ public class ScLabel extends EcRect implements SiPaintable{
    * since in swing i do not know who is supposed to tell me about
    *   character size, there will not be any auto sizing utility.
    * </pre>
-   * @param pxText
+   * @param pxText will get nulled out
    * @param pxW pix
    * @param pxH pix
    */
   public ScLabel(String pxText, int pxW, int pxH){
     super(pxW, pxH);
     cmText = VcStringUtility.ccNulloutString(pxText);
+    ssInit();
+  }//..!
+  
+  /**
+   * <pre>
+   * the initial size is 8x8 from the EcRect class.
+   * it is assumed the size will got set later if calling this.
+   * </pre>
+   * @param pxText will get nulled out
+   */
+  public ScLabel(String pxText){
+    super();
+    cmText = VcStringUtility.ccNulloutString(pxText);
+    ssInit();
+  }//..!
+  
+  private void ssInit(){
     cmBaseColor=Color.GRAY;
     cmThemeColor=Color.BLACK;
     ccHasBorder=false;

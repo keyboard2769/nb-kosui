@@ -17,7 +17,9 @@
 
 package kosui.ppplocalui;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcConst;
 import processing.core.PGraphics;
 
@@ -139,6 +141,24 @@ public final class EcFactory {
   
   //=== processing essential
   
+  private static PGraphics ccMakePGraphics(String pxRendererClass){
+    if(!VcConst.ccIsValidString(pxRendererClass)){return null;}
+    PGraphics lpRes=null;
+    try{
+      Class<?> rendererClass=Thread.currentThread()
+        .getContextClassLoader().loadClass(pxRendererClass);
+      Constructor<?> constructor=rendererClass.getConstructor(new Class[0]);
+      lpRes=(PGraphics)constructor.newInstance(new Object[0]);
+    }catch(Exception e){
+      System.err.println(
+        "kosui.ppplocalui.EcFactory.ccMakePGraphics():["
+         + pxRendererClass+"]:"
+         + e.getMessage()
+      );
+    }//..?
+    return lpRes;
+  }//+++
+  
   /**
    * <pre>
    * snatching the PApplet::makeGraphics() for its none-static nature.
@@ -149,18 +169,26 @@ public final class EcFactory {
    * @param pxH will get masked to 0-65535
    * @return could be null if any exception occurred
    */
-  public static final PGraphics ccCreatePGraphics(int pxW, int pxH){
-    PGraphics lpRes=null;
-    try{
-      Class<?> rendererClass=Thread.currentThread()
-        .getContextClassLoader().loadClass("processing.core.PGraphicsJava2D");
-      Constructor<?> constructor=rendererClass.getConstructor(new Class[0]);
-      lpRes=(PGraphics)constructor.newInstance(new Object[0]);
-    }catch(Exception e){
-      VcConst.ccErrln(".ccCreatePGraphics()", e.getMessage());
-    }//..?
+  public static final
+  PGraphics ccCreatePGraphics(int pxW, int pxH){
+    PGraphics lpRes=ccMakePGraphics("processing.core.PGraphicsJava2D");
     if(lpRes==null){return null;}
     lpRes.setSize(pxW&0xFFFF, pxH&0xFFFF);
+    lpRes.setPrimary(false);
+    return lpRes;
+  }//+++
+  
+  public static final
+  PGraphics ccCreatePGraphics(int pxW, int pxH, File pxFile){
+    PGraphics lpRes=ccMakePGraphics("processing.pdf.PGraphicsPDF");
+    if(lpRes==null){return null;}
+    if(pxFile==null){return null;}
+    if(!pxFile.isAbsolute()){return null;}
+    lpRes.setSize(
+      ZcRangedModel.ccLimitInclude(pxW, 400, 65535),
+      ZcRangedModel.ccLimitInclude(pxH, 400, 65535)
+    );
+    lpRes.setPath(pxFile.getAbsolutePath());
     lpRes.setPrimary(false);
     return lpRes;
   }//+++

@@ -73,7 +73,8 @@ public final class EcConst {
     //-- color
     C_TRANSPARENT = 0x00FFFFFF,
     //--
-    C_WHITE = 0xFFEEEEEE,
+    C_WHITE_PURE = 0xFFFFFFFF,
+    C_WHITE      = 0xFFEEEEEE,
     //--
     C_LIT_RED      = 0xFFEE6666,
     C_LIT_ORANGE   = 0xFFEE9966,
@@ -111,7 +112,8 @@ public final class EcConst {
     C_DARK_PURPLE     = 0xFF660066,
     C_DARK_GRAY       = 0xFF333333,
     //--
-    C_BLACK = 0xFF111111
+    C_BLACK      = 0xFF111111,
+    C_BLACK_PURE = 0xFF000000
   ;//...
   
   private EcConst(){}//..!
