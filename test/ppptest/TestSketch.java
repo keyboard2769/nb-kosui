@@ -4,6 +4,8 @@
 
 package ppptest;
 
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import kosui.ppputil.VcLocalTagger;
@@ -21,6 +23,8 @@ public class TestSketch extends PApplet {
   
   private static final ZcRoller O_ROLLER = new ZcRoller(16, 2);
   
+  private static Graphics cmGRef;
+  
   private static final ScGlassWindow O_GLASS
     = new ScGlassWindow(null, 320, 240);
   
@@ -31,7 +35,7 @@ public class TestSketch extends PApplet {
       println(".cmQuitting::call PApplet.exit");
       exit();
     }//+++
-  };
+  };//***
   
   private static final Runnable R_SWING_INIT = new Runnable() {
     @Override public void run() {
@@ -43,19 +47,44 @@ public class TestSketch extends PApplet {
         }
       });
       
-      ScLabel lpL = new ScLabel("XxXaaX", 48, 16);
-      lpL.ccSetLocation(100, 100);
-      lpL.ccSetupColor(
+      ScLabel lpUpper = new ScLabel(" do you care? ", 8, 8);
+      lpUpper.ccSetLocation(50, 50);
+      lpUpper.ccSetupColor(
         ScGlassWindow.C_DEFAULT_PANE_COLOR,
         ScGlassWindow.C_DEFAULT_THEME_COLOR
       );
-      lpL.ccSetHasBorder(true);
+      lpUpper.ccSetHasBorder(true);
       
-      O_GLASS.ccAddPaintObject(lpL);
+      ScLabel lpLower = new ScLabel("nope", 8, 8);
+      lpLower.ccSetupColor(
+        ScGlassWindow.C_DEFAULT_PANE_COLOR,
+        ScGlassWindow.C_DEFAULT_THEME_COLOR
+      );
+      lpLower.ccSetHasBorder(true);
+      
+      O_GLASS.cmCanvas.ccAddPaintObject(lpUpper);
+      O_GLASS.cmCanvas.ccAddPaintObject(lpLower);
       O_GLASS.ccSetEngageMax(32);
       O_GLASS.ccRegisterPopupItem(lpQuitItem);
       O_GLASS.ccFinish();
-    
+      
+      cmGRef=O_GLASS.getGraphics();
+      
+      Font lpTestFont=new Font(Font.DIALOG_INPUT, Font.PLAIN, 12);
+      
+      VcConst.ccPrintln("windowgraph:", cmGRef.toString());
+      O_GLASS.cmCanvas.ccSetFont(lpTestFont);
+      
+      lpUpper.ccSetSize(O_GLASS.cmCanvas.ccGetMetrics());
+      lpLower.ccSetW(lpUpper.ccGetW());
+      lpLower.ccSetH(30);
+      lpLower.ccSetSize(O_GLASS.cmCanvas.ccGetMetrics(), 'X');
+      lpLower.ccSetLocation(
+        lpUpper.ccEndX()-lpLower.ccGetW(),
+        lpUpper.ccEndY()+5
+      );
+      lpLower.ccSetIsReversed(true);
+      
     }//+++
   };//***
   
@@ -89,7 +118,6 @@ public class TestSketch extends PApplet {
       }
     });
     
-    
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
     
@@ -101,7 +129,7 @@ public class TestSketch extends PApplet {
     background(0);
     O_ROLLER.ccRoll();
     
-    //-- scanq
+    //-- scan
     
     //-- update
     VcLocalCoordinator.ccUpdate();

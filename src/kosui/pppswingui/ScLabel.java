@@ -18,6 +18,7 @@
 package kosui.pppswingui;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import kosui.ppplocalui.EcRect;
 import kosui.ppputil.VcConst;
@@ -35,6 +36,8 @@ public class ScLabel extends EcRect implements SiPaintable{
   public static final int C_INPANE_MERGIN = 2;
   
   private String cmText;
+  
+  private int cmTextOffsetX, cmTextOffsetY;
   
   private Color cmBaseColor,cmThemeColor;
   
@@ -58,6 +61,8 @@ public class ScLabel extends EcRect implements SiPaintable{
     cmThemeColor=Color.BLACK;
     ccHasBorder=false;
     cmIsReversed=false;
+    cmTextOffsetX=ccGetX();
+    cmTextOffsetY=ccEndY();
   }//..!
   
   //===
@@ -67,20 +72,20 @@ public class ScLabel extends EcRect implements SiPaintable{
    * @param pxGI ##
    */
   @Override public void ccPaint(Graphics pxGI){
-    
+            
     //-- border
     if(ccHasBorder){
       pxGI.setColor(cmThemeColor);
       if(cmIsReversed){
         pxGI.fillRect(cmX, cmY, cmW, cmH);
       }else{
-        pxGI.drawRect(cmX, cmY, cmW, cmH);
+        pxGI.drawRect(cmX, cmY, cmW-1, cmH-1);
       }//..?
     }//..?
     
-    //--
+    //-- text
     pxGI.setColor(cmIsReversed?cmBaseColor:cmThemeColor);
-    pxGI.drawString(cmText, cmX+2, ccEndY()-2);
+    pxGI.drawString(cmText, cmX+cmTextOffsetX, cmY+cmTextOffsetY);
     
   }//+++
   
@@ -147,4 +152,127 @@ public class ScLabel extends EcRect implements SiPaintable{
     return cmText;
   }//+++
   
-}//***
+  /**
+   * auto resizing and auto fitting.<br>
+   * in this case, anchoring may have no meaning.<br>
+   * @param pxMetrics from the owner of this label
+   */
+  public final void ccSetSize(FontMetrics pxMetrics){
+    if(pxMetrics==null){return;}
+    if(!VcConst.ccIsValidString(cmText)){return;}
+    ccSetW(pxMetrics.stringWidth(cmText));
+    ccSetH(pxMetrics.getAscent()+pxMetrics.getDescent());
+    cmTextOffsetX=0;
+    cmTextOffsetY=pxMetrics.getAscent();
+  }//+++
+  
+  /**
+   * relocate the text with the current rectangle area size.<br>
+   * @param pxMetrics from the owner of this label
+   * @param pxMode_abcdNSWEXx see the with size version
+   */
+  public final void ccSetSize(FontMetrics pxMetrics, char pxMode_abcdNSWEXx){
+    ccSetSize(pxMetrics, cmW, cmH, pxMode_abcdNSWEXx);
+  }//+++
+  
+  /**
+   * <pre>
+   * resize the rectrangle area
+   *   and relocate the text with the given anchor point.
+   * if the given size is smaller than the text size
+   *   calculated from the given matrix, 
+   *   nothing would happen.
+   * mode:
+   *  - [a]:align top left as point 'a'
+   *  - [N]:align top as point 'north'
+   *  - [b]:align top right as point 'b'
+   *  - [E]:align right as point 'east'
+   *  - [c]:align bottom right as point 'c'
+   *  - [S]:align bottom as point 'south'
+   *  - [d]:align bottom left as point 'd'
+   *  - [W]:align left as point 'west'
+   *  - [X]:align center
+   *  - [x]:no effect or mass anything
+   * </pre>
+   * @param pxMetrics from the owner of this label
+   * @param pxW pix
+   * @param pxH pix
+   * @param pxMode_abcdNSWEXx see above
+   */
+  public final void ccSetSize(
+    FontMetrics pxMetrics,
+    int pxW, int pxH,
+    char pxMode_abcdNSWEXx
+  ){
+    
+    //-- check in
+    if(pxMetrics==null){return;}
+    int lpRawW=pxMetrics.stringWidth(cmText);
+    int lpRawH=pxMetrics.getAscent()+pxMetrics.getDescent();
+    if(pxW<lpRawW || pxH<lpRawH){
+      ccSetSize(pxMetrics);
+      return;
+    }//+++
+    
+    //-- relocate
+    ccSetSize(pxW, pxH);
+    
+    switch (pxMode_abcdNSWEXx) {
+      
+      //-- direction
+      
+      case 'N':
+        cmTextOffsetX=(pxW-lpRawW)/2;
+        cmTextOffsetY=pxMetrics.getAscent();
+      break;
+      
+      case 'S':
+        cmTextOffsetX=(pxW-lpRawW)/2;
+        cmTextOffsetY=pxH-pxMetrics.getDescent();
+      break;
+      
+      case 'W':
+        cmTextOffsetX=0;
+        cmTextOffsetY=ccCenterY()-pxMetrics.getAscent()/2;
+      break;
+      
+      case 'E':
+        cmTextOffsetX=pxW-lpRawW;
+        cmTextOffsetY=ccCenterY()-pxMetrics.getAscent()/2;
+      break;
+      
+      //-- point
+      
+      case 'a':
+        cmTextOffsetX=0;
+        cmTextOffsetY=pxMetrics.getAscent();
+      break;
+      
+      case 'b':
+        cmTextOffsetX=pxW-lpRawW;
+        cmTextOffsetY=pxMetrics.getAscent();
+      break;
+      
+      case 'c':
+        cmTextOffsetX=pxW-lpRawW;
+        cmTextOffsetY=pxH-pxMetrics.getDescent();
+      break;
+      
+      case 'd':
+        cmTextOffsetX=0;
+        cmTextOffsetY=pxH-pxMetrics.getDescent();
+      break;
+      
+      //-- center
+      
+      case 'X':
+        cmTextOffsetX=(pxW-lpRawW)/2;
+        cmTextOffsetY=ccCenterY()-pxMetrics.getAscent()/2;
+      break;
+      
+      default:break;
+    }//...?
+    
+  }//+++
+  
+}//***eof

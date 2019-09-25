@@ -63,7 +63,11 @@ public class ScGlassWindow extends JWindow{
   
   //===
   
-  private final ScCanvas cmCanvas;
+  /**
+   * the only component that the glass window holds
+   */
+  public final ScCanvas cmCanvas;
+  
   private final JPopupMenu cmPopup;
   
   //===
@@ -253,14 +257,6 @@ public class ScGlassWindow extends JWindow{
   public final void ccRegisterPopupItem(JMenuItem pxItem){
     if(pxItem==null){return;}
     cmPopup.add(pxItem);
-  }//+++
-  
-  /**
-   * alias to ScCanvas::ccAddPaintObject.<br>
-   * @param pxShape will get passed directly
-   */
-  public final void ccAddPaintObject(SiPaintable pxShape){
-    cmCanvas.ccAddPaintObject(pxShape);
   }//+++
   
   /**

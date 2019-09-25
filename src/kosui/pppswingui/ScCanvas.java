@@ -18,6 +18,8 @@ package kosui.pppswingui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,31 @@ public class ScCanvas extends JPanel{
   public final void ccRefresh(){
     cmCanvas.updateUI();
     cmCanvas.repaint();
+  }//+++
+  
+  /**
+   * alias for JComponent.getFontMetrics
+   * @return could be null?
+   */
+  public final FontMetrics ccGetMetrics(){
+    return cmCanvas.getFontMetrics(ccGetFont());
+  }//+++
+  
+  /**
+   * alias for JComponent.getFont
+   * @return could be null?
+   */
+  public final Font ccGetFont(){
+    return cmCanvas.getFont();
+  }//+++
+  
+  /**
+   * alias for JComponent.setFont
+   * @param pxFont do not pass null
+   */
+  public final void ccSetFont(Font pxFont){
+    if(pxFont==null){return;}
+    cmCanvas.setFont(pxFont);
   }//+++
   
 }//***eof
