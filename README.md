@@ -68,15 +68,14 @@ i know it is a nonsense name, but anyway.
 
 #### plan 
 
-- [ ] $ none
+- none
 
 #### onfire
 
-- [ ] $ a "drawing" package handles PDF and print stuff ! ... maybe not a package at all
+- none
 
 #### currently
 
-- [x] $ fill up those array packing up methods.
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
 - [x] $ two new class for PGraphics based composing mechanism
@@ -84,5 +83,6 @@ i know it is a nonsense name, but anyway.
 - [x] $ re-arranged ScLabel for glass pane window
 - [x] $ maybe we really need a roller class
 - [x] $ a ESC guarding mechanism!
+- [x] $ new pdf class for local ui and new print method for swing ui
 
 <hr><!--EOF-->

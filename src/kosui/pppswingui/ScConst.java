@@ -22,9 +22,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
@@ -420,14 +426,54 @@ public class ScConst {
   }//+++
   
   /**
-   * wrapping the printjob for you.<br>
+   * wrapping the PrinterJob for you.<br>
    * @param pxTarget do not pass null
    */
-  public static final void ccPrint(JComponent pxTarget){
-    //[head]::not yet
-    throw new RuntimeException("NOT YET!!!");
+  public static final void ccPrint(SiPaintable pxTarget) {
+    
+    //-- check in
+    if(pxTarget==null){return;}
+    final SiPaintable lpRef=pxTarget;
+    
+    //-- make job
+    PrinterJob lpJob = PrinterJob.getPrinterJob();
+    lpJob.setPrintable(new Printable() {
+      @Override public int print(
+        Graphics graphics, PageFormat pageFormat, int pageIndex
+      )throws PrinterException
+      {
+        
+        //-- one page based 
+        if (pageIndex > 0) {return NO_SUCH_PAGE;}
+
+        //-- re-coordinating
+        Graphics2D lpGII = (Graphics2D) graphics;
+        lpGII.translate(
+          pageFormat.getImageableX(),
+          pageFormat.getImageableY()
+        );
+
+        //-- finishing
+        lpRef.ccPaint(graphics);
+        return PAGE_EXISTS;
+
+      }//+++
+    });
+    
+    //-- popup
+    boolean lpRes = lpJob.printDialog();
+    if (!lpRes) {return;}
+    try {
+      lpJob.print();
+    } catch (PrinterException e) {
+      System.err.println(
+        "kosui.pppswingui.ScConst.ccPrint()::"
+         + e.getMessage()
+      );
+    }//..?
+
   }//+++
-  
+
   //=== system
   
   /**
