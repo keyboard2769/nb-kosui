@@ -419,6 +419,15 @@ public class ScConst {
     pxTarget.setSelectionEnd(lpLength - 1);
   }//+++
   
+  /**
+   * wrapping the printjob for you.<br>
+   * @param pxTarget do not pass null
+   */
+  public static final void ccPrint(JComponent pxTarget){
+    //[head]::not yet
+    throw new RuntimeException("NOT YET!!!");
+  }//+++
+  
   //=== system
   
   /**

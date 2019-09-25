@@ -178,6 +178,21 @@ public final class EcFactory {
     return lpRes;
   }//+++
   
+  /**
+   * <pre>
+   * snatching the PApplet::makeGraphics() for its none-static nature.
+   * the key of renderer is hard coded to "processing.pdf.PGraphicsPDF".
+   * you have to import the processing pdf library separately.
+   * the primary field is hard coded to null.
+   * NOTE:CONSTRUCTING PGraphicsPDF THIS WAY MAY CAUSE IT HAS A NULL PARENT.
+   * this leads to a disaster inablity for it to handle text.
+   * AND THERE WILL BE NO CURE.
+   * </pre>
+   * @param pxW will get limited to 400-65535
+   * @param pxH will get limited to 400-65535
+   * @param pxFile supposedly a PDF file
+   * @return could be null
+   */
   public static final
   PGraphics ccCreatePGraphics(int pxW, int pxH, File pxFile){
     PGraphics lpRes=ccMakePGraphics("processing.pdf.PGraphicsPDF");

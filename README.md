@@ -68,11 +68,11 @@ i know it is a nonsense name, but anyway.
 
 #### plan 
 
-- [ ] $ a "drawing" package handles PDF and print stuff
+- [ ] $ none
 
 #### onfire
 
-- [ ] $ none
+- [ ] $ a "drawing" package handles PDF and print stuff ! ... maybe not a package at all
 
 #### currently
 
