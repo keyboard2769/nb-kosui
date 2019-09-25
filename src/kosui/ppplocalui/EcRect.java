@@ -18,8 +18,10 @@
 package kosui.ppplocalui;
 
 import java.util.List;
+import java.awt.Rectangle;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 
 /**
  * they say a rectangle is just two vector value.<br>
@@ -48,6 +50,17 @@ public class EcRect extends EcPoint{
   public EcRect(int pxW, int pxH){
     super();
     ccSetSize(pxW, pxH);
+  }//+++
+  
+  /**
+   * retrieves filed value directly.<br>
+   * @param pxAWTRect do not pass null 
+   */
+  public EcRect(Rectangle pxAWTRect){
+    super();
+    if(pxAWTRect==null){return;}
+    ccSetLocation(pxAWTRect.x, pxAWTRect.y);
+    ccSetSize(pxAWTRect.width, pxAWTRect.height);
   }//+++
   
   //===
@@ -332,6 +345,20 @@ public class EcRect extends EcPoint{
   //===
   
   /**
+   * @return packed up string
+   */
+  @Override public String toString() {
+    StringBuilder lpBuilder = new StringBuilder();
+    lpBuilder.append(super.toString());
+    lpBuilder.append("|");
+    lpBuilder.append(VcStringUtility.ccPackupParedTag("w", cmW));
+    lpBuilder.append(VcStringUtility.ccPackupParedTag("h", cmH));
+    return lpBuilder.toString();
+  }//+++
+  
+  //=== 
+  
+  /**
    * <pre>
    * layout elements of passed container 
    *   in a "DUO" motor switch manner,
@@ -402,6 +429,32 @@ public class EcRect extends EcPoint{
       }//..~
     }//..?
   }//+++
-
+  
+  //[plan]public static final EcRect ccAdd(EcRect)
+  
+  /**
+   * a offset based only on the size.<br>
+   * the bigger one must be bigger than the small one or ya'll get nothing.<br>
+   * @param pxBigger do not pass null
+   * @param pxSmaller do not pass nul
+   * @return never null
+   */
+  public static final EcPoint ccGetOffsetForCenterAlign(
+    EcRect pxBigger, EcRect pxSmaller
+  ){
+    EcPoint lpRes = new EcPoint();
+    if(pxBigger==null||pxSmaller==null){return lpRes;}
+    if( 
+        pxBigger.ccGetW()<=pxSmaller.ccGetW()
+      ||pxBigger.ccGetH()<=pxSmaller.ccGetH()
+    ){
+      lpRes.ccSetX(0);
+      lpRes.ccSetY(0);
+    }else{
+      lpRes.ccSetX((pxBigger.ccGetW()-pxSmaller.ccGetW())/2);
+      lpRes.ccSetY((pxBigger.ccGetH()-pxSmaller.ccGetH())/2);
+    }//..?
+    return lpRes;
+  }//+++
   
 }//***eof

@@ -17,6 +17,9 @@
 
 package kosui.ppplocalui;
 
+import java.awt.Point;
+import kosui.ppputil.VcStringUtility;
+
 /**
  * i thought a point is not a vector.<br>
  * but a root class should not look like this.<br>
@@ -41,6 +44,18 @@ public class EcPoint {
    */
   public EcPoint(int pxX, int pxY){
     ccSetLocation(pxX, pxY);
+  }//..!
+  
+  /**
+   * retrieves filed value directly.<br>
+   * @param pxAWTPoint do not pass null
+   */
+  public EcPoint(Point pxAWTPoint){
+    if(pxAWTPoint==null){
+      ccSetLocation(0, 0);
+    }else{
+      ccSetLocation(pxAWTPoint.x, pxAWTPoint.y);
+    }//..?
   }//..!
   
   //===
@@ -95,5 +110,23 @@ public class EcPoint {
   public final int ccGetY(){
     return cmY;
   }//+++
+  
+  //===
+
+  /**
+   * @return packed up string
+   */
+  @Override public String toString() {
+    StringBuilder lpBuilder = new StringBuilder();
+    lpBuilder.append(super.toString());
+    lpBuilder.append("::");
+    lpBuilder.append(VcStringUtility.ccPackupParedTag("x", cmX));
+    lpBuilder.append(VcStringUtility.ccPackupParedTag("y", cmY));
+    return lpBuilder.toString();
+  }//+++
+  
+  //=== 
+  
+  //[plan]public static final EcPoint ccAdd(EcPoint)
   
 }//***eof

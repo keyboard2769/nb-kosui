@@ -27,11 +27,14 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -144,6 +147,9 @@ public class ScConst {
   
   private static final Font O_DEFAULT_FONT
     = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);
+  
+  private static final List<Rectangle> O_LIST_OF_MONITOR
+    = new LinkedList<Rectangle>();
   
   private ScConst(){}//..!
   
@@ -551,27 +557,82 @@ public class ScConst {
     
   }//+++
   
+  //=== monitor 
+  
   /**
-   * for multiple hardware monitor situation.<br>
-   * @return (0,0) or (%resolution%,0)
+   * iterates all local graphics environment and record em to a local list.
    */
-  public static final Point ccGetScreenInitPoint(){
-    Point lpDummyPoint = null;
-    Point lpInitPoint = null;
+  public static final void ccInitMonitorInformation(){
     for (
-      GraphicsDevice lpDevice:
+      GraphicsDevice it:
       GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()
     ){
-      if (lpDummyPoint == null) {
-        lpDummyPoint = 
-          lpDevice.getDefaultConfiguration().getBounds().getLocation();
-      } else if (lpInitPoint == null) {
-        lpInitPoint = 
-          lpDevice.getDefaultConfiguration().getBounds().getLocation();
-      }//..?
+      Rectangle lpMonitor = it.getDefaultConfiguration().getBounds();
+      if(lpMonitor!=null){O_LIST_OF_MONITOR.add(lpMonitor);}
     }//..~
-    if (lpInitPoint == null) {lpInitPoint = lpDummyPoint;}
-    if (lpInitPoint == null) {lpInitPoint = new Point(0,0);}
+  }//+++
+  
+  /**
+   * must get called after information got initialized.<br>
+   * @return size of the list
+   */
+  public static final int ccGetMonitorCount(){
+    return O_LIST_OF_MONITOR.size();
+  }//+++
+  
+  /**
+   * must get called after information got initialized.<br>
+   * @return if the list size is bigger than two
+   */
+  public static final boolean ccHasSubMonior(){
+    return O_LIST_OF_MONITOR.size()>=2;
+  }//+++
+  
+  /**
+   * must get called after information got initialized.<br>
+   * @return could be null
+   */
+  public static Rectangle ccGetMainMonitorBound(){
+    if(O_LIST_OF_MONITOR.isEmpty()){return null;}
+    return O_LIST_OF_MONITOR.get(0);
+  }//+++
+  
+  /**
+   * must get called after information got initialized.<br>
+   * @return could be null
+   */
+  public static Rectangle ccGetSubMoniorBound(){
+    if(O_LIST_OF_MONITOR.size()<2){return null;}
+    return O_LIST_OF_MONITOR.get(1);
+  }//+++
+  
+  /**
+   * must get called after information got initialized.<br>
+   * iterates all recorded monitor.<br>
+   * for my very limited knowledge the value would not be bigger than 4096.<br>
+   * @return may not be accurate 'n judge your self !
+   */
+  public static Rectangle ccGetMinimalBound(){
+    Rectangle lpRes = new Rectangle(0, 0, 4096, 4096);
+    for(Rectangle it:O_LIST_OF_MONITOR){
+      if(it.width <lpRes.width ){lpRes.width =it.width; }
+      if(it.height<lpRes.height){lpRes.height=it.height;}
+    }//..~
+    return lpRes;
+  }//+++
+  
+  /**
+   * for multiple hardware monitor situation.<br>
+   * @return (0,0) or the location of the sub monitor boundary location
+   */
+  public static final Point ccGetScreenInitPoint(){
+    Point lpInitPoint = new Point(0, 0);
+    if(ccHasSubMonior()){
+      lpInitPoint.setLocation(
+        ccGetSubMoniorBound().x,
+        ccGetSubMoniorBound().y
+      );
+    }//..?
     return lpInitPoint;
   }//+++
   
