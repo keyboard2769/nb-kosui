@@ -280,6 +280,13 @@ public final class EcConst {
   //== entry
   
   /**
+   * @return the MARK
+   */
+  public static final String ccGetLastLeavingStamp(){
+    return "_1909261147";
+  }//+++
+  
+  /**
    * for some arbitrary reason, the utility class of the local UI package
    * is the main class.<br>
    * @param args you know what it is.

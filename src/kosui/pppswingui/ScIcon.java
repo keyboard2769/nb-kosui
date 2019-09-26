@@ -27,11 +27,16 @@ import kosui.pppmodel.MiPixillated;
 public final class ScIcon extends BufferedImage implements MiPixillated{
   
   /**
+   * hard coded
+   */
+  public static final int C_SCALE = 32;
+  
+  /**
    * 32x32 by default.<br>
    */
   public ScIcon() {
-    super(32, 32, BufferedImage.TYPE_INT_RGB);
-    for(int x=0;x<32;x++){for(int y=0;y<32;y++){
+    super(C_SCALE, C_SCALE, BufferedImage.TYPE_INT_RGB);
+    for(int x=0;x<C_SCALE;x++){for(int y=0;y<C_SCALE;y++){
       setRGB(x, y, y);
     }}
   }//..!

@@ -69,6 +69,7 @@ public final class ScList extends JScrollPane {
     }else{
       cmList = new JList(cmMode);
     }//+++
+    setViewportView(cmList);
     if (pxW > 0 && pxH > 0) {
       setPreferredSize(new Dimension(pxW, pxH));
     }//..?
@@ -175,6 +176,8 @@ public final class ScList extends JScrollPane {
     if(!ScConst.ccIsEDT()){return;}
     cmList.updateUI();
     cmList.repaint();
+    updateUI();
+    repaint();
   }//+++
 
 }//***eof
