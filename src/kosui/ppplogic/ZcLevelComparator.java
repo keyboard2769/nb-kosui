@@ -26,11 +26,20 @@ import kosui.ppputil.VcNumericUtility;
  */
 public class ZcLevelComparator{
   
-  private static final int C_LEVEL_MAX  = 32;//..arbitary
+  /**
+   * arbitrary
+   */
+  public static final int C_LEVEL_MAX  = 32;
   
-  private static final int C_LEVEL_MASK = 31;//..arbitary
+  /**
+   * arbitrary
+   */
+  public static final int C_LEVEL_MASK = 31;
   
-  private static final int C_VALUE_MASK = 0x0000FFFF;//..arbitary
+  /**
+   * arbitrary
+   */
+  public static final int C_VALUE_MASK = 0x0000FFFF;
   
   //===
 

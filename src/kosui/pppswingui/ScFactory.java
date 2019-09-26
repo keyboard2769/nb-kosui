@@ -189,7 +189,9 @@ public final class ScFactory {
    * @return #
    */
   public static final JPanel ccCreateGridPanel(int pxRow, int pxColumn){
-    return new JPanel(new GridLayout(pxRow, pxColumn));
+    JPanel lpRes=new JPanel(new GridLayout(pxRow, pxColumn));
+    lpRes.setBorder(BorderFactory.createEtchedBorder());
+    return lpRes;
   }//+++
   
   /**

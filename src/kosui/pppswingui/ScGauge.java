@@ -29,12 +29,13 @@ import processing.core.PApplet;
  */
 public class ScGauge extends JProgressBar{
   
-  private final String cmName;
-  private final String cmUnit;
   private float cmSpan;
+  private final String cmUnit;
+  private final String cmKey;
+  private String cmText;
   private Color cmBackgroundColor = ScConst.C_LIT_GRAY;
-  private Color cmForeGroundColor = ScConst.C_YELLOW;
-  private Color cmAlertColor = ScConst.C_ORANGE;
+  private Color cmForeGroundColor = ScConst.C_DARK_YELLOW;
+  private Color cmAlertColor = ScConst.C_DARK_ORANGE;
   
   //=== 
   
@@ -44,7 +45,8 @@ public class ScGauge extends JProgressBar{
    */
   public ScGauge(String pxName, String pxUnit){
     super(SwingConstants.HORIZONTAL,0,100);
-    cmName=VcStringUtility.ccNulloutString(pxName);
+    cmKey=VcStringUtility.ccNulloutString(pxName);
+    cmText=cmKey;
     cmUnit=VcStringUtility.ccNulloutString(pxUnit);
     cmSpan=100f;
     ssInit();
@@ -52,7 +54,7 @@ public class ScGauge extends JProgressBar{
   
   private void ssInit(){
     setValue(2);
-    setString(cmName+cmUnit);
+    setString(cmText+cmUnit);
     setBorderPainted(true);
     setStringPainted(true);
     setBackground(cmBackgroundColor);
@@ -110,8 +112,7 @@ public class ScGauge extends JProgressBar{
     int lpPercentage=PApplet.constrain(pxValue,0,100);
     float lpReal=cmSpan*lpPercentage/100;
     setValue(lpPercentage);
-    setString(
-      cmName
+    setString(cmText
       +Float.toString(VcNumericUtility.ccRoundForOneAfter(lpReal))
       +cmUnit
     );
@@ -124,7 +125,7 @@ public class ScGauge extends JProgressBar{
     float lpReal=PApplet.constrain(pxValue, 0, cmSpan*20);
     int lpPercentage=PApplet.ceil(100*lpReal/(cmSpan*10));
     setValue(lpPercentage);
-    setString(cmName+VcNumericUtility.ccFormatPointTwoFloat(lpReal)+cmUnit);
+    setString(cmText+":"+VcNumericUtility.ccFormatPointTwoFloat(lpReal)+cmUnit);
   }//+++
   
   /**
@@ -132,6 +133,20 @@ public class ScGauge extends JProgressBar{
    */
   public final void ccSetAlert(boolean pxStatus){
     setForeground(pxStatus?cmAlertColor:cmForeGroundColor);
+  }//+++
+  
+  /**
+   * @param pxText will get nulled out
+   */
+  public final void ccSetText(String pxText){
+    cmText=VcStringUtility.ccNulloutString(pxText);
+  }//+++
+  
+  /**
+   * @return ##
+   */
+  public final String ccGetKey(){
+    return cmKey;
   }//+++
   
 }//***eof

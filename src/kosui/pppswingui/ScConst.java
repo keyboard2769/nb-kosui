@@ -359,6 +359,16 @@ public class ScConst {
   //=== operate
   
   /**
+   * set visibility and enabled to null.
+   * @param pxTarget do not pass null
+   */
+  public static final void ccHideComponent(JComponent pxTarget){
+    if(pxTarget==null){return;}
+    pxTarget.setVisible(false);
+    pxTarget.setEnabled(false);
+  }//+++
+  
+  /**
    * alias for JFrame::setState.<br>
    * @param pxFrame do not pass null
    */

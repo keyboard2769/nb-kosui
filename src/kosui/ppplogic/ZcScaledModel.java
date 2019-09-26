@@ -17,8 +17,7 @@
 
 package kosui.ppplogic;
 
-import static processing.core.PApplet.map;
-import static processing.core.PApplet.ceil;
+import processing.core.PApplet;
 
 /**
  * we use this to convert analog input value to some real value.<br>
@@ -59,9 +58,9 @@ public class ZcScaledModel {
    * @param pxInputValue #
    */
   public void ccSetInputValue(int pxInputValue){
-    cmInputValue = pxInputValue;
+    cmInputValue = PApplet.constrain(pxInputValue, cmInputOffset, cmInputSpan);
     cmFloatOutput=ccToScaledFloatValue(pxInputValue);
-    cmIntegerOutput=ceil(cmFloatOutput);
+    cmIntegerOutput=PApplet.ceil(cmFloatOutput);
   }//+++
 
   /**
@@ -156,7 +155,7 @@ public class ZcScaledModel {
    * @return pxSource casted instead of PApplet::ceil
    */
   public final int ccToUnscaledInputValue(float pxSource){
-    return (int)(map(
+    return (int)(PApplet.map(
       pxSource,
       (float)cmOutputOffset,(float)cmOutputSpan,
       (float)cmInputOffset,(float)cmInputSpan
@@ -169,7 +168,7 @@ public class ZcScaledModel {
    * @return pxSource casted instead of PApplet::ceil
    */
   public final int ccToUnscaledInputValue(int pxSource){
-    return (int)(map(
+    return (int)(PApplet.map(
       pxSource,cmOutputOffset,cmOutputSpan,cmInputOffset,cmInputSpan
     ));
   }//+++
@@ -180,7 +179,7 @@ public class ZcScaledModel {
    * @return #
    */
   public final float ccToScaledFloatValue(int pxSource){
-    return map(
+    return PApplet.map(
       pxSource, cmInputOffset, cmInputSpan, cmOutputOffset, cmOutputSpan
     );
   }//+++
@@ -191,7 +190,7 @@ public class ZcScaledModel {
    * @return #
    */
   public final int ccToScaledIntegerValue(int pxSource){
-    return ceil(ccToScaledFloatValue(pxSource));
+    return PApplet.ceil(ccToScaledFloatValue(pxSource));
   }//+++
   
   //===
