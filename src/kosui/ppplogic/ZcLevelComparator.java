@@ -43,17 +43,17 @@ public class ZcLevelComparator{
   
   //===
 
-  private final int[] cmDesPartitionValue;
-  private final int[] cmDesPartitionLevel;
+  private final int[] cmDesJudge;
+  private final int[] cmDesAnchor;
 
   /**
    * level range is arbitrarily hard coded as 0-32.<br>
    * @param pxMaxValue will get masked upto 65535 then split 
    */
   public ZcLevelComparator(int pxMaxValue){
-    cmDesPartitionValue=VcNumericUtility
+    cmDesJudge=VcNumericUtility
       .ccFineSplit(pxMaxValue&C_VALUE_MASK, C_LEVEL_MAX);
-    cmDesPartitionLevel=VcNumericUtility
+    cmDesAnchor=VcNumericUtility
       .ccFineSplit(C_LEVEL_MAX, 4);
   }//+++
   
@@ -67,31 +67,30 @@ public class ZcLevelComparator{
     int lpFixed=pxSource&C_VALUE_MASK;
     int lpBeginLV,lpEndLV;
     if(lpFixed==0){return 0;}
-    if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[2]]){
-      if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[3]]){
-        lpBeginLV=cmDesPartitionLevel[3];
+    if(lpFixed>=cmDesJudge[cmDesAnchor[2]]){
+      if(lpFixed>=cmDesJudge[cmDesAnchor[3]]){
+        lpBeginLV=cmDesAnchor[3];
         lpEndLV=C_LEVEL_MAX;
       }else{
-        lpBeginLV=cmDesPartitionLevel[2];
-        lpEndLV=cmDesPartitionLevel[3];
+        lpBeginLV=cmDesAnchor[2];
+        lpEndLV=cmDesAnchor[3];
       }//..?
     }else{
-      if(lpFixed>=cmDesPartitionValue[cmDesPartitionLevel[1]]){
-        lpBeginLV=cmDesPartitionLevel[1];
-        lpEndLV=cmDesPartitionLevel[2];
+      if(lpFixed>=cmDesJudge[cmDesAnchor[1]]){
+        lpBeginLV=cmDesAnchor[1];
+        lpEndLV=cmDesAnchor[2];
       }else{
-        lpBeginLV=cmDesPartitionLevel[0];
-        lpEndLV=cmDesPartitionLevel[1];
+        lpBeginLV=cmDesAnchor[0];
+        lpEndLV=cmDesAnchor[1];
       }//..?
     }//..?
     int lpRes;
     for(lpRes=lpBeginLV+1;lpRes<lpEndLV;lpRes++){
       //VcConst.ccPrintln("begin", lpRes-1);
       //VcConst.ccPrintln("end", lpRes);
-      if(ZcRangedModel.ccContains(
-        lpFixed,
-        cmDesPartitionValue[lpRes-1],
-        cmDesPartitionValue[lpRes  ]
+      if(ZcRangedModel.ccContains(lpFixed,
+        cmDesJudge[lpRes-1],
+        cmDesJudge[lpRes  ]
       )){break;}//..?
     }//..~
     return lpRes;
@@ -109,32 +108,28 @@ public class ZcLevelComparator{
     switch(pxLevel){
       case 0:break;
       case 1:
-        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
-          pxValue,
-          cmDesPartitionValue[0],
-          cmDesPartitionValue[pxLevel+1]
+        cmDesJudge[pxLevel]=ZcRangedModel.ccLimitExclude(pxValue,
+          cmDesJudge[0],
+          cmDesJudge[pxLevel+1]
         );
       break;
       case C_LEVEL_MASK:
-        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
-          pxValue,
-          cmDesPartitionValue[pxLevel-1],
-          cmDesPartitionValue[C_LEVEL_MASK]
+        cmDesJudge[pxLevel]=ZcRangedModel.ccLimitExclude(pxValue,
+          cmDesJudge[pxLevel-1],
+          cmDesJudge[C_LEVEL_MASK]
         );
       break;
       default:
         VcConst.ccPrintln("so?",pxLevel);
-        VcConst.ccPrintln("pre?",cmDesPartitionValue[pxLevel - 1]);
-        VcConst.ccPrintln("next?",cmDesPartitionValue[pxLevel+1]);
-        VcConst.ccPrintln("so?",ZcRangedModel.ccLimitExclude(
-          pxValue,
-          cmDesPartitionValue[pxLevel-1],
-          cmDesPartitionValue[pxLevel+1]
+        VcConst.ccPrintln("pre?",cmDesJudge[pxLevel - 1]);
+        VcConst.ccPrintln("next?",cmDesJudge[pxLevel+1]);
+        VcConst.ccPrintln("so?",ZcRangedModel.ccLimitExclude(pxValue,
+          cmDesJudge[pxLevel-1],
+          cmDesJudge[pxLevel+1]
         ));
-        cmDesPartitionValue[pxLevel]=ZcRangedModel.ccLimitExclude(
-          pxValue,
-          cmDesPartitionValue[pxLevel-1],
-          cmDesPartitionValue[pxLevel+1]
+        cmDesJudge[pxLevel]=ZcRangedModel.ccLimitExclude(pxValue,
+          cmDesJudge[pxLevel-1],
+          cmDesJudge[pxLevel+1]
         );
       break;
     }//..?
@@ -152,6 +147,14 @@ public class ZcLevelComparator{
     return pxLevel==ccComparate(pxValue);
   }//+++
   
+  /**
+   * @param pxLevel will get masked 
+   * @return judge value
+   */
+  public final int ccGetJudge(int pxLevel){
+    return cmDesJudge[pxLevel&C_LEVEL_MASK];
+  }//+++
+  
   //=== test
   
   /**
@@ -159,12 +162,12 @@ public class ZcLevelComparator{
    * @deprecated for test use
    */
   @Deprecated public final void tstReadup(){
-    VcConst.ccPrintln(super.toString(),"value >>>");
+    VcConst.ccPrintln(super.toString(),"judge >>>");
     VcConst.ccPrintln
-      (VcNumericUtility.ccPackupDecStringTable(cmDesPartitionValue, 8));
-    VcConst.ccPrintln("level >>>");
+      (VcNumericUtility.ccPackupDecStringTable(cmDesJudge, 8));
+    VcConst.ccPrintln("achor >>>");
     VcConst.ccPrintln
-      (VcNumericUtility.ccPackupDecStringTable(cmDesPartitionLevel, 8));
+      (VcNumericUtility.ccPackupDecStringTable(cmDesAnchor, 8));
     VcConst.ccPrintln("<<<");
   }//+++
   

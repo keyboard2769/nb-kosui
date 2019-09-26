@@ -35,20 +35,28 @@ public class ScStoker extends JScrollPane {
 
   /**
    * construct JScrollPane and JTextArea with a hello message.<br>
-   * @param pxHello can be anything
-   * @param pxR max count
-   * @param pxC max count
+   * @param pxHello will get nulled out
+   * @param pxR max count, must be bigger than 2
+   * @param pxC max count, must be bigger than 16
    */
   public ScStoker(String pxHello, int pxR, int pxC) {
     super();
     cmArea = new JTextArea(VcStringUtility.ccNulloutString(pxHello));
     ScFactory.ccSetupConsoleArea(cmArea);
-    if(pxR>2 && pxC>4){
+    if(pxR>2 && pxC>16){
       cmArea.setRows(pxR);
       cmArea.setColumns(pxC);
     }//..?
     super.setViewportView(cmArea);
-  }//++!
+  }//..!
+  
+  /**
+   * construct JScrollPane and JTextArea with a hello message.<br>
+   * @param pxHello will get nulled out
+   */
+  public ScStoker(String pxHello) {
+    this(pxHello,-1,-1);
+  }//..!
   
   //===
 

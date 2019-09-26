@@ -143,13 +143,13 @@ public final class VcStringUtility {
    */
   static public final
   String ccPackupParedTag(String pxTag, Object pxValue){
-      if(!VcConst.ccIsValidString(pxTag)){return "[:]";}
-      StringBuilder lpRes=new StringBuilder("[");
-      lpRes.append(pxTag);
-      lpRes.append(':');
-      lpRes.append(pxValue==null?"<null>":pxValue.toString());
-      lpRes.append(']');
-      return lpRes.toString();
+    if(!VcConst.ccIsValidString(pxTag)){return "[:]";}
+    StringBuilder lpRes=new StringBuilder("[");
+    lpRes.append(pxTag);
+    lpRes.append(':');
+    lpRes.append(pxValue==null?"<null>":pxValue.toString());
+    lpRes.append(']');
+    return lpRes.toString();
   }//+++
   
   /**

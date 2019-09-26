@@ -517,6 +517,17 @@ public final class ScFactory {
     pxTarget.setEnabled(false);
   }//+++
   
+  /**
+   * color and ability and text align is configured
+   * @param pxTarget don't pass null
+   */
+  public static final void ccSetupInfoArea(JTextArea pxTarget){
+    pxTarget.setBackground(Color.WHITE);
+    pxTarget.setDisabledTextColor(ScConst.C_DARK_GREEN);
+    pxTarget.setEditable(false);
+    pxTarget.setEnabled(false);
+  }//+++
+  
   //== component ** misc
   
   /**

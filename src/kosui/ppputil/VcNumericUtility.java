@@ -17,6 +17,8 @@
 
 package kosui.ppputil;
 
+import java.util.Calendar;
+import java.util.Random;
 import kosui.ppplogic.ZiMemory;
 import processing.core.PApplet;
 
@@ -52,6 +54,37 @@ public final class VcNumericUtility {
   ;//+++
   
   private VcNumericUtility(){}//..!
+  
+  //=== random
+  
+  private static final Random O_RANOM = new Random(
+    VcStampUtility.ccSecond()*VcStampUtility.ccMinute()
+  );
+  
+  /**
+   * the initiated seed is the start second x minute.<br>
+   * @return next float aka 0f-1f
+   */
+  public static float ccRandom(){
+    return O_RANOM.nextFloat();
+  };
+  
+  /**
+   * @param pxBase ##
+   * @param pxRange ##
+   * @return range x [0f-1f] - base
+   */
+  public static float ccRandom(float pxBase, float pxRange){
+    return pxRange*ccRandom()-pxBase;
+  };
+  
+  /**
+   * @param pxAbsolute ##
+   * @return [-abs - +abs]
+   */
+  public static float ccRandom(float pxAbsolute){
+    return ccRandom(pxAbsolute, pxAbsolute*2);
+  };
   
   //=== judgement
   
@@ -180,7 +213,7 @@ public final class VcNumericUtility {
    * @return String.format("%.2f",...)
    */
   public static String ccFormatPointTwoFloat(float pxValue){
-    return String.format("%.2f", pxValue);
+    return String.format("%.02f", pxValue);
   }//+++
   
   //=== comparating

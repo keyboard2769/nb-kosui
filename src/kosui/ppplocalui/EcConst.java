@@ -280,13 +280,6 @@ public final class EcConst {
   //== entry
   
   /**
-   * @return the MARK
-   */
-  public static final String ccGetLastLeavingStamp(){
-    return "_1909261629";
-  }//+++
-  
-  /**
    * for some arbitrary reason, the utility class of the local UI package
    * is the main class.<br>
    * @param args you know what it is.
@@ -298,5 +291,12 @@ public final class EcConst {
     VcConst.ccPrintln("at",VcConst.C_V_PWD);
     VcConst.ccErrln("NO_PUBLIC_USE!!");
   }//+++
-
+  
+  /**
+   * @return the MARK
+   */
+  public static final String ccGetLastLeavingStamp(){
+    return "_1909262239";
+  }//+++
+  
 }//***eof

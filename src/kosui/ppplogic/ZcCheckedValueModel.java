@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcStringUtility;
+
 /**
  * a water tank with water can be considered as a ranged value model.<br>
  * and with some leveler, it becomes checked value model.<br>
@@ -36,6 +38,21 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
   }//+++
   
   /**
+   * set current value to judge line of given level.<br>
+   * @param pxLevel ##
+   */
+  public final void ccSetToLevel(int pxLevel){
+    cmValue=cmLevel.ccGetJudge(pxLevel);
+  }//+++
+  
+  /**
+   * @return compared level
+   */
+  public final int ccGetCurrentLevel(){
+    return cmLevel.ccComparate(cmValue);
+  }//+++
+  
+  /**
    * you have to remember which level stands for what your self
    * @param pxLevel 0-31
    * @return true if current level matches
@@ -50,7 +67,7 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @return true if current level is higher
    */
   public final boolean ccIsLevelAbove(int pxLevel){
-    return cmLevel.ccComparate(ccGetRelative())>pxLevel;
+    return cmLevel.ccComparate(ccGetRelative())>=pxLevel;
   }//+++
   
   /**
@@ -60,6 +77,27 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    */
   public final boolean ccIsLevelBelow(int pxLevel){
     return cmLevel.ccComparate(ccGetRelative())<pxLevel;
+  }//+++
+  
+  //===
+
+  /**
+   * {@inheritDoc }
+   * @return packed string
+   */
+  @Override public String toString() {
+    StringBuilder lpRes=new StringBuilder();
+    lpRes.append(super.toString());
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupParedTag
+      ("LV0", cmLevel.ccGetJudge(0)));
+    lpRes.append(VcStringUtility.ccPackupParedTag
+      ("LV16", cmLevel.ccGetJudge(16)));
+    lpRes.append(VcStringUtility.ccPackupParedTag
+      ("LV31", cmLevel.ccGetJudge(31)));
+    lpRes.append(VcStringUtility.ccPackupParedTag
+      ("now", ccGetCurrentLevel()));
+    return lpRes.toString();
   }//+++
   
 }//***eof

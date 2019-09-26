@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcStringUtility;
+
 /**
  * i made a mistake.<br>
  * cylinder is not a ranged model. cylinder is a range value model.<br>
@@ -115,5 +117,19 @@ public class ZcRangedValueModel extends ZcRangedModel{
     if(pxLowBound>=pxUpBound){return false;}
     return cmValue>=pxLowBound&&cmValue<=pxUpBound;
   }//+++
-    
+  
+  //===
+  
+  /**
+   * {@inheritDoc }
+   * @return packed string
+   */
+  @Override public String toString() {
+    StringBuilder lpRes=new StringBuilder();
+    lpRes.append(super.toString());
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupParedTag("val", cmValue));
+    return lpRes.toString();
+  }//+++
+  
 }//***eof

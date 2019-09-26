@@ -74,7 +74,7 @@ public class EcElement extends EcComponent{
     cmTextAlign = 'c'
   ;//...
   
-  static private int pbTextAdjustY = 2;
+  static private int cmTextAdjustY = 0;
   
   //===
 
@@ -143,7 +143,7 @@ public class EcElement extends EcComponent{
       
     }//..?
     pbOwner.fill(pxColor);
-    pbOwner.text(cmText,lpX,ccCenterY()+pbTextAdjustY);
+    pbOwner.text(cmText,lpX,ccCenterY()+cmTextAdjustY);
     pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
   }//+++
 
@@ -179,7 +179,7 @@ public class EcElement extends EcComponent{
     }//..?
     
     pbOwner.fill(pxColor);
-    pbOwner.text(cmName,lpX,pbTextAdjustY+lpY);
+    pbOwner.text(cmName,lpX,cmTextAdjustY+lpY);
     pbOwner.textAlign(PApplet.LEFT,PApplet.TOP);
     
   }//+++
@@ -216,7 +216,7 @@ public class EcElement extends EcComponent{
    * @param pxY pix
    */
   static public final void ccSetTextAdjust(int pxX, int pxY){
-    pbTextAdjustY=pxY;
+    cmTextAdjustY=pxY;
   }//+++
   
   /**

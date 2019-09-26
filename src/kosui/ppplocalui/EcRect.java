@@ -234,7 +234,9 @@ public class EcRect extends EcPoint{
             (EcConst.C_DEFAULT_TEXT_WIDTH*pxText.length())
            :((int)(EcComponent.pbOwner.textWidth(pxText)))
           );
-    cmH = EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
+    cmH = EcComponent.ccHasOwner()?
+      (int)(EcComponent.pbOwner.textAscent()+EcComponent.pbOwner.textDescent())
+     :EcConst.C_DEFAULT_AUTOSIZE_HEIGHT;
     
     char lpNewLine=VcConst.C_V_NEWLINE.charAt(0);
     for(char it:pxText.toCharArray())
@@ -252,21 +254,34 @@ public class EcRect extends EcPoint{
     cmH+=pxOffsetH;
   }//+++
   
-  //[plan]::ccSetEndX()
-  //[plan]::ccSetEndY()
+  /**
+   * stretch the size.<br>
+   * @param pxEndX should be bigger than the current location x
+   */
+  public final void ccSetEndX(int pxEndX){
+    if(pxEndX>cmX){cmW=pxEndX-cmX;}
+  }//+++
+  
+  /**
+   * stretch the size.<br>
+   * @param pxEndY should be bigger than the current location y
+   */
+  public final void ccSetEndY(int pxEndY){
+    if(pxEndY>cmY){cmH=pxEndY-cmY;}
+  }//+++
     
   /**
    * an other convenient way to set size
    * via other rectangle's end point getter method.<br>
-   * if passed minus value it wont set anything.<br>
+   * if passed under location then it wont set anything.<br>
    * like : rectangle.ccSetEndPoint(other_rectangle.ccGetEndX(),-1);<br>
    * <b>BUT DONT USE THIS BEFORE THE LOCATION IS SET TO RIGHT.</b><br>
-   * @param pxEndX #
-   * @param pxEndY #
+   * @param pxEndX pix
+   * @param pxEndY pix
    */
   public final void ccSetEndPoint(int pxEndX, int pxEndY){
-    if(pxEndX>=0){cmW=pxEndX-cmX;}
-    if(pxEndY>=0){cmH=pxEndY-cmY;}
+    ccSetEndX(pxEndX);
+    ccSetEndY(pxEndY);
   }//+++
   
   /**
