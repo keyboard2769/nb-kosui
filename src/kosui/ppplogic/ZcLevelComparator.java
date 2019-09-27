@@ -60,6 +60,8 @@ public class ZcLevelComparator{
   //===
   
   /**
+   * CAUTION:CALL THIS SEVERAL TIME IN A LOOP MAY CAUSE REDUNDANT OVERHEAD.<br>
+   * think about create a less abstract model class.<br>
    * @param pxSource will get masked to 0-65535 arbitraryly
    * @return level
    */

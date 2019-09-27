@@ -25,7 +25,7 @@ import kosui.ppputil.VcStringUtility;
  */
 public class ZcCheckedValueModel extends ZcRangedValueModel{
   
-  private final ZcLevelComparator cmLevel;
+  private final ZcLevelComparator cmLevelor;
   
   /**
    * value will be set to minimum
@@ -34,7 +34,7 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    */
   public ZcCheckedValueModel(int pxMin, int pxRange){
     super(pxMin, pxRange);
-    cmLevel=new ZcLevelComparator(ccGetRange());
+    cmLevelor=new ZcLevelComparator(ccGetRange());
   }//+++
   
   /**
@@ -42,14 +42,16 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @param pxLevel ##
    */
   public final void ccSetToLevel(int pxLevel){
-    cmValue=cmLevel.ccGetJudge(pxLevel);
+    cmValue=cmLevelor.ccGetJudge(pxLevel);
   }//+++
   
   /**
-   * @return compared level
+   * CAUTION:CALL THIS SEVERAL TIME IN A LOOP MAY CAUSE REDUNDANT OVERHEAD.<br>
+   * think about create a less abstract model class.<br>
+   * @return after DOING the compare work
    */
   public final int ccGetCurrentLevel(){
-    return cmLevel.ccComparate(cmValue);
+    return cmLevelor.ccComparate(cmValue);
   }//+++
   
   /**
@@ -58,7 +60,7 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @return true if current level matches
    */
   public final boolean ccIsLevelAt(int pxLevel) {
-    return cmLevel.ccComparate(ccGetRelative())==pxLevel;
+    return cmLevelor.ccComparate(ccGetRelative())==pxLevel;
   }//+++
   
   /**
@@ -67,7 +69,7 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @return true if current level is higher
    */
   public final boolean ccIsLevelAbove(int pxLevel){
-    return cmLevel.ccComparate(ccGetRelative())>=pxLevel;
+    return cmLevelor.ccComparate(ccGetRelative())>=pxLevel;
   }//+++
   
   /**
@@ -76,7 +78,7 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
    * @return true if current level is lower
    */
   public final boolean ccIsLevelBelow(int pxLevel){
-    return cmLevel.ccComparate(ccGetRelative())<pxLevel;
+    return cmLevelor.ccComparate(ccGetRelative())<pxLevel;
   }//+++
   
   //===
@@ -90,11 +92,11 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
     lpRes.append(super.toString());
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupParedTag
-      ("LV0", cmLevel.ccGetJudge(0)));
+      ("LV0", cmLevelor.ccGetJudge(0)));
     lpRes.append(VcStringUtility.ccPackupParedTag
-      ("LV16", cmLevel.ccGetJudge(16)));
+      ("LV16", cmLevelor.ccGetJudge(16)));
     lpRes.append(VcStringUtility.ccPackupParedTag
-      ("LV31", cmLevel.ccGetJudge(31)));
+      ("LV31", cmLevelor.ccGetJudge(31)));
     lpRes.append(VcStringUtility.ccPackupParedTag
       ("now", ccGetCurrentLevel()));
     return lpRes.toString();
