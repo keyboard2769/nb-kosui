@@ -28,7 +28,7 @@ public final class VcStringUtility {
   
   private VcStringUtility(){}//..!
   
-  //===
+  //=== judging
   
   /**
    * if you think REGEX is heavy you should NOT use this.<br>
@@ -38,6 +38,20 @@ public final class VcStringUtility {
   static public final boolean ccIsCommandString(String pxNum){
     return pxNum.matches("^[_a-zA-Z]{1,64}$");
   }//+++
+  
+  /**
+   * extract first than simply compare.<br>
+   * @param pxQTag #
+   * @param pxName #
+   * @return String::equals
+   */
+  static public final
+  boolean ccCompareQTagString(String pxQTag, String pxName){
+    if(!VcConst.ccIsValidString(pxName)){return false;}
+    return ccExtractQTagString(pxQTag).equals(pxName);
+  }//+++
+  
+  //=== manipulate
   
   /**
    * @param pxInput #
@@ -60,18 +74,6 @@ public final class VcStringUtility {
     if(!pxQTag.startsWith("<")){return "";}
     if(!pxQTag.endsWith(">")){return "";}
     return pxQTag.substring(1,pxQTag.length()-1);
-  }//+++
-  
-  /**
-   * extract first than simply compare.<br>
-   * @param pxQTag #
-   * @param pxName #
-   * @return String::equals
-   */
-  static public final
-  boolean ccCompareQTagString(String pxQTag, String pxName){
-    if(!VcConst.ccIsValidString(pxName)){return false;}
-    return ccExtractQTagString(pxQTag).equals(pxName);
   }//+++
   
   /**
@@ -128,6 +130,21 @@ public final class VcStringUtility {
     int lpLength=pxSource.length();
     if(pxCharCount<1 || pxCharCount>lpLength){return pxSource;}
     return pxSource.substring(lpLength-pxCharCount, lpLength);
+  }//+++
+  
+  /**
+   * the break character is hard coded to '@' '$' and '|'.<br>
+   * also replace true and false to 'o' and 'x'.<br>
+   * @param pxSource will get .toString() invoked explicitly
+   * @return line broken string representation
+   */
+  static public final String ccBreakObject(Object pxSource){
+    if(pxSource==null){return "";}
+    return 
+      pxSource.toString()
+        .replaceAll("(\\$|@|\\|)", VcConst.C_V_NEWLINE)
+        .replaceAll("true", "o")
+        .replaceAll("false", "x");
   }//+++
   
   //=== packing

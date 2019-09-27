@@ -17,7 +17,6 @@
 
 package kosui.ppputil;
 
-import java.util.Calendar;
 import java.util.Random;
 import kosui.ppplogic.ZiMemory;
 import processing.core.PApplet;
@@ -316,6 +315,17 @@ public final class VcNumericUtility {
    */
   public static final int ccInteger(float pxVal){
     return (int)pxVal;
+  }//+++
+  
+  /**
+   * @param pxSource dose no check
+   * @param pxMagnitude does no check
+   * @return source x magnitude
+   */
+  public static final int ccMagnify(int pxSource, float pxMagnitude){
+    return PApplet.ceil(
+      ccFloat(pxSource)*pxMagnitude
+    );
   }//+++
   
   //=== 
