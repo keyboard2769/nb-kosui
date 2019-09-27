@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import processing.core.PApplet;
 import processing.data.StringList;
@@ -56,7 +57,14 @@ public final class VcConst {
   public static final String C_V_PWD
     = System.getProperty("user.dir");
   
+  //===
+  
+  private static final RuntimeException E_GENERAL_GET
+    = new RuntimeException("general_exception_of_get_mehod");
+  
   private static boolean cmDoseLog = false;
+  
+  //=== 
   
   private VcConst(){}//..!
   
@@ -242,6 +250,101 @@ public final class VcConst {
         + iace.getMessage());
     }//..?
     return lpRes;
+  }//+++
+  
+  /**
+   * alias for Field.setInt and swallow exception for you.<br>
+   * @param pxInstance do not pass null
+   * @param pxFieldName do not pass null
+   * @param pxVal can be any thing
+   */
+  public static final
+  void ccSetIntegerFieldValue(Object pxInstance, String pxFieldName, int pxVal){
+    if(pxInstance==null){return;}
+    if(!ccIsValidString(pxFieldName)){return;}
+    try {
+      Field lpField = pxInstance.getClass().getField(pxFieldName);
+      lpField.setInt(pxInstance, pxVal);
+    } catch (Exception e) {
+      System.err.println(".ccSetIntegerFieldValue()$failed_with:"
+        + e.getMessage());
+    }//..?
+  }//+++
+  
+  /**
+   * alias for Field.getInt and exchange exception for you.<br>
+   * @param pxInstance do not pass null
+   * @param pxFieldName do not pass null
+   * @return can be anything
+   * @throws RuntimeException the hard coded one
+   */
+  public static final
+  int ccGetIntegerFieldValue(Object pxInstance, String pxFieldName)
+  throws RuntimeException
+  {
+    if(pxInstance==null){throw E_GENERAL_GET;}
+    if(!ccIsValidString(pxFieldName)){throw E_GENERAL_GET;}
+    int lpRes=0;
+    try {
+      Field lpFiled = pxInstance.getClass().getField(pxFieldName);
+      lpRes=lpFiled.getInt(pxInstance);
+    }catch(Exception e){
+      System.err.println(".ccGetIntegerFieldValue()$failed_with:"
+        + e.getMessage());
+      throw E_GENERAL_GET;
+    }//..?
+    return lpRes;
+  }//+++
+  
+  /**
+   * iterates Class.getDeclaredFields and extract their name and pack up.<br>
+   * @param pxClass serve as source
+   * @return could be null
+   */
+  public static final
+  List<String> ccListAllIntegerFieldName(Class<?> pxClass){
+    return ccListAllFieldName(pxClass, int.class);
+  }//+++
+  
+  /**
+   * iterates Class.getDeclaredFields and extract their name and pack up.<br>
+   * @param pxClass serve as source
+   * @return could be null
+   */
+  public static final
+  List<String> ccListAllBooleanFieldName(Class<?> pxClass){
+    return ccListAllFieldName(pxClass, boolean.class);
+  }//+++
+  
+  /**
+   * iterates Class.getDeclaredFields and extract their name and pack up.<br>
+   * @param pxClass serve as source
+   * @param pxFieldType serve as filter
+   * @return could be null
+   */
+  public static final
+  List<String> ccListAllFieldName(Class<?> pxClass, Class<?>pxFieldType){
+    
+    //-- check in
+    if(pxClass==null){return null;}
+    
+    //-- retrieve
+    Field[] lpDesField = pxClass.getDeclaredFields();
+    if(lpDesField==null){return null;}
+    if(lpDesField.length==0){return null;}
+    
+    //-- filtering
+    List<String> lpRes=new LinkedList<String>();
+    for(Field it:lpDesField){
+      if(it==null){continue;}
+      if(pxFieldType==null){continue;}
+      if(it.getType().equals(pxFieldType)){
+        lpRes.add(it.getName());
+      }//+++
+    }//..~
+    
+    return lpRes;
+    
   }//+++
   
   //=== local
