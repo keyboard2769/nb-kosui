@@ -94,10 +94,10 @@ public class ZcRangedValueModel extends ZcRangedModel{
   
   /**
    * @param pxGivenValue #
-   * @return exclusive
+   * @return inclusive
    */
   public final boolean ccIsAbove(int pxGivenValue){
-    return cmValue>pxGivenValue;
+    return cmValue>=pxGivenValue;
   }//+++
   
   /**

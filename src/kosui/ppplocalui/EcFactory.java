@@ -109,7 +109,7 @@ public final class EcFactory {
     boolean pxHasStroke, boolean pxIsVertical, int pxW, int pxH
   ){
     pxTarget.ccSetSize(pxW, pxH);
-    pxTarget.ccSetColor(0xFFEE3333,0xFFEEEE33);
+    pxTarget.ccSetupColor(0xFFEE3333,0xFFEEEE33);
     pxTarget.ccSetIsVertical(pxIsVertical);
     pxTarget.ccSetHasStroke(pxHasStroke);
     pxTarget.ccSetGaugeColor(0xFF111111, 0xFFCCCCCC);
@@ -135,7 +135,7 @@ public final class EcFactory {
     boolean pxHasStroke, boolean pxIsVertical, int pxW, int pxH
   ){
     pxTarget.ccSetSize(pxW, pxH);
-    pxTarget.ccSetColor(EcConst.C_RED,EcConst.C_LIT_GRAY);
+    pxTarget.ccSetupColor(EcConst.C_RED,EcConst.C_LIT_GRAY);
     pxTarget.ccSetIsVertical(pxIsVertical);
     pxTarget.ccSetHasStroke(pxHasStroke);
     pxTarget.ccSetGaugeColor(EcConst.C_DIM_GRAY, EcConst.C_LIT_GRAY);

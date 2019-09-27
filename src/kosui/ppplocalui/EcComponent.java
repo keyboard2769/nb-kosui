@@ -171,8 +171,24 @@ public abstract class EcComponent extends EcRect{
    * the visibility only means the ccUpdate() will get bypassed or not.<br>
    * @param pxStatus #
    */
-  public final void ccSetVisible(boolean pxStatus){
+  public final void ccSetIsVisible(boolean pxStatus){
     cmIsVisible=pxStatus;
+  }//+++
+  
+  /**
+   * alias for setting both visibility and enabled false
+   */
+  public final void ccHide(){
+    ccSetIsEnabled(false);
+    ccSetIsVisible(false);
+  }//+++
+  
+  /**
+   * alias for setting both visibility and enabled true
+   */
+  public final void ccShow(){
+    ccSetIsEnabled(true);
+    ccSetIsVisible(true);
   }//+++
   
   /**

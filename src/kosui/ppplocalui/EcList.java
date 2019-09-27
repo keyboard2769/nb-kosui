@@ -55,7 +55,7 @@ public class EcList extends EcElement{
     super();
     ccSetIsEnabled(false);
     ccFitSize();
-    ccSetColor(EcConst.C_YELLOW, EcConst.C_DIM_GRAY);
+    ccSetupColor(EcConst.C_YELLOW, EcConst.C_DIM_GRAY);
   }//+++ 
   
   //=== modifier

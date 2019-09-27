@@ -30,13 +30,32 @@ public class ZcRoller {
   private final int cmMask;
   
   /**
-   * @param pxPowerOfTwo supposedly THE frame rate
+   * @param pxMask supposedly THE frame rate -1 
    * @param pxInitValue supposedly as frame count
    */
-  public ZcRoller(int pxPowerOfTwo, int pxInitValue) {
-    cmMask=VcNumericUtility.ccToPowerOfTwo(pxPowerOfTwo&0x7FFF)-1;
+  public ZcRoller(int pxMask, int pxInitValue) {
+    cmMask=VcNumericUtility.ccToPowerOfTwo(pxMask&0x7FFF)-1;
     cmVal=pxInitValue;
   }//..!
+  
+  /**
+   * initiated value is 1.<br>
+   * @param pxMask supposedly THE frame rate -1
+   */
+  public ZcRoller(int pxMask){
+    this(pxMask,1);
+  }//..!
+  
+  /**
+   * mask is 15.<br>
+   * initiated value is 0.<br>
+   */
+  public ZcRoller(){
+    cmMask=15;
+    cmVal=0;
+  }//..!
+  
+  //===
   
   /**
    * adding and masking.<br>

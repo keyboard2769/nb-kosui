@@ -241,6 +241,18 @@ public final class EcConst {
     return (pxSource&0x00FFFFFF)|((pxAlpha&0xFF)<<24);
   }//+++
   
+  //=== congigure
+  
+  /**
+   * iterate all content to call his .hide() .<br>
+   * @param pxList do not pass null
+   */
+  static public final void ccHideAll(List<EcComponent> pxList){
+    if(pxList==null){return;}
+    if(pxList.isEmpty()){return;}
+    for(EcComponent it:pxList){it.ccHide();}
+  }//+++
+  
   //=== translate
   
   /**
@@ -296,7 +308,7 @@ public final class EcConst {
    * @return the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_1909262239";
+    return "_1909271139";
   }//+++
   
 }//***eof

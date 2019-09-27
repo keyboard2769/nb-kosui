@@ -84,6 +84,7 @@ public class EcElement extends EcComponent{
    */
   public EcElement(){
     super();
+    cmText="";
   }//..!
   
   /**
@@ -127,6 +128,7 @@ public class EcElement extends EcComponent{
    * @param pxColor #
    */
   protected final void drawText(int pxColor){
+    if(cmText.isEmpty()){return;}
     int lpX=ccCenterX();
     pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
     switch(cmTextAlign){
@@ -268,11 +270,10 @@ public class EcElement extends EcComponent{
   }//+++
   
   /**
-   * 
    * @param pxOn ARGB
    * @param pxOff ARGB
    */
-  public final void ccSetColor(int pxOn, int pxOff){
+  public final void ccSetupColor(int pxOn, int pxOff){
     cmOnColor=pxOn;cmOffColor=pxOff;
   }//+++
   
