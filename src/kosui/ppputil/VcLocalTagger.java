@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import kosui.ppplocalui.EcConst;
 import processing.core.PApplet;
 import static processing.core.PApplet.ceil;
 import static kosui.ppputil.VcConst.ccIsValidString;
@@ -44,13 +45,13 @@ public final class VcLocalTagger{
   private int
     //-- count
     cmCounter=0,
-    cmWrap=8,
+    cmRowWrap=8,
     //-- pix
-    cmTagHeight=16,
+    cmTagHeight=EcConst.C_DEFAULT_TEXT_HEIGHT,
     cmGapX=100,
-    cmGapY=20,
-    cmOffsetX=5,
-    cmOffsetY=20,
+    cmGapY=cmTagHeight+2,
+    cmAnchorX=5,
+    cmAnchorY=20,
     //-- ARGB
     cmBackground=0x99666666,
     cmForeround =0xFF33EE33
@@ -63,6 +64,8 @@ public final class VcLocalTagger{
     cmAsBar = false
   ;//..?
   
+  //===
+  
   /**
    * <pre>
    * should get invoked from the manager's initiator.
@@ -71,12 +74,68 @@ public final class VcLocalTagger{
    *   you can call the setter anywhere.
    * </pre>
    * @param pxOwner your sketch
+   * @param pxRow wrap count .. bigger than three or AUTO 
+   * @param pxVisible anyway
+   */
+  public final void ccInit(PApplet pxOwner, int pxRow, boolean pxVisible){
+    if(pxOwner==null){return;}
+    if(cmOwner==null){cmOwner=pxOwner;}
+    int lpTextHeight = (int)(pxOwner.textAscent()+pxOwner.textDescent());
+    if(lpTextHeight>EcConst.C_DEFAULT_AUTOSIZE_HEIGHT){
+      cmTagHeight=lpTextHeight+2;
+      cmGapY=cmTagHeight+2;
+    }//..?
+    if(pxRow>3){
+      ccSetRowWrap(pxRow);
+    }else{
+      ccSetRowWrap((pxOwner.height*2/3)/cmGapY);
+    }//..?
+    ccSetIsVisible(pxVisible);
+  }//..!
+  
+  /**
+   * <pre>
+   * should get invoked from the manager's initiator.
+   * you might have to call this in your sketch.
+   * if you want to change the raw setting
+   *   you can call the setter anywhere.
+   * </pre>
+   * visibility is true by default.<br>
+   * @param pxOwner your sketch
    * @param pxRow max row count, DONT PASS ZERO!!
    */
   public final void ccInit(PApplet pxOwner, int pxRow){
-    if(pxOwner==null){return;}
-    if(cmOwner==null){cmOwner=pxOwner;}
-    ccSetRow(pxRow);
+    ccInit(pxOwner, pxRow, true);
+  }//..!
+  
+  /**
+   * <pre>
+   * should get invoked from the manager's initiator.
+   * you might have to call this in your sketch.
+   * if you want to change the raw setting
+   *   you can call the setter anywhere.
+   * </pre>
+   * row wrap is auto calculated.<br>
+   * @param pxOwner your sketch
+   * @param pxVisible anyway
+   */
+  public final void ccInit(PApplet pxOwner, boolean pxVisible){
+    ccInit(pxOwner, -1, pxVisible);
+  }//..!
+  
+  /**
+   * <pre>
+   * should get invoked from the manager's initiator.
+   * you might have to call this in your sketch.
+   * if you want to change the raw setting
+   *   you can call the setter anywhere.
+   * </pre>
+   * row wrap is auto calculated.<br>
+   * visibility is true by default.<br>
+   * @param pxOwner your sketch
+   */
+  public final void ccInit(PApplet pxOwner){
+    ccInit(pxOwner,-1,true);
   }//..!
   
   //===
@@ -96,8 +155,8 @@ public final class VcLocalTagger{
    * for 320*240 size, 7 is recommended. 
    * @param pxRow 1~31
    */
-  public final void ccSetRow(int pxRow){
-    cmWrap=(pxRow&0x1F)|0x1;
+  public final void ccSetRowWrap(int pxRow){
+    cmRowWrap=(pxRow&0x1F)|0x1;
   }//+++
   
   /**
@@ -117,8 +176,8 @@ public final class VcLocalTagger{
    * @param pxOffsetY pix
    */
   public final void ccSetLocationOffset(int pxOffsetX, int pxOffsetY){
-    cmOffsetX=pxOffsetX;
-    cmOffsetY=pxOffsetY;
+    cmAnchorX=pxOffsetX;
+    cmAnchorY=pxOffsetY;
   }//+++
   
   /**
@@ -165,11 +224,11 @@ public final class VcLocalTagger{
     int lpX;
     int lpY;
     if(cmAsBar){
-      lpX=(cmCounter%cmWrap)*cmGapX+cmOffsetX;
-      lpY=(cmCounter/cmWrap)*cmGapY+cmOffsetY;
+      lpX=(cmCounter%cmRowWrap)*cmGapX+cmAnchorX;
+      lpY=(cmCounter/cmRowWrap)*cmGapY+cmAnchorY;
     }else{
-      lpX=(cmCounter/cmWrap)*cmGapX+cmOffsetX;
-      lpY=(cmCounter%cmWrap)*cmGapY+cmOffsetY;
+      lpX=(cmCounter/cmRowWrap)*cmGapX+cmAnchorX;
+      lpY=(cmCounter%cmRowWrap)*cmGapY+cmAnchorY;
     }//..?
     //--
     cmOwner.fill(cmBackground);

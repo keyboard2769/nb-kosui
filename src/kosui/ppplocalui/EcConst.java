@@ -297,8 +297,23 @@ public final class EcConst {
    * @param args you know what it is.
    */
   public static void main(String[] args){
+    /* *
+     * NO BODY IS SUPPOSED TO RUN THIS DIRECTLY
+     * # prefix numbering tag meaning:
+     * - [ 0 ]: 
+     * - [ 1 ]:  
+     * - [ 2 ]:  
+     * - [ 3 ]:  
+     * - [ 4 ]: test|log|debug 
+     * - [ 5 ]:  
+     * - [ 6 ]: todo|plan|fill
+     * - [ 7 ]: dirty-case|work-around
+     * - [ 8 ]:  
+     * - [ 9 ]:  
+     */
     VcConst.ccPrintln("Key Optional System User Interface");
-    VcConst.ccPrintln("v0.2.0 b1909001");
+    VcConst.ccPrintln("v0.2.0");
+    VcConst.ccPrintln("build",ccGetLastLeavingStamp());
     VcConst.ccPrintln("on",VcConst.C_V_OS);
     VcConst.ccPrintln("at",VcConst.C_V_PWD);
     VcConst.ccErrln("NO_PUBLIC_USE!!");
@@ -308,7 +323,7 @@ public final class EcConst {
    * @return the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_1909271604";
+    return "_1909272202";
   }//+++
   
 }//***eof

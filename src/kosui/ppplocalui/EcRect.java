@@ -33,6 +33,8 @@ public class EcRect extends EcPoint{
    * size
    */
   protected int cmW=8,cmH=8;
+  
+  //===
 
   /**
    * all initiated value is eight.
@@ -40,7 +42,7 @@ public class EcRect extends EcPoint{
   public EcRect(){
     super();
     ccSetSize(8, 8);
-  }//+++
+  }//..!
   
   /**
    * rest of those initiated values might be eight.
@@ -50,8 +52,19 @@ public class EcRect extends EcPoint{
   public EcRect(int pxW, int pxH){
     super();
     ccSetSize(pxW, pxH);
-  }//+++
+  }//..!
   
+  /**
+   * @param pxX pix
+   * @param pxY pix
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public EcRect(int pxX, int pxY, int pxW, int pxH){
+    super(pxX, pxY);
+    ccSetSize(pxW, pxH);
+  }//..!
+ 
   /**
    * retrieves filed value directly.<br>
    * @param pxAWTRect do not pass null 
@@ -61,7 +74,7 @@ public class EcRect extends EcPoint{
     if(pxAWTRect==null){return;}
     ccSetLocation(pxAWTRect.x, pxAWTRect.y);
     ccSetSize(pxAWTRect.width, pxAWTRect.height);
-  }//+++
+  }//..!
   
   //===
   
@@ -345,6 +358,21 @@ public class EcRect extends EcPoint{
    * @return y+h
    */
   public final int ccEndY(){return cmY+cmH;}//+++
+  
+  /**
+   * @param pxColumn will get masked to 0-255
+   * @return x + c * w
+   */
+  public final int ccGridX(int pxColumn){return cmX+(pxColumn&0xFF)*cmW;}//+++
+  
+  /**
+   * 
+   * @param pxRow will get masked to 0-255
+   * @return y + r * h
+   */
+  public final int ccGridY(int pxRow){return cmY+(pxRow&0xFF)*cmH;}//+++
+  
+  //===
   
   /**
    * 

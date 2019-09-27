@@ -59,7 +59,7 @@ public class ZcOffDelayTimer extends ZcTimer{
    * {@inheritDoc }
    */
   @Override public boolean ccIsCounting(){
-    return cmValue!=cmMax;
+    return (cmValue!=cmMax)&&(cmValue!=0);
   }//+++
   
   /**

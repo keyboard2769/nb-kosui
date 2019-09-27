@@ -90,7 +90,7 @@ public class DemoLocalUtility extends PApplet {
     
     //-- managers ** init
     VcLocalAxis.ccGetInstance().ccInit(self, true);
-    VcLocalTagger.ccGetInstance().ccInit(this, 7);
+    VcLocalTagger.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
     VcLocalStoker.ccGetInstance().ccInit(this);
     VcLocalHelper.ccGetInstance().ccInit(this);

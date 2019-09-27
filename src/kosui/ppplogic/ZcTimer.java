@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcStringUtility;
+
 /**
  * this is the base of type of one pass delay timer. <br>
  * it assumes all your flow can get fit into checked value model. <br>
@@ -49,13 +51,17 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
   
   //===
 
-  /**
-   * 
-   * @return #
-   * @deprecated i still believe client code should not concern on this
-   */
-  @Deprecated public final int tstGetCurrentCount(){
-    return cmValue;
+  @Override public String toString() {
+    StringBuilder lpRes=new StringBuilder(ZcTimer.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupParedTag("v", cmValue));
+    lpRes.append(VcStringUtility.ccPackupParedTag("j", cmJudge));
+    lpRes.append(VcStringUtility.ccPackupParedTag("s", cmMax));
+    lpRes.append(VcStringUtility.ccPackupParedTag("UP", ccIsUp()));
+    lpRes.append(VcStringUtility.ccPackupParedTag("ACT", ccIsCounting()));
+    return lpRes.toString();
   }//+++
-  
+
 }//***eof

@@ -56,7 +56,7 @@ public final class VcConst {
   public static final String C_V_PWD
     = System.getProperty("user.dir");
   
-  private static final boolean C_DOSE_LOG = false;
+  private static boolean cmDoseLog = false;
   
   private VcConst(){}//..!
   
@@ -139,11 +139,18 @@ public final class VcConst {
   //===
   
   /**
+   * @param pxVal ##
+   */
+  public static final void ccSetDoseLog(boolean pxVal){
+    cmDoseLog=pxVal;
+  }//+++
+  
+  /**
    * masked out for ccPrintln()<br>
    * @param pxLine must have some thing
    */
   static public final void ccLogln(String pxLine){
-    if(C_DOSE_LOG){ccPrintln(pxLine);}
+    if(cmDoseLog){ccPrintln(pxLine);}
   }//+++
   
   /**
@@ -152,7 +159,7 @@ public final class VcConst {
    * @param pxValue can be anything
    */
   static public final void ccLogln(String pxTag, Object pxValue){
-    if(C_DOSE_LOG){ccPrintln(pxTag, pxValue);}
+    if(cmDoseLog){ccPrintln(pxTag, pxValue);}
   }//+++
   
   //=== 
@@ -187,18 +194,7 @@ public final class VcConst {
    * @param pxLine #
    */
   public static final void ccErrln(String pxLine){
-    System.err.print(VcStampUtility.ccErrStampTypeI());
-    ccPrintln(pxLine);
-  }//..?
-  
-  /**
-   * only a "[ERR]" tag with time stamp will be added through System.err.<br>
-   * @param pxTag #
-   * @param pxValue #
-   */
-  public static final void ccErrln(String pxTag, Object pxValue){
-    System.err.print(VcStampUtility.ccErrStampTypeI());
-    ccPrintln(pxTag,pxValue);
+    System.err.println(VcStampUtility.ccErrStampTypeI()+pxLine);
   }//..?
   
   //=== backward
