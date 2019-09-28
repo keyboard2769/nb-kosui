@@ -29,7 +29,11 @@ import processing.core.PApplet;
  */
 public class ScGauge extends JProgressBar{
   
-  private float cmSpan;
+  /**
+   * hard coded as byte
+   */
+  public static final int C_VAL_MASK = 0xFF;
+  
   private final String cmUnit;
   private final String cmKey;
   private String cmText;
@@ -44,22 +48,17 @@ public class ScGauge extends JProgressBar{
    * @param pxUnit will get nulled out 
    */
   public ScGauge(String pxName, String pxUnit){
-    super(SwingConstants.HORIZONTAL,0,100);
+    super(SwingConstants.HORIZONTAL,0,C_VAL_MASK);
     cmKey=VcStringUtility.ccNulloutString(pxName);
     cmText=cmKey;
     cmUnit=VcStringUtility.ccNulloutString(pxUnit);
-    cmSpan=100f;
-    ssInit();
+    this.setValue(99);
+    this.setString(cmText+":?"+cmUnit);
+    this.setBorderPainted(true);
+    this.setStringPainted(true);
+    this.setBackground(cmBackgroundColor);
+    this.setForeground(cmForeGroundColor);
   }//..!
-  
-  private void ssInit(){
-    setValue(2);
-    setString(cmText+cmUnit);
-    setBorderPainted(true);
-    setStringPainted(true);
-    setBackground(cmBackgroundColor);
-    setForeground(cmForeGroundColor);
-  }//++!
   
   //===
   
@@ -97,35 +96,57 @@ public class ScGauge extends JProgressBar{
     ccSetForeGroundColor(pxFore);
     ccSetAlertColor(pxAlert);
   }//+++
-  
+    
   /**
-   * @param pxSpan must be bigger than 1f
+   * the gauge will be full as this value equals 255.<br>
+   * @param pxByte : will get masked to 0-255
    */
-  public final void ccSetSpan(float pxSpan){
-    cmSpan=pxSpan<1f?1f:pxSpan;
+  public final void ccSetPercentage(int pxByte){
+    setValue(pxByte&C_VAL_MASK);
   }//+++
   
   /**
-   * @param pxValue will get constrained to 0-10 via PApplet.constrain
+   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
+   * @param pxZeroToOne : 0.00 - 1.00f
    */
-  public final void ccSetPercentage(int pxValue){
-    int lpPercentage=PApplet.constrain(pxValue,0,100);
-    float lpReal=cmSpan*lpPercentage/100;
-    setValue(lpPercentage);
-    setString(cmText
-      +Float.toString(VcNumericUtility.ccRoundForOneAfter(lpReal))
-      +cmUnit
-    );
+  public final void ccSetPercentage(float pxZeroToOne){
+    setValue(VcNumericUtility.ccProportion(pxZeroToOne));
   }//+++
   
   /**
-   * @param pxValue will get constrained to span x20 via PApplet.constrain
+   * only change the text of this component.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
    */
   public final void ccSetValue(int pxValue){
-    float lpReal=PApplet.constrain(pxValue, 0, cmSpan*20);
-    int lpPercentage=PApplet.ceil(100*lpReal/(cmSpan*10));
-    setValue(lpPercentage);
-    setString(cmText+":"+VcNumericUtility.ccFormatPointTwoFloat(lpReal)+cmUnit);
+    setString(String.format("%s:%d%s", cmText,pxValue,cmUnit));
+  }//+++
+  
+  /**
+   * only change the text of this component.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
+   */
+  public final void ccSetValue(float pxValue){
+    setString(String.format("%s:%f%s", cmText,pxValue,cmUnit));
+  }//+++
+  
+  /**
+   * only change the text of this component.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
+   */
+  public final void ccSetFloatValueForOneAfter(float pxValue){
+    setString(String.format("%s:%.1f%s", cmText,pxValue,cmUnit));
+  }//+++
+  
+  /**
+   * only change the text of this component.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
+   */
+  public final void ccSetFloatValueForTwoAfter(float pxValue){
+    setString(String.format("%s:%.2f%s", cmText,pxValue,cmUnit));
   }//+++
   
   /**

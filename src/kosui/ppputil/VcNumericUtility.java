@@ -291,6 +291,19 @@ public final class VcNumericUtility {
   }//+++
   
   /**
+   * @param pxVal ##
+   * @param pxBase ##
+   * @return value / base
+   */
+  public static final float ccFloat(int pxVal, int pxBase){
+    return ((float)pxVal)/((float)pxBase);
+  }//+++
+  
+  public static final float ccToFloatForOneAfter(int pxVal){
+    return ccRoundForOneAfter(ccFloat(pxVal, 10));
+  }//++
+  
+  /**
    * just casting.<br>
    * @param pxVal #
    * @return #

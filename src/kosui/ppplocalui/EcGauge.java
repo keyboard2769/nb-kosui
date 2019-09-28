@@ -26,6 +26,11 @@ import kosui.ppputil.VcNumericUtility;
 public class EcGauge extends EcElement {
   
   /**
+   * hard coded as byte
+   */
+  public static final int C_VAL_MASK = 0xFF;
+  
+  /**
    * setting
    */
   protected boolean
@@ -42,7 +47,7 @@ public class EcGauge extends EcElement {
   ;//--
   
   /**
-   * between 0-255
+   * initiated value is hard coded to 99
    */
   protected int cmContentValue = 99;
 
@@ -107,10 +112,10 @@ public class EcGauge extends EcElement {
   
   /**
    * the gauge will be full as this value equals 255.<br>
-   * @param pxHalfByte : will get masked to 0-255
+   * @param pxByte : will get masked to 0-255
    */
-  public final void ccSetPercentage(int pxHalfByte){
-    cmContentValue=pxHalfByte&0xFF;
+  public final void ccSetPercentage(int pxByte){
+    cmContentValue=pxByte&C_VAL_MASK;
   }//+++
   
   /**
@@ -128,13 +133,17 @@ public class EcGauge extends EcElement {
    * 
    * @param cmVal : has stroke?
    */
-  public final void ccSetHasStroke(boolean cmVal){cmHasStroke=cmVal;}//+++
+  public final void ccSetHasStroke(boolean cmVal){
+    cmHasStroke=cmVal;
+  }//+++
   
   /**
    * 
    * @param cmVal : is vertical?
    */
-  public final void ccSetIsVertical(boolean cmVal){cmIsVertical=cmVal;}//+++
+  public final void ccSetIsVertical(boolean cmVal){
+    cmIsVertical=cmVal;
+  }//+++
   
   /**
    * only for the backend color set <br>
@@ -188,7 +197,7 @@ public class EcGauge extends EcElement {
    * @return inputed_value*current_gauge/255
    */
   public final int ccTellScale(int pxVal){
-    return pxVal*cmContentValue/0xFF;
+    return pxVal*cmContentValue/C_VAL_MASK;
   }//+++
   
   //===
@@ -203,7 +212,7 @@ public class EcGauge extends EcElement {
    * @return # 0-255
    */
   public final int ccGetContentValue(){
-    return cmContentValue&0xFF;
+    return cmContentValue&C_VAL_MASK;
   }//+++
   
   /**
@@ -233,8 +242,8 @@ public class EcGauge extends EcElement {
     if(!ccIsVisible()){return;}
     if(!ccIsMousePressed()){return;}
     cmContentValue=cmIsVertical?
-       (255-ccGetMouseOffsetY()*255/cmH)
-      :(    ccGetMouseOffsetX()*255/cmW);
+       (C_VAL_MASK-ccGetMouseOffsetY()*C_VAL_MASK/cmH)
+      :(           ccGetMouseOffsetX()*C_VAL_MASK/cmW);
   }//+++
   
 }//***eof
