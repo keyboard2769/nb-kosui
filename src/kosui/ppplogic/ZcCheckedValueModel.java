@@ -55,6 +55,17 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
   }//+++
   
   /**
+   * note: this dose not compare, feel free for the overhead.<br>
+   * @param pxLevel ##
+   * @return if the value exactly equals with the judge line of the level
+   */
+  public final boolean ccIsValueAt(int pxLevel){
+    return cmValue==cmLevelor.ccGetJudge(pxLevel);
+  }//+++
+  
+  /**
+   * CAUTION:CALL THIS SEVERAL TIME IN A LOOP MAY CAUSE REDUNDANT OVERHEAD.<br>
+   * think about create a less abstract model class.<br>
    * you have to remember which level stands for what your self
    * @param pxLevel 0-31
    * @return true if current level matches
@@ -64,6 +75,8 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
   }//+++
   
   /**
+   * CAUTION:CALL THIS SEVERAL TIME IN A LOOP MAY CAUSE REDUNDANT OVERHEAD.<br>
+   * think about create a less abstract model class.<br>
    * you have to remember which level stands for what your self
    * @param pxLevel 0-31
    * @return true if current level is higher
@@ -73,6 +86,8 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
   }//+++
   
   /**
+   * CAUTION:CALL THIS SEVERAL TIME IN A LOOP MAY CAUSE REDUNDANT OVERHEAD.<br>
+   * think about create a less abstract model class.<br>
    * you have to remember which level stands for what your self
    * @param pxLevel 0-31
    * @return true if current level is lower
