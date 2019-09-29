@@ -17,6 +17,7 @@
 
 package kosui.pppmodel;
 
+import java.util.Arrays;
 import kosui.ppputil.VcNumericUtility;
 
 /**
@@ -32,19 +33,19 @@ public final class McLockedIntArray {
   //===
   
   /**
-   *
-   * @param pxSize array size
+   * @param pxSize will get manipulated to power of two
    */
   public McLockedIntArray(int pxSize) {
     cmArray = new int[VcNumericUtility.ccToPowerOfTwo(pxSize)];
+    Arrays.fill(cmArray, 0);
     cmMask = cmArray.length - 1;
   }//+++
 
   //===
+  
   /**
-   *
-   * @param pxIndex #
-   * @param pxVal #
+   * @param pxIndex will get masked to fit size
+   * @param pxVal will get masked to 0-65535
    */
   synchronized public void ccSet(int pxIndex, int pxVal) {
     cmArray[pxIndex & cmMask] = pxVal & 0xFFFF;
@@ -53,9 +54,8 @@ public final class McLockedIntArray {
   //===
   
   /**
-   *
-   * @param pxIndex #
-   * @param pxOffset #
+   * @param pxIndex will get masked to fit size
+   * @param pxOffset value mask is performed after adding
    */
   synchronized public void ccShift(int pxIndex, int pxOffset) {
     cmArray[pxIndex & cmMask] += pxOffset;
@@ -65,20 +65,27 @@ public final class McLockedIntArray {
   //===
   
   /**
-   *
-   * @param pxIndex #
-   * @return #
+   * @param pxIndex will get masked to fit size
+   * @return raw data
    */
   synchronized public int ccGet(int pxIndex) {
     return cmArray[pxIndex & cmMask];
   }//+++
 
   /**
-   *
    * @return length of array
    */
   synchronized public int ccGetSize() {
     return cmArray.length;
+  }//+++
+  
+  /**
+   * @return via for iteration
+   */
+  synchronized public int ccSum(){
+    int lpRes=0;
+    for(int i:cmArray){lpRes+=i;}
+    return lpRes;
   }//+++
 
 }//***eof

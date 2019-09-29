@@ -19,8 +19,7 @@ package kosui.ppplocalui;
 
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
-import static processing.core.PApplet.nf;
-import static processing.core.PApplet.nfc;
+import processing.core.PApplet;
 
 /**
  * a value box shows some value with unit. <br>
@@ -123,7 +122,7 @@ public class EcValueBox extends EcElement{
    * @param pxVal #
    */
   public final void ccSetValue(int pxVal){
-    cmText=nf(pxVal, cmDigit)+" "+cmUnit;
+    cmText=PApplet.nf(pxVal, cmDigit)+" "+cmUnit;
   }//+++
 
   /**
@@ -134,18 +133,34 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetValue(int pxVal, int pxDigit){
     cmDigit=pxDigit;
-    cmText=nf(pxVal, cmDigit)+" "+cmUnit;
+    cmText=PApplet.nf(pxVal, cmDigit)+" "+cmUnit;
   }//+++
 
   /**
-   * digit value is supposed to be at 0-8. 
-   * this does not check, do not get over. 
-   * @param pxVal #
-   * @param pxDigit # 
+   * only change the text of this box.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
    */
-  public final void ccSetValue(float pxVal, int pxDigit){
-    cmDigit=pxDigit;
-    cmText=nfc(pxVal, cmDigit)+" "+cmUnit;
+  public final void ccSetValue(float pxValue){
+    ccSetText(String.format("%f %s",pxValue,cmUnit));
+  }//+++
+  
+  /**
+   * only change the text of this box.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
+   */
+  public final void ccSetFloatValueForOneAfter(float pxValue){
+    ccSetText(String.format("%.1f %s",pxValue,cmUnit));
+  }//+++
+  
+  /**
+   * only change the text of this box.<br>
+   * the text is constructed via String.format, you DO pay its overhead.<br>
+   * @param pxValue can be anything
+   */
+  public final void ccSetFloatValueForTwoAfter(float pxValue){
+    ccSetText(String.format("%.2f %s",pxValue,cmUnit));
   }//+++
 
   /**

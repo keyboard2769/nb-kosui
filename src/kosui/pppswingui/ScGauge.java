@@ -21,7 +21,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
-import processing.core.PApplet;
 
 /**
  * a gauge might be easy to understand be hard to draw.<br>
