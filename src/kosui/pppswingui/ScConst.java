@@ -63,9 +63,12 @@ public class ScConst {
    * may got returned to any null-able string return value. <br>
    * preset but not necessarily as an empty string. <br>
    */
-  public static final String
-    C_M_INVALID = ""
-  ;//...
+  public static final String C_M_INVALID = "";
+  
+  /**
+   * for input box if cancel is pressed it returns this 
+   */
+  public static final String C_M_CANCEL = "<cancel>";
   
   /**
    * in case you don't how trim informations from font matrix
@@ -248,7 +251,7 @@ public class ScConst {
   String ccGetStringByInputBox(String pxBrief, String pxDefault){
     if(!ccIsEDT()){return "<blocked>";}
     String lpRes=JOptionPane.showInputDialog(cmOwner, pxBrief, pxDefault);
-    if(!VcConst.ccIsValidString(lpRes)){return "<?>";}
+    if(!VcConst.ccIsValidString(lpRes)){return C_M_CANCEL;}
     return lpRes;
   }//+++
   
