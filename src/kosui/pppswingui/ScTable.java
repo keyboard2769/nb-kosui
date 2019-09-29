@@ -19,6 +19,7 @@ package kosui.pppswingui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 import java.awt.print.PrinterException;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -66,6 +67,20 @@ public final class ScTable extends JScrollPane {
   }//+++
   
   //===
+  
+  /**
+   * <pre>
+   * wrapper for JTable::addMouseListener(). 
+   * if you just add a listener to ScTable which is
+   *   a scraoll pane actually, you can never get any mouse clicked
+   *   event fired by that listener.
+   * </pre>
+   * @param pxListener #
+   */
+  public final void ccAddMouseListener(MouseListener pxListener) {
+    if(pxListener==null){return;}
+    cmTable.addMouseListener(pxListener);
+  }//+++
   
   /**
    * no null check.<br>

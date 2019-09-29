@@ -91,7 +91,7 @@ public final class ScList extends JScrollPane {
    * <pre>
    * wrapper for JList::addMouseListener(). 
    * if you just add a listener to ScList which is
-   *   the pane of real list, you can never get any mouse clicked
+   *   a scraoll pane actually, you can never get any mouse clicked
    *   event fired by that listener.
    * </pre>
    * @param pxListener #
