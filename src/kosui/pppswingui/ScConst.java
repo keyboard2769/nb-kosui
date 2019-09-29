@@ -86,6 +86,8 @@ public class ScConst {
     C_TPL_FORE     =Color.decode("#111111"),
     C_TPL_BACK_ON  =Color.decode("#33EE33"),
     C_TPL_BACK_OFF =Color.decode("#999999"),
+    C_VBX_FORE     =Color.decode("#33CC33"),
+    C_VBX_BACK_OFF =Color.decode("#333333"),
     //-- component ** normal
     C_COMBO_BACK  =Color.decode("#EEEECC"),
     C_TOGGLE_FORE =Color.decode("#111111"),

@@ -385,11 +385,11 @@ public final class ScFactory {
     String pxUpper, String pxMiddle, String pxLower
   ){return ccCreateNotch(pxUpper, pxMiddle, pxLower,-1,-1);}//+++
   
-  //== input UI ** text box
+  //=== input UI ** text box
   
   //[plan]::ccSetupInputBox()
   
-  //== outout UI ** stucked 
+  //=== outout UI ** stucked 
   
   /**
    * alias to constructor.<br>
@@ -418,7 +418,7 @@ public final class ScFactory {
      :ccCreateHrizontalSeparator();
   }//+++
   
-  //== outout UI ** text lamp
+  //=== outout UI ** text lamp
   
   /**
    * color and ability and text align is configured.<br>
@@ -441,11 +441,11 @@ public final class ScFactory {
   }//+++
   
   /**
-   * alias for ccSetupCommandButton() with construction
+   * alias for the setup one with construction.<br>
    * @param pxText if nothing is it we set something for you
    * @param pxW pix
    * @param pxH pix
-   * @return #
+   * @return new one
    */
   public static final
   JTextField ccCreateTextLamp(String pxText, int pxW, int pxH){
@@ -457,9 +457,9 @@ public final class ScFactory {
   }//+++
   
   /**
-   * alias for ccSetupCommandButton() with construction
+   * alias for the setup one with construction.<br>
    * @param pxText if nothing is it we set something for you
-   * @return #
+   * @return new one
    */
   public static final
   JTextField ccCreateTextLamp(String pxText){
@@ -467,6 +467,58 @@ public final class ScFactory {
       VcConst.ccIsValidString(pxText)?pxText:"<?>"
     );
     ccSetupTextLamp(lpRes, -1, -1);
+    return lpRes;
+  }//+++
+  
+  //=== output UI ** value box
+  
+  /**
+   * color and ability and text align is configured.<br>
+   * @param pxTarget do not pass null
+   * @param pxW pix
+   * @param pxH pix
+   */
+  public static final
+  void ccSetupValueBox(JTextField pxTarget, int pxW, int pxH){
+    if(pxTarget==null){return;}
+    pxTarget.setEditable(false);
+    pxTarget.setEnabled(false);
+    pxTarget.setBackground(ScConst.C_VBX_BACK_OFF);
+    pxTarget.setForeground(ScConst.C_VBX_FORE);
+    pxTarget.setDisabledTextColor(ScConst.C_VBX_FORE);
+    pxTarget.setHorizontalAlignment(JTextField.RIGHT);
+    if(pxW>0 && pxH>0){
+      pxTarget.setPreferredSize(new Dimension(pxW, pxH));
+    }//..?
+  }//+++
+  
+  /**
+   * alias for the setup one with construction.<br>
+   * @param pxForm if nothing is it we set something for you
+   * @param pxW pix
+   * @param pxH pix
+   * @return new one
+   */
+  public static final
+  JTextField ccCreateValueBox(String pxForm, int pxW, int pxH){
+    JTextField lpRes=new JTextField(
+      VcConst.ccIsValidString(pxForm)?pxForm:"<?00%>"
+    );
+    ccSetupValueBox(lpRes, pxW, pxH);
+    return lpRes;
+  }//+++
+  
+  /**
+   * alias for the setup one with construction.<br>
+   * @param pxForm if nothing is it we set something for you
+   * @return new one
+   */
+  public static final
+  JTextField ccCreateValueBox(String pxForm){
+    JTextField lpRes=new JTextField(
+      VcConst.ccIsValidString(pxForm)?pxForm:"<?00%>"
+    );
+    ccSetupValueBox(lpRes, -1, -1);
     return lpRes;
   }//+++
   
@@ -504,7 +556,7 @@ public final class ScFactory {
     return lpRes;
   }//+++
   
-  //== outout UI ** console area
+  //=== outout UI ** console area
   
   /**
    * color and ability and text align is configured
@@ -528,7 +580,7 @@ public final class ScFactory {
     pxTarget.setEnabled(false);
   }//+++
   
-  //== component ** misc
+  //=== component ** misc
   
   /**
    * <pre>

@@ -331,6 +331,20 @@ public final class VcNumericUtility {
   }//+++
   
   /**
+   * retrieve value via force casting
+   * @param pxVal could be anything
+   * @return 0 if anything went wrong
+   */
+  public static final int ccInteger(Object pxVal){
+    if(pxVal==null){return 0;}
+    if(pxVal instanceof Integer){
+      return ((Integer)pxVal).intValue();
+    }else{
+      return 0;
+    }//..?
+  }//+++
+  
+  /**
    * @param pxSource dose no check
    * @param pxMagnitude does no check
    * @return source x magnitude
