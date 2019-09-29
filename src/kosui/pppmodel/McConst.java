@@ -19,6 +19,7 @@ package kosui.pppmodel;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -28,8 +29,10 @@ import processing.data.XML;
 import processing.data.Table;
 import processing.data.TableRow;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
+import processing.data.StringList;
 
 /**
  * sometimes it will be completely okay if you just don't talk to people.<br>
@@ -53,7 +56,7 @@ public final class McConst {
   
   private McConst(){}//+++ 
   
-  //===
+  //=== resource
   
   /**
    * alias for Class<?>::getResourceAsStream.<br>
@@ -69,7 +72,7 @@ public final class McConst {
       (VcStringUtility.ccNulloutString(pxResourceIdentifier));
   }//+++
   
-  //===
+  //=== verify
   
   /**
    * with null check, absolution check, existence check, identical check.<br>
@@ -287,7 +290,44 @@ public final class McConst {
     else{return lpContent;}
   }//+++
   
-  //===
+  //=== output
+  
+  //[todo]::List<HashMap> ccReadINIFile(File)
+  //[todo]::ccWriteINIFile(File, Object)
+  //[todo]::ccWriteINIFIle(File, List<Object>)
+  
+  /**
+   * the canonical class name of given instance will be the section name.<br>
+   * iterates only for public primary integer members.<br>
+   * for private or static inner classes, an access exception still 
+   * has chance to occur.<br>
+   * @param pxSource do not pass null
+   * @return never be null but could be empty
+   */
+  public static final StringList ccPackupINIFormat(Object pxSource){
+    StringList lpRes = new StringList();
+    if(pxSource==null){return lpRes;}
+    Class<?> lpClass = pxSource.getClass();
+    lpRes.append(String.format("[%s]", pxSource.getClass().getCanonicalName()));
+    Field[] lpDesField = lpClass.getFields();
+    for(Field it:lpDesField){
+      Class<?> lpType = it.getType();
+      if(!(lpType.equals(int.class))){continue;}
+      String lpName = it.getName();
+      Object lpValue = VcConst.ccRetrieveField(it, pxSource);
+      if(lpValue==null){
+        System.err.println("kosui.pppmodel.McConst.ccPackupInitFormat()::"
+          + "some access exception might occurred with:"
+          + pxSource.toString());
+        break;
+      }//..~
+      int lpContent=VcNumericUtility.ccInteger(lpValue);
+      lpRes.append(String.format("%s=%d", lpName,lpContent));
+    }//..~
+    return lpRes;
+  }//+++
+  
+  //=== 
   
   /**
    * @param pxFolder do note pass null
