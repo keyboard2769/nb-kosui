@@ -54,9 +54,9 @@ public class EcElement extends EcComponent{
    * basic field
    */
   protected String
-    cmKey  ="<key/>",
-    cmName ="<name/>",
-    cmText ="<text/>"
+    cmKey  ="",
+    cmName ="",
+    cmText =""
   ;//...
   
   /**
@@ -84,7 +84,7 @@ public class EcElement extends EcComponent{
    */
   public EcElement(){
     super();
-    cmText="";
+    cmTextAlign='x';
   }//..!
   
   /**
@@ -93,9 +93,7 @@ public class EcElement extends EcComponent{
    * @param pxKey will get passed to setter directly
    */
   public EcElement(String pxKey){
-    super();
-    ccSetupKey(pxKey);
-    ccSetSize();
+    this(pxKey, EcConst.C_ID_IGNORE);
   }//+++
   
   /**
@@ -109,6 +107,8 @@ public class EcElement extends EcComponent{
     ccSetupKey(pxKey);
     ccSetID(pxID);
     ccSetSize();
+    if(cmText.isEmpty()){cmTextAlign='x';}
+    if(cmText.isEmpty()){cmTextAlign='x';}
   }//..!
   
   //===

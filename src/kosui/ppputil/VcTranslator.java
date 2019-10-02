@@ -303,13 +303,21 @@ public final class VcTranslator {
   /**
    * @deprecated for test use only
    */
-  @Deprecated public static void tstReadupCurrent(){
+  @Deprecated public static final void tstReadupCurrent(){
     System.out.print(self.cmCurrentKey);
     System.out.print("->");
     System.out.print(self.cmCurrentEN);System.out.print("|");
     System.out.print(self.cmCurrentJP);System.out.print("|");
     System.out.print(self.cmCurrentZH);System.out.print("|");
     System.out.println("<<<");
+  }//+++
+  
+  @Deprecated public static final void tstReadupKeys(){
+    System.out.println(">>> kosui.ppputil.VcTranslator.tstReadupKeys()");
+    for(String it : self.cmEnglishDict.keySet()){
+      System.out.println(it);
+    }//..~
+    System.out.println("<<< kosui.ppputil.VcTranslator.tstReadupKeys()");
   }//+++
   
  }//***eof

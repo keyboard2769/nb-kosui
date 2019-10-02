@@ -269,13 +269,32 @@ public final class EcConst {
   
   /**
    * reset text with current key.<br>
+   * the result of EiGroup.ccGiveElementList is passed to the list version
+   * directly.<br>
+   * @param pxGroup do not pass null
+   */
+  static public final void ccTranslateText(EiGroup pxGroup){
+    if(pxGroup==null){return;}
+    ccTranslateText(pxGroup.ccGiveElementList());
+  }//+++
+  
+  /**
+   * reset text with current key.<br>
    * @param pxSource do not pass null
    */
   static public final void ccTranslateText(EcElement pxSource){
     if(pxSource==null){return;}
-    pxSource.ccSetText(
-      VcTranslator.tr(pxSource.ccGetKey())
-    );
+    String lpTranslated=VcTranslator.tr(pxSource.ccGetKey());
+    boolean lpToName=false;
+    lpToName|=(pxSource instanceof EcLamp);
+    lpToName|=(pxSource instanceof EcTextBox);
+    lpToName|=(pxSource instanceof EcValueBox);
+    lpToName|=(pxSource instanceof EcGauge);
+    if(lpToName){
+      pxSource.ccSetName(lpTranslated);
+    }else{
+      pxSource.ccSetText(lpTranslated);
+    }//..?
   }//+++
   
   /**
@@ -323,7 +342,7 @@ public final class EcConst {
    * @return the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_1909292241";
+    return "_1910021106";
   }//+++
   
 }//***eof
