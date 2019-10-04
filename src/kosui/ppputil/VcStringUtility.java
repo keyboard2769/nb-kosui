@@ -147,6 +147,17 @@ public final class VcStringUtility {
         .replaceAll("false", "x");
   }//+++
   
+  //=== formatting
+  
+  /**
+   * @param pxVal to convert
+   * @return true to 'o' and false to 'x'
+   */
+  static public final
+  String ccToString(boolean pxVal){
+    return pxVal?"o":"x";
+  }//+++
+  
   //=== packing
   
   //       ..pack up a big string for print
@@ -165,6 +176,23 @@ public final class VcStringUtility {
     lpRes.append(pxTag);
     lpRes.append(':');
     lpRes.append(pxValue==null?"<null>":pxValue.toString());
+    lpRes.append(']');
+    return lpRes.toString();
+  }//+++
+  
+  /**
+   * true to 'o' and false to 'x'.<br>
+   * @param pxTag must have something
+   * @param pxValue can be anything
+   * @return #
+   */
+  static public final
+  String ccPackupBoolTag(String pxTag, boolean pxValue){
+    if(!VcConst.ccIsValidString(pxTag)){return "[:]";}
+    StringBuilder lpRes=new StringBuilder("[");
+    lpRes.append(pxTag);
+    lpRes.append(':');
+    lpRes.append(pxValue?"o":"x");
     lpRes.append(']');
     return lpRes.toString();
   }//+++
