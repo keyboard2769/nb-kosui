@@ -17,16 +17,13 @@
 
 package kosui.pppmodel;
 
-import processing.data.IntList;
-import processing.data.StringList;
-
+import java.util.ArrayList;
 import java.util.HashMap;
-
-import static kosui.ppputil.VcConst.ccIsValidString;
-import static kosui.ppputil.VcConst.ccLogln;
-import kosui.ppputil.VcNumericUtility;
-import static processing.core.PApplet.println;
-import static processing.core.PApplet.parseInt;
+import java.util.LinkedList;
+import java.util.List;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
+import processing.core.PApplet;
 
 /**
  * for some handy input command parsing. everything is finally integer. <br>
@@ -34,189 +31,247 @@ import static processing.core.PApplet.parseInt;
  * and parse it to invoke your own addRect(12,12,12,12,LEFT,TOP)
  * at somewhere of your sketch. <br>
  */
-public class McCommand{
-
-  /**
-   * value of minus one.<br>
-   * a undefined parameter value or bad index will lead to this.<br>
-   */
-  static public final int C_INVALID_PARAM=-1;
+public abstract class McCommand implements MiExecutable{
   
-  /**
-   * value of zero.<br>
-   * a undefined command will lead to this.<br>
-   */
-  static public final int C_EMPTY_CMD=0;
+  public static final int C_M_GENERAL_SUCCESS =   0;
+  public static final int C_M_GENERAL_FAILIOR =  -1;
+  public static final int C_M_GENERAL_UNKNOWN =  -2;
+  public static final int C_M_UNREGISTERED    = -63;
   
-  static private final HashMap<String, Integer> O_CMD_MAP=new HashMap();
-
-  private String cmInstruction;
-
-  private int cmCommandID;
-
-  private int[] cmIntegerParameter;
-  private String[] cmStringParameter;
+  private static final HashMap<String, McCommand> O_MAP_OF_REGISTERED
+    = new HashMap<String, McCommand>();
   
-  //=== builder
-  
-  /**
-   * alias version combines setting and parsing and constructs a new 
-   * object. <br>
-   * can be avoided by using setCommand() and parse() separately. <br>
-   * @param pxInstruction #
-   * @return #
-   */
-  static public McCommand ccParseCommand(String pxInstruction){
-    McCommand lpRes=new McCommand(pxInstruction);
-    lpRes.ccParse();
-    return lpRes;
-  }//+++
-
-  /**
-   * 
-   * @param pxInstruction as "command param1 param2 param3 ..."
-   */
-  public McCommand(String pxInstruction){
-    ccSetCommand(pxInstruction);
+  public static final void ccRegister(String pxName, McCommand pxExecution){
+    if(!VcConst.ccIsValidString(pxName)){return;}
+    if(pxExecution==null){return;}
+    if(O_MAP_OF_REGISTERED.containsKey(pxName)){return;}
+    O_MAP_OF_REGISTERED.put(pxName, pxExecution);
   }//+++
   
-  /**
-   * 
-   * @return true if the command id is defined
-   */
-  public final boolean ccParse(){
-    
-    //-- pre check
-    if(O_CMD_MAP==null){return false;}
-    if(!ccIsValidString(cmInstruction)){return false;}
-    
-    //-- get command id
-    String[] lpTokens=cmInstruction.split(" ");
-    if(lpTokens==null){return false;}
-    if(lpTokens.length==0){return false;}
-    Integer lpCommandID=O_CMD_MAP.get(lpTokens[0]);
-    if(lpCommandID!=null){cmCommandID=lpCommandID;}
-    
-    //-- get params value
-    IntList lpIntegerList=new IntList();
-    StringList lpStringList=new StringList();
-    for(int i=1,s=lpTokens.length;i<s;i++){
-      String lpToken=lpTokens[i];
-      if(VcNumericUtility.ccIsIntegerString(lpToken)){
-        lpIntegerList.append(parseInt(lpToken));
-      }else{
-        lpStringList.append(lpToken);
-        lpIntegerList.append(
-          O_CMD_MAP.containsKey(lpToken)?
-          O_CMD_MAP.get(lpToken):C_INVALID_PARAM
-        );
-      }//..?
-    }//..~
-    cmIntegerParameter=lpIntegerList.array();
-    cmStringParameter=lpStringList.array();
-    
-    //-- end
-    return cmCommandID!=0;
-    
+  public static final void ccRegister(McCommand pxExecution){
+    if(pxExecution==null){return;}
+    ccRegister(pxExecution.ccGetName(), pxExecution);
   }//+++
   
-  //=== modifier
-  
-  /**
-   * parsed integer value is based on these definitions.<br>
-   * @param pxCommand #
-   * @param pxID #
-   */
-  static public final void ccDefineCommand(String pxCommand, int pxID){
-    O_CMD_MAP.put(pxCommand, pxID);
-  }//+++
-  
-  /**
-   * note this does NOT automatically parse the command.<br>
-   * @param pxInstruction as "command param1 param2 param3 ..."
-   */
-  public final void ccSetCommand(String pxInstruction){
-    cmInstruction=pxInstruction;
-    cmCommandID=C_EMPTY_CMD;
-    cmIntegerParameter=null;
-  }//+++
-
-  //=== supportor
-  
-  /**
-   * for test use only
-   */
-  public final void ccReadUp(){
-    ccLogln("inputed:",cmInstruction);
-    ccLogln("commandID:",cmCommandID);
-    println("integer_param:"+ccGetIntegerParameterCount());
-    if(ccGetIntegerParameterCount()>=0){println(cmIntegerParameter);}
-    println("string_param:"+ccGetStringParameterCount());
-    if(ccGetStringParameterCount()>=0){println(cmStringParameter);}
+  public static final int ccExecute(String pxInput){
+    if(!VcConst.ccIsValidString(pxInput)){return C_M_GENERAL_FAILIOR;}
+    String[] lpSpaceBreak = pxInput.split(" ");
+    if(lpSpaceBreak==null){return C_M_GENERAL_FAILIOR;}
+    if(lpSpaceBreak.length<1){return C_M_GENERAL_FAILIOR;}
+    String lpName=lpSpaceBreak[0];
+    if(!O_MAP_OF_REGISTERED.containsKey(lpName)){return C_M_UNREGISTERED;}
+    McCommand lpExecution = O_MAP_OF_REGISTERED.get(lpName);
+    if(lpExecution == null){return C_M_GENERAL_UNKNOWN;}
+    lpExecution.ccParse(pxInput);
+    return lpExecution.ccExecute();
   }//+++
   
   //=== 
   
-  /**
-   * @return zero means nothing
-   */
-  public final int ccGetCommandID(){
-    return cmCommandID;
+  protected String cmRawHead = null;
+  protected String[] cmDesRawBody = null;
+  protected List<String> cmListOfOptionHead = new ArrayList<String>();
+  protected List<String[]> cmListOfOptionBody= new ArrayList<String[]>();
+  
+  protected boolean cmIsSilent = true;
+  protected int cmResult;
+  protected int cmParamW;
+  protected int cmParamL;
+  
+  protected final List<MiExecutable> cmListOfRawAction
+    = new LinkedList<MiExecutable>();
+  protected HashMap<String,MiExecutable> cmMapOfOptionAction
+    = new HashMap<String,MiExecutable>();
+  
+  //=== interface
+  
+  abstract public void ccInit();
+  
+  abstract public String ccGetName();
+  
+  abstract protected boolean ccVerify();
+  
+  //===
+  
+  public final void ccSetIsSilent(boolean pxVal){
+     cmIsSilent=pxVal;
   }//+++
   
-  /**
-   * using getParam() to get a single value but not this to get the 
-   * whole array is recommended.<br>
-   * @return can be null
-   */
-  public final int[] ccGetIntegerParameter(){
-    return cmIntegerParameter;
+  protected void ccClear(){
+    cmRawHead=null;
+    cmDesRawBody=null;
+    cmListOfOptionHead.clear();
+    cmListOfOptionBody.clear();
   }//+++
   
-  /**
-   * @return invalid constant if parameters is not initiated.
-   */
-  public final int ccGetIntegerParameterCount(){
-    if(cmIntegerParameter==null){return C_INVALID_PARAM;}
-    return cmIntegerParameter.length;
+  public final void ccParse(String pxInput){
+    
+    //-- clear
+    ccClear();
+    
+    //-- check in
+    if(!VcConst.ccIsValidString(pxInput)){return;}
+    String lpFilterd = pxInput
+      .trim()
+      .replaceAll("-( )+-", "-")
+      .replaceAll("(-)+", "-")
+      .replaceAll("(- )", "");
+    String[] lpHiphenBreak = lpFilterd.split("-");
+    if(lpHiphenBreak==null){return;}
+    
+    //-- once upon the time
+    int lpHiphened = lpHiphenBreak.length;
+    if(lpHiphened>0){
+      
+      //-- raw command
+      String lpMainTarget = lpHiphenBreak[0];
+      if(!VcConst.ccIsValidString(lpMainTarget)){return;}
+      String[] lpMainSpaceBreak = lpMainTarget.split(" ");
+      if(lpMainSpaceBreak==null){return;}
+      int lpMainSpacened = lpMainSpaceBreak.length;
+      cmRawHead=lpMainSpaceBreak[0];
+      if(lpMainSpacened>1){
+        cmDesRawBody = lpMainSpaceBreak;
+      }//..?
+      
+    }//..?
+    
+    //-- they ve got multiple
+    if(lpHiphened>1){
+      for(String it : lpHiphenBreak){
+        
+        if(it.equals(lpHiphenBreak[0])){continue;}
+        
+        //-- option command
+        if(!VcConst.ccIsValidString(it)){continue;}
+        String[] lpRawSpaceBreak = it.split(" ");
+        if(lpRawSpaceBreak==null){continue;}
+        int lpRawSpacened = lpRawSpaceBreak.length;
+        cmListOfOptionHead.add(lpRawSpaceBreak[0]);
+        if(lpRawSpacened>1){
+          cmListOfOptionBody.add(lpRawSpaceBreak);
+        }//..?
+        
+      }//..~
+    }//..?
+    
+  }//+++
+    
+  public final int ccExecute() {
+    
+    //-- init
+    cmResult=C_M_GENERAL_FAILIOR;
+    if(!VcConst.ccIsValidString(ccGetName())){
+      return ccReportError("unhandled_subclass");
+    }//..?
+    if(!VcConst.ccIsValidString(cmRawHead)){
+      return ccReportError("bad_parsing_result");
+    }//..?
+    if(!cmRawHead.equals(ccGetName())){
+      return ccReportError("unhandlable_parsing_result:" + cmRawHead);
+    }//..?
+    if(!cmIsSilent){
+      VcConst.ccPrintln(ccGetName(),">>>");
+    }//..?
+    
+    //-- check
+    if(!ccVerify()){
+      return ccReportError("verification_failed");
+    }//..?
+    
+    //-- raw
+    if(cmListOfRawAction.isEmpty()){
+      return ccReportError("no_recoginized_task");
+    }//..?
+    for(MiExecutable it : cmListOfRawAction){
+      cmResult=it.ccExecute(cmDesRawBody);
+      if(cmResult<0){
+        return cmResult;
+      }//..?
+    }//..?
+    
+    //-- option
+    int lpOptionHeadCount = cmListOfOptionHead.size();
+    int lpOptionBodyCount = cmListOfOptionBody.size();
+    if(lpOptionBodyCount!=lpOptionBodyCount){
+      return ccReportError("unhandled_option_registering_error",-2);
+    }//..?
+    if(lpOptionHeadCount!=0){
+      for(int i=0,s=cmListOfOptionHead.size();i<s;i++){
+        if(cmMapOfOptionAction.containsKey(cmListOfOptionHead.get(i))){
+          cmResult=cmMapOfOptionAction.get(cmListOfOptionHead.get(i))
+            .ccExecute(cmListOfOptionBody.get(i));
+        }//..?
+      }//..~
+    }//..?
+    
+    //-- 
+    if(!cmIsSilent){
+      VcConst.ccPrintln(ccGetName(),"<<<");
+    }//..?
+    return cmResult;
+    
   }//+++
   
-  /**
-   * parsed parameter.<br>
-   * @param pxIndex #
-   * @return -1 if something went wrong
-   */
-  public final int ccGetIntegerParameter(int pxIndex){
-    if(cmIntegerParameter==null){return C_INVALID_PARAM;}
-    if(pxIndex<0 && pxIndex>=cmIntegerParameter.length)
-      {return C_INVALID_PARAM;}
-    return cmIntegerParameter[pxIndex];
+  @Override public int ccExecute(String[] pxArgs) {
+    if(pxArgs==null){return C_M_GENERAL_FAILIOR;}
+    if(pxArgs.length!=1){return C_M_GENERAL_FAILIOR;}
+    return ccExecute(pxArgs[0]);
   }//+++
   
-  /**
-   * @return can be null
-   */
-  public final String[] ccGetStringParameter(){
-    return cmStringParameter;
+  //===
+  
+  private int ccReportError(String pxMessage){
+    return ccReportError(pxMessage, cmResult);
   }//+++
   
-  /**
-   * @return invalid constant if parameters is not initiated.
-   */
-  public final int ccGetStringParameterCount(){
-    if(cmStringParameter==null){return C_INVALID_PARAM;}
-    return cmStringParameter.length;
+  private int ccReportError(String pxMessage, int pxResult){
+    if(VcConst.ccIsValidString(pxMessage) && (!cmIsSilent)){
+      System.out.println(
+        "Excecution$"+VcStringUtility.ccNulloutString(ccGetName())
+          + ":" + pxMessage
+      );
+    }//..?
+    return pxResult;
   }//+++
   
-  /**
-   * stacked parameter 
-   * @param pxIndex #
-   * @return *NN* if something went wrong
-   */
-  public final String ccGetStringParameter(int pxIndex){
-    if(cmStringParameter==null){return "<nn/>";}
-    if(pxIndex<0 && pxIndex>=cmIntegerParameter.length){return "<nn/>";}
-    return cmStringParameter[pxIndex];
+  //===
+  
+  @Deprecated public final void tstReadUp(){
+    
+    int lpRawL = cmDesRawBody==null?-1:cmDesRawBody.length;
+    int lpOptionHeadL = cmListOfOptionHead==null?-1:cmListOfOptionHead.size();
+    int lpOptionBodyL = cmListOfOptionBody==null?-1:cmListOfOptionBody.size();
+    
+    System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::begin");
+    
+    VcConst.ccPrintln(VcStringUtility.ccPackupParedTag("raw-head", cmRawHead));
+    VcConst.ccPrintln("raw-body-count", lpRawL);
+    VcConst.ccPrintln("option-head-count", lpOptionHeadL);
+    VcConst.ccPrintln("option-body-count", lpOptionBodyL);
+    
+    if(lpRawL!=-1){
+      PApplet.println("=raw-body=");
+      for(String it : cmDesRawBody){
+        PApplet.println(it);
+      }//..~
+    }//..?
+    if(lpOptionHeadL != -1){
+      PApplet.println("=option-head=");
+      for(String it : cmListOfOptionHead){
+        PApplet.println(it);
+      }
+    }//..?
+    if(lpOptionBodyL != 1){
+      PApplet.println("=option-body=");
+      for(String[] it : cmListOfOptionBody){
+        PApplet.println(it);
+        PApplet.println("<-");
+      }
+    }//..?
+    
+    System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::end");
+    
   }//+++
   
 }//***eof
