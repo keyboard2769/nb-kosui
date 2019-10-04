@@ -171,5 +171,12 @@ public class EcValueBox extends EcElement{
     if(!VcConst.ccIsValidString(pxUnit)){return;}
     cmUnit=pxUnit;
   }//+++
+  
+  /**
+   * @param pxDigit will get masked to 0-7
+   */
+  public final void ccSetDigit(int pxDigit){
+    cmDigit=pxDigit&0x7;
+  }//+++
 
 }//***eof
