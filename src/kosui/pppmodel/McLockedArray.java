@@ -24,18 +24,25 @@ import kosui.ppputil.VcNumericUtility;
  * i cant remember why i build this. <br>
  * possibly it is for a memory viewer application. <br>
  */
-public final class McLockedIntArray {
+public final class McLockedArray {
 
   private final int[] cmArray;
 
   private final int cmMask;
-
+  
+  public volatile int
+    mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
+    mnCTSlotIV,mnCTSlotV,mnCTSlotVI,mnCTSlotVII,
+    mnCTSlotVIII,mnCTSlotIX,mnCTSlotX,mnCTSlotXI,
+    mnCTSlotXII,mnCTSlotXIII,mnCTSlotXIV,mnCTSlotXV
+  ;//...
+    
   //===
   
   /**
    * @param pxSize will get manipulated to power of two
    */
-  public McLockedIntArray(int pxSize) {
+  public McLockedArray(int pxSize) {
     cmArray = new int[VcNumericUtility.ccToPowerOfTwo(pxSize)];
     Arrays.fill(cmArray, 0);
     cmMask = cmArray.length - 1;
