@@ -245,7 +245,7 @@ public abstract class McCommand implements MiExecutable{
     
     System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::begin");
     
-    VcConst.ccPrintln(VcStringUtility.ccPackupParedTag("raw-head", cmRawHead));
+    VcConst.ccPrintln(VcStringUtility.ccPackupPairedTag("raw-head", cmRawHead));
     VcConst.ccPrintln("raw-body-count", lpRawL);
     VcConst.ccPrintln("option-head-count", lpOptionHeadL);
     VcConst.ccPrintln("option-body-count", lpOptionBodyL);

@@ -120,8 +120,8 @@ public class EcPoint {
     StringBuilder lpBuilder = new StringBuilder();
     lpBuilder.append(super.toString());
     lpBuilder.append("::");
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("x", cmX));
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("y", cmY));
+    lpBuilder.append(VcStringUtility.ccPackupPairedTag("x", cmX));
+    lpBuilder.append(VcStringUtility.ccPackupPairedTag("y", cmY));
     return lpBuilder.toString();
   }//+++
   

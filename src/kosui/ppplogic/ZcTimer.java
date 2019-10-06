@@ -56,11 +56,11 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
     lpRes.append('@');
     lpRes.append(Integer.toHexString(this.hashCode()));
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("v", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag("j", cmJudge));
-    lpRes.append(VcStringUtility.ccPackupParedTag("s", cmMax));
-    lpRes.append(VcStringUtility.ccPackupParedTag("UP", ccIsUp()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("ACT", ccIsCounting()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("v", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("j", cmJudge));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("s", cmMax));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("UP", ccIsUp()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("ACT", ccIsCounting()));
     return lpRes.toString();
   }//+++
 

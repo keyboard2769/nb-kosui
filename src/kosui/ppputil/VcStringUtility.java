@@ -170,7 +170,7 @@ public final class VcStringUtility {
    * @return #
    */
   static public final
-  String ccPackupParedTag(String pxTag, Object pxValue){
+  String ccPackupPairedTag(String pxTag, Object pxValue){
     if(!VcConst.ccIsValidString(pxTag)){return "[:]";}
     StringBuilder lpRes=new StringBuilder("[");
     lpRes.append(pxTag);

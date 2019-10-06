@@ -394,12 +394,14 @@ public class EcRect extends EcPoint{
     StringBuilder lpBuilder = new StringBuilder();
     lpBuilder.append(super.toString());
     lpBuilder.append("|");
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("w", cmW));
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("h", cmH));
+    lpBuilder.append(VcStringUtility.ccPackupPairedTag("w", cmW));
+    lpBuilder.append(VcStringUtility.ccPackupPairedTag("h", cmH));
     return lpBuilder.toString();
   }//+++
   
-  //=== 
+  //=== functionality
+  
+  //=== functionality ** layout
   
   /**
    * <pre>
@@ -472,6 +474,18 @@ public class EcRect extends EcPoint{
       }//..~
     }//..?
   }//+++
+  
+  /**
+   * layout elements of passed container in a horizontal leading line.<br>
+   * the gap is 2 by default.<br>
+   * @param pxList the 0th element will be the anchor
+   */
+  public static final void ccFlowLayout(
+    List<? extends EcRect> pxList){
+    ccFlowLayout(pxList,2,false,false);
+  }//+++
+  
+  //=== functionality ** calculation
   
   //[plan]public static final EcRect ccAdd(EcRect)
   

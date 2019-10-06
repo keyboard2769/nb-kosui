@@ -254,7 +254,7 @@ public class DemoLineChart extends PApplet{
       
       //-- status
       cmStatusBar.setText(
-        VcStringUtility.ccPackupParedTag("size", cmLogModel.getRowCount())
+        VcStringUtility.ccPackupPairedTag("size", cmLogModel.getRowCount())
       );
       
     }//++++

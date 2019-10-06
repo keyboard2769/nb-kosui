@@ -127,11 +127,11 @@ public class McSimpleRingBuffer{
    */
   public final String ccFormat() {
     StringBuilder lpRes = new StringBuilder("|");
-    lpRes.append(VcStringUtility.ccPackupParedTag("nose",cmIndex.ccGetNose()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("tail",cmIndex.ccGetTail()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("used",cmIndex.ccGetUsed()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("mask",cmIndex.cmMask));
-    lpRes.append(VcStringUtility.ccPackupParedTag("total",cmData.length));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("nose",cmIndex.ccGetNose()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("tail",cmIndex.ccGetTail()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("used",cmIndex.ccGetUsed()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("mask",cmIndex.cmMask));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("total",cmData.length));
     return lpRes.toString();
   }//+++
   
@@ -148,7 +148,7 @@ public class McSimpleRingBuffer{
     int lpWrapCount=0;
     for(int i=0,s=ccGetCapacity();i<s;i++){
       lpRes.append(VcStringUtility
-        .ccPackupParedTag(Integer.toString(i), ccGetAbsolute(i)));
+        .ccPackupPairedTag(Integer.toString(i), ccGetAbsolute(i)));
       lpRes.append(' ');
       lpWrapCount++;
       if(lpWrapCount==pxWrap){
@@ -172,7 +172,7 @@ public class McSimpleRingBuffer{
     int lpWrapCount=0;
     for(int i=0,s=ccGetCapacity();i<s;i++){
       lpRes.append(VcStringUtility
-        .ccPackupParedTag(Integer.toString(i), ccGetLogical(i)));
+        .ccPackupPairedTag(Integer.toString(i), ccGetLogical(i)));
       lpRes.append(' ');
       lpWrapCount++;
       if(lpWrapCount==pxWrap){

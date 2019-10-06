@@ -106,13 +106,13 @@ public class ZcCheckedValueModel extends ZcRangedValueModel{
     StringBuilder lpRes=new StringBuilder();
     lpRes.append(super.toString());
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupParedTag
+    lpRes.append(VcStringUtility.ccPackupPairedTag
       ("LV0", cmLevelor.ccGetJudge(0)));
-    lpRes.append(VcStringUtility.ccPackupParedTag
+    lpRes.append(VcStringUtility.ccPackupPairedTag
       ("LV16", cmLevelor.ccGetJudge(16)));
-    lpRes.append(VcStringUtility.ccPackupParedTag
+    lpRes.append(VcStringUtility.ccPackupPairedTag
       ("LV31", cmLevelor.ccGetJudge(31)));
-    lpRes.append(VcStringUtility.ccPackupParedTag
+    lpRes.append(VcStringUtility.ccPackupPairedTag
       ("now", ccGetCurrentLevel()));
     return lpRes.toString();
   }//+++

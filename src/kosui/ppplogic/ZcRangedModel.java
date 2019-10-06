@@ -130,8 +130,8 @@ public class ZcRangedModel {
     StringBuilder lpRes=new StringBuilder();
     lpRes.append(super.toString());
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("min", cmMin));
-    lpRes.append(VcStringUtility.ccPackupParedTag("max", cmMax));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("min", cmMin));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("max", cmMax));
     return lpRes.toString();
   }//+++
   

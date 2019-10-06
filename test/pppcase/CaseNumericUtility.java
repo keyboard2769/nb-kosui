@@ -147,9 +147,9 @@ public class CaseNumericUtility extends JFrame{
       VcSwingConsole.ccWriteln("ccToPowerOfTwo >>>");
       for(int i:O_CASE_INT){
         VcSwingConsole.ccWriteln(
-          VcStringUtility.ccPackupParedTag
+          VcStringUtility.ccPackupPairedTag
             ("before", i),
-          VcStringUtility.ccPackupParedTag
+          VcStringUtility.ccPackupPairedTag
             ("after ", VcNumericUtility.ccToPowerOfTwo(i))
         );
       }//..~

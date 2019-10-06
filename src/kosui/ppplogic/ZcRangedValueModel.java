@@ -128,7 +128,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
     StringBuilder lpRes=new StringBuilder();
     lpRes.append(super.toString());
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupParedTag("val", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("val", cmValue));
     return lpRes.toString();
   }//+++
   
