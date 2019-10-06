@@ -17,6 +17,7 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 
 /**
@@ -90,6 +91,15 @@ public class ZcRangedValueModel extends ZcRangedModel{
    */
   public final int ccGetRelative(){
     return cmValue-cmMin;
+  }//+++
+  
+  /**
+   * aliasing local method to VcNumericUtility.ccFloat 
+   * and you PAY for those overheads.<br>
+   * @return (current - min) / range
+   */
+  public final float ccGetProportion(){
+    return VcNumericUtility.ccFloat(ccGetRelative(), ccGetRange());
   }//+++
   
   /**

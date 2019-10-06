@@ -25,7 +25,7 @@ package kosui.ppplogic;
 public class ZcReal {
   
   private float cmVal;
-  private boolean cmStatic;
+  private boolean cmIsStatic;
   
   /**
    * the default value is zero
@@ -47,7 +47,7 @@ public class ZcReal {
    */
   public ZcReal(float pxVal, boolean pxStatic){
     ccSet(pxVal);
-    cmStatic=pxStatic;
+    cmIsStatic=pxStatic;
   }//..!
   
   //===
@@ -56,7 +56,7 @@ public class ZcReal {
    * @param pxVal can be anything
    */
   public final void ccSet(float pxVal){
-    if(cmStatic){return;}
+    if(cmIsStatic){return;}
     cmVal=pxVal;
   }//+++
   
@@ -64,8 +64,28 @@ public class ZcReal {
    * @param pxOffset just got added
    */
   public final void ccShift(float pxOffset){
-    if(cmStatic){return;}
+    if(cmIsStatic){return;}
     cmVal+=pxOffset;
+  }//+++
+  
+  /**
+   * works exactly as transferred from a static source.<br>
+   * a static one can also get effected.<br>
+   * @param pxSource which effects this 
+   * @param pxRatio the bigger the slower, will get masked to 1-255
+   */
+  public final void ccEffect(float pxSource, int pxRatio){
+    cmVal+=((pxSource-cmVal)/ccFixRatio(pxRatio));
+  }//+++
+  
+  /**
+   * works exactly as transferred from a static source.<br>
+   * a static one can also get effected.<br>
+   * the default speed ratio is 16.<br>
+   * @param pxSource which effects this 
+   */
+  public final void ccEffect(float pxSource){
+    ccEffect(pxSource, 16);
   }//+++
   
   /**
@@ -73,6 +93,14 @@ public class ZcReal {
    */
   public final float ccGet(){
     return cmVal;
+  }//+++
+  
+  //===
+  
+  private static float ccFixRatio(int pxRatio){
+    int lpFixed=pxRatio&0xFF;
+    return lpFixed==0?1f:((float)lpFixed);
+  
   }//+++
   
   //=== 
@@ -86,8 +114,7 @@ public class ZcReal {
   public final static
   void ccTransfer(ZcReal pxPotentialP, ZcReal pxPotentialN, int pxRatio){
     float lpDiff=pxPotentialP.ccGet()-pxPotentialN.ccGet();
-    int lpFixed=pxRatio&0xFF;
-    lpDiff/=(lpFixed==0?1:lpFixed);
+    lpDiff/=ccFixRatio(pxRatio);
     pxPotentialP.ccShift(-1*lpDiff);
     pxPotentialN.ccShift(   lpDiff);
   }//+++

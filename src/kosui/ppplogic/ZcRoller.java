@@ -22,7 +22,7 @@ import kosui.ppputil.VcNumericUtility;
  * after reading this a kid who didn't know about bit mask 
  * thought it is a black magic.<br>
  * it is too essential to me that i didn't even thought about making it a class
- * until i endup with a bunch of volatile integer.<br>
+ * until i end up with a bunch of volatile integer.<br>
  */
 public class ZcRoller {
   
@@ -74,7 +74,7 @@ public class ZcRoller {
   }//+++
   
   /**
-   * @param pxVal frame count
+   * @param pxVal does not check but supposedly should be smaller than mask
    * @return if equals
    */
   public final boolean ccIsAt(int pxVal){
@@ -82,11 +82,29 @@ public class ZcRoller {
   }//+++
   
   /**
-   * @param pxVal frame count
+   * @param pxVal does not check but supposedly should be smaller than mask
    * @return if greater than
    */
   public final boolean ccIsAbove(int pxVal){
     return cmVal>=pxVal;
+  }//+++
+  
+  /**
+   * @param pxMod does not check but supposedly should be smaller than mask
+   * @param pxComp does not check but supposedly should be smaller than mask
+   * @return val % mod == comp
+   */
+  public final boolean ccIsAcross(int pxMod, int pxComp){
+    return (cmVal % pxMod) == pxComp;
+  }//+++
+  
+  /**
+   * @param pxMod does not check but supposedly should be smaller than mask
+   * @param pxComp does not check but supposedly should be smaller than mask
+   * @return val % mod <= comp
+   */
+  public final boolean ccIsAcrossIn(int pxMod, int pxComp){
+    return (cmVal % pxMod) <= pxComp;
   }//+++
   
 }//***eof

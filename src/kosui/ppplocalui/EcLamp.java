@@ -28,7 +28,7 @@ public class EcLamp extends EcElement{
   /**
    * for inner use
    */
-  public static final int
+  private static final int
     //-- pix
     C_STROKE_THICK   = 4,
     C_DEFAULT_SCALE  = 18
@@ -38,13 +38,20 @@ public class EcLamp extends EcElement{
    * can get applied to a line or just a bigger rectangle
    */
   protected int cmBorderColor = 0xFF555555;
+  
+  /**
+   * @param pxScale pix for both width and height
+   */
+  public EcLamp(int pxScale){
+    super();
+    ccSetSize(pxScale,pxScale);
+  }//..!
 
   /**
    * the default size is 18*18 pix;
    */
   public EcLamp(){
-    super();
-    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
+    this(C_DEFAULT_SCALE);
   }//..!
   
   /**
@@ -65,10 +72,7 @@ public class EcLamp extends EcElement{
    * @param pxKey will get passed to setter directly
    */
   public EcLamp(String pxKey){
-    super();
-    ccSetupKey(pxKey);
-    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
-    if(cmText.length()>1){cmText=cmText.substring(0, 1);}
+    this(pxKey,EcConst.C_ID_IGNORE);
   }//..!
   
   //===

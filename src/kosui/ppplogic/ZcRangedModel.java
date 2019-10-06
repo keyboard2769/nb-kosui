@@ -17,6 +17,7 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 
 /**
@@ -110,11 +111,11 @@ public class ZcRangedModel {
   }//+++
   
   /**
-   * i used call this span.
+   * i used call this span,
    * but traditionally what we have called "span"
-   * actually means the maximum value here.<br>
-   * and we call the minimum value "offset".
-   * @return #
+   * actually means the maximum value here, so we can't use that word.<br>
+   * by the way we also call the minimum value "offset".<br>
+   * @return max - min
    */
   public final int ccGetRange(){
     return cmMax-cmMin;
