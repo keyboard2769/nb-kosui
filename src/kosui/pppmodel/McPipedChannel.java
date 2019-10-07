@@ -30,13 +30,10 @@ public final class McPipedChannel {
   private volatile int
     mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
     mnCTSlotIV,mnCTSlotV,mnCTSlotVI,mnCTSlotVII,
+    //--
     mnCTSlotVIII,mnCTSlotIX,mnCTSlotX,mnCTSlotXI,
     mnCTSlotXII,mnCTSlotXIII,mnCTSlotXIV,mnCTSlotXV
-  ;//..
-  
-  public McPipedChannel(){
-    
-  }//+++ 
+  ;//,,,
   
   //===
   
@@ -62,7 +59,7 @@ public final class McPipedChannel {
       //--
       default:break;
     }//..?
-  }//+++
+  }//++<
   
   public final int ccGet(int pxOrder){
     switch(pxOrder&C_MASK){
@@ -86,6 +83,6 @@ public final class McPipedChannel {
       //--
       default:return 0;
     }//..?
-  }//+++
+  }//++>
   
 }//***eof

@@ -104,6 +104,14 @@ public class ZcRangedValueModel extends ZcRangedModel{
   
   /**
    * @param pxGivenValue #
+   * @return equals
+   */
+  public final boolean ccIsAt(int pxGivenValue){
+    return cmValue==pxGivenValue;
+  }//+++
+  
+  /**
+   * @param pxGivenValue #
    * @return inclusive
    */
   public final boolean ccIsAbove(int pxGivenValue){
@@ -123,7 +131,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
    * @param pxUpBound #
    * @return inclusive
    */
-  public final boolean ccIsInRangeOf(int pxLowBound, int pxUpBound){
+  public final boolean ccIsWith(int pxLowBound, int pxUpBound){
     if(pxLowBound>=pxUpBound){return false;}
     return cmValue>=pxLowBound&&cmValue<=pxUpBound;
   }//+++

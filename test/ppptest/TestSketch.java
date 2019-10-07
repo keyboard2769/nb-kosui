@@ -121,7 +121,7 @@ public class TestSketch extends PApplet {
     //-- post
     VcConst.ccPrintln("kosui.ppptest.TestSketch.setup()::over");
     
-  }//+++
+  }//++!
   
   @Override public void draw() { 
     
@@ -143,7 +143,7 @@ public class TestSketch extends PApplet {
     VcLocalTagger.ccTag("mouse",VcLocalCoordinator.ccGetMouseOverID());
     VcLocalTagger.ccStabilize();
     
-  }//+++
+  }//++~
   
   @Override public void keyPressed() {
     VcLocalCoordinator.ccGuardEscKey(this);
@@ -159,6 +159,6 @@ public class TestSketch extends PApplet {
   static public void main(String[] passedArgs) {
     SwingUtilities.invokeLater(R_SWING_INIT);
     PApplet.main(TestSketch.class.getCanonicalName());
-  }//..!
+  }//!!!
   
 }//***eof
