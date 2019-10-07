@@ -28,7 +28,7 @@ public class EcLamp extends EcElement{
   /**
    * for inner use
    */
-  private static final int
+  protected static final int
     //-- pix
     C_STROKE_THICK   = 4,
     C_DEFAULT_SCALE  = 18

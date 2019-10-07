@@ -90,12 +90,29 @@ public class ZcRoller {
   }//+++
   
   /**
+   * @param pxVal does not check but supposedly should be smaller than mask
+   * @return if lesser than
+   */
+  public final boolean ccIsUnder(int pxVal){
+    return cmVal<=pxVal;
+  }//+++
+  
+  /**
    * @param pxMod does not check but supposedly should be smaller than mask
    * @param pxComp does not check but supposedly should be smaller than mask
    * @return val % mod == comp
    */
-  public final boolean ccIsAcross(int pxMod, int pxComp){
+  public final boolean ccIsAcrossAt(int pxMod, int pxComp){
     return (cmVal % pxMod) == pxComp;
+  }//+++
+  
+  /**
+   * @param pxMod does not check but supposedly should be smaller than mask
+   * @param pxComp does not check but supposedly should be smaller than mask
+   * @return val % mod >= comp
+   */
+  public final boolean ccIsAcrossAbove(int pxMod, int pxComp){
+    return (cmVal % pxMod) >= pxComp;
   }//+++
   
   /**
@@ -103,7 +120,7 @@ public class ZcRoller {
    * @param pxComp does not check but supposedly should be smaller than mask
    * @return val % mod <= comp
    */
-  public final boolean ccIsAcrossIn(int pxMod, int pxComp){
+  public final boolean ccIsAcrossUnder(int pxMod, int pxComp){
     return (cmVal % pxMod) <= pxComp;
   }//+++
   
