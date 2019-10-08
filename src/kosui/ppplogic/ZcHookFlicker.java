@@ -25,7 +25,24 @@ package kosui.ppplogic;
 public class ZcHookFlicker {
   
   private boolean cmHolder=false;
-  private int cmTimer=0;
+  private byte cmPulser=0;
+  
+  //===
+  
+  /**
+   * @param pxInitStatus could be anything
+   */
+  public ZcHookFlicker(boolean pxInitStatus){
+    cmHolder=pxInitStatus;
+    cmPulser=0;
+  }//++!
+  
+  /**
+   * the status is OFF by default
+   */
+  public ZcHookFlicker(){
+    this(false);
+  }//++!
   
   //===
   
@@ -35,10 +52,10 @@ public class ZcHookFlicker {
    * @return the bit
    */
   public final boolean ccHook(boolean pxTrigger){
-    if(pxTrigger){cmTimer+=cmTimer<3?1:0;}else{cmTimer=0;}
-    if(cmTimer==1){cmHolder=!cmHolder;}
+    if(pxTrigger){cmPulser+=cmPulser<3?1:0;}else{cmPulser=0;}
+    if(cmPulser==1){cmHolder=!cmHolder;}
     return cmHolder;
-  }//+++
+  }//++~
   
   /**
    * 
@@ -49,7 +66,9 @@ public class ZcHookFlicker {
   public final boolean ccHook(boolean pxTrigger, boolean pxLock){
     if(pxLock){cmHolder=false;return cmHolder;}
     else{return ccHook(pxTrigger);}
-  }//+++
+  }//++~
+  
+  //===
   
   /**
    * 
@@ -57,7 +76,7 @@ public class ZcHookFlicker {
    */
   public final void ccSetIsHooked(boolean pxStatus){
     cmHolder=pxStatus;
-  }//+++
+  }//++<
   
   /**
    * 
@@ -65,6 +84,6 @@ public class ZcHookFlicker {
    */
   public final boolean ccIsHooked(){
     return cmHolder;
-  }//+++
+  }//++>
   
 }//***eof

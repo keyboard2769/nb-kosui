@@ -59,22 +59,15 @@ i know it is a nonsense name, but anyway.
 ---
 ## todo list
 
-#### behold
-
-- [ ] $ uno
-- [ ] $ dos
-- [ ] $ quatro? 
-- [ ] $ tre!!
-
 #### plan 
 
 - none
 
-#### onfire
+#### heading
 
 - none
 
-#### currently
+#### last
 
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
