@@ -66,24 +66,27 @@ public final class VcNumericUtility {
    */
   public static float ccRandom(){
     return O_RANOM.nextFloat();
-  };
+  }//+++
   
   /**
-   * @param pxBase ##
-   * @param pxRange ##
+   * the function is intensely made for those zero centered absolute value.<br>
+   * so it is a little bit inconvenient for all plus values but any way.<br>
+   * say, like, if you want the range of [23f-27f], pass (-25f,2f).<br>
+   * @param pxBase could be anything
+   * @param pxRange could be anything
    * @return range x [0f-1f] - base
    */
   public static float ccRandom(float pxBase, float pxRange){
     return pxRange*ccRandom()-pxBase;
-  };
+  }//+++
   
   /**
-   * @param pxAbsolute ##
+   * @param pxAbsolute could be anything
    * @return [-abs - +abs]
    */
   public static float ccRandom(float pxAbsolute){
     return ccRandom(pxAbsolute, pxAbsolute*2);
-  };
+  }//+++
   
   //=== judgement
   

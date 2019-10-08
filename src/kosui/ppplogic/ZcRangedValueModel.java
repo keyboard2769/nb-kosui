@@ -96,7 +96,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
   /**
    * aliasing local method to VcNumericUtility.ccFloat 
    * and you PAY for those overheads.<br>
-   * @return (current - min) / range
+   * @return supposedly 0-1f aka (current - min) / range
    */
   public final float ccGetProportion(){
     return VcNumericUtility.ccFloat(ccGetRelative(), ccGetRange());

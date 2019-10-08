@@ -66,19 +66,19 @@ public class DemoLocalUI extends PApplet {
   private final EcValueBox cmHexadecimalTB = new EcValueBox("hex", "0000 H");
   
   public final List<EcButton> cmDesBitSW
-   = Collections.unmodifiableList(Arrays.asList(
-    new EcButton("0", 0xBA00),new EcButton("1", 0xBA01),
-    new EcButton("2", 0xBA02),new EcButton("3", 0xBA03),
-    //
-    new EcButton("4", 0xBA04),new EcButton("5", 0xBA05),
-    new EcButton("6", 0xBA06),new EcButton("7", 0xBA07),
-    //
-    new EcButton("8", 0xBA08),new EcButton("9", 0xBA09),
-    new EcButton("A", 0xBA0A),new EcButton("B", 0xBA0B),
-    //
-    new EcButton("C", 0xBA0C),new EcButton("D", 0xBA0D),
-    new EcButton("E", 0xBA0E),new EcButton("F", 0xBA0F)
-  ));
+    = Collections.unmodifiableList(Arrays.asList(
+      new EcButton("0", 0xBA00),new EcButton("1", 0xBA01),
+      new EcButton("2", 0xBA02),new EcButton("3", 0xBA03),
+      //
+      new EcButton("4", 0xBA04),new EcButton("5", 0xBA05),
+      new EcButton("6", 0xBA06),new EcButton("7", 0xBA07),
+      //
+      new EcButton("8", 0xBA08),new EcButton("9", 0xBA09),
+      new EcButton("A", 0xBA0A),new EcButton("B", 0xBA0B),
+      //
+      new EcButton("C", 0xBA0C),new EcButton("D", 0xBA0D),
+      new EcButton("E", 0xBA0E),new EcButton("F", 0xBA0F)
+    ));//,,,
   
   private short cmCounterModel = 0;
   
@@ -104,25 +104,26 @@ public class DemoLocalUI extends PApplet {
          (VcNumericUtility.ccBinaryLoad((int)cmCounterModel, i));
       }//..~
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
       println(".ssPover()::call PApplet.exit()");
       exit();
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmTipShowing = new EiTriggerable() {
     @Override public void ccTrigger(){
       VcLocalTipHolder.ccActivate();
     }//+++
-  };
+  };//***
+  
   private final EiTriggerable cmLeftShifting = new EiTriggerable() {
     @Override public void ccTrigger(){
       cmCounterModel<<=1;
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmDecrementing = new EiTriggerable() {
     @Override public void ccTrigger(){
@@ -134,13 +135,13 @@ public class DemoLocalUI extends PApplet {
     @Override public void ccTrigger(){
       cmCounterModel++;
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmRightShifting = new EiTriggerable() {
     @Override public void ccTrigger(){
       cmCounterModel>>=1;
     }//+++
-  };
+  };//***
   
   private final EiTriggerable cmManipulating = new EiTriggerable() {
     @Override public void ccTrigger(){
@@ -156,7 +157,7 @@ public class DemoLocalUI extends PApplet {
         lpCurrentBit
       );/* 4 */VcConst.ccLogln("mouse",lpBitIndex);
     }//+++
-  };
+  };//***
 
   @Override public void setup() {
     println(".setup()::start");
@@ -170,8 +171,6 @@ public class DemoLocalUI extends PApplet {
     //-- init
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTipHolder.ccGetInstance().ccInit(this);
-    
-    //-- init ** 
     
     //-- layout
     
@@ -262,7 +261,7 @@ public class DemoLocalUI extends PApplet {
     //-- post setting
     println(".setup()::over");
     
-  }//+++
+  }//++!
   
   @Override public void draw() { 
 
@@ -281,7 +280,7 @@ public class DemoLocalUI extends PApplet {
       text(C_BLK_MSG,3,3);
     }//..?
     
-  }//+++
+  }//++~
   
   @Override public void keyPressed() {
     VcLocalCoordinator.ccKeyPressed(keyCode);
@@ -320,6 +319,6 @@ public class DemoLocalUI extends PApplet {
 
   static public void main(String[] passedArgs) {
     PApplet.main(DemoLocalUI.class.getCanonicalName());
-  }//+++
+  }//!!!
 
 }//***eof

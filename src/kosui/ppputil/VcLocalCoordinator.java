@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,12 +255,44 @@ public final class VcLocalCoordinator {
   }//+++
   
   /**
-   * @param pxGroup #
+   * @param pxGroup do not pass null
    */
   static public final void ccAddGroup(EiGroup pxGroup){
     if(pxGroup==null){return;}
     ccAddShape(pxGroup.ccGiveShapeList());
     ccAddElement(pxGroup.ccGiveElementList());
+  }//+++
+  
+  /**
+   * iterates all public fields and add all element and shape to 
+   * coordinator's update list.<br>
+   * please not that this is just a not that safe and efficient way
+   * for test sketch because you will have no control nor filtering.<br>
+   * more over it just ignores containers like list or map because 
+   * i just don't want to deal with the type erasing things.
+   * so for normal application, adding manually or via the group interface
+   * is still the preferred way.<br>
+   * @param pxOwner the one instance holds local UI components
+   */
+  static public final void ccAddAll(Object pxOwner){
+    VcConst.ccLogln(">>> ssRetrieveAllComponent:");
+    if(pxOwner==null){return;}
+    Field[] lpDesField = pxOwner.getClass().getFields();
+    if(lpDesField==null){return;}
+    if(lpDesField.length==0){return;}
+    VcConst.ccLogln("got_fields", lpDesField.length);
+    for(Field it:lpDesField){
+      Object lpSource = VcConst.ccRetrieveField(it, pxOwner);
+      if(lpSource instanceof EcElement){
+        VcConst.ccLogln(it.getName(),lpSource.getClass().getSimpleName());
+        VcLocalCoordinator.ccAddElement((EcElement)lpSource);
+      }else
+      if(lpSource instanceof EcShape){
+        VcConst.ccLogln(it.getName(),lpSource.getClass().getSimpleName());
+        VcLocalCoordinator.ccAddShape((EcShape)lpSource);
+      }//..?
+    }//..~
+    VcConst.ccLogln("<<<");
   }//+++
   
   /**

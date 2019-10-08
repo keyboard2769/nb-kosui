@@ -30,9 +30,9 @@ public class EcValueBox extends EcElement{
   //===
 
   /**
-   * will be passed to both nf() and nfc()
+   * will be passed to nf() or nfc()
    */
-  protected int cmDigit=4;
+  protected int cmDigit=1;
 
   /**
    * if you don't need it give a space at least
@@ -40,16 +40,6 @@ public class EcValueBox extends EcElement{
   protected String cmUnit=" ";
   
   //===
-
-  /**
-   * default text align is right.<br>
-   */
-  public EcValueBox(){
-    super();
-    ccSetTextAlign('r');
-    ccSetTextColor(EcConst.C_LIT_GRAY);
-    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
-  }//..!
   
   /**
    * @param pxKey will get passed to key and name separately
@@ -68,27 +58,28 @@ public class EcValueBox extends EcElement{
     ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
     ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
     cmDigit=(cmText.length()-cmUnit.length()-1);
-    if(cmDigit<0){cmDigit=0;}
+    if(pxForm.startsWith("-") || pxForm.startsWith("+")){cmDigit--;}
+    if(cmDigit<1){cmDigit=1;}
   }//..!
   
   /**
-   * output component can have no identical id.<br>
+   * will have no identical id.<br>
    * @param pxKey will get passed to key and name separately
    * @param pxForm serves as initiated text and last two letter will be unit
    */
   public EcValueBox(String pxKey, String pxForm){
-    super();
-    ccSetKey(pxKey);
-    ccSetName(pxKey);
-    ccSetText(pxForm);
-    ccSetTextAlign('r');
-    ccSetSize();
-    ccSetTextColor(EcConst.C_LIT_GRAY);
-    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
-    ccSetUnit(VcStringUtility.ccExtracUnit(pxForm));
-    cmDigit=(cmText.length()-cmUnit.length());
-    if(cmDigit<0){cmDigit=0;}
+    this(pxKey, pxForm, EcConst.C_ID_IGNORE);
   }//..!
+  
+  /**
+   * will have an empty string as key.<br>
+   * will have no identical id.<br>
+   * default for is "0000 d".<br>
+   */
+  public EcValueBox(){
+    this("", "0000 d");
+  }//..!
+  
   
   //===
   
