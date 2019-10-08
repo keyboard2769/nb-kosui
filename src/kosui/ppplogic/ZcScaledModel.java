@@ -17,6 +17,7 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
 
 /**
@@ -29,18 +30,17 @@ public class ZcScaledModel {
     cmInputValue,
     cmInputOffset, cmInputSpan,
     cmOutputOffset, cmOutputSpan
-  ;//...
+  ;//,,,
   private int cmIntegerOutput;
   private float cmFloatOutput;
   
   //===
   
   /**
-   * ##
-   * @param pxInputOffset #
-   * @param pxInputSpan #
-   * @param pxOutputOffset #
-   * @param pxOutputSpan #
+   * @param pxInputOffset no minus no equals to span
+   * @param pxInputSpan no minus no equals to offset
+   * @param pxOutputOffset no minus no equals to span
+   * @param pxOutputSpan no minus no equals to offset
    */
   public ZcScaledModel(
     int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
@@ -49,85 +49,28 @@ public class ZcScaledModel {
     ccSetupScale(pxInputOffset, pxInputSpan, pxOutputOffset, pxOutputSpan);
     cmIntegerOutput=0;
     cmFloatOutput=0f;
-  }//+++
+  }//++!
   
-  //==
-    
-  /**
-   * calculates at the same time.<br>
-   * @param pxInputValue #
-   */
-  public void ccSetInputValue(int pxInputValue){
-    cmInputValue = PApplet.constrain(pxInputValue, cmInputOffset, cmInputSpan);
-    cmFloatOutput=ccToScaledFloatValue(pxInputValue);
-    cmIntegerOutput=PApplet.ceil(cmFloatOutput);
-  }//+++
-
-  /**
-   * <pre>
-   * since check function will be called separately, 
-   *   using ccSetupScale() is recommended.
-   * </pre>
-   * @param pxInputOffset the inputOffset to set
-   */
-  public void ccSetInputOffset(int pxInputOffset){
-    cmInputOffset = pxInputOffset;
-    ssForceValidity();
-  }//+++
-
-  /**
-   * <pre>
-   * since check function will be called separately, 
-   *   using ccSetupScale() is recommended.
-   * </pre>
-   * @param pxInputSpan the inputSpan to set
-   */
-  public void ccSetInputSpan(int pxInputSpan){
-    cmInputSpan = pxInputSpan;
-    ssForceValidity();
-  }//+++
-
-  /**
-   * <pre>
-   * since check function will be called separately, 
-   *   using ccSetupScale() is recommended.
-   * </pre>
-   * @param pxOutputOffset the outputOffset to set
-   */
-  public void ccSetOutputOffset(int pxOutputOffset){
-    cmOutputOffset = pxOutputOffset;
-    ssForceValidity();
-  }//+++
-
-  /**
-   * <pre>
-   * since check function will be called separately, 
-   *   using ccSetupScale() is recommended.
-   * </pre>
-   * @param outputSpan the outputSpan to set
-   */
-  public void ccSetOutputSpan(int outputSpan){
-    cmOutputSpan = outputSpan;ssForceValidity();
-  }//+++
-    
-  /**
-   * ##
-   * @param pxInputOffset #
-   * @param pxInputSpan #
-   * @param pxOutputOffset #
-   * @param pxOutputSpan #
-   */
-  public final void ccSetupScale(
-    int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
-  ){
-    cmInputOffset=pxInputOffset;cmInputSpan=pxInputSpan;
-    cmOutputOffset=pxOutputOffset;cmOutputSpan=pxOutputSpan;
-    ssForceValidity();
-  }//+++
-    
   //===
-    
-  private void ssForceValidity(){
+  
+  /**
+   * chaining setter with the looper
+   * @param pxInputValue will get trimmed via PApplet.constrain
+   */
+  public void ccRun(int pxInputValue){
+    ccSetInputValue(pxInputValue);
+    ccRun();
+  }//++~
+  
+  /**
+   * supposedly should get called from a scan loop only once.<br>
+   */
+  public final void ccRun(){
+    cmFloatOutput=ccToScaledFloatValue(cmInputValue);
+    cmIntegerOutput=PApplet.ceil(cmFloatOutput);
+  }//++~
+  
+  private void ssForceValidate(){
     
     if(cmInputOffset<0 || cmInputSpan<0){
       cmInputOffset=0;cmInputSpan=1;
@@ -148,6 +91,129 @@ public class ZcScaledModel {
   }//+++
   
   //===
+    
+  /**
+   * @param pxInputValue could be anything
+   */
+  public final void ccSetInputValue(int pxInputValue){
+    cmInputValue = pxInputValue;
+  }//++<
+
+  /**
+   * <pre>
+   * since check function will be called separately, 
+   *   using ccSetupScale() is recommended.
+   * </pre>
+   * @param pxInputOffset  no minus no equals to span
+   */
+  public final void ccSetInputOffset(int pxInputOffset){
+    cmInputOffset = pxInputOffset;
+    ssForceValidate();
+  }//++<
+
+  /**
+   * <pre>
+   * since check function will be called separately, 
+   *   using ccSetupScale() is recommended.
+   * </pre>
+   * @param pxInputSpan no minus no equals to offset
+   */
+  public final void ccSetInputSpan(int pxInputSpan){
+    cmInputSpan = pxInputSpan;
+    ssForceValidate();
+  }//++<
+
+  /**
+   * <pre>
+   * since validate function will be called separately, 
+   *   using ccSetupScale() is recommended.
+   * </pre>
+   * @param pxOutputOffset no minus no equals to span
+   */
+  public final void ccSetOutputOffset(int pxOutputOffset){
+    cmOutputOffset = pxOutputOffset;
+    ssForceValidate();
+  }//++<
+
+  /**
+   * <pre>
+   * since check function will be called separately, 
+   *   using ccSetupScale() is recommended.
+   * </pre>
+   * @param outputSpan no minus no equals to offset
+   */
+  public final void ccSetOutputSpan(int outputSpan){
+    cmOutputSpan = outputSpan;ssForceValidate();
+  }//++<
+    
+  /**
+   * @param pxInputOffset no minus no equals to span
+   * @param pxInputSpan no minus no equals to offset
+   * @param pxOutputOffset no minus no equals to span
+   * @param pxOutputSpan no minus no equals to offset
+   */
+  public final void ccSetupScale(
+    int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
+  ){
+    cmInputOffset=pxInputOffset;
+    cmInputSpan=pxInputSpan;
+    cmOutputOffset=pxOutputOffset;
+    cmOutputSpan=pxOutputSpan;
+    ssForceValidate();
+  }//++<
+  
+  //===
+  
+  /**
+   * @return #
+   */
+  public final float ccGetScaledFloatValue(){
+    return cmFloatOutput;
+  }//++>
+    
+  /**
+   * @return #
+   */
+  public final int ccGetScaledIntegerValue(){
+    return cmIntegerOutput;
+  }//++>
+  
+  /**
+   * @return #
+   */
+  public final int ccGetInputValue(){
+    return cmInputValue;
+  }//++>
+
+  /**
+   * @return #
+   */
+  public final int ccGetInputOffset(){
+    return cmInputOffset;
+  }//++>
+
+  /**
+   * @return #
+   */
+  public final int ccGetInputSpan(){
+    return cmInputSpan;
+  }//++>
+
+  /**
+   * @return #
+   */
+  public final int ccGetOutputOffset(){
+    return cmOutputOffset;
+  }//++>
+
+  /**
+   * @return #
+   */
+  public final int ccGetOutputSpan(){
+    return cmOutputSpan;
+  }//++>
+  
+  //===
   
   /**
    * via PApplet::map before casting.<br>
@@ -160,7 +226,7 @@ public class ZcScaledModel {
       (float)cmOutputOffset,(float)cmOutputSpan,
       (float)cmInputOffset,(float)cmInputSpan
     ));
-  }//+++
+  }//++>
   
   /**
    * via PApplet::map before casting.<br>
@@ -171,7 +237,7 @@ public class ZcScaledModel {
     return (int)(PApplet.map(
       pxSource,cmOutputOffset,cmOutputSpan,cmInputOffset,cmInputSpan
     ));
-  }//+++
+  }//++>
   
   /**
    * via PApplet::map.<br>
@@ -182,7 +248,7 @@ public class ZcScaledModel {
     return PApplet.map(
       pxSource, cmInputOffset, cmInputSpan, cmOutputOffset, cmOutputSpan
     );
-  }//+++
+  }//++>
   
   /**
    * via PApplet::ceil after ::map.<br>
@@ -191,59 +257,27 @@ public class ZcScaledModel {
    */
   public final int ccToScaledIntegerValue(int pxSource){
     return PApplet.ceil(ccToScaledFloatValue(pxSource));
-  }//+++
+  }//++>
   
   //===
   
   /**
-   * 
-   * @return #
+   * {@inheritDoc }
    */
-  public final float ccGetScaledFloatValue(){
-    return cmFloatOutput;
-  }//+++
-    
-  /**
-   * 
-   * @return #
-   */
-  public final int ccGetScaledIntegerValue(){
-    return cmIntegerOutput;
-  }//+++
-  
-  /**
-   * @return #
-   */
-  public int ccGetInputValue(){
-    return cmInputValue;
-  }//+++
-
-  /**
-   * @return #
-   */
-  public int ccGetInputOffset(){
-    return cmInputOffset;
-  }//+++
-
-  /**
-   * @return #
-   */
-  public int ccGetInputSpan(){
-    return cmInputSpan;
-  }//+++
-
-  /**
-   * @return #
-   */
-  public int ccGetOutputOffset(){
-    return cmOutputOffset;
-  }//+++
-
-  /**
-   * @return #
-   */
-  public int ccGetOutputSpan(){
-    return cmOutputSpan;
+  @Override public String toString() {
+    StringBuilder lpRes
+      = new StringBuilder(ZcRangedModel.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupPairedTag("i", cmInputValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("o", cmIntegerOutput));
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupPairedTag("iO", cmInputOffset));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("iS", cmInputSpan));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("oO", cmOutputOffset));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("oS", cmOutputSpan));
+    return lpRes.toString();
   }//+++
   
 }//***eof

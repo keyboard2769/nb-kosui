@@ -96,7 +96,7 @@ public class DemoLocalUI extends PApplet {
     }//+++
     private void ssOutput(){
       //-- update ** binding
-      cmGauge.ccSetPercentage((int)cmCounterModel, 0x1FFF);
+      cmGauge.ccSetProportion((int)cmCounterModel, 0x1FFF);
       cmDecimalTB.ccSetValue((int)cmCounterModel);
       cmHexadecimalTB.ccSetText("0x"+hex(cmCounterModel,4));
       for(int i=0;i<16;i++){

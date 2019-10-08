@@ -32,14 +32,14 @@ public class ZcReal {
    */
   public ZcReal(){
     ccSet(0f);
-  }//..!
+  }//++!
   
   /**
    * @param pxVal can be anything
    */
   public ZcReal(float pxVal){
     ccSet(pxVal);
-  }//..!
+  }//++!
   
   /**
    * @param pxVal can be anything
@@ -48,7 +48,7 @@ public class ZcReal {
   public ZcReal(float pxVal, boolean pxStatic){
     ccSet(pxVal);
     cmIsStatic=pxStatic;
-  }//..!
+  }//++!
   
   //===
   
@@ -58,7 +58,7 @@ public class ZcReal {
   public final void ccSet(float pxVal){
     if(cmIsStatic){return;}
     cmVal=pxVal;
-  }//+++
+  }//++<
   
   /**
    * @param pxOffset just got added
@@ -66,7 +66,7 @@ public class ZcReal {
   public final void ccShift(float pxOffset){
     if(cmIsStatic){return;}
     cmVal+=pxOffset;
-  }//+++
+  }//++<
   
   /**
    * works exactly as transferred from a static source.<br>
@@ -76,7 +76,7 @@ public class ZcReal {
    */
   public final void ccEffect(float pxSource, int pxRatio){
     cmVal+=((pxSource-cmVal)/ccFixRatio(pxRatio));
-  }//+++
+  }//++<
   
   /**
    * works exactly as transferred from a static source.<br>
@@ -86,13 +86,25 @@ public class ZcReal {
    */
   public final void ccEffect(float pxSource){
     ccEffect(pxSource, 16);
-  }//+++
+  }//++<
   
   /**
    * @return the value
    */
   public final float ccGet(){
     return cmVal;
+  }//++>
+  
+  //===
+
+  @Override public String toString() {
+    StringBuilder lpRes
+      = new StringBuilder(ZcReal.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(Float.toString(cmVal));
+    return lpRes.toString();
   }//+++
   
   //===
@@ -100,10 +112,7 @@ public class ZcReal {
   private static float ccFixRatio(int pxRatio){
     int lpFixed=pxRatio&0xFF;
     return lpFixed==0?1f:((float)lpFixed);
-  
   }//+++
-  
-  //=== 
   
   /**
    * both values is effected via the transferring if not static.<br>

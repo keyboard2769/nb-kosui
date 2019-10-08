@@ -106,7 +106,7 @@ public class EcGauge extends EcElement {
    * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
    * @param pxZeroToOne : 0.00 - 1.00f
    */
-  public final void ccSetPercentage(float pxZeroToOne){
+  public final void ccSetProportion(float pxZeroToOne){
     cmContentValue=VcNumericUtility.ccProportion(pxZeroToOne);
   }//+++
   
@@ -114,7 +114,7 @@ public class EcGauge extends EcElement {
    * the gauge will be full as this value equals 255.<br>
    * @param pxByte : will get masked to 0-255
    */
-  public final void ccSetPercentage(int pxByte){
+  public final void ccSetProportion(int pxByte){
     cmContentValue=pxByte&C_VAL_MASK;
   }//+++
   
@@ -124,7 +124,7 @@ public class EcGauge extends EcElement {
    * @param pxVal should be less than span but this do NOT check
    * @param pxSpan if passed zero this will NOT throw or print anything
    */
-  public final void ccSetPercentage(int pxVal, int pxSpan){
+  public final void ccSetProportion(int pxVal, int pxSpan){
     cmContentValue=VcNumericUtility.ccProportion
       (VcNumericUtility.ccProportion(pxVal, pxSpan));
   }//+++

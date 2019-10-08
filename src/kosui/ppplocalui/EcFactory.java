@@ -113,7 +113,7 @@ public final class EcFactory {
     pxTarget.ccSetIsVertical(pxIsVertical);
     pxTarget.ccSetHasStroke(pxHasStroke);
     pxTarget.ccSetGaugeColor(0xFF111111, 0xFFCCCCCC);
-    pxTarget.ccSetPercentage(32);
+    pxTarget.ccSetProportion(32);
   }//+++
     
   /**
@@ -139,7 +139,7 @@ public final class EcFactory {
     pxTarget.ccSetIsVertical(pxIsVertical);
     pxTarget.ccSetHasStroke(pxHasStroke);
     pxTarget.ccSetGaugeColor(EcConst.C_DIM_GRAY, EcConst.C_LIT_GRAY);
-    pxTarget.ccSetPercentage(63);
+    pxTarget.ccSetProportion(63);
   }//+++
   
   //=== processing essential

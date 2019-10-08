@@ -269,7 +269,7 @@ public final class VcLocalCoordinator {
    * please not that this is just a not that safe and efficient way
    * for test sketch because you will have no control nor filtering.<br>
    * more over it just ignores containers like list or map because 
-   * i just don't want to deal with the type erasing things.
+   * i just don't want to deal with those type erasing things.
    * so for normal application, adding manually or via the group interface
    * is still the preferred way.<br>
    * @param pxOwner the one instance holds local UI components
