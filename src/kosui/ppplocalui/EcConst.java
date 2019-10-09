@@ -318,11 +318,11 @@ public final class EcConst {
   public static void main(String[] args){
     /* *
      * NO BODY IS SUPPOSED TO RUN THIS DIRECTLY
-     * # prefix numbering tag meaning:
+     * # predefined prefix numbering tag meaning:
      * - [ 0 ]: 
-     * - [ 1 ]:  
-     * - [ 2 ]:  
-     * - [ 3 ]:  
+     * - [ 1 ]: for-override
+     * - [ 2 ]: 
+     * - [ 3 ]: 
      * - [ 4 ]: test|log|debug 
      * - [ 5 ]:  
      * - [ 6 ]: todo|plan|fill
@@ -342,7 +342,7 @@ public final class EcConst {
    * @return the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_1910082208";
+    return "_1910091137";
   }//+++
   
 }//***eof

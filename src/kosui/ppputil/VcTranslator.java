@@ -190,6 +190,7 @@ public final class VcTranslator {
     if(!VcStringUtility.ccCompareQTagString(lpRow[0], Q_TR)){return false;}
     
     //-- register
+    VcConst.ccLogln(".ccParseCSV()::key_found", lpRow[1]);
     self.ccRegisterEnglishWord(lpRow[1], lpRow[2]);
     self.ccRegisterJapaneseWord(lpRow[1], lpRow[3]);
     self.ccRegisterChineseWord(lpRow[1], lpRow[4]);
