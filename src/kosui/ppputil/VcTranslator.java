@@ -39,12 +39,13 @@ public final class VcTranslator {
     Q_JP="jp",
     Q_ZH="zh",
     Q_ATTR_KEY="key"
-  ;//...
+  ;//,,,
   
   private static final String
     //-- escape
-    E_NEW_LINE = "<ln>"
-  ;//...
+    E_NEW_LINE = "<ln>",
+    E_BLANK    = "<bk>"
+  ;//,,,
   
   /**
    * @return instance
@@ -52,9 +53,9 @@ public final class VcTranslator {
   public static VcTranslator ccGetInstance(){
     if(self==null){self = new VcTranslator();}
     return self;
-  }//+++
+  }//++>
   private static VcTranslator self = null;
-  private VcTranslator(){}//..!
+  private VcTranslator(){}//++!
 
   //===
   
@@ -81,6 +82,8 @@ public final class VcTranslator {
       if(pxQName.equals(Q_TR)){
         String lpKey=pxAttributes.getValue(Q_ATTR_KEY);
         if(lpKey==null){return;}
+        self.cmCurrentKey=lpKey;
+        /* 4 */VcConst.ccLogln(".startElement()::got", lpKey);
         self.cmMode='x';
       }else
       if(pxQName.equals(Q_EN)){
@@ -99,7 +102,7 @@ public final class VcTranslator {
     )throws SAXException
     {
       String lpText = new String(arg0,arg1,arg2);
-      if(!VcConst.ccIsAllNoneSpace(lpText)){return;}
+      if(VcConst.ccIsAllNoneSpace(lpText)){return;}
       lpText=lpText.trim();
       switch(self.cmMode){
         case 'e':self.cmCurrentEN=lpText;break;
@@ -111,8 +114,10 @@ public final class VcTranslator {
 
     @Override public void endElement(
       String pxURI, String pxLocalName, String pxQName
-    ) throws SAXException {
+    ) throws SAXException 
+    {
       if(!pxQName.equals(Q_TR)){return;}
+      /* 4 */VcConst.ccLogln(".endElement()::found", self.cmCurrentKey);
       self.ccRegisterEnglishWord(self.cmCurrentKey, self.cmCurrentEN);
       self.ccRegisterJapaneseWord(self.cmCurrentKey, self.cmCurrentJP);
       self.ccRegisterChineseWord(self.cmCurrentKey, self.cmCurrentZH);
@@ -141,7 +146,7 @@ public final class VcTranslator {
     cmJapaneseDict.put("", "");
     cmChineseDict.put("", "");
     
-  }//..!
+  }//++!
   
   //=== parsing
   
@@ -237,7 +242,7 @@ public final class VcTranslator {
    */
   public final void ccSetMode(char pxMode_ejcx){
     cmMode=pxMode_ejcx;
-  }//+++
+  }//++<
   
   /**
    * ##
@@ -248,9 +253,8 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmEnglishDict.containsKey(pxKey)){return;}
-    cmEnglishDict.put
-      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
-  }//+++
+    cmEnglishDict.put(pxKey, ssReplaceEscapes(pxWord));
+  }//++<
   
   /**
    * ##
@@ -261,9 +265,8 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmJapaneseDict.containsKey(pxKey)){return;}
-    cmJapaneseDict.put
-      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
-  }//+++
+    cmJapaneseDict.put(pxKey, ssReplaceEscapes(pxWord));
+  }//++<
   
   /**
    * ##
@@ -274,9 +277,14 @@ public final class VcTranslator {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxWord)){return;}
     if(cmChineseDict.containsKey(pxKey)){return;}
-    cmChineseDict.put
-      (pxKey, pxWord.replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE));
-  }//+++
+    cmChineseDict.put(pxKey, ssReplaceEscapes(pxWord));
+  }//++<
+  
+  private String ssReplaceEscapes(String pxString){
+    return pxString
+      .replaceAll(E_NEW_LINE, VcConst.C_V_NEWLINE)
+      .replaceAll(E_BLANK, " ");
+  }//++<
   
   //===
   
@@ -313,6 +321,9 @@ public final class VcTranslator {
     System.out.println("<<<");
   }//+++
   
+  /**
+   * @deprecated for test use only
+   */
   @Deprecated public static final void tstReadupKeys(){
     System.out.println(">>> kosui.ppputil.VcTranslator.tstReadupKeys()");
     for(String it : self.cmEnglishDict.keySet()){
