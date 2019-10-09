@@ -277,10 +277,30 @@ public class EcRect extends EcPoint{
   
   /**
    * stretch the size.<br>
+   * you pay the null check over head for not that convenience at all.<br>
+   * @param pxTarget do not pass null
+   */
+  public final void ccSetEndX(EcRect pxTarget){
+    if(pxTarget==null){return;}
+    ccSetEndX(pxTarget.ccEndX());
+  }//+++
+  
+  /**
+   * stretch the size.<br>
    * @param pxEndY should be bigger than the current location y
    */
   public final void ccSetEndY(int pxEndY){
     if(pxEndY>cmY){cmH=pxEndY-cmY;}
+  }//+++
+  
+  /**
+   * stretch the size.<br>
+   * you pay the null check over head for not that convenience at all.<br>
+   * @param pxTarget do not pass null
+   */
+  public final void ccSetEndY(EcRect pxTarget){
+    if(pxTarget==null){return;}
+    ccSetEndY(pxTarget.ccEndY());
   }//+++
     
   /**

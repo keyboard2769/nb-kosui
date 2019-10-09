@@ -129,8 +129,7 @@ public class EcElement extends EcComponent{
    */
   protected final void drawText(int pxColor){
     if(cmText.isEmpty()){return;}
-    int lpX=ccCenterX();
-    pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
+    int lpX;
     switch(cmTextAlign){
       
       case 'l':
@@ -142,6 +141,13 @@ public class EcElement extends EcComponent{
         lpX=ccEndX()-C_TEXT_MARG_X;
         pbOwner.textAlign(PApplet.RIGHT, PApplet.CENTER);
       break;
+      
+      case 'c':
+        lpX=ccCenterX();
+        pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
+      break;
+      
+      default:return;
       
     }//..?
     pbOwner.fill(pxColor);
@@ -260,8 +266,9 @@ public class EcElement extends EcComponent{
    * <pre>
    * mode:
    *  - 'l':left
-   *  - 'c':center(or you can pass anything)
+   *  - 'c':center
    *  - 'r':right
+   *  - 'x':hidden(or you can pass anything)
    * </pre>
    * @param pxMode_lcr #
    */

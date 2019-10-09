@@ -60,9 +60,7 @@ public class EcLamp extends EcElement{
    * @param pxID #
    */
   public EcLamp(String pxKey, int pxID){
-    super();
-    ccSetupKey(VcStringUtility.ccNulloutString(pxKey));
-    ccSetID(pxID);
+    super(pxKey,pxID);
     ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
     if(cmText.length()>1){cmText=cmText.substring(0, 1);}
   }//..!

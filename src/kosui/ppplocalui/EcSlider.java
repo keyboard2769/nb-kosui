@@ -22,32 +22,55 @@ package kosui.ppplocalui;
  * for every draw loop it detects mouse pressing and locations. <br>
  */
 public class EcSlider extends EcGauge{
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly
+   * @param pxVert will get passed to super directly
+   * @param pxW will get passed to super directly
+   * @param pxH will get passed to super directly
+   */
+  public EcSlider(String pxKey, int pxID, boolean pxVert, int pxW, int pxH){
+    super(pxKey, pxID, pxVert, pxW, pxH);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly
+   * @param pxVert will get passed to super directly
+   */
+  public EcSlider(String pxKey, int pxID, boolean pxVert){
+    super(pxKey, pxID, pxVert);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxVert will get passed to super directly
+   */
+  public EcSlider(String pxKey, boolean pxVert){
+    super(pxKey, pxVert);
+    ccSetIsEnabled(true);
+  }//++!
 
   /**
-   * inherited default
+   * will have an empty string as key.<br>
+   * will have no identical id.<br>
+   * @param pxVert will get passed to super directly
+   */
+  public EcSlider(boolean pxVert){
+    super("", pxVert);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * inherited default.<br>
    */
   public EcSlider(){
     super();
-  }//..!
-  
-  /**
-   * inherited
-   * @param pxKey #
-   */
-  public EcSlider(String pxKey){
-    super(pxKey);
     ccSetIsEnabled(true);
-  }//..!
-  
-  /**
-   * inherited default
-   * @param pxKey #
-   * @param pxID #
-   */
-  public EcSlider(String pxKey, int pxID){
-    super(pxKey, pxID);
-    ccSetIsEnabled(true);
-  }//..!
+  }//++!
   
   //===
   
@@ -56,7 +79,7 @@ public class EcSlider extends EcGauge{
     if(!ccIsVisible()){return;}
     
     //-- pre
-    int lpPosition=ccTellScale(cmIsVertical?cmH:cmW);
+    int lpPosition=ssToScaledPixLength(cmIsVertical?cmH:cmW);
     ccApplyClickedValue();
     
     //-- draw
@@ -77,6 +100,6 @@ public class EcSlider extends EcGauge{
     }//..?
     if(cmHasStroke){pbOwner.noStroke();}
     
-  }//+++
+  }//++~
   
 }//***eof

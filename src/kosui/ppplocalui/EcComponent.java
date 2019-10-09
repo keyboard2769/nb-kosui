@@ -17,6 +17,8 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
 
 /**
@@ -214,6 +216,30 @@ public abstract class EcComponent extends EcRect{
    */
   public final boolean ccIsVisible(){
     return cmIsVisible&(ccIsAtCurrentPage()||cmPage==0);
+  }//+++
+  
+  //=== 
+  
+  /**
+   * break the string representation, attach with a tag, draw to the owner.<br>
+   * originally a snippet called inspect but since we get to use it too often,
+   * i thought it have to be here.<br>
+   * @param pxTag will get nulled out
+   * @param pxTarget do not pass null
+   * @param pxFill for the text
+   * @param pxX for the text
+   * @param pxY for the text
+   * @deprecated for test use only
+   */
+  @Deprecated public static final
+  void tstBreakObject(String pxTag,Object pxTarget,int pxFill,int pxX,int pxY){
+    if(pbOwner==null){return;}
+    pbOwner.fill(pxFill);
+    pbOwner.text(
+      VcStringUtility.ccNulloutString(pxTag)
+        + VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(pxTarget),
+      pxX,pxY
+    );
   }//+++
   
 }//***eof

@@ -61,7 +61,9 @@ i know it is a nonsense name, but anyway.
 
 #### plan 
 
-- none
+- [ ] $ tre
+- [ ] $ dos
+- [ ] $ uno
 
 #### heading
 

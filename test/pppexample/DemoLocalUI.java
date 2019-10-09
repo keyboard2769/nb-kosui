@@ -55,7 +55,7 @@ public class DemoLocalUI extends PApplet {
     = new EcPane("Click!!", 320-10*2, 80);
   
   private final EcGauge cmGauge = new EcGauge("G:");
-  private final EcSlider cmSlider = new EcSlider("S'", 0xCA01);
+  private final EcSlider cmSlider = new EcSlider("S'", 0xCA01, false);
   
   private final EcButton cmShiftLeftSW  = new EcButton("<", 0xAA01);
   private final EcButton cmDecrementSW  = new EcButton("-", 0xAA02);

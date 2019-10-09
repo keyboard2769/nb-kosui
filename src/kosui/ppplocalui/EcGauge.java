@@ -51,6 +51,106 @@ public class EcGauge extends EcElement {
    */
   protected int cmContentValue = 99;
 
+  //===
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly and also effect enability
+   * @param pxVert could be anything
+   * @param pxW greater than zero or nothing
+   * @param pxH greater than zero or nothing
+   */
+  public EcGauge(String pxKey, int pxID, boolean pxVert, int pxW, int pxH){
+    super(pxKey, pxID);
+    ccSetIsVertical(pxVert);
+    ccSetIsEnabled(false);
+    if(pxW>0 && pxH>0){
+      ccSetSize(pxW, pxH);
+    }//..?
+    ccSetTextAlign('x');
+  }//++!
+  
+  /**
+   * will have an empty string as key.<br>
+   * will have no identical id.<br>
+   * @param pxVert could be anything
+   * @param pxW greater than zero or nothing
+   * @param pxH greater than zero or nothing
+   */
+  public EcGauge(boolean pxVert, int pxW, int pxH){
+    this("", EcConst.C_ID_IGNORE, pxVert, pxW, pxH);
+  }//++!
+  
+  /**
+   * will have an empty string as key.<br>
+   * will have no identical id.<br>
+   * is vertical by default.<br>
+   * @param pxW greater than zero or nothing
+   * @param pxH greater than zero or nothing
+   */
+  public EcGauge(int pxW, int pxH){
+    this("", EcConst.C_ID_IGNORE, true, pxW, pxH);
+  }//++!
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxVert could be anything
+   * @param pxW greater than zero or nothing
+   * @param pxH greater than zero or nothing
+   */
+  public EcGauge(String pxKey, boolean pxVert, int pxW, int pxH){
+    this(pxKey, EcConst.C_ID_IGNORE, pxVert, pxW, pxH);
+  }//++!
+  
+  /**
+   * will have no identical id.<br>
+   * @param pxKey will get passed to super directly
+   * @param pxW greater than zero or nothing
+   * @param pxH greater than zero or nothing
+   */
+  public EcGauge(String pxKey, int pxW, int pxH){
+    this(pxKey, EcConst.C_ID_IGNORE, true, pxW, pxH);
+  }//++!
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly and also effect enability
+   * @param vert could be anything
+   */
+  public EcGauge(String pxKey, int pxID, boolean vert){
+    this(pxKey, pxID, vert, -1, -1);
+  }//++!
+  
+  /**
+   * @param pxKey will get passed to super directly
+   * @param vert could be anything
+   */
+  public EcGauge(String pxKey, boolean vert){
+    this(pxKey, EcConst.C_ID_IGNORE, vert, -1, -1);
+  }//++!
+  
+  /**
+   * is vertical by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly and also effect enability
+   */
+  public EcGauge(String pxKey, int pxID){
+    this(pxKey, pxID, true, -1, -1);
+  }//++!
+  
+  /**
+   * inherited default.<br>
+   * is vertical by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get passed to super directly
+   */
+  public EcGauge(String pxKey){
+    super(pxKey);
+    ccSetTextAlign('x');
+    ccSetIsEnabled(false);
+  }//..!
+  
   /**
    * inherited default.<br>
    * has stroke by default.<br>
@@ -58,103 +158,9 @@ public class EcGauge extends EcElement {
    */
   public EcGauge(){
     super();
-  }//..!
-  
-  /**
-   * inherited.<br>
-   * has stroke by default.<br>
-   * is vertical by default.<br>
-   * @param pxKey # but please note that a gauge don't have to have a name
-   * @param pxID #
-   */
-  public EcGauge(String pxKey, int pxID){
-    super(pxKey, pxID);
+    ccSetTextAlign('x');
     ccSetIsEnabled(false);
-  }//..!
-  
-  /**
-   * inherited.<br>
-   * has stroke by default.<br>
-   * is vertical by default.<br>
-   * output component can have no identical id.<br>
-   * @param pxKey will get passed to setter directly and this is a GAUGE?!
-   */
-  public EcGauge(String pxKey){
-    super();
-    ccSetupKey(pxKey);
-    ccSetIsEnabled(false);
-  }//..!
-  
-  /**
-   * inherited.<br>
-   * has stroke by default.<br>
-   * is vertical by default.<br>
-   * @param pxKey will get passed to setter directly and this is a GAUGE?!
-   * @param pxW pix
-   * @param pxH pix
-   */
-  public EcGauge(String pxKey, int pxW, int pxH){
-    super();
-    ccSetupKey(pxKey);
-    ccSetIsEnabled(false);
-    ccSetSize(pxW, pxH);
-  }//..!
-  
-  //===
-  
-  /**
-   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
-   * @param pxZeroToOne : 0.00 - 1.00f
-   */
-  public final void ccSetProportion(float pxZeroToOne){
-    cmContentValue=VcNumericUtility.ccProportion(pxZeroToOne);
-  }//+++
-  
-  /**
-   * the gauge will be full as this value equals 255.<br>
-   * @param pxByte : will get masked to 0-255
-   */
-  public final void ccSetProportion(int pxByte){
-    cmContentValue=pxByte&C_VAL_MASK;
-  }//+++
-  
-  /**
-   * like if you wanna the value of 50%, you can pass (50,100).<br>
-   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
-   * @param pxVal should be less than span but this do NOT check
-   * @param pxSpan if passed zero this will NOT throw or print anything
-   */
-  public final void ccSetProportion(int pxVal, int pxSpan){
-    cmContentValue=VcNumericUtility.ccProportion
-      (VcNumericUtility.ccProportion(pxVal, pxSpan));
-  }//+++
-  
-  /**
-   * 
-   * @param cmVal : has stroke?
-   */
-  public final void ccSetHasStroke(boolean cmVal){
-    cmHasStroke=cmVal;
-  }//+++
-  
-  /**
-   * 
-   * @param cmVal : is vertical?
-   */
-  public final void ccSetIsVertical(boolean cmVal){
-    cmIsVertical=cmVal;
-  }//+++
-  
-  /**
-   * only for the backend color set <br>
-   * the content color can be set via EcElement::ccSetColor()
-   * @param pxBack #
-   * @param pxStroke #
-   */
-  public final void ccSetGaugeColor(int pxBack, int pxStroke){
-    cmBackColor=pxBack;
-    cmStrokeColor=pxStroke;
-  }//+++
+  }//++!
   
   //===
   
@@ -166,7 +172,7 @@ public class EcGauge extends EcElement {
     if(!ccIsVisible()){return;}
     
     //-- pre
-    int lpLength=ccTellScale(cmIsVertical?cmH:cmW);
+    int lpLength=ssToScaledPixLength(cmIsVertical?cmH:cmW);
     ccApplyClickedValue();
     
     //-- draw
@@ -186,18 +192,87 @@ public class EcGauge extends EcElement {
     }//..?
     if(cmHasStroke){pbOwner.noStroke();}
     drawName(cmNameColor);
+    drawText(cmTextColor);
   
-  }//+++
+  }//++~
   
   //===
   
   /**
-   * ##
-   * @param pxVal this value has nothing to do with this
-   * @return inputed_value*current_gauge/255
+   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
+   * @param pxZeroToOne : 0.00 - 1.00f
    */
-  public final int ccTellScale(int pxVal){
-    return pxVal*cmContentValue/C_VAL_MASK;
+  public final void ccSetProportion(float pxZeroToOne){
+    cmContentValue=VcNumericUtility.ccProportion(pxZeroToOne);
+  }//++<
+  
+  /**
+   * the gauge will be full as this value equals 255.<br>
+   * @param pxByte : will get masked to 0-255
+   */
+  public final void ccSetProportion(int pxByte){
+    cmContentValue=pxByte&C_VAL_MASK;
+  }//++<
+  
+  /**
+   * like if you wanna the value of 50%, you can pass (50,100).<br>
+   * <b>DOUBLE ALIASING PROPORTION METHOD OF NUMERIC UTILITY</b><br>
+   * @param pxVal should be less than span but this do NOT check
+   * @param pxSpan if passed zero this will NOT throw or print anything
+   */
+  public final void ccSetProportion(int pxVal, int pxSpan){
+    cmContentValue=VcNumericUtility.ccProportion
+      (VcNumericUtility.ccProportion(pxVal, pxSpan));
+  }//++<
+  
+  /**
+   * 
+   * @param cmVal : has stroke?
+   */
+  public final void ccSetHasStroke(boolean cmVal){
+    cmHasStroke=cmVal;
+  }//++<
+  
+  /**
+   * 
+   * @param cmVal : is vertical?
+   */
+  public final void ccSetIsVertical(boolean cmVal){
+    cmIsVertical=cmVal;
+  }//++<
+  
+  /**
+   * only for the backend color set <br>
+   * the content color can be set via EcElement::ccSetColor()
+   * @param pxBack #
+   * @param pxStroke #
+   */
+  public final void ccSetGaugeColor(int pxBack, int pxStroke){
+    cmBackColor=pxBack;
+    cmStrokeColor=pxStroke;
+  }//++<
+  
+  //===
+  
+  /**
+   * for gauge head calculation.<br>
+   * inner use only.<br>
+   * @param pxLength width or height in pix
+   * @return length * value / span
+   */
+  protected final int ssToScaledPixLength(int pxLength){
+    return pxLength*cmContentValue/C_VAL_MASK;
+  }//+++
+  
+  /**
+   * mouse location will affect the content value.<br>
+   */
+  protected final void ccApplyClickedValue(){
+    if(!ccIsVisible()){return;}
+    if(!ccIsMousePressed()){return;}
+    cmContentValue=cmIsVertical?
+       (C_VAL_MASK-ccGetMouseOffsetY()*C_VAL_MASK/cmH)
+      :(           ccGetMouseOffsetX()*C_VAL_MASK/cmW);
   }//+++
   
   //===
@@ -213,7 +288,7 @@ public class EcGauge extends EcElement {
    */
   public final int ccGetContentValue(){
     return cmContentValue&C_VAL_MASK;
-  }//+++
+  }//++>
   
   /**
    * <pre>
@@ -223,7 +298,7 @@ public class EcGauge extends EcElement {
    */
   public final int ccGetReversedValue(){
     return 0xFF-ccGetContentValue();
-  }//+++
+  }//++>
 
   /**
    * additionally orientation and stroke mode will get fetched.<br>
@@ -233,17 +308,6 @@ public class EcGauge extends EcElement {
     super.ccSetupStyle(pxTarget);
     cmIsVertical=pxTarget.cmIsVertical;
     cmHasStroke=pxTarget.cmHasStroke;
-  }//+++
-  
-  /**
-   * mouse location will affect the content value.<br>
-   */
-  protected final void ccApplyClickedValue(){
-    if(!ccIsVisible()){return;}
-    if(!ccIsMousePressed()){return;}
-    cmContentValue=cmIsVertical?
-       (C_VAL_MASK-ccGetMouseOffsetY()*C_VAL_MASK/cmH)
-      :(           ccGetMouseOffsetX()*C_VAL_MASK/cmW);
-  }//+++
+  }//++>
   
 }//***eof
