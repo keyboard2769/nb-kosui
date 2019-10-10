@@ -41,29 +41,10 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
   ){
     super(pxInputOffset, pxInputSpan, pxOutputOffset, pxOutputSpan);
-    ccClearRevicer();
+    ccResetRevicer();
   }//++!
   
   //===
-  
-  /**
-   * 
-   * @param pxBias #
-   * @param pxOffset #
-   */
-  public final void ccSetupRevicer(int pxBias, int pxOffset){
-    ccSetBias(pxBias);
-    ccSetOffset(pxOffset);
-  }//+++
-  
-  /**
-   * default additional bias is 100. <br>
-   * default additional offset is 0. <br>
-   */
-  public final void ccClearRevicer(){
-    ccSetBias(100);
-    ccSetOffset(0);
-  }//+++
   
   /**
    * will get trimmed via bit masking 
@@ -71,15 +52,33 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
    */
   public final void ccSetBias(int pxPercentage){
     cmBias=pxPercentage&0x1FFF;
-  }//+++
+  }//++<
   
   /**
-   * 
-   * @param pxOffset #
+   * @param pxOffset could be anything
    */
   public final void ccSetOffset(int pxOffset){
     cmOffset=pxOffset;
-  }//+++
+  }//++<
+  
+  /**
+   * aliasing setter
+   * @param pxBias will get passed to setter directly
+   * @param pxOffset will get passed to setter directly
+   */
+  public final void ccSetupRevicer(int pxBias, int pxOffset){
+    ccSetBias(pxBias);
+    ccSetOffset(pxOffset);
+  }//++<
+  
+  /**
+   * default additional bias is 100. <br>
+   * default additional offset is 0. <br>
+   */
+  public final void ccResetRevicer(){
+    ccSetBias(100);
+    ccSetOffset(0);
+  }//++<
   
   //===
   
@@ -94,7 +93,7 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     lpSource*=100f;
     lpSource/=(float)cmBias;
     return ccToUnscaledInputValue(lpSource);
-  }//+++
+  }//++>
   
   
   /**
@@ -108,7 +107,7 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     lpSource*=100;
     lpSource/=cmBias;
     return ccToUnscaledInputValue(lpSource);
-  }//+++
+  }//++>
   
   //===
   
@@ -123,7 +122,7 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     lpScaled/=100;
     lpScaled+=cmOffset;
     return lpScaled;
-  }//+++
+  }//++>
   
   /**
    * basically calculates via integer value. <br>
@@ -135,6 +134,6 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     lpScaled*=(((float)cmBias)/100f);
     lpScaled+=(float)cmOffset;
     return lpScaled;
-  }//+++
+  }//++>
 
 }//***eof
