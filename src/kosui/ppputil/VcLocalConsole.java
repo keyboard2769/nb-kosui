@@ -33,16 +33,17 @@ public final class VcLocalConsole {
   static public final VcLocalConsole ccGetInstance(){
     if(self==null){self= new VcLocalConsole();}
     return self;
-  }//+++
+  }//++>
   static private VcLocalConsole self = null;
-  private VcLocalConsole (){}//..!
+  private VcLocalConsole (){}//++!
   
   //===
   
   private static final String C_T_NUM = "<N>" ;
+  private static final String C_V_BLANK = " " ;
   
   /**
-   * location constants
+   * hard coded
    */
   public static final int
     //-- length
@@ -50,7 +51,7 @@ public final class VcLocalConsole {
     //-- pix
     C_TEXT_ADJ_X = 2,
     C_TEXT_ADJ_Y = 2
-  ;//...
+  ;//,,,
   
   //===
   
@@ -61,8 +62,9 @@ public final class VcLocalConsole {
   
   private boolean
     cmIsTypeMode          = false,
-    cmIsMessageBarVisible = true
-  ;//...
+    cmIsMessageBarVisible = true,
+    cmIsBlockingOutside   = false
+  ;//,,,
   
   private EiTriggerable cmSettling = null;
   
@@ -84,13 +86,13 @@ public final class VcLocalConsole {
     cmMessageBarX = 0,  //.. arbitrary by default value
     cmMessageBarY = 0,  //.. arbitrary by default value
     cmMessageBarW   = 800
-  ;//...
+  ;//,,,
   
   private String
     cmField="  $ ",
     cmMessage="kosui::",
     cmLastAccepted="<none>"
-  ;//...
+  ;//,,,
   
   private String[] cmDesAccepted = null;
   
@@ -121,7 +123,7 @@ public final class VcLocalConsole {
    */
   public static final void ccUpdate(){
     self.ssUpdate();
-  }//+++
+  }//++~
   
   private void ssUpdate(){
 
@@ -147,7 +149,9 @@ public final class VcLocalConsole {
       );
     }//..?
     
-  }//+++
+  }//++~
+  
+  //===
     
   /**
    * <pre>
@@ -163,6 +167,7 @@ public final class VcLocalConsole {
     if(pxKeyCode==0x0A){//..{ENTER}
       if(self.cmIsTypeMode){
         self.cmIsTypeMode=false;
+        self.cmIsBlockingOutside=true;
         self.ssReadInput();
         self.ssFireOperation();
         if(self.cmSettling!=null){
@@ -230,18 +235,21 @@ public final class VcLocalConsole {
   //===
   
   /**
-   * @param pxCommand does check for existence
-   * @param pxTrigger # 
+   * @param pxCommand do not pass null
+   * @param pxTrigger no dot pass null
    */
   public static final 
   void ccRegisterCommand(String pxCommand, EiTriggerable pxTrigger){
+    if(pxCommand==null){return;}
     if(pxTrigger==null){return;}
     if(self.cmMapOfCommand.containsKey(pxCommand)){return;}
     self.cmMapOfCommand.put(pxCommand, pxTrigger);
   }//+++
   
   /**
-   * @param pxTrigger will get fired every time a command get inputted
+   * given action got fired from empty command.<br>
+   * null means nothing here.<br>
+   * @param pxTrigger could be any thing
    */
   public static final
   void ccRegisterSettlement(EiTriggerable pxTrigger){
@@ -258,7 +266,7 @@ public final class VcLocalConsole {
    * hiding helper and clear message bar is implemented separately.
    * actually this will get invoked after that.
    * </pre>
-   * @param pxOperation #
+   * @param pxOperation will get passed to register directly
    */
   public static final 
   void ccRegisterEmptiness(EiTriggerable pxOperation){
@@ -267,7 +275,7 @@ public final class VcLocalConsole {
   
   /**
    * tagged command will be the reset one 
-   * @param pxOperation #
+   * @param pxOperation will get passed to register directly
    */
   public static final 
   void ccRegisterNumeric(EiTriggerable pxOperation){
@@ -275,21 +283,6 @@ public final class VcLocalConsole {
   }//+++
   
   //===
-  
-  /**
-   * applied to both input field and message field.<br>
-   * @param pxHeight pix
-   */
-  public final void ccSetBarHeight(int pxHeight){
-    cmBarH=pxHeight;
-  }//+++
-  
-  /**
-   * @return ##
-   */
-  public final int ccGetBarHeight(){
-    return cmBarH;
-  }//+++
   
   /**
    * bar width will get adjust based on current owner.<br>
@@ -302,7 +295,7 @@ public final class VcLocalConsole {
     cmFieldBarX=pxX;
     cmFieldBarY=pxY;
     cmFieldBarW=cmOwnerWidth-pxX;
-  }//+++
+  }//++<
   
   /**
    * bar width will get adjust based on current owner.<br>
@@ -315,7 +308,7 @@ public final class VcLocalConsole {
     cmMessageBarX=pxX;
     cmMessageBarY=pxY;
     cmMessageBarW=cmOwnerWidth-pxX;
-  }//+++
+  }//++<
   
   /**
    * @param pxText ARGB
@@ -326,65 +319,110 @@ public final class VcLocalConsole {
     cmTextColor=pxText;
     cmMessageBarColor=pxMessageBar;
     cmFieldBarColor=pxFieldBar;
-  }//+++
+  }//++<
   
   /**
    * @param pxColor ARGB
    */
   public final void ccSetTextColor(int pxColor){
     cmTextColor=pxColor;
-  }//+++
+  }//++<
   
   /**
    * @param pxColor ARGB
    */
   public final void ccSetMessageBarColor(int pxColor){
     cmMessageBarColor=pxColor;
-  }//+++
+  }//++<
   
   /**
    * @param pxColor ARGB
    */
   public final void ccSetFieldBarColor(int pxColor){
     cmFieldBarColor=pxColor;
-  }//+++
+  }//++<
   
   /**
-   * @param pxMessage #
+   * @param pxMessage must have something
    */
-  static public final void ccSetMessage(String pxMessage){
+  public final void ccSetMessage(String pxMessage){
     if(!VcConst.ccIsValidString(pxMessage)){return;}
-  //  if(pxMessage.equals(self.cmMessage)){return;}
-    self.cmMessage=pxMessage;
-  }//+++
+    cmMessage=pxMessage;
+  }//++<
   
   /**
-   * @param pxState #
+   * @param pxState could be anything
    */
   public final void ccSetMessageBarVisible(boolean pxState){
     cmIsMessageBarVisible=pxState;
-  }//+++
+  }//++<
   
   /**
    * flip version 
    */
   public final void ccSetMessageBarVisible(){
     cmIsMessageBarVisible=!cmIsMessageBarVisible;
-  }//+++
+  }//++<
+  
+  /**
+   * applied to both input field and message field.<br>
+   * @param pxHeight pix
+   */
+  public final void ccSetBarHeight(int pxHeight){
+    cmBarH=pxHeight;
+  }//++<
+  
+  /**
+   * @return pix
+   */
+  public final int ccGetBarHeight(){
+    return cmBarH;
+  }//++<
   
   //===
   
   /**
-   * @return #
+   * if the message bar is blocking outside input out
+   * then nothing will happen.<br>
+   * @param pxMessage will get passed to setter directly
+   */
+  static public final void ccSetMessageBarText(String pxMessage){
+    if(self.cmIsBlockingOutside){return;}
+    self.ccSetMessage(pxMessage);
+  }//++<
+  
+  /**
+   * if the message bar is block outside input out
+   * then nothing will happen.<br>
+   * after the manipulation the message bar locks it self for you.<br>
+   * @param pxMessage will get passed to setter directly
+   */
+  static public final void ccBlockMessageBarText(String pxMessage){
+    if(self.cmIsBlockingOutside){return;}
+    self.ccSetMessage(pxMessage);
+    self.cmIsBlockingOutside=true;
+  }//++<
+  
+  /**
+   * set the text to an space character then unlock the message bar.<br>
+   */
+  static public final void ccClearMessageBarText(){
+    self.ccSetMessage(C_V_BLANK);
+    self.cmIsBlockingOutside=false;
+  }//++<
+  
+  
+  /**
+   * @return could be anything
    */
   static public final String ccGetLastAccepted(){
     return self.cmLastAccepted;
-  }//+++
+  }//++>
   
   /**
    * the accepted array is split when the enter is pressed.<br>
    * space and comma is the separator.<br>
-   * @param pxIndex #
+   * @param pxIndex will get trimmed
    * @return if any
    */
   static public final String ccGetLastAccepted(int pxIndex){
@@ -393,6 +431,6 @@ public final class VcLocalConsole {
       pxIndex>self.cmDesAccepted.length?self.cmDesAccepted.length:pxIndex
     );
     return self.cmDesAccepted[lpFixedIndex];
-  }//+++
+  }//++>
   
 }//***eof
