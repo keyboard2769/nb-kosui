@@ -33,14 +33,23 @@ import processing.core.PApplet;
  */
 public abstract class McCommand implements MiExecutable{
   
-  public static final int C_M_GENERAL_SUCCESS =   0;
-  public static final int C_M_GENERAL_FAILIOR =  -1;
-  public static final int C_M_GENERAL_UNKNOWN =  -2;
-  public static final int C_M_UNREGISTERED    = -63;
+  /**
+   * hard coded
+   */
+  public static final int
+    C_M_GENERAL_SUCCESS =   0,
+    C_M_GENERAL_FAILIOR =  -1,
+    C_M_GENERAL_UNKNOWN =  -2,
+    C_M_UNREGISTERED    = -63
+  ;//,,,
   
   private static final HashMap<String, McCommand> O_MAP_OF_REGISTERED
     = new HashMap<String, McCommand>();
   
+  /**
+   * @param pxName do not pass null
+   * @param pxExecution do not pass null
+   */
   public static final void ccRegister(String pxName, McCommand pxExecution){
     if(!VcConst.ccIsValidString(pxName)){return;}
     if(pxExecution==null){return;}
@@ -48,11 +57,18 @@ public abstract class McCommand implements MiExecutable{
     O_MAP_OF_REGISTERED.put(pxName, pxExecution);
   }//+++
   
+  /**
+   * @param pxExecution do not pass null
+   */
   public static final void ccRegister(McCommand pxExecution){
     if(pxExecution==null){return;}
     ccRegister(pxExecution.ccGetName(), pxExecution);
   }//+++
   
+  /**
+   * @param pxInput must have something
+   * @return see those constants
+   */
   public static final int ccExecute(String pxInput){
     if(!VcConst.ccIsValidString(pxInput)){return C_M_GENERAL_FAILIOR;}
     String[] lpSpaceBreak = pxInput.split(" ");
@@ -68,35 +84,81 @@ public abstract class McCommand implements MiExecutable{
   
   //=== 
   
+  /**
+   * inward use only.<br>
+   */
   protected String cmRawHead = null;
+  
+  /**
+   * inward use only.<br>
+   */
   protected String[] cmDesRawBody = null;
+  
+  /**
+   * inward use only.<br>
+   */
   protected List<String> cmListOfOptionHead = new ArrayList<String>();
+  
+  /**
+   * inward use only.<br>
+   */
   protected List<String[]> cmListOfOptionBody= new ArrayList<String[]>();
   
+  /**
+   * inward use only.<br>
+   */
   protected boolean cmIsSilent = true;
-  protected int cmResult;
-  protected int cmParamW;
-  protected int cmParamL;
   
+  /**
+   * inward use only.<br>
+   */
+  protected int cmResult,cmParamW,cmParamL;
+  
+  /**
+   * inward use only.<br>
+   */
   protected final List<MiExecutable> cmListOfRawAction
     = new LinkedList<MiExecutable>();
+  
+  /**
+   * inward use only.<br>
+   */
   protected HashMap<String,MiExecutable> cmMapOfOptionAction
     = new HashMap<String,MiExecutable>();
   
   //=== interface
   
+  /**
+   * for subclassing.<br>
+   * action registration is supposed to get done here
+   */
   abstract public void ccInit();
   
+  /**
+   * for subclassing.<br>
+   * @return serve as a key
+   */
   abstract public String ccGetName();
   
+  /**
+   * for subclassing.<br>
+   * @return serve as a lock before execution
+   */
   abstract protected boolean ccVerify();
   
   //===
   
+  /**
+   * does report error and echo or not
+   * @param pxVal could be anything
+   */
   public final void ccSetIsSilent(boolean pxVal){
      cmIsSilent=pxVal;
   }//+++
   
+  /**
+   * inward use only.<br>
+   */
   protected void ccClear(){
     cmRawHead=null;
     cmDesRawBody=null;
@@ -104,6 +166,9 @@ public abstract class McCommand implements MiExecutable{
     cmListOfOptionBody.clear();
   }//+++
   
+  /**
+   * @param pxInput must have some thing
+   */
   public final void ccParse(String pxInput){
     
     //-- clear
@@ -156,19 +221,22 @@ public abstract class McCommand implements MiExecutable{
     }//..?
     
   }//+++
-    
+  
+  /**
+   * @return see those constants
+   */
   public final int ccExecute() {
     
     //-- init
     cmResult=C_M_GENERAL_FAILIOR;
     if(!VcConst.ccIsValidString(ccGetName())){
-      return ccReportError("unhandled_subclass");
+      return ssReportError("unhandled_subclass");
     }//..?
     if(!VcConst.ccIsValidString(cmRawHead)){
-      return ccReportError("bad_parsing_result");
+      return ssReportError("bad_parsing_result");
     }//..?
     if(!cmRawHead.equals(ccGetName())){
-      return ccReportError("unhandlable_parsing_result:" + cmRawHead);
+      return ssReportError("unhandlable_parsing_result:" + cmRawHead);
     }//..?
     if(!cmIsSilent){
       VcConst.ccPrintln(ccGetName(),">>>");
@@ -176,12 +244,12 @@ public abstract class McCommand implements MiExecutable{
     
     //-- check
     if(!ccVerify()){
-      return ccReportError("verification_failed");
+      return ssReportError("verification_failed");
     }//..?
     
     //-- raw
     if(cmListOfRawAction.isEmpty()){
-      return ccReportError("no_recoginized_task");
+      return ssReportError("no_recoginized_task");
     }//..?
     for(MiExecutable it : cmListOfRawAction){
       cmResult=it.ccExecute(cmDesRawBody);
@@ -194,7 +262,7 @@ public abstract class McCommand implements MiExecutable{
     int lpOptionHeadCount = cmListOfOptionHead.size();
     int lpOptionBodyCount = cmListOfOptionBody.size();
     if(lpOptionBodyCount!=lpOptionBodyCount){
-      return ccReportError("unhandled_option_registering_error",-2);
+      return McCommand.this.ssReportError("unhandled_option_registering_error",-2);
     }//..?
     if(lpOptionHeadCount!=0){
       for(int i=0,s=cmListOfOptionHead.size();i<s;i++){
@@ -213,6 +281,11 @@ public abstract class McCommand implements MiExecutable{
     
   }//+++
   
+  /**
+   * just for the generic capability
+   * @param pxArgs must have something
+   * @return see those constants
+   */
   @Override public int ccExecute(String[] pxArgs) {
     if(pxArgs==null){return C_M_GENERAL_FAILIOR;}
     if(pxArgs.length!=1){return C_M_GENERAL_FAILIOR;}
@@ -221,11 +294,11 @@ public abstract class McCommand implements MiExecutable{
   
   //===
   
-  private int ccReportError(String pxMessage){
-    return ccReportError(pxMessage, cmResult);
+  private int ssReportError(String pxMessage){
+    return McCommand.this.ssReportError(pxMessage, cmResult);
   }//+++
   
-  private int ccReportError(String pxMessage, int pxResult){
+  private int ssReportError(String pxMessage, int pxResult){
     if(VcConst.ccIsValidString(pxMessage) && (!cmIsSilent)){
       System.out.println(
         "Excecution$"+VcStringUtility.ccNulloutString(ccGetName())
@@ -237,6 +310,9 @@ public abstract class McCommand implements MiExecutable{
   
   //===
   
+  /**
+   * @deprecated for test use only
+   */
   @Deprecated public final void tstReadUp(){
     
     int lpRawL = cmDesRawBody==null?-1:cmDesRawBody.length;

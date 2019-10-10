@@ -32,11 +32,16 @@ public class EcIcon extends EcElement{
   /**
    * if any of them has been passed null than 
    * this is a normal EcElment.<br>
+   * @param pxKey will get pass to super directly
+   * @param pxID will get pass to super directly
    * @param pxOnGraph will get shown if activated
    * @param pxOffGraph will get shown if not activated
    */
-  public EcIcon(PGraphics pxOnGraph, PGraphics pxOffGraph){
-    super();
+  public EcIcon(
+    String pxKey, int pxID,
+    PGraphics pxOnGraph, PGraphics pxOffGraph
+  ){
+    super(pxKey,pxID);
     if(pxOnGraph==null || pxOffGraph==null){
       cmOnGraph=null;
       cmOffGraph=null;
@@ -48,9 +53,35 @@ public class EcIcon extends EcElement{
       ccSetSize(cmFixedW,cmFixedH);
       cmOnGraph=pxOnGraph;
       cmOffGraph=pxOffGraph;
-    }//+++
-    
-  }//+++
+    }//..?
+  }//++!
+  
+  /**
+   * will have no identical id.<br>
+   * if any of them has been passed null than 
+   * this is a normal EcElment.<br>
+   * @param pxKey will get pass to this directly
+   * @param pxOnGraph will get shown if activated
+   * @param pxOffGraph will get shown if not activated
+   */
+  public EcIcon(
+    String pxKey,
+    PGraphics pxOnGraph, PGraphics pxOffGraph
+  ){
+    this(pxKey, EcConst.C_ID_IGNORE, pxOnGraph, pxOffGraph);
+  }//++!
+  
+  /**
+   * will have an empty string as key for name and text.<br>
+   * will have no identical id.<br>
+   * @param pxOnGraph will get shown if activated
+   * @param pxOffGraph will get shown if not activated
+   */
+  public EcIcon(PGraphics pxOnGraph, PGraphics pxOffGraph){
+    this("", pxOnGraph, pxOffGraph);
+  }//++!
+  
+  //===
 
   /**
    * {@inheritDoc }
@@ -65,6 +96,6 @@ public class EcIcon extends EcElement{
         cmX, cmY,cmW,cmH
       );
     }//..?
-  }//+++
+  }//++~
   
 }//***eof

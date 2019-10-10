@@ -27,15 +27,7 @@ import kosui.ppputil.VcNumericUtility;
 public final class McLockedArray {
 
   private final int[] cmArray;
-
   private final int cmMask;
-  
-  public volatile int
-    mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
-    mnCTSlotIV,mnCTSlotV,mnCTSlotVI,mnCTSlotVII,
-    mnCTSlotVIII,mnCTSlotIX,mnCTSlotX,mnCTSlotXI,
-    mnCTSlotXII,mnCTSlotXIII,mnCTSlotXIV,mnCTSlotXV
-  ;//...
     
   //===
   

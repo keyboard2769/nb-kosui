@@ -35,7 +35,7 @@ public class EcElement extends EcComponent{
     //-- pix
     C_NAME_GAP          =  2,
     C_TEXT_MARG_X       =  3
-  ;//...
+  ;//,,,
   
   //===
   
@@ -48,7 +48,7 @@ public class EcElement extends EcComponent{
     cmOffColor  = EcConst.C_DIM_GRAY,
     cmNameColor = EcConst.C_LIT_GRAY,
     cmTextColor = EcConst.C_DARK_GRAY
-  ;//...
+  ;//,,,
   
   /**
    * basic field
@@ -57,7 +57,7 @@ public class EcElement extends EcComponent{
     cmKey  ="",
     cmName ="",
     cmText =""
-  ;//...
+  ;//,,,
   
   /**
    * basic field
@@ -72,29 +72,11 @@ public class EcElement extends EcComponent{
   protected char
     cmNameAlign = 'x',
     cmTextAlign = 'c'
-  ;//...
+  ;//,,,
   
   static private int cmTextAdjustY = 0;
   
   //===
-
-  /**
-   * default ID is ignored.<br>
-   * default texts is tagged.<br>
-   */
-  public EcElement(){
-    super();
-    cmTextAlign='x';
-  }//..!
-  
-  /**
-   * auto sizing.<br>
-   * rest of those initiated values might be eight.<br>
-   * @param pxKey will get passed to setter directly
-   */
-  public EcElement(String pxKey){
-    this(pxKey, EcConst.C_ID_IGNORE);
-  }//+++
   
   /**
    * auto sizing.<br>
@@ -109,7 +91,25 @@ public class EcElement extends EcComponent{
     ccSetSize();
     if(cmText.isEmpty()){cmTextAlign='x';}
     if(cmText.isEmpty()){cmTextAlign='x';}
-  }//..!
+  }//++!
+  
+  /**
+   * auto sizing.<br>
+   * rest of those initiated values might be eight.<br>
+   * @param pxKey will get passed to setter directly
+   */
+  public EcElement(String pxKey){
+    this(pxKey, EcConst.C_ID_IGNORE);
+  }//++!
+
+  /**
+   * will have an empty string as key for name and text.<br>
+   * will have no identical id.<br>
+   */
+  public EcElement(){
+    super();
+    cmTextAlign='x';
+  }//++!
   
   //===
   
@@ -118,10 +118,10 @@ public class EcElement extends EcComponent{
    */
   @Override public void ccUpdate(){
     if(!ccIsVisible()){return;}
-    drawRect(ccActColor());
+    drawRect(ssActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
-  }//+++
+  }//++~
 
   /**
    * inward use only
@@ -195,7 +195,7 @@ public class EcElement extends EcComponent{
   /**
    * inward use only
    */
-  protected final void ccActFill(){
+  protected final void ssActFill(){
     pbOwner.fill(cmIsActivated?cmOnColor:cmOffColor);
   }//+++
   
@@ -203,7 +203,7 @@ public class EcElement extends EcComponent{
    * inward use only
    * @return color
    */
-  protected final int ccActColor(){
+  protected final int ssActColor(){
     return cmIsActivated?cmOnColor:cmOffColor;
   }//+++
   
@@ -216,7 +216,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetID(int pxID){
     cmID=pxID;
-  }//+++
+  }//++<
   
   /**
    * for different font there might need different adjust.
@@ -225,7 +225,7 @@ public class EcElement extends EcComponent{
    */
   static public final void ccSetTextAdjust(int pxX, int pxY){
     cmTextAdjustY=pxY;
-  }//+++
+  }//++<
   
   /**
    * a name is something to get displayed outside the element
@@ -235,7 +235,7 @@ public class EcElement extends EcComponent{
   public final void ccSetName(String pxName){
     if(pxName==null){return;}
     cmName=pxName;
-  }//+++
+  }//++<
   
   /**
    * a text is something to get displayed inside the element
@@ -245,7 +245,7 @@ public class EcElement extends EcComponent{
   public final void ccSetText(String pxText){
     if(pxText==null){return;}
     cmText=pxText;
-  }//+++
+  }//++<
   
   /**
    * <pre>
@@ -260,7 +260,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetNameAlign (char pxMode_ablr){
     cmNameAlign=pxMode_ablr;
-  }//+++
+  }//++<
     
   /**
    * <pre>
@@ -274,7 +274,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetTextAlign(char pxMode_lcr){
     cmTextAlign=pxMode_lcr;
-  }//+++
+  }//++<
   
   /**
    * @param pxOn ARGB
@@ -282,7 +282,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetupColor(int pxOn, int pxOff){
     cmOnColor=pxOn;cmOffColor=pxOff;
-  }//+++
+  }//++<
   
   /**
    * 
@@ -290,7 +290,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetColor(int pxOn){
     cmOnColor=pxOn;
-  }//+++
+  }//++<
   
   /**
    * 
@@ -298,7 +298,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetNameColor(int pxColor){
     cmNameColor=pxColor;
-  }//+++
+  }//++<
   
   /**
    * 
@@ -306,7 +306,7 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetTextColor(int pxColor){
     cmTextColor=pxColor;
-  }//+++
+  }//++<
 
   /**
    * the activeness only represent the on/off status.<br>
@@ -314,14 +314,14 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetIsActivated(boolean pxStatus){
     cmIsActivated=pxStatus;
-  }//+++
+  }//++<
   
   /**
    * flips activity
    */
   public final void ccSetIsActivated(){
     cmIsActivated=!cmIsActivated;
-  }//+++
+  }//++<
   
   /**
    * a alias for comparing id using focus logic
@@ -329,16 +329,14 @@ public class EcElement extends EcComponent{
    */
   public final void ccSetIsActivated(int pxFocusedID){
     cmIsActivated=(cmID==pxFocusedID);
-  }//+++
+  }//++<
   
-  //===
-
   /**
    * pass text set directly to EcRect.ccSetSize(String).<br>
    */
   public final void ccSetSize(){
     ccSetSize(cmText);
-  }//+++
+  }//++<
 
   /**
    * <pre>
@@ -350,9 +348,7 @@ public class EcElement extends EcComponent{
   public final void ccSetKey(String pxKey){
     if(!VcConst.ccIsValidString(pxKey)){return;}
     cmKey=pxKey;
-  }//+++
-  
-  //=== 
+  }//++<
   
   /**
    * set both key and name and text to the same value.<br>
@@ -363,7 +359,7 @@ public class EcElement extends EcComponent{
     cmKey=pxValue;
     cmName=pxValue;
     cmText=pxValue;
-  }//+++
+  }//++<
 
   /**
    * color and alignment and well get fetched.<br>
@@ -376,17 +372,30 @@ public class EcElement extends EcComponent{
     cmNameColor=pxTarget.cmNameColor;
     cmTextAlign=pxTarget.cmTextAlign;
     cmTextColor=pxTarget.cmTextColor;
-  }//+++
+  }//++<
 
   //===
   
   /**
-   * 
-   * @return id only when is mouse over.
+   * @return #
    */
-  public final int ccTellMouseID(){
-    return ccIsMouseHovered()?cmID:0;
-  }//+++
+  public final int ccGetID(){
+    return cmID;
+  }//++>
+  
+  /**
+   * @return ##
+   */
+  public final String ccGetKey(){
+     return cmKey;
+  }//++>
+  
+  /**
+   * @return #
+   */
+  public final String ccGetText(){
+    return cmText;
+  }//++>
   
   /**
    * 
@@ -394,7 +403,9 @@ public class EcElement extends EcComponent{
    */
   public final boolean ccIsActivated(){
     return cmIsActivated;
-  }//+++
+  }//++>
+  
+  //===
   
   /**
    * 
@@ -403,7 +414,7 @@ public class EcElement extends EcComponent{
   public final boolean ccIsMouseHovered(){
     if(!ccIsEnabled()){return false;}
     return ccContains(pbOwner.mouseX, pbOwner.mouseY);
-  }//+++
+  }//++>
   
   /**
    * 
@@ -412,7 +423,7 @@ public class EcElement extends EcComponent{
   public final boolean ccIsMousePressed(){
     return ccIsMouseHovered()
          &&pbOwner.mousePressed;
-  }//+++
+  }//++>
   
   /**
    * @return pix compared from left side edge
@@ -423,7 +434,7 @@ public class EcElement extends EcComponent{
     }else{
       return 0;
     }//..?
-  }//+++
+  }//++>
   
   /**
    * @return pix compared from up side edge
@@ -434,27 +445,14 @@ public class EcElement extends EcComponent{
     }else{
       return 0;
     }//..?
-  }//+++
+  }//++>
   
   /**
-   * @return #
+   * 
+   * @return id only when is mouse over.
    */
-  public final int ccGetID(){
-    return cmID;
-  }//+++
-  
-  /**
-   * @return #
-   */
-  public final String ccGetText(){
-    return cmText;
-  }//+++
-  
-  /**
-   * @return ##
-   */
-  public final String ccGetKey(){
-     return cmKey;
-  }//+++
+  public final int ccTellMouseID(){
+    return ccIsMouseHovered()?cmID:0;
+  }//++>
   
 }//***eof

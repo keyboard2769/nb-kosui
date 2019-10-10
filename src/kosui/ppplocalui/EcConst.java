@@ -342,7 +342,7 @@ public final class EcConst {
    * @return the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_1910092307";
+    return "_1910101029";
   }//+++
   
 }//***eof

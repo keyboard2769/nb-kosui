@@ -24,48 +24,38 @@ package kosui.ppplocalui;
 public class EcSlider extends EcGauge{
   
   /**
-   * @param pxKey will get passed to super directly
-   * @param pxID will get passed to super directly
-   * @param pxVert will get passed to super directly
-   * @param pxW will get passed to super directly
-   * @param pxH will get passed to super directly
+   * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * is vertical by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get pass to this directly
+   * @param pxID will get pass to this directly
    */
-  public EcSlider(String pxKey, int pxID, boolean pxVert, int pxW, int pxH){
-    super(pxKey, pxID, pxVert, pxW, pxH);
-    ccSetIsEnabled(true);
-  }//++!
-  
-  /**
-   * @param pxKey will get passed to super directly
-   * @param pxID will get passed to super directly
-   * @param pxVert will get passed to super directly
-   */
-  public EcSlider(String pxKey, int pxID, boolean pxVert){
-    super(pxKey, pxID, pxVert);
-    ccSetIsEnabled(true);
-  }//++!
-  
-  /**
-   * @param pxKey will get passed to super directly
-   * @param pxVert will get passed to super directly
-   */
-  public EcSlider(String pxKey, boolean pxVert){
-    super(pxKey, pxVert);
-    ccSetIsEnabled(true);
-  }//++!
-
-  /**
-   * will have an empty string as key.<br>
-   * will have no identical id.<br>
-   * @param pxVert will get passed to super directly
-   */
-  public EcSlider(boolean pxVert){
-    super("", pxVert);
+  public EcSlider(String pxKey, int pxID){
+    super(pxKey, pxID);
     ccSetIsEnabled(true);
   }//++!
   
   /**
    * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * is vertical by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get pass to super directly
+   */
+  public EcSlider(String pxKey){
+    super(pxKey);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * is vertical by default.<br>
+   * has stroke by default.<br>
    */
   public EcSlider(){
     super();
@@ -74,13 +64,58 @@ public class EcSlider extends EcGauge{
   
   //===
   
+  /**
+   * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get pass to super directly
+   * @param pxID will get pass to super directly
+   * @param pxVert will get pass to super directly
+   */
+  public EcSlider(String pxKey, int pxID, boolean pxVert){
+    super(pxKey, pxID, pxVert);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * has stroke by default.<br>
+   * @param pxKey will get pass to super directly
+   * @param pxVert will get pass to super directly
+   */
+  public EcSlider(String pxKey, boolean pxVert){
+    super(pxKey, pxVert);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  /**
+   * inherited default.<br>
+   * the text align is hidden by default.<br>
+   * the enablility is true by default.<br>
+   * has stroke by default.<br>
+   * @param pxVert will get pass to super directly
+   */
+  public EcSlider(boolean pxVert){
+    super(pxVert);
+    ccSetIsEnabled(true);
+  }//++!
+  
+  //===
+  
+  /**
+   * {@inheritDoc }
+   */
   @Override public void ccUpdate(){
     
+    //-- checkin
     if(!ccIsVisible()){return;}
     
     //-- pre
     int lpPosition=ssToScaledPixLength(cmIsVertical?cmH:cmW);
-    ccApplyClickedValue();
+    ssApplyClickedValue();
     
     //-- draw
     int lpAdjust=0;
@@ -91,11 +126,11 @@ public class EcSlider extends EcGauge{
     pbOwner.fill(cmBackColor);
     if(cmIsVertical){
       pbOwner.rect(ccCenterX()-2, cmY, 4-lpAdjust, cmH-lpAdjust);
-      ccActFill();
+      ssActFill();
       pbOwner.rect(cmX,ccEndY()-lpPosition-8,cmW-lpAdjust,8-lpAdjust);
     }else{
       pbOwner.rect(cmX, ccCenterY()-2, cmW-lpAdjust, 4-lpAdjust);
-      ccActFill();
+      ssActFill();
       pbOwner.rect(cmX+lpPosition-4, cmY, 8-lpAdjust, cmH-lpAdjust);
     }//..?
     if(cmHasStroke){pbOwner.noStroke();}

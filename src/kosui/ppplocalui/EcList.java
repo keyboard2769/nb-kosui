@@ -127,12 +127,12 @@ public class EcList extends EcElement{
     if(!ccIsVisible()){return;}
     
     //-- draw pane
-    ccActFill();
+    ssActFill();
     pbOwner.rect(cmX, cmY, cmW, cmH);
     pbOwner.fill(EcConst.C_WHITE);
     pbOwner.rect(cmX+C_STROKE_THICK, cmY+C_STROKE_THICK,
       cmW-+C_STROKE_THICK*2, cmH-+C_STROKE_THICK*2);
-    ccActFill();
+    ssActFill();
     pbOwner.rect(cmX, ccCenterY()-(cmCellHeight/4),
       C_STROKE_THICK*2, cmCellHeight/2);
     

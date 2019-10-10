@@ -33,24 +33,23 @@ public class EcButton extends EcElement {
     C_COLOR_FILL_OVER    =0xFFAACCAA,
     C_COLOR_FILL_PRESSED =0xFF99BB99,
     C_COLOR_FILL_NORMAL  =0xFF999999
-  ;//...
-
-  /**
-   * inherited default
-   */
-  public EcButton(){
-    super();
-  }//..!
+  ;//,,,
   
   /**
-   * inherited
-   * @param pxKey #
-   * @param pxID #
+   * inherited default.<br>
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly
    */
   public EcButton(String pxKey, int pxID){
     super(pxKey, pxID);
-    ccSetSize();
-  }//..!
+  }//++!
+
+  /**
+   * inherited default.<br>
+   */
+  public EcButton(){
+    super();
+  }//++!
   
   //===
   
@@ -61,17 +60,15 @@ public class EcButton extends EcElement {
     if(!ccIsVisible()){return;}
     drawDefualtButton();
     drawName(cmNameColor);
-    drawText(ccActColor());
-  }//+++
+    drawText(ssActColor());
+  }//++~
   
   /**
-   * internal use only
+   * inward use only.<br>
    */
   protected final void drawDefualtButton(){
-    
     pbOwner.fill(C_COLOR_STROKE);
     pbOwner.rect(cmX,cmY,cmW,cmH);
-    
     pbOwner.fill(ccIsMouseHovered()?
       (pbOwner.mousePressed?
         C_COLOR_FILL_PRESSED
@@ -82,7 +79,6 @@ public class EcButton extends EcElement {
       cmX+C_STROKE_THICK  ,cmY+C_STROKE_THICK,
       cmW-C_STROKE_THICK*2,cmH-C_STROKE_THICK*2
     );
-    
   }//+++
   
 }//***eof

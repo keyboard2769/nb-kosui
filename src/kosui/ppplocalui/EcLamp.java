@@ -17,86 +17,107 @@
 
 package kosui.ppplocalui;
 
-import kosui.ppputil.VcStringUtility;
-
 /**
  * a lamp don't react at you, it just shows you if it is on. <br>
  * there is no any difference with element, what a horrible hierarchy. <br>
  */
 public class EcLamp extends EcElement{
-  
+
   /**
-   * for inner use
+   * for inward use
    */
   protected static final int
     //-- pix
     C_STROKE_THICK   = 4,
     C_DEFAULT_SCALE  = 18
-  ;//...
-  
+  ;//,,,
+
   /**
    * can get applied to a line or just a bigger rectangle
    */
   protected int cmBorderColor = 0xFF555555;
-  
+
+  //===
+
   /**
-   * @param pxScale pix for both width and height
+   * inherited default.<br>
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly
    */
-  public EcLamp(int pxScale){
-    super();
-    ccSetSize(pxScale,pxScale);
-  }//..!
+  public EcLamp(String pxKey, int pxID){
+    super(pxKey,pxID);
+    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
+    ssTrimmFirstLetter();
+  }//++!
+
+  /**
+   * inherited default.<br>
+   * will have no identical id.<br>
+   * @param pxKey will get passed to super directly
+   */
+  public EcLamp(String pxKey){
+    super(pxKey);
+    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
+    ssTrimmFirstLetter();
+  }//++!
 
   /**
    * the default size is 18*18 pix;
    */
   public EcLamp(){
-    this(C_DEFAULT_SCALE);
-  }//..!
-  
-  /**
-   * inherited
-   * @param pxKey #
-   * @param pxID #
-   */
-  public EcLamp(String pxKey, int pxID){
-    super(pxKey,pxID);
-    ccSetSize(C_DEFAULT_SCALE, C_DEFAULT_SCALE);
-    if(cmText.length()>1){cmText=cmText.substring(0, 1);}
-  }//..!
-  
-  /**
-   * output component can have no identical id.<br>
-   * @param pxKey will get passed to setter directly
-   */
-  public EcLamp(String pxKey){
-    this(pxKey,EcConst.C_ID_IGNORE);
-  }//..!
-  
+    super();
+    ccSetSize(C_DEFAULT_SCALE,C_DEFAULT_SCALE);
+  }//++!
+
   //===
-  
+
+  /**
+   * @param pxKey will get passed to super directly
+   * @param pxID will get passed to super directly
+   * @param pxScale pix for both width and height
+   */
+  public EcLamp(String pxKey, int pxID, int pxScale){
+    this(pxKey, pxID);
+    ccSetSize(pxScale, pxScale);
+    ssTrimmFirstLetter();
+  }//++!
+
+  /**
+   * @param pxScale pix for both width and height
+   */
+  public EcLamp(int pxScale){
+    this();
+    ccSetSize(pxScale,pxScale);
+  }//++!
+
+  //===
+
   /**
    * {@inheritDoc }
    */
   @Override public void ccUpdate() {
     if(!ccIsVisible()){return;}
-    drawRoundLamp(ccActColor());
+    drawRoundLamp(ssActColor());
     drawText(cmTextColor);
     drawName(cmNameColor);
-  }//+++
-  
+  }//++~
+
   /**
-   * inward use only
+   * inward use only.<br>
+   */
+  protected  final void ssTrimmFirstLetter(){
+    if(cmText.length()>1){cmText=cmText.substring(0, 1);}
+  }//+++
+
+  /**
+   * inward use only.<br>
    * @param pxColor #
    */
-  protected void drawRoundLamp(int pxColor){
-    
+  protected final void drawRoundLamp(int pxColor){
     int lpCenterX=ccCenterX();
     int lpCenterY=ccCenterY();
-    
     pbOwner.fill(cmBorderColor);
     pbOwner.ellipse(lpCenterX,lpCenterY,cmW,cmH);
-
     pbOwner.fill(pxColor);
     pbOwner.ellipse(
       lpCenterX,
@@ -104,14 +125,15 @@ public class EcLamp extends EcElement{
       cmW-C_STROKE_THICK,
       cmH-C_STROKE_THICK
     );
-    
   }//+++
-  
+
+  //===
+
   /**
    * @param pxColor ARPG
    */
   public final void ccSetBorderColor(int pxColor){
     cmBorderColor=pxColor;
-  }//+++
-  
+  }//++<
+
 }//***eof

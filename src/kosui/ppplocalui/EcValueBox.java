@@ -30,7 +30,7 @@ public class EcValueBox extends EcElement{
   //===
 
   /**
-   * will be passed to nf() or nfc()
+   * the one for PApplet.nf() or PApplet.nfc()
    */
   protected int cmDigit=1;
 
@@ -42,8 +42,13 @@ public class EcValueBox extends EcElement{
   //===
   
   /**
-   * @param pxKey will get passed to key and name separately
-   * @param pxForm serves as initiated text and last two letter will be unit
+   * the key is intensely for naming translation
+   * and have no effect on text.<br>
+   * the form is the initial text content intensely for auto size calculating
+   * and determines the digit value and attachable unit representation
+   * and is supposed to get overwritten.<br>
+   * @param pxKey will will get passed to setter separately
+   * @param pxForm will get modified then passed to setter separately
    * @param pxID will get passed to setter directly
    */
   public EcValueBox(String pxKey, String pxForm, int pxID){
@@ -60,16 +65,21 @@ public class EcValueBox extends EcElement{
     cmDigit=(cmText.length()-cmUnit.length()-1);
     if(pxForm.startsWith("-") || pxForm.startsWith("+")){cmDigit--;}
     if(cmDigit<1){cmDigit=1;}
-  }//..!
+  }//++!
   
   /**
+   * the key is intensely for naming translation
+   * and have no effect on text.<br>
+   * the form is the initial text content intensely for auto size calculating
+   * and determines the digit value and attachable unit representation
+   * and is supposed to get overwritten.<br>
    * will have no identical id.<br>
-   * @param pxKey will get passed to key and name separately
-   * @param pxForm serves as initiated text and last two letter will be unit
+   * @param pxKey will will get passed to setter separately
+   * @param pxForm will get modified then passed to setter separately
    */
   public EcValueBox(String pxKey, String pxForm){
     this(pxKey, pxForm, EcConst.C_ID_IGNORE);
-  }//..!
+  }//++!
   
   /**
    * will have an empty string as key.<br>
@@ -78,8 +88,7 @@ public class EcValueBox extends EcElement{
    */
   public EcValueBox(){
     this("", "0000 d");
-  }//..!
-  
+  }//++!
   
   //===
   
@@ -91,7 +100,7 @@ public class EcValueBox extends EcElement{
     drawDefaultValueBox();
     drawText(cmTextColor);
     drawName(cmNameColor);
-  }//+++
+  }//++~
   
   /**
    * internal use only
@@ -114,7 +123,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetValue(int pxVal){
     cmText=PApplet.nf(pxVal, cmDigit)+" "+cmUnit;
-  }//+++
+  }//++<
 
   /**
    * digit value is supposed to be at 0-8. 
@@ -125,7 +134,7 @@ public class EcValueBox extends EcElement{
   public final void ccSetValue(int pxVal, int pxDigit){
     cmDigit=pxDigit;
     cmText=PApplet.nf(pxVal, cmDigit)+" "+cmUnit;
-  }//+++
+  }//++<
 
   /**
    * only change the text of this box.<br>
@@ -134,7 +143,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetValue(float pxValue){
     ccSetText(String.format("%f %s",pxValue,cmUnit));
-  }//+++
+  }//++<
   
   /**
    * only change the text of this box.<br>
@@ -143,7 +152,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetFloatValueForOneAfter(float pxValue){
     ccSetText(String.format("%.1f %s",pxValue,cmUnit));
-  }//+++
+  }//++<
   
   /**
    * only change the text of this box.<br>
@@ -152,7 +161,7 @@ public class EcValueBox extends EcElement{
    */
   public final void ccSetFloatValueForTwoAfter(float pxValue){
     ccSetText(String.format("%.2f %s",pxValue,cmUnit));
-  }//+++
+  }//++<
 
   /**
    * a unit is jsut a string attached at bottom. 
@@ -161,13 +170,13 @@ public class EcValueBox extends EcElement{
   public final void ccSetUnit(String pxUnit){
     if(!VcConst.ccIsValidString(pxUnit)){return;}
     cmUnit=pxUnit;
-  }//+++
+  }//++<
   
   /**
    * @param pxDigit will get masked to 0-7
    */
   public final void ccSetDigit(int pxDigit){
     cmDigit=pxDigit&0x7;
-  }//+++
+  }//++<
 
 }//***eof

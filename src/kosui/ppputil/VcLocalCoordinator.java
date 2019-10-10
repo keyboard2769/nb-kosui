@@ -149,7 +149,8 @@ public final class VcLocalCoordinator {
    * </pre>
    * @param pxTrigger to get invoked in the draw() loop
    */
-  static public final void ccInvokeLater(EiTriggerable pxTrigger){
+  synchronized static public final
+  void ccInvokeLater(EiTriggerable pxTrigger){
     if(pxTrigger==null){return;}
     SELF.cmQueueOfLoopTrigger.offer(pxTrigger);
   }//+++

@@ -24,62 +24,77 @@ package kosui.pppmodel;
  */
 public final class McPipedChannel {
   
+  /**
+   * hard coded
+   */
   public final int C_MAX  = 16;
+  
+  /**
+   * hard coded
+   */
   public final int C_MASK = 15;
   
   private volatile int
-    mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
-    mnCTSlotIV,mnCTSlotV,mnCTSlotVI,mnCTSlotVII,
+    vmXnZ,vmXnI,vmXnII,vmXnIII,
+    vmXnIV,vmXnV,vmXnVI,vmXnVII,
     //--
-    mnCTSlotVIII,mnCTSlotIX,mnCTSlotX,mnCTSlotXI,
-    mnCTSlotXII,mnCTSlotXIII,mnCTSlotXIV,mnCTSlotXV
+    vmXnVIII,vmXnIX,vmXnX,vmXnXI,
+    vmXnXII,vmXnXIII,vmXnXIV,vmXnXV
   ;//,,,
   
   //===
   
+  /**
+   * @param pxOrder will get masked to 0 - 15
+   * @param pxVal can be anything
+   */
   public final void ccSet(int pxOrder, int pxVal){
     switch(pxOrder&C_MASK){
-      case  0:mnCTSlotZ=pxVal;break;
-      case  1:mnCTSlotI=pxVal;break;
-      case  2:mnCTSlotII=pxVal;break;
-      case  3:mnCTSlotIII=pxVal;break;
-      case  4:mnCTSlotIV=pxVal;break;
-      case  5:mnCTSlotV=pxVal;break;
-      case  6:mnCTSlotVI=pxVal;break;
-      case  7:mnCTSlotVII=pxVal;break;
+      case  0:vmXnZ=pxVal;break;
+      case  1:vmXnI=pxVal;break;
+      case  2:vmXnII=pxVal;break;
+      case  3:vmXnIII=pxVal;break;
+      case  4:vmXnIV=pxVal;break;
+      case  5:vmXnV=pxVal;break;
+      case  6:vmXnVI=pxVal;break;
+      case  7:vmXnVII=pxVal;break;
       //--
-      case  8:mnCTSlotVIII=pxVal;break;
-      case  9:mnCTSlotIX=pxVal;break;
-      case 10:mnCTSlotX=pxVal;break;
-      case 11:mnCTSlotXI=pxVal;break;
-      case 12:mnCTSlotXII=pxVal;break;
-      case 13:mnCTSlotXIII=pxVal;break;
-      case 14:mnCTSlotXIV=pxVal;break;
-      case 15:mnCTSlotXV=pxVal;break;
+      case  8:vmXnVIII=pxVal;break;
+      case  9:vmXnIX=pxVal;break;
+      case 10:vmXnX=pxVal;break;
+      case 11:vmXnXI=pxVal;break;
+      case 12:vmXnXII=pxVal;break;
+      case 13:vmXnXIII=pxVal;break;
+      case 14:vmXnXIV=pxVal;break;
+      case 15:vmXnXV=pxVal;break;
       //--
       default:break;
     }//..?
   }//++<
   
+  /**
+   * @param pxOrder will get masked to 0 - 15
+   * @return 0 if anything went wrong
+   */
   public final int ccGet(int pxOrder){
     switch(pxOrder&C_MASK){
-      case  0:return mnCTSlotZ;
-      case  1:return mnCTSlotI;
-      case  2:return mnCTSlotII;
-      case  3:return mnCTSlotIII;
-      case  4:return mnCTSlotIV;
-      case  5:return mnCTSlotV;
-      case  6:return mnCTSlotVI;
-      case  7:return mnCTSlotVII;
+      case  0:return vmXnZ;
+      case  1:return vmXnI;
+      case  2:return vmXnII;
+      case  3:return vmXnIII;
+      case  4:return vmXnIV;
+      case  5:return vmXnV;
+      case  6:return vmXnVI;
+      case  7:return vmXnVII;
       //--
-      case  8:return mnCTSlotVIII;
-      case  9:return mnCTSlotIX;
-      case 10:return mnCTSlotX;
-      case 11:return mnCTSlotXI;
-      case 12:return mnCTSlotXII;
-      case 13:return mnCTSlotXIII;
-      case 14:return mnCTSlotXIV;
-      case 15:return mnCTSlotXV;
+      case  8:return vmXnVIII;
+      case  9:return vmXnIX;
+      case 10:return vmXnX;
+      case 11:return vmXnXI;
+      case 12:return vmXnXII;
+      case 13:return vmXnXIII;
+      case 14:return vmXnXIV;
+      case 15:return vmXnXV;
       //--
       default:return 0;
     }//..?

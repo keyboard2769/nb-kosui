@@ -226,6 +226,10 @@ public final class VcNumericUtility {
     return ((float)pxVal)/((float)pxBase);
   }//+++
   
+  /**
+   * @param pxVal ##
+   * @return rounded one
+   */
   public static final float ccToFloatForOneAfter(int pxVal){
     return ccRoundForOneAfter(ccFloat(pxVal, 10));
   }//+++

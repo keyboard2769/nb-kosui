@@ -29,24 +29,17 @@ public class EcTextBox extends EcElement{
     C_SHADOW_THICK = 2,
     //-- color
     C_COLOR_SHADOW = 0xFF444444
-  ;//...
+  ;//,,,
   
   //===
-
-  /**
-   * default text align is left.<br>
-   * default text color is light gray.<br>
-   */
-  public EcTextBox(){
-    super();
-    ccSetTextAlign('l');
-    ccSetTextColor(EcConst.C_LIT_GRAY);
-    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
-  }//++!
   
   /**
-   * @param pxKey will get passed to key and name separately
-   * @param pxForm serves as the initiate text
+   * the key is intensely for naming translation
+   * and have no effect on text.<br>
+   * the form is the initial text content intensely for auto size calculating
+   * and is supposed to get overwritten.<br>
+   * @param pxKey will get passed to setter separately
+   * @param pxForm will get passed to setter separately
    * @param pxID will get passed to setter directly
    */
   public EcTextBox(String pxKey, String pxForm, int pxID){
@@ -59,7 +52,7 @@ public class EcTextBox extends EcElement{
     ccSetTextColor(EcConst.C_LIT_GRAY);
     ccSetSize();
     ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
-  }//..!
+  }//++!
   
   /**
    * output component can have no identical id.<br>
@@ -67,24 +60,31 @@ public class EcTextBox extends EcElement{
    * @param pxForm serves as the initiate text
    */
   public EcTextBox(String pxKey, String pxForm){
-    super();
-    ccSetKey(pxKey);
-    ccSetName(pxKey);
-    ccSetText(pxForm);
-    ccSetTextAlign('l');
-    ccSetTextColor(EcConst.C_LIT_GRAY);
-    ccSetSize();
-    ccSetColor(EcConst.ccAdjustColor(cmOffColor, 0x20));
-  }//..!
+    this(pxKey, pxForm, EcConst.C_ID_IGNORE);
+  }//++!
+
+  /**
+   * will have no identical id.<br>
+   * will have an empty string as key for name and text.<br>
+   * default text is a dummy tag".<br>
+   * default text align is left.<br>
+   * default text color is light gray.<br>
+   */
+  public EcTextBox(){
+    this("", "<text/>", EcConst.C_ID_IGNORE);
+  }//++!
   
   //===
   
+  /**
+   * {@inheritDoc }
+   */
   @Override public void ccUpdate() {
     if(!ccIsVisible()){return;}
     drawDefaultTextBox();
     drawText(cmTextColor);
     drawName(cmNameColor);
-  }//+++
+  }//++~
   
   /**
    * internal use only
@@ -99,6 +99,6 @@ public class EcTextBox extends EcElement{
     pbOwner.fill(cmIsActivated?cmOnColor:cmOffColor);
     pbOwner.rect(cmX,cmY,lpW,lpH);
     
-  }//+++
+  }//++~
   
 }//***eof

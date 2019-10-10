@@ -97,6 +97,9 @@ public class ZcReal {
   
   //===
 
+  /**
+   * {@inheritDoc }
+   */
   @Override public String toString() {
     StringBuilder lpRes
       = new StringBuilder(ZcReal.class.getSimpleName());
