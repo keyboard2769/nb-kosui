@@ -17,6 +17,8 @@
 
 package kosui.pppmodel;
 
+import kosui.ppputil.VcNumericUtility;
+
 /**
  * a pipe is a stuff bunks whatever things out.<br>
  * and a channel is a brick with sixteen pipe wholes on it.<br>
@@ -27,12 +29,12 @@ public final class McPipedChannel {
   /**
    * hard coded
    */
-  public final int C_MAX  = 16;
+  public static final int C_MAX  = 16;
   
   /**
    * hard coded
    */
-  public final int C_MASK = 15;
+  public static final int C_MASK = 15;
   
   private volatile int
     vmXnZ,vmXnI,vmXnII,vmXnIII,
@@ -98,6 +100,31 @@ public final class McPipedChannel {
       //--
       default:return 0;
     }//..?
+  }//++>
+  
+  //===
+  
+  /**
+   * via VcNumericUtility.ccBinarySet
+   * @param pxOrder will get passed to setter
+   * @param pxBit will get passed to utility directly
+   * @param pxVal could be anything
+   */
+  public final void ccSetBit(int pxOrder, int pxBit, boolean pxVal){
+    int lpTarget = ccGet(pxOrder);
+    lpTarget=VcNumericUtility.ccBinarySet(lpTarget, pxBit, pxVal);
+    ccSet(pxOrder, lpTarget);
+  }//++<
+  
+  /**
+   * via VcNumericUtility.ccBinaryLoad
+   * @param pxOrder will get passed to setter
+   * @param pxBit will get passed to utility directly
+   * @return tested result
+   */
+  public final boolean ccGetBit(int pxOrder, int pxBit){
+    int lpTatget = ccGet(pxOrder);
+    return VcNumericUtility.ccBinaryLoad(lpTatget, pxBit);
   }//++>
   
 }//***eof

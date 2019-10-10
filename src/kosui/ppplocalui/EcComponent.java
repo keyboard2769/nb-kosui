@@ -44,17 +44,6 @@ public abstract class EcComponent extends EcRect{
   
   /**
    * <pre>
-   * it is NOT SAFE if an illegal PApplet has been initiated
-   * make sure it is your RUNNING PApplet passed to this class
-   * </pre>
-   * @return true if owner is not null
-   */
-  static public final boolean ccHasOwner(){
-    return pbOwner!=null;
-  }//+++
-  
-  /**
-   * <pre>
    * im not sure if it is right to put the main reference
    *   to THE SKETCH here.
    * but anyway i think this is the most convenient way!!
@@ -62,18 +51,10 @@ public abstract class EcComponent extends EcRect{
    * </pre>
    * @param pxOwner your sketch
    */
-  static public final void ccInitOwner(PApplet pxOwner){
+  static public final void ccSetOwner(PApplet pxOwner){
     if(pxOwner==null){return;}
     pbOwner=pxOwner;
-  }//+++
-  
-  /**
-   * ##
-   * @param pxOffset will get added and masked
-   */
-  static public final void ccShiftCurrentPage(int pxOffset){
-    pbCurrentPage=(pxOffset+pbCurrentPage)&C_PAGE_MASK;
-  }//+++
+  }//++<
   
   /**
    * ##
@@ -81,7 +62,33 @@ public abstract class EcComponent extends EcRect{
    */
   static public final void ccSetCurrentPage(int pxPage){
     pbCurrentPage=pxPage&C_PAGE_MASK;
-  }//+++
+  }//++<
+  
+  /**
+   * ##
+   * @param pxOffset will get added and masked
+   */
+  static public final void ccShiftCurrentPage(int pxOffset){
+    pbCurrentPage=(pxOffset+pbCurrentPage)&C_PAGE_MASK;
+  }//++<
+  
+  /**
+   * <pre>
+   * it is NOT SAFE if an illegal PApplet has been initiated
+   * make sure it is your RUNNING PApplet passed to this class
+   * </pre>
+   * @return true if owner is not null
+   */
+  static public final boolean ccHasOwner(){
+    return pbOwner!=null;
+  }//++>
+  
+  /**
+   * @return ##
+   */
+  static public final int ccGetCurrentPage(){
+    return pbCurrentPage;
+  }//++>
   
   /**
    * supposedly might get called from draw() loop.<br>
@@ -91,14 +98,7 @@ public abstract class EcComponent extends EcRect{
   static public final boolean ccIsKeyPressed(char pxKey){
     if(pbOwner==null){return false;}
     return pbOwner.keyPressed && (pbOwner.key==pxKey);
-  }//+++
-  
-  /**
-   * @return ##
-   */
-  static public final int ccGetCurrentPage(){
-    return pbCurrentPage;
-  }//+++
+  }//++>
   
   //===
   
@@ -221,12 +221,23 @@ public abstract class EcComponent extends EcRect{
   //=== 
   
   /**
+   * @param pxStroke ARGB
+   * @param pxY pix
+   */
+  public static void ccHorizontalLine(int pxStroke, int pxY){
+    if(pbOwner==null){return;}
+    pbOwner.stroke(pxStroke);
+    pbOwner.line(0, pxY, pbOwner.width, pxY);
+    pbOwner.noStroke();
+  }//+++
+  
+  /**
    * break the string representation, attach with a tag, draw to the owner.<br>
    * originally a snippet called inspect but since we get to use it too often,
    * i thought it have to be here.<br>
    * @param pxTag will get nulled out
    * @param pxTarget do not pass null
-   * @param pxFill for the text
+   * @param pxFill ARGB for the text
    * @param pxX for the text
    * @param pxY for the text
    * @deprecated for test use only

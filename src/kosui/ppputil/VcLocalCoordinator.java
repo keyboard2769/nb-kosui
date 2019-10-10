@@ -82,7 +82,7 @@ public final class VcLocalCoordinator {
    */
   public final void ccInit(PApplet pxOwner) {
     if(pxOwner==null){return;}
-    EcComponent.ccInitOwner(pxOwner);
+    EcComponent.ccSetOwner(pxOwner);
   }//..!
   
   /**

@@ -354,6 +354,7 @@ public final class VcLocalConsole {
    */
   static public final void ccSetMessage(String pxMessage){
     if(!VcConst.ccIsValidString(pxMessage)){return;}
+  //  if(pxMessage.equals(self.cmMessage)){return;}
     self.cmMessage=pxMessage;
   }//+++
   
