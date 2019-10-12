@@ -97,6 +97,7 @@ public class ScTitledWindow extends JWindow {
           e.getXOnScreen()-cmAnchorX, 
           e.getYOnScreen()-cmAnchorY
         );
+        lpWindow.toFront();
       }//+++
     });
     
