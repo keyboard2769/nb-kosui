@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,7 @@ package kosui.ppplogic;
  * to send a fixed width square wave while triggered. <br>
  * a bit like the TP instruction in my logic controller. <br>
  */
-public class ZcImpulseTimer extends ZcTimer{
+public class ZcImpulsiveTimer extends ZcTimer{
   
   private final ZcPulser cmPulser;
 
@@ -29,7 +29,7 @@ public class ZcImpulseTimer extends ZcTimer{
    * 
    * @param pxSpan #
    */
-  public ZcImpulseTimer(int pxSpan){
+  public ZcImpulsiveTimer(int pxSpan){
     super(pxSpan);
     cmPulser=new ZcPulser();
   }//++!

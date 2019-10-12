@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import kosui.ppputil.VcStringUtility;
+
 /**
  * in my logic controller a step register can hold ninety nine step. <br>
  * but that made no sense because you can only be at one step at a time. <br>
@@ -43,7 +45,7 @@ public class ZcStepper {
    * @param pxStage #
    * @param pxCondition #
    */
-  public void ccSetTo(int pxStage, boolean pxCondition){
+  public final void ccSetTo(int pxStage, boolean pxCondition){
     if (pxCondition) {cmStage = pxStage;}
   }//+++
 
@@ -52,19 +54,23 @@ public class ZcStepper {
    * @param pxStage #
    * @return #
    */
-  public boolean ccIsAt(int pxStage){
+  public final boolean ccIsAt(int pxStage){
     return cmStage==pxStage;
   }//+++
   
   //===
   
   /**
-   * ##
-   * @return current stage
-   * @deprecated i have to stick on how you should not concern on this. 
+   * {@inheritDoc }
    */
-  @Deprecated public final int tstGetStage(){
-    return cmStage;
+  @Override public String toString() {
+    StringBuilder lpRes
+      = new StringBuilder(ZcStepper.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupPairedTag("S", cmStage));
+    return lpRes.toString();
   }//+++
     
 }//***eof

@@ -24,8 +24,7 @@ package kosui.ppplogic;
 public class ZcOnDelayPulser extends ZcOnDelayTimer{
 
   /**
-   * 
-   * @param pxSpan #
+   * @param pxSpan frame
    */
   public ZcOnDelayPulser(int pxSpan){
     super(pxSpan);

@@ -64,7 +64,7 @@ public class ZcChainStepper extends ZcStepper{
    * @param pxStage #
    * @return #
    */
-  @Override public boolean ccIsAt(int pxStage){
+  public boolean ccIsAbove(int pxStage){
     return cmStage>=pxStage;
   }//+++
   
