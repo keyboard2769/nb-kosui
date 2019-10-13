@@ -278,6 +278,7 @@ public final class VcNumericUtility {
   public static final int ccInteger(Object pxVal){
     if(pxVal==null){return 0;}
     if(pxVal instanceof Integer){
+      //.. i am a cracked stone head who unbox on purpose
       return ((Integer)pxVal).intValue();
     }else{
       return 0;
