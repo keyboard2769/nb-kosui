@@ -104,16 +104,26 @@ public final class ScTable extends JScrollPane {
   }//+++
   
   /**
-   * ##
-   * @param pxIndex #
-   * @param pxWidth #
+   * @param pxIndex from zero
+   * @param pxWidth pix
    */
   public final void ccSetColumnWidth(int pxIndex, int pxWidth){
     TableColumn lpColumn
       = cmTable.getColumnModel().getColumn(ccFixIndex(pxIndex));
     lpColumn.setMinWidth(0x04);
     lpColumn.setMaxWidth(0xFF);
-    lpColumn.setPreferredWidth(pxWidth);
+    lpColumn.setPreferredWidth(pxWidth&0xFF);
+  }//+++
+  
+  /**
+   * @param pxIndex from zero
+   */
+  public final void ccHideColumn(int pxIndex){
+    TableColumn lpColumn
+      = cmTable.getColumnModel().getColumn(ccFixIndex(pxIndex));
+    lpColumn.setMinWidth(0);
+    lpColumn.setMaxWidth(0);
+    lpColumn.setPreferredWidth(0);
   }//+++
   
   /**

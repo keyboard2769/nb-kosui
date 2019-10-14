@@ -295,6 +295,18 @@ public final class VcNumericUtility {
    * @param pxValue #
    * @return String.format("%.2f",...)
    */
+  public static String ccFormatPointOneFloat(float pxValue){
+    return String.format("%.1f", pxValue);
+  }//+++
+  
+  /**
+   * <pre>
+   * since PApplet::nfc() may cause a NullPointerException some times, 
+   *   this method wraps String.format() for habitual usage.
+   * </pre>
+   * @param pxValue #
+   * @return String.format("%.2f",...)
+   */
   public static String ccFormatPointTwoFloat(float pxValue){
     return String.format("%.02f", pxValue);
   }//+++
