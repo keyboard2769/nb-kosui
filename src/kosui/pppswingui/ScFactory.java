@@ -135,9 +135,9 @@ public final class ScFactory {
   
   /**
    * alias for constructor
-   * @param pxGap #
-   * @param pxDoesAlignRight #
-   * @return #
+   * @param pxGap pix
+   * @param pxDoesAlignRight select for swing constants
+   * @return new one
    */
   public static final
   JPanel ccCreateFlowPanel(int pxGap, boolean pxDoesAlignRight){
@@ -148,13 +148,14 @@ public final class ScFactory {
   
   /**
    * alias for constructor
-   * @param pxGap #
-   * @param pxDoesAlignRight #
+   * @param pxGap pix
+   * @param pxDoesAlignRight select for swing constants
    * @param pxBorderColor for the border if null passed it will be dim white
-   * @param pxBorderWeight #
-   * @return #
+   * @param pxBorderWeight thickness for line border
+   * @return new one
    */
-  public static final JPanel ccMyFlowPanel(
+  public static final
+  JPanel ccCreateFlowPanel(
     int pxGap, boolean pxDoesAlignRight, Color pxBorderColor,int pxBorderWeight
   ){
     JPanel lpRes=ScFactory.ccCreateFlowPanel(pxGap, pxDoesAlignRight);
@@ -166,10 +167,10 @@ public final class ScFactory {
   
   /**
    * alias of construction
-   * @param pxGap #
-   * @param pxDoesAlignRight #
+   * @param pxGap pix
+   * @param pxDoesAlignRight select for swing constants
    * @param pxTitle of titled border if nothing is it we set something for you
-   * @return #
+   * @return new one
    */
   public static final
   JPanel ccCreateFlowPanel(int pxGap, boolean pxDoesAlignRight, String pxTitle){

@@ -71,6 +71,11 @@ public class ScConst {
   public static final String C_M_CANCEL = "<cancel>";
   
   /**
+   * for input box if blocked for thread it returns this 
+   */
+  public static final String C_M_BLOCK = "<unedt>";
+  
+  /**
    * in case you don't how trim informations from font matrix
    */
   public static final int 
@@ -245,14 +250,35 @@ public class ScConst {
    * or not and when and how to use the returned string.<br>
    * @param pxBrief a short message you describe about what you want
    * @param pxDefault will be in the input box before getting input
-   * @return #
+   * @param pxOwner if null passed it is the default one will get passed
+   * @return may be some arbitrary tag
+   */
+  public static final
+  String ccGetStringByInputBox(
+    String pxBrief, String pxDefault, JComponent pxOwner
+  ){
+    if(!ccIsEDT()){return C_M_BLOCK;}
+    String lpRes=JOptionPane.showInputDialog(
+      pxOwner==null?cmOwner:pxOwner,
+      pxBrief, pxDefault
+    );
+    if(!VcConst.ccIsValidString(lpRes)){return C_M_CANCEL;}
+    return lpRes;
+  }//+++
+  
+  /**
+   * will get blocked out from event dispatch thread.<br>
+   * there will never be a version does invoke later
+   * for you because you should decide if invoke and wait is necessary
+   * or not and when and how to use the returned string.<br>
+   * the owner parameter passed to option pane caller is null by default.<br>
+   * @param pxBrief a short message you describe about what you want
+   * @param pxDefault will be in the input box before getting input
+   * @return may be some arbitrary tag
    */
   public static final
   String ccGetStringByInputBox(String pxBrief, String pxDefault){
-    if(!ccIsEDT()){return "<blocked>";}
-    String lpRes=JOptionPane.showInputDialog(cmOwner, pxBrief, pxDefault);
-    if(!VcConst.ccIsValidString(lpRes)){return C_M_CANCEL;}
-    return lpRes;
+    return ccGetStringByInputBox(pxBrief, pxDefault, null);
   }//+++
   
   /**
