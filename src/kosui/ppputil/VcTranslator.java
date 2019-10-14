@@ -171,12 +171,13 @@ public final class VcTranslator {
   
   /**
    * for detailed order information see the library repository site.<br>
+   * the text encode is harcoded to 'utf-8'.<br>
    * @param pxResource from Class<?>.getResourceAsStream()
    * @return true if nothing went wrong
    */
   public final boolean ccParseCSV(InputStream pxResource){
     if(pxResource==null){return false;}
-    Scanner lpSanner = new Scanner(pxResource);
+    Scanner lpSanner = new Scanner(pxResource,"utf-8");
     boolean lpRes=false;
     for(int i=0;i<255;i++){
       if(!lpSanner.hasNext()){break;}
