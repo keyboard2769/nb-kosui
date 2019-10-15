@@ -26,7 +26,7 @@ public interface MiByteExchangeable{
   /**
    * @return #
    */
-  public byte[] ccToByteArray();
+  public byte[] ccToByteArray();//[todo]::elimitate this
   
   /**
    * @param pxData #

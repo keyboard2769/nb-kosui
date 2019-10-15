@@ -28,6 +28,7 @@ import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcLevelComparator;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
@@ -224,7 +225,7 @@ public class CaseNumericUtility extends JFrame{
       lpTestMenu.setMnemonic(KeyEvent.VK_E);
       Class<?> lpIdentity=SELF.getClass();
       Field[] lpDesField = lpIdentity.getFields();
-      if(VcConst.ccIsValidArray(lpDesField)){
+      if(VcArrayUtility.ccIsValidArray(lpDesField)){
         for(Field it:lpDesField){
           Object lpSource=VcConst.ccRetrieveField(it, SELF);
           if(lpSource==null){continue;}

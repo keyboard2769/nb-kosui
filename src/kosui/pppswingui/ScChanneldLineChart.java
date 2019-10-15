@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplocalui.EcRect;
 import kosui.pppmodel.McLineChartModel;
-import kosui.ppputil.VcConst;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcNumericUtility;
 
 /**
@@ -200,7 +200,7 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
    * @param pxOffsets must have something
    */
   public final void ccSetVerticalSplitOffsets(int[] pxOffsets){
-    if(!VcConst.ccIsValidArray(pxOffsets)){return;}
+    if(!VcArrayUtility.ccIsValidArray(pxOffsets)){return;}
     cmDesSplitV=pxOffsets;
   }//+++
   
@@ -209,7 +209,7 @@ public class ScChanneldLineChart extends EcRect implements SiPaintable{
    * @param pxOffsets must have something
    */
   public final void ccSetHorizontalSplitOffsets(int[] pxOffsets){
-    if(!VcConst.ccIsValidArray(pxOffsets)){return;}
+    if(!VcArrayUtility.ccIsValidArray(pxOffsets)){return;}
     cmDesSplitH=pxOffsets;
   }//+++
   

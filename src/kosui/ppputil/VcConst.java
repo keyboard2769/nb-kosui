@@ -66,7 +66,7 @@ public final class VcConst {
   
   //=== 
   
-  private VcConst(){}//..!
+  private VcConst(){}//++!
   
   //===
   
@@ -97,51 +97,6 @@ public final class VcConst {
   public static final boolean ccIsValidList(List pxList, int pxMinimal){
     if(pxList==null){return false;}
     return pxList.size()>=pxMinimal;
-  }//+++
-  
-  /**
-   * @param pxArray #
-   * @return no null no empty
-   */
-  static public final boolean ccIsValidArray(Object[] pxArray){
-    if(pxArray==null){return false;}
-    return pxArray.length!=0;
-  }//+++
-  
-  /**
-   * @param pxArray #
-   * @return no null no empty
-   */
-  static public final boolean ccIsValidArray(boolean[] pxArray){
-    if(pxArray==null){return false;}
-    return pxArray.length!=0;
-  }//+++
-  
-  /**
-   * @param pxArray #
-   * @return no null no empty
-   */
-  static public final boolean ccIsValidArray(byte[] pxArray){
-    if(pxArray==null){return false;}
-    return pxArray.length!=0;
-  }//+++
-  
-  /**
-   * @param pxArray #
-   * @return no null no empty
-   */
-  static public final boolean ccIsValidArray(int[] pxArray){
-    if(pxArray==null){return false;}
-    return pxArray.length!=0;
-  }//+++
-  
-  /**
-   * @param pxArray #
-   * @return no null no empty
-   */
-  static public final boolean ccIsValidArray(float[] pxArray){
-    if(pxArray==null){return false;}
-    return pxArray.length!=0;
   }//+++
   
   //===

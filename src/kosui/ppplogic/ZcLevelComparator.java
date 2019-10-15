@@ -18,6 +18,7 @@
 package kosui.ppplogic;
 
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcNumericUtility;
 
 /**
@@ -166,10 +167,10 @@ public class ZcLevelComparator{
   @Deprecated public final void tstReadup(){
     VcConst.ccPrintln(super.toString(),"judge >>>");
     VcConst.ccPrintln
-      (VcNumericUtility.ccPackupDecStringTable(cmDesJudge, 8));
+      (VcArrayUtility.ccPackupDecStringTable(cmDesJudge, 8));
     VcConst.ccPrintln("achor >>>");
     VcConst.ccPrintln
-      (VcNumericUtility.ccPackupDecStringTable(cmDesAnchor, 8));
+      (VcArrayUtility.ccPackupDecStringTable(cmDesAnchor, 8));
     VcConst.ccPrintln("<<<");
   }//+++
   

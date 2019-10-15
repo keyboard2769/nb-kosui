@@ -58,5 +58,5 @@ public interface ZiMemory {
    * @param pxValue to be set
    */
   public void ccWriteBit(int pxAddr, int pxBit, boolean pxValue);
-
+  
 }//***eof
