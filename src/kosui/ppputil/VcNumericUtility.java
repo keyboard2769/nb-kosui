@@ -18,7 +18,6 @@
 package kosui.ppputil;
 
 import java.util.Random;
-import kosui.ppplogic.ZiMemory;
 import processing.core.PApplet;
 
 /**
@@ -186,20 +185,51 @@ public final class VcNumericUtility {
 
   }//+++
       
+  //=== rounding
+  
+  /**
+   * a simple combination of multiplying and dividing and casting with 10
+   * @param pxSource #
+   * @return #
+   */
+  public static float ccRoundForOneAfter(float pxSource){
+    return (float)(
+      ((int)(pxSource*10f))
+    )/10f;
+  }//+++
+  
+  /**
+   * a simple combination of multiplying and dividing and casting with 100
+   * @param pxSource #
+   * @return #
+   */
+  public static float ccRoundForTwoAfter(float pxSource){
+    return (float)(
+      ((int)(pxSource*100f))
+    )/100f;
+  }//+++
+  
+  /**
+   * @param pxVal could be anything
+   * @return rounded by dividing ten
+   */
+  public static final float ccToFloatForOneAfter(int pxVal){
+    return ccRoundForOneAfter(ccFloat(pxVal, 10));
+  }//+++
+  
   //=== conversion
     
   /**
-   * just casting.<br>
-   * @param pxVal #
-   * @return #
+   * @param pxVal could be anything
+   * @return force casted
    */
   public static final float ccFloat(int pxVal){
     return (float)pxVal;
   }//+++
   
   /**
-   * @param pxVal ##
-   * @param pxBase ##
+   * @param pxVal could be anything
+   * @param pxBase could be anything
    * @return value / base
    */
   public static final float ccFloat(int pxVal, int pxBase){
@@ -207,43 +237,52 @@ public final class VcNumericUtility {
   }//+++
   
   /**
-   * @param pxVal ##
-   * @return rounded one
+   * @param pxCondition could be anything
+   * @return one or zero
    */
-  public static final float ccToFloatForOneAfter(int pxVal){
-    return ccRoundForOneAfter(ccFloat(pxVal, 10));
+  public static final int ccInteger(boolean pxCondition){
+    return pxCondition?1:0;
   }//+++
   
   /**
-   * just casting.<br>
-   * @param pxVal #
-   * @return #
+   * @param pxLetter supposedly digit
+   * @return zero or something
+   */
+  public static final int ccInteger(char pxLetter){
+    if(Character.isDigit(pxLetter)){
+      return (int)(pxLetter-'0');
+    }else{
+      return 0;
+    }//..?
+  }//+++
+  
+  /**
+   * @param pxVal could be anything
+   * @return force casted
    */
   public static final int ccInteger(byte pxVal){
     return (int)pxVal;
   }//+++
   
   /**
-   * just casting.<br>
-   * @param pxVal #
-   * @return #
+   * @param pxVal could be anything
+   * @return force casted
    */
   public static final int ccInteger(short pxVal){
     return (int)pxVal;
   }//+++
   
   /**
-   * just casting.<br>
-   * @param pxVal #
-   * @return #
+   * @param pxVal could be anything
+   * @return force casted
    */
   public static final int ccInteger(float pxVal){
     return (int)pxVal;
   }//+++
   
   /**
-   * @param pxVal ##
-   * @param pxMultiply ##
+   * @param pxVal could be anything
+   * @param pxMultiply could be anything
    * @return force casting value * multiply
    */
   public static final int ccInteger(float pxVal, float pxMultiply){
@@ -297,28 +336,6 @@ public final class VcNumericUtility {
    */
   public static String ccFormatFloatForOneAfter(int pxTenTimedValue){
     return Float.toString(((float)pxTenTimedValue)/10f);
-  }//+++
-  
-  /**
-   * a simple combination of multiplying and dividing and casting with 10
-   * @param pxSource #
-   * @return #
-   */
-  public static float ccRoundForOneAfter(float pxSource){
-    return (float)(
-      ((int)(pxSource*10f))
-    )/10f;
-  }//+++
-  
-  /**
-   * a simple combination of multiplying and dividing and casting with 100
-   * @param pxSource #
-   * @return #
-   */
-  public static float ccRoundForTwoAfter(float pxSource){
-    return (float)(
-      ((int)(pxSource*100f))
-    )/100f;
   }//+++
   
   //=== comparating
