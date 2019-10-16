@@ -37,10 +37,21 @@ public class ZcImpulsiveTimer extends ZcTimer{
   //===
   
   /**
+   * force the internal value to get bunked up to the upper bound.<br>
+   * supposedly to get called from a one shot situation, and BEWARE, 
+   * if get called from a looping situation, the pulse may never ends.<br>
+   */
+  public final void ccImpulse(){
+    ccSetValue(cmMax);
+  }//+++
+  
+  //===
+  
+  /**
    * {@inheritDoc}
    */
   @Override public void ccAct(boolean pxAct) {
-    if(cmPulser.ccUpPulse(pxAct)){ccSetValue(cmMax);}
+    if(cmPulser.ccUpPulse(pxAct)){ccImpulse();}
     ccShift(-1);
   }//+++
 
