@@ -30,6 +30,7 @@ public class ZcPulser {
   //===
   
   /**
+   * CAUTION : NEVER CALL ANY PULSE METHOD MULTIPLE TIME IN ONE LOOP!!<br>
    * supposedly should be called from draw(). <br>
    * like : pulser.ccPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
@@ -41,9 +42,10 @@ public class ZcPulser {
       return true;
     }//..?
     return false;
-  }//+++
+  }//++~
 
   /**
+   * CAUTION : NEVER CALL ANY PULSE METHOD MULTIPLE TIME IN ONE LOOP!!<br>
    * supposedly should be called from draw(). <br>
    * like : pulser.ccUpPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
@@ -51,9 +53,10 @@ public class ZcPulser {
    */
   public final boolean ccUpPulse(boolean pxAct){
     return ccPulse(pxAct)&&(cmBuff);
-  }//+++
+  }//++~
   
   /**
+   * CAUTION : NEVER CALL ANY PULSE METHOD MULTIPLE TIME IN ONE LOOP!!<br>
    * supposedly should be called from draw(). <br>
    * like : pulser.ccDownPulse(keyPressed %AND% key=='a');<br>
    * @param pxAct #
@@ -61,6 +64,6 @@ public class ZcPulser {
    */
   public final boolean ccDownPulse(boolean pxAct){
     return ccPulse(pxAct)&&(!cmBuff);
-  }//+++
+  }//++~
    
 }//***eof

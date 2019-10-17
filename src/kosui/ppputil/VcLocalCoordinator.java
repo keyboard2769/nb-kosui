@@ -467,6 +467,8 @@ public final class VcLocalCoordinator {
   /**
    * set input focus to previous indexed one in the list.<br>
    * supposedly should be triggered by pressing [shift+tab].<br>
+   * for processing you might need a pretty tricky work around
+   * to make that happen so it is okay to just not to use this method.<br>
    */
   public final void ccToPreviousInputIndex(){
     cmInputIndex--;

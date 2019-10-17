@@ -113,7 +113,17 @@ public final class VcArrayUtility {
   //[todo]::public static final void ccCopy(Object[] pxFrom,Object[] pxTo){}//+++
   //[todo]::public static final void ccCopy(boolean[] pxFrom,boolean[] pxTo){}//+++
   //[todo]::public static final void ccCopy(byte[] pxFrom,byte[] pxTo){}//+++
-  //[todo]::public static final void ccCopy(int[] pxFrom,int[] pxTo){}//+++
+  
+  /**
+   * @param pxFrom no null no empty
+   * @param pxTo no null no empty
+   */
+  public static final void ccCopy(int[] pxFrom,int[] pxTo){
+    if(!ccIsValidArray(pxFrom)){return;}
+    if(!ccIsValidArray(pxTo)){return;}
+    int lpFixedLength=VcNumericUtility.ccLesser(pxFrom.length, pxTo.length);
+    for(int i=0;i<lpFixedLength;i++){pxTo[i]=pxFrom[i];}
+  }//+++
   
   /**
    * @param pxFrom no null no empty
@@ -123,9 +133,7 @@ public final class VcArrayUtility {
     if(!ccIsValidArray(pxFrom)){return;}
     if(!ccIsValidArray(pxTo)){return;}
     int lpFixedLength=VcNumericUtility.ccLesser(pxFrom.length, pxTo.length);
-    for(int i=0;i<lpFixedLength;i++){
-      pxTo[i]=pxFrom[i];
-    }//..~
+    for(int i=0;i<lpFixedLength;i++){pxTo[i]=pxFrom[i];}
   }//+++
   
   //=== binary
