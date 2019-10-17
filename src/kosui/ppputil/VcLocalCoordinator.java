@@ -456,13 +456,27 @@ public final class VcLocalCoordinator {
   }//+++
   
   /**
-   * set input focus to next indexed one in the list.
-   * supposedly should be triggered by pressing [tab] key.
+   * set input focus to next indexed one in the list.<br>
+   * supposedly should be triggered by pressing [tab] key.<br>
    */
   public final void ccToNextInputIndex(){
     cmInputIndex++;
+    ssRefreshInputUI();
+  }//+++
+  
+  /**
+   * set input focus to previous indexed one in the list.<br>
+   * supposedly should be triggered by pressing [shift+tab].<br>
+   */
+  public final void ccToPreviousInputIndex(){
+    cmInputIndex--;
+    ssRefreshInputUI();
+  }//+++
+  
+  private void ssRefreshInputUI(){
     int lpSize=cmMapOfInputtable.size();
     if(cmInputIndex>lpSize){cmInputIndex=0;}
+    if(cmInputIndex<0){cmInputIndex=lpSize;}
     if(cmInputIndex==lpSize){cmInputFocusID=EcConst.C_ID_IGNORE;return;}
     EcElement[] lpArray =new EcElement[lpSize];
     cmMapOfInputtable.values().toArray(lpArray);

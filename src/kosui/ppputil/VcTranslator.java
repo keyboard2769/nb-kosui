@@ -290,11 +290,13 @@ public final class VcTranslator {
   //===
   
   /**
-   * translates
-   * @param pxSource #
+   * search for the given source as a key from all maps.<br>
+   * avoid using this method in any loop situation
+   * unless you really want to pay the over head.<br>
+   * @param pxSource could be any thing
    * @return never null if you never pass one
    */
-  public static final String tr(String pxSource){
+  synchronized public static final String tr(String pxSource){
     if(pxSource==null){return pxSource;}
     if(pxSource.equals("")){return pxSource;}
     if(pxSource.equals("...")){return pxSource;}

@@ -23,16 +23,14 @@ package kosui.ppplogic;
  * by the way, he didn't make it long, he ends up taking phone call at
  * the Customer Support Center.<br> 
  */
-public class ZcKeepRelay {
-  
-  private boolean cmBit=false;
+public class ZcKeepRelay extends ZcBit{
   
   /**
    * make it on.<br>
    */
   public final void ccSet(){
     cmBit=true;
-  }//+++
+  }//++<
   
   /**
    * make it on in the instruction way.<br>
@@ -40,14 +38,14 @@ public class ZcKeepRelay {
    */
   public final void ccSet(boolean pxCondition){
     if(pxCondition){ccSet();}
-  }//+++
+  }//++<
   
   /**
    * make it off.<br>
    */
   public final void ccReset(){
     cmBit=false;
-  }//+++
+  }//++<
   
   /**
    * make it off in the instruction way.<br>
@@ -55,7 +53,7 @@ public class ZcKeepRelay {
    */
   public final void ccReset(boolean pxCondition){
     if(pxCondition){ccReset();}
-  }//+++
+  }//++<
   
   /**
    * feel the magic of self-engaging self-holding circuit.<br>
@@ -64,13 +62,6 @@ public class ZcKeepRelay {
    */
   public final void ccTakeInput(boolean pxSet, boolean pxReset){
     cmBit=(!pxReset)&&(cmBit||pxSet);
-  }//+++
-  
-  /**
-   * @return ##
-   */
-  public final boolean ccGetStatus(){
-    return cmBit;
-  }//+++
-  
+  }//++<
+
 }//***eof

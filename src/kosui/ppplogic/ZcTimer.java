@@ -23,7 +23,10 @@ import kosui.ppputil.VcStringUtility;
  * this is the base of type of one pass delay timer. <br>
  * it assumes all your flow can get fit into checked value model. <br>
  */
-public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
+public abstract class ZcTimer
+  extends ZcRangedValueModel
+  implements ZiTimer,ZiBitty
+{
   
   /**
    * purpose may vary through implementation
@@ -47,6 +50,13 @@ public abstract class ZcTimer extends ZcRangedValueModel implements ZiTimer{
    */
   protected final int ccLimitTimeValue(int pxValue){
     return (pxValue|0x03)&0xFFFF;
+  }//+++
+
+  /**
+   * @return if the timer is considered up
+   */
+  @Override public boolean ccGetBit() {
+    return ccIsUp();
   }//+++
   
   //===
