@@ -165,49 +165,51 @@ public class ZcScaledModel {
   //===
   
   /**
-   * @return #
+   * must run before calling this getter.<br>
+   * @return map(input,i-off,i-span,o-off,o-span)
    */
   public final float ccGetScaledFloatValue(){
     return cmFloatOutput;
   }//++>
     
   /**
-   * @return #
+   * must run before calling this getter.<br>
+   * @return ceil(map(input,i-off,i-span,o-off,o-span))
    */
   public final int ccGetScaledIntegerValue(){
     return cmIntegerOutput;
   }//++>
   
   /**
-   * @return #
+   * @return could be anything
    */
   public final int ccGetInputValue(){
     return cmInputValue;
   }//++>
 
   /**
-   * @return #
+   * @return could be anything
    */
   public final int ccGetInputOffset(){
     return cmInputOffset;
   }//++>
 
   /**
-   * @return #
+   * @return could be anything
    */
   public final int ccGetInputSpan(){
     return cmInputSpan;
   }//++>
 
   /**
-   * @return #
+   * @return could be anything
    */
   public final int ccGetOutputOffset(){
     return cmOutputOffset;
   }//++>
 
   /**
-   * @return #
+   * @return could be anything
    */
   public final int ccGetOutputSpan(){
     return cmOutputSpan;

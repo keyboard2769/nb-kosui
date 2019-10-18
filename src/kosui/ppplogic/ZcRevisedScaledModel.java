@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import processing.core.PApplet;
+
 /**
  * <pre>
  * sometime the result just can not match out side standards
@@ -28,21 +30,41 @@ package kosui.ppplogic;
 public class ZcRevisedScaledModel extends ZcScaledModel{
   
   private int cmBias,cmOffset;
+  private float cmRevised;
   
   /**
    * default additional bias is 100. <br>
    * default additional offset is 0. <br>
-   * @param pxInputOffset #
-   * @param pxInputSpan #
-   * @param pxOutputOffset #
-   * @param pxOutputSpan #
+   * @param pxInputOffset passed to super directly
+   * @param pxInputSpan passed to super directly
+   * @param pxOutputOffset passed to super directly
+   * @param pxOutputSpan passed to super directly
    */
   public ZcRevisedScaledModel(
     int pxInputOffset, int pxInputSpan,int pxOutputOffset, int pxOutputSpan
   ){
     super(pxInputOffset, pxInputSpan, pxOutputOffset, pxOutputSpan);
-    ccResetRevicer();
+    ccResetReviser();
   }//++!
+  
+  //===
+
+  /**
+   * {@inheritDoc }
+   */
+  @Override public void ccRun(int pxInputValue) {
+    super.ccRun(pxInputValue);
+    ccRevise();
+  }//++~
+  
+  /**
+   * supposedly to get called in a loop only once
+   */
+  public final void ccRevise(){
+    cmRevised=super.ccGetScaledFloatValue();
+    cmRevised*=(((float)cmBias)/100f);
+    cmRevised+=(float)cmOffset;
+  }//++~
   
   //===
   
@@ -50,14 +72,14 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
    * will get trimmed via bit masking 
    * @param pxPercentage say, 120 means "120%"
    */
-  public final void ccSetBias(int pxPercentage){
+  public final void ccSetReviseBias(int pxPercentage){
     cmBias=pxPercentage&0x1FFF;
   }//++<
   
   /**
    * @param pxOffset could be anything
    */
-  public final void ccSetOffset(int pxOffset){
+  public final void ccSetReviseOffset(int pxOffset){
     cmOffset=pxOffset;
   }//++<
   
@@ -66,18 +88,18 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
    * @param pxBias will get passed to setter directly
    * @param pxOffset will get passed to setter directly
    */
-  public final void ccSetupRevicer(int pxBias, int pxOffset){
-    ccSetBias(pxBias);
-    ccSetOffset(pxOffset);
+  public final void ccSetupReviser(int pxBias, int pxOffset){
+    ccSetReviseBias(pxBias);
+    ccSetReviseOffset(pxOffset);
   }//++<
   
   /**
    * default additional bias is 100. <br>
    * default additional offset is 0. <br>
    */
-  public final void ccResetRevicer(){
-    ccSetBias(100);
-    ccSetOffset(0);
+  public final void ccResetReviser(){
+    ccSetReviseBias(100);
+    ccSetReviseOffset(0);
   }//++<
   
   //===
@@ -85,8 +107,8 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
   /**
    * calculates via float value. <br>
    * using force casting. <br>
-   * @param pxSource #
-   * @return #
+   * @param pxSource could be any thing
+   * @return (source - offset) *100 / bias
    */
   public final float ccToUnrevisedInputValue(float pxSource){
     float lpSource=pxSource-(float)cmOffset;
@@ -95,12 +117,11 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
     return ccToUnscaledInputValue(lpSource);
   }//++>
   
-  
   /**
    * basically calculates via integer value. <br>
    * not using PApplet::ceil or force casting. <br>
-   * @param pxSource #
-   * @return #
+   * @param pxSource could be any thing
+   * @return (source - offset) *100 / bias
    */
   public final int ccToUnrevisedInputValue(int pxSource){
     int lpSource=pxSource-cmOffset;
@@ -112,28 +133,33 @@ public class ZcRevisedScaledModel extends ZcScaledModel{
   //===
   
   /**
-   * basically calculates via integer value. <br>
-   * not using PApplet::ceil or force casting. <br>
-   * @return #
+   * @return could be anything
    */
-  public final int ccGetRevisedIntegerValue(){
-    int lpScaled=ccGetScaledIntegerValue();
-    lpScaled*=cmBias;
-    lpScaled/=100;
-    lpScaled+=cmOffset;
-    return lpScaled;
+  public final int ccGetReviseBias(){
+    return cmBias;
   }//++>
   
   /**
-   * basically calculates via integer value. <br>
-   * using force casting. <br>
-   * @return #
+   * @return could be anything
+   */
+  public final int ccGetReviseOffset(){
+    return cmOffset;
+  }//++>
+  
+  /**
+   * must run before calling this getter.<br>
+   * @return ceil(scaled * bias /100 + offset)
+   */
+  public final int ccGetRevisedIntegerValue(){
+    return PApplet.ceil(cmRevised);
+  }//++>
+  
+  /**
+   * must run before calling this getter.<br>
+   * @return scaled * bias /100 + offset
    */
   public final float ccGetRevisedFloatValue(){
-    float lpScaled=ccGetScaledFloatValue();
-    lpScaled*=(((float)cmBias)/100f);
-    lpScaled+=(float)cmOffset;
-    return lpScaled;
+    return cmRevised;
   }//++>
 
 }//***eof
