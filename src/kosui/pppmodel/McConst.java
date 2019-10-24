@@ -88,6 +88,26 @@ public final class McConst {
   }//+++
   
   /**
+   * @param pxFolder will get verified via ccVerifyFolder(File)
+   * @param pxDesFileName elements should be the full file name 
+   * @return true if all matched
+   */
+  public static final
+  boolean ccVerifyFolder(File pxFolder, String[] pxDesFileName){
+    if(!McConst.ccVerifyFolder(pxFolder)){return false;}
+    if(pxDesFileName==null){return false;}
+    LinkedList<String> lpFolderList = new LinkedList<String>();
+    for(File it:pxFolder.listFiles()){
+      lpFolderList.add(it.getName());
+    }//..~
+    boolean lpRes=true;
+    for(String it:pxDesFileName){
+      lpRes&=lpFolderList.contains(it);
+    }//..~
+    return lpRes;
+  }//+++
+  
+  /**
    * <pre>
    * with null check and absolution check.
    * also does existence check and automatically invokes 
@@ -178,26 +198,6 @@ public final class McConst {
     }else{
       return false;
     }//..?
-  }//+++
-  
-  /**
-   * @param pxFolder will get verified via ccVerifyFolder()
-   * @param pxDesFileName elements should be the full file name 
-   * @return true if all matched
-   */
-  public static final
-  boolean ccVerifyFileExistence(File pxFolder, String[] pxDesFileName){
-    if(!ccVerifyFolder(pxFolder)){return false;}
-    if(pxDesFileName==null){return false;}
-    LinkedList<String> lpFolderList = new LinkedList<String>();
-    for(File it:pxFolder.listFiles()){
-      lpFolderList.add(it.getName());
-    }//..~
-    boolean lpRes=true;
-    for(String it:pxDesFileName){
-      lpRes&=lpFolderList.contains(it);
-    }//..~
-    return lpRes;
   }//+++
   
   /**
@@ -334,7 +334,7 @@ public final class McConst {
    * @deprecated test use only
    */
   @Deprecated public static final void tstReadupFolderContent(File pxFolder){
-    if(!ccVerifyFolder(pxFolder)){return;}
+    if(!McConst.ccVerifyFolder(pxFolder)){return;}
     for(File it:pxFolder.listFiles()){
       VcConst.ccPrintln("r-subf", it.getName());
     }//+++

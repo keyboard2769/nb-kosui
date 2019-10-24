@@ -66,8 +66,7 @@ public class ScStoker extends JScrollPane {
    * @param pxTag must have something
    * @param pxValue can be any thing
    */
-  public final void ccWriteln(String pxTag, Object pxValue){
-    if(!ScConst.ccIsEDT()){return;}
+  synchronized public final void ccWriteln(String pxTag, Object pxValue){
     if(!VcConst.ccIsValidString(pxTag)){return;}
     if(pxValue==null){
       cmArea.append(pxTag);
@@ -78,8 +77,7 @@ public class ScStoker extends JScrollPane {
       cmArea.append(pxValue.toString());
       cmArea.append(VcConst.C_V_NEWLINE);
     }//..?
-    ScConst.ccScrollToLast(cmArea);
-  }//+++
+  }//++<
   
   /**
    * might get passed to JTextArea::append() eventually.<br>
@@ -87,14 +85,14 @@ public class ScStoker extends JScrollPane {
    */
   public final void ccWriteln(String pxLine) {
     ScStoker.this.ccWriteln(pxLine, null);
-  }//+++
+  }//++<
   
   /**
    * alias for JTextArea::setText("");
    */
   public final void ccClear(){
     cmArea.setText("");
-  }//+++
+  }//++<
   
   /**
    * clear with a initiation message
@@ -104,7 +102,7 @@ public class ScStoker extends JScrollPane {
     if(pxHello==null){ccClear();return;}
     if(pxHello.length()>64){ccClear();return;}//..arbitary
     cmArea.setText(pxHello);
-  }//+++
+  }//++<
   
   //===
   
@@ -113,14 +111,34 @@ public class ScStoker extends JScrollPane {
    */
   public final JTextArea ccGetTextArea(){
     return cmArea;
-  }//+++
+  }//++>
   
   /**
    * wrapper for JTextArea::getText
-   * @return #
+   * @return could be anything
    */
   public final String ccGetText(){
     return cmArea.getText();
+  }//++>
+  
+  /**
+   * wrapper for JTextArea::getLineCount
+   * @return could be anything
+   */
+  public final int ccGetLineCount(){
+    return cmArea.getLineCount();
+  }//++>
+  
+  //===
+  
+  /**
+   * calls updateUI() than repaint().<br>
+   */
+  public final void ccRefresh(){
+    if(!ScConst.ccIsEDT()){return;}
+    cmArea.updateUI();
+    cmArea.repaint();
+    ScConst.ccScrollToLast(cmArea);
   }//+++
   
   //===

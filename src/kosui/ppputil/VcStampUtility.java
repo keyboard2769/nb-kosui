@@ -18,13 +18,7 @@
 package kosui.ppputil;
 
 import java.util.Calendar;
-import static processing.core.PApplet.day;
-import static processing.core.PApplet.hour;
-import static processing.core.PApplet.minute;
-import static processing.core.PApplet.month;
-import static processing.core.PApplet.nf;
-import static processing.core.PApplet.second;
-import static processing.core.PApplet.year;
+import processing.core.PApplet;
 
 /**
  * i struggled with the file name control on my windows computer.<br>
@@ -86,12 +80,12 @@ public final class VcStampUtility {
    */
   synchronized public static final String ccTimeStamp(String pxForm){
     if(!VcConst.ccIsValidString(pxForm)){return pxForm;}
-    String lpRes=pxForm.replaceFirst("yy",nf(year()%2000,2));
-    lpRes=lpRes.replaceFirst("MM",nf(month(),2));
-    lpRes=lpRes.replaceFirst("dd",nf(day(),2));
-    lpRes=lpRes.replaceFirst("hh",nf(hour(),2));
-    lpRes=lpRes.replaceFirst("mm",nf(minute(),2));
-    lpRes=lpRes.replaceFirst("ss",nf(second(),2));
+    String lpRes=pxForm.replaceFirst("yy",PApplet.nf(PApplet.year()%2000,2));
+    lpRes=lpRes.replaceFirst("MM",PApplet.nf(PApplet.month(),2));
+    lpRes=lpRes.replaceFirst("dd",PApplet.nf(PApplet.day(),2));
+    lpRes=lpRes.replaceFirst("hh",PApplet.nf(PApplet.hour(),2));
+    lpRes=lpRes.replaceFirst("mm",PApplet.nf(PApplet.minute(),2));
+    lpRes=lpRes.replaceFirst("ss",PApplet.nf(PApplet.second(),2));
     return lpRes;
   }//+++
   
@@ -101,9 +95,9 @@ public final class VcStampUtility {
    */
   synchronized static public final String ccFilenameTypeII(){
     StringBuilder lpRes=new StringBuilder("_");
-    lpRes.append(nf(year()%2000,2));
-    lpRes.append(nf(month(),2));
-    lpRes.append(nf(day(),2));
+    lpRes.append(PApplet.nf(PApplet.year()%2000,2));
+    lpRes.append(PApplet.nf(PApplet.month(),2));
+    lpRes.append(PApplet.nf(PApplet.day(),2));
     return lpRes.toString();
   }//+++
   
@@ -113,11 +107,11 @@ public final class VcStampUtility {
    */
   synchronized static public final String ccFileNameTypeIII(){
     StringBuilder lpRes=new StringBuilder("_");
-    lpRes.append(nf(year()%2000,2));
-    lpRes.append(nf(month(),2));
-    lpRes.append(nf(day(),2));
-    lpRes.append(nf(hour(),2));
-    lpRes.append(nf(minute(),2));
+    lpRes.append(PApplet.nf(PApplet.year()%2000,2));
+    lpRes.append(PApplet.nf(PApplet.month(),2));
+    lpRes.append(PApplet.nf(PApplet.day(),2));
+    lpRes.append(PApplet.nf(PApplet.hour(),2));
+    lpRes.append(PApplet.nf(PApplet.minute(),2));
     return lpRes.toString();
   }//+++
   
@@ -127,11 +121,11 @@ public final class VcStampUtility {
    */
   synchronized static public final String ccFileNameTypeIV(){
     StringBuilder lpRes=new StringBuilder("");
-    lpRes.append(nf(year()%2000,2));
+    lpRes.append(PApplet.nf(PApplet.year()%2000,2));
     lpRes.append('-');
-    lpRes.append(nf(month(),2));
+    lpRes.append(PApplet.nf(PApplet.month(),2));
     lpRes.append('-');
-    lpRes.append(nf(day(),2));
+    lpRes.append(PApplet.nf(PApplet.day(),2));
     return lpRes.toString();
   }//+++
   
@@ -143,9 +137,24 @@ public final class VcStampUtility {
   synchronized static public final String ccFileNameTypeV(String pxMark){
     StringBuilder lpRes=new StringBuilder("_");
     lpRes.append(pxMark);
-    lpRes.append(nf(hour(),2));
-    lpRes.append(nf(minute(),2));
-    lpRes.append(nf(second(),2));
+    lpRes.append(PApplet.nf(PApplet.hour(),2));
+    lpRes.append(PApplet.nf(PApplet.minute(),2));
+    lpRes.append(PApplet.nf(PApplet.second(),2));
+    return lpRes.toString();
+  }//+++
+  
+  /**
+   * supposedly for archive file.<br>
+   * @return # _yyMMddhhmmss
+   */
+  synchronized static public final String ccFileNameTypeVI(){
+    StringBuilder lpRes=new StringBuilder("_");
+    lpRes.append(PApplet.nf(PApplet.year()%2000,2));
+    lpRes.append(PApplet.nf(PApplet.month(),2));
+    lpRes.append(PApplet.nf(PApplet.day(),2));
+    lpRes.append(PApplet.nf(PApplet.hour(),2));
+    lpRes.append(PApplet.nf(PApplet.minute(),2));
+    lpRes.append(PApplet.nf(PApplet.second(),2));
     return lpRes.toString();
   }//+++
   
@@ -157,11 +166,11 @@ public final class VcStampUtility {
    */
   synchronized static public final String ccDataLogTypeI(){
     StringBuilder lpRes=new StringBuilder("--");
-    lpRes.append(nf(hour(),2));
+    lpRes.append(PApplet.nf(PApplet.hour(),2));
     lpRes.append(':');
-    lpRes.append(nf(minute(),2));
+    lpRes.append(PApplet.nf(PApplet.minute(),2));
     lpRes.append('\'');
-    lpRes.append(nf(second(),2));
+    lpRes.append(PApplet.nf(PApplet.second(),2));
     return lpRes.toString();
   }//+++
   
@@ -173,11 +182,11 @@ public final class VcStampUtility {
    */
   synchronized static public final String ccErrStampTypeI(){
     StringBuilder lpRes=new StringBuilder("[ERR-");
-    lpRes.append(nf(hour(),2));
+    lpRes.append(PApplet.nf(PApplet.hour(),2));
     lpRes.append(':');
-    lpRes.append(nf(minute(),2));
+    lpRes.append(PApplet.nf(PApplet.minute(),2));
     lpRes.append('\'');
-    lpRes.append(nf(second(),2));
+    lpRes.append(PApplet.nf(PApplet.second(),2));
     lpRes.append(']');
     return lpRes.toString();
   }//++++

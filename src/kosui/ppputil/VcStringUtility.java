@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import java.util.List;
 import static kosui.ppputil.VcConst.ccIsValidString;
 import processing.core.PApplet;
 
@@ -27,6 +28,44 @@ import processing.core.PApplet;
 public final class VcStringUtility {
   
   private VcStringUtility(){}//..!
+  
+  //=== charactor
+  
+  /**
+   * @param pxKey could be anything
+   * @return [0x20 ~ 0x7E]
+   */
+  static public final boolean ccIsPrintable(char pxKey){
+    return (pxKey >= ' ') && (pxKey <= '~');
+  }//+++
+  
+  /**
+   * @param pxKey could be anything
+   * @return no control no digit no alphabetic
+   */
+  static public final boolean ccIsPunctuation(char pxKey){
+    boolean lpRes=ccIsPrintable(pxKey);
+    lpRes&=!(Character.isDigit(pxKey));
+    lpRes&=!(Character.isAlphabetic(pxKey));
+    return lpRes;
+  }//+++
+  
+  /**
+   * @param pxKey could be anything
+   * @return no control no digit no alphabetic no parentheses
+   */
+  static public final boolean ccIsSeparator(char pxKey){
+    boolean lpRes=ccIsPunctuation(pxKey);
+    lpRes&=(pxKey!='<');
+    lpRes&=(pxKey!='>');
+    lpRes&=(pxKey!='(');
+    lpRes&=(pxKey!=')');
+    lpRes&=(pxKey!='[');
+    lpRes&=(pxKey!=']');
+    lpRes&=(pxKey!='{');
+    lpRes&=(pxKey!='}');
+    return lpRes;
+  }//+++
   
   //=== judging
   
@@ -160,8 +199,27 @@ public final class VcStringUtility {
   
   //=== packing
   
-  //       ..pack up a big string for print
-  //[plan]::String ccPackupStringList(Object[] pxData){}
+  /**
+   * derived from PApplet.join but first,
+   *   we are STILL stuck on StringBuilder and second,
+   *   we eat single element and third,
+   *   we only accept what we call separator.<br>
+   * @param pxTarget no null no empty no single
+   * @param pxSeparator see ccIsSeparator() and if fails we give an underscore
+   * @return never null
+   */
+  static public final
+  String ccJoin(List<String> pxTarget, char pxSeparator){
+    if(!VcConst.ccIsValidList(pxTarget, 1)){return "";}
+    StringBuilder lpRes=new StringBuilder("");
+    char lpFixed=ccIsSeparator(pxSeparator)?pxSeparator:'_';
+    for(String it : pxTarget){
+      lpRes.append(it);
+      lpRes.append(lpFixed);
+    }//..~
+    lpRes.deleteCharAt(lpRes.length()-1);
+    return lpRes.toString();
+  }//+++
   
   /**
    * in the same manner of VcConst.ccPrintln() with square bracket.<br>
