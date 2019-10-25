@@ -33,6 +33,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoundedRangeModel;
@@ -48,6 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.ColorUIResource;
 import kosui.ppputil.VcConst;
 import processing.core.PApplet;
 
@@ -596,6 +598,54 @@ public class ScConst {
       System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
     }//..%
     
+  }//+++
+  
+  /**
+   * just chaining bunch of UIManager.put.<br>
+   * intensively for altering the metal ocean blue to gray.<br>
+   */
+  public static final void ccApplyModifiedColorTheme(){
+    
+    //-- button 
+    //UIManager.put("Button.select",Color.
+    //UIManager.put("Button.disabledText",Color.
+    UIManager.put("Button.focus",Color.decode("#DEDEDE"));
+    UIManager.put("Button.gradient",
+      ssMakeNoneGradient(Color.decode("#DEDEDE")));
+    
+    //-- tabbed pane
+    //UIManager.put("TabbedPane.light",Color.
+    //UIManager.put("TabbedPane.shadow",Color.
+    //UIManager.put("TabbedPane.darkShadow",Color.
+    //UIManager.put("TabbedPane.highlight",Color.
+    //UIManager.put("TabbedPane.tabAreaBackground",Color.
+    //UIManager.put("TabbedPane.selectHighlight",Color.
+    //UIManager.put("TabbedPane.unselectedBackground",Color.
+    //UIManager.put("TabbedPane.borderHightlightColor",Color.
+    UIManager.put("TabbedPane.selected",Color.decode("#CDCDCD"));
+    UIManager.put("TabbedPane.contentAreaColor",Color.decode("#CDCDCD"));
+    UIManager.put("TabbedPane.focus",Color.decode("#6699CC"));
+    
+    //-- scroll bar
+    //UIManager.put("ScrollBar.shadow",Color.
+    UIManager.put("ScrollBar.highlight",Color.WHITE);
+    //UIManager.put("ScrollBar.darkShadow",Color.
+    //UIManager.put("ScrollBar.thumb",Color.
+    UIManager.put("ScrollBar.thumbShadow",Color.decode("#336699"));
+    UIManager.put("ScrollBar.thumbHighlight",Color.decode("#EFEFEF"));
+    UIManager.put("ScrollBar.gradient",
+      ssMakeNoneGradient(Color.decode("#ABABAB")));
+    
+  }//+++
+  
+  static private List ssMakeNoneGradient(Color pxColor){
+    List lpThumbGradien = new ArrayList();
+    lpThumbGradien.add(Float.valueOf(0.5f));
+    lpThumbGradien.add(Float.valueOf(0.5f));
+    lpThumbGradien.add(new ColorUIResource(pxColor));
+    lpThumbGradien.add(new ColorUIResource(pxColor));
+    lpThumbGradien.add(new ColorUIResource(pxColor));
+    return lpThumbGradien;
   }//+++
   
   //=== monitor 
