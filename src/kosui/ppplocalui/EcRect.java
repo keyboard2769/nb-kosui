@@ -105,9 +105,9 @@ public class EcRect extends EcPoint{
    * like when you want follow an element
    *   right to the target with 5pix offset : rect.ccFollows(target,5,0);
    * </pre>
-   * @param pxTarget #
-   * @param pxOffsetX #
-   * @param pxOffsetY #
+   * @param pxTarget do not pass null
+   * @param pxOffsetX could be anything as pix
+   * @param pxOffsetY could be anything as pix
    */
   public final void ccSetLocation(
     EcRect pxTarget, int pxOffsetX, int pxOffsetY
@@ -123,7 +123,6 @@ public class EcRect extends EcPoint{
   /**
    * <pre>
    * get relocated right next to given target rect.
-   * there will be no offset.
    * mode:
    *  - [a]:above
    *  - [b]:below
@@ -132,28 +131,29 @@ public class EcRect extends EcPoint{
    *  - [v]:center in verticle
    *  - [g]:center in horizontal
    * </pre>
-   * @param pxTarget ##
-   * @param pxMode_ablrvhx ##
+   * @param pxTarget do not pass null
+   * @param pxMode_ablrvhx see above
+   * @param pxOffset could be anything as pix
    */
   public final void ccSetLocation(
-    EcRect pxTarget, char pxMode_ablrvhx
+    EcRect pxTarget, char pxMode_ablrvhx, int pxOffset
   ){
     if(pxTarget==null){return;}
     switch(pxMode_ablrvhx){
       case 'a':
         ccSetX(pxTarget.ccGetX());
-        ccSetY(pxTarget.ccGetY()-ccGetH());
+        ccSetY(pxTarget.ccGetY()-ccGetH()-pxOffset);
       break;
       case 'b':
         ccSetX(pxTarget.ccGetX());
-        ccSetY(pxTarget.ccEndY());
+        ccSetY(pxTarget.ccEndY()+pxOffset);
       break;
       case 'l':
-        ccSetX(pxTarget.ccGetX()-ccGetW());
-        ccSetY(pxTarget.ccEndY());
+        ccSetX(pxTarget.ccGetX()-ccGetW()-pxOffset);
+        ccSetY(pxTarget.ccGetY());
       break;
       case 'r':
-        ccSetX(pxTarget.ccEndX());
+        ccSetX(pxTarget.ccEndX()+pxOffset);
         ccSetY(pxTarget.ccGetY());
       break;
       case 'v':
@@ -170,7 +170,19 @@ public class EcRect extends EcPoint{
       break;
       default:break;
     }//..?
-  }//+++
+  }//++<
+  
+  /**
+   * see the (rect, char, int) version.<br>
+   * offset is zero by default.<br>
+   * @param pxTarget do not pass null
+   * @param pxMode_ablrvhx see the (rect, char, int) version
+   */
+  public final void ccSetLocation(
+    EcRect pxTarget, char pxMode_ablrvhx
+  ){
+    ccSetLocation(pxTarget, pxMode_ablrvhx, 0);
+  }//++<
   
   /**
    * makes it a square.<br>

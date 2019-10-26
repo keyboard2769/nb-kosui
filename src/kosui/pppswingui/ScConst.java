@@ -152,7 +152,7 @@ public class ScConst {
   public static final BasicStroke C_DEFAULT_STROKE
     = new BasicStroke(1.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_BUTT);
   
-  //===
+  //=== resource
   
   private static final JFileChooser O_FILE_CHOOSER
     = new JFileChooser(VcConst.C_V_PWD);
@@ -390,6 +390,75 @@ public class ScConst {
   }//+++
     
   //=== operate
+  
+  /**
+   * this version insures no clashing for
+   * abandoning the potential usage of relocating slantingly.<br> 
+   * but we never used it, right?<br>
+   * so, you must pass one zero for orientation meaning,
+   * that could be wrong, but i am doing this.<br>
+   * @param pxSource do not pass null
+   * @param pxTarget do not pass null
+   * @param pxOffsetX zero means opposite
+   * @param pxOffsetY zero means opposite
+   */
+  public static final
+  void ccSetLocation(
+    JComponent pxSource, JComponent pxTarget,
+    int pxOffsetX, int pxOffsetY
+  ){
+    if(pxSource==null){return;}
+    if(pxTarget==null){
+      pxSource.setLocation(pxOffsetX&1023, pxOffsetY&1023);
+      return;
+    }//..?
+    int lpX=pxTarget.getX();
+    int lpY=pxTarget.getY();
+    if(pxOffsetX==0){
+      lpY+=pxOffsetY;
+      if(pxOffsetY>0){lpY+=pxTarget.getHeight();}//..?
+      if(pxOffsetY<0){lpY-=pxSource.getHeight();}//..?
+    }//..?
+    if(pxOffsetY==0){
+      lpX+=pxOffsetX;
+      if(pxOffsetX>0){lpX+=pxTarget.getWidth();}//..?
+      if(pxOffsetX<0){lpX-=pxSource.getWidth();}//..?
+    }//..?
+    pxSource.setLocation(lpX, lpY);
+  }//+++
+  
+  /**
+   * intensively changing only the size.<br>
+   * @param pxSource do not pass null
+   * @param pxTarget do not pass null
+   */
+  public static final
+  void ccSetEndX(JComponent pxSource, JComponent pxTarget){
+    if(pxSource==null){return;}
+    if(pxTarget==null){return;}
+    int lpTargetEndX=pxTarget.getX()+pxTarget.getWidth();
+    if(lpTargetEndX<=pxSource.getX()){return;}
+    int lpWidth=lpTargetEndX-pxSource.getX();
+    int lpHeight=pxSource.getHeight();
+    pxSource.setSize(lpWidth, lpHeight);
+  }//+++
+  
+  /**
+   * intensively changing only the size.<br>
+   * @param pxSource do not pass null
+   * @param pxTarget do not pass null
+   */
+  public static final
+  void ccSetEndY(JComponent pxSource, JComponent pxTarget){
+    //[totest]::
+    if(pxSource==null){return;}
+    if(pxTarget==null){return;}
+    int lpTargetEndY=pxTarget.getY()+pxTarget.getHeight();
+    if(lpTargetEndY<=pxSource.getY()){return;}
+    int lpWidth=pxSource.getWidth();
+    int lpHeight=lpTargetEndY-pxSource.getY();
+    pxSource.setSize(lpWidth, lpHeight);
+  }//+++
   
   /**
    * set visibility and enabled to null.

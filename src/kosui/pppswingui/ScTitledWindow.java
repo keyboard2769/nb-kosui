@@ -45,8 +45,10 @@ public class ScTitledWindow extends JWindow {
   //=== 
   
   /**
-   * for windows platform, passing null makes it little bit easy to use.
-   * @param pxOwner for JWindow. 
+   * for windows os,
+   * having shared owner makes a window little bit easy to use.<br>
+   * but the situation on mac os would be pretty dizzy.<br>
+   * @param pxOwner passed to super directly
    */
   public ScTitledWindow(Frame pxOwner) {
     super(pxOwner);
@@ -55,7 +57,14 @@ public class ScTitledWindow extends JWindow {
     cmIsFinished=false;
     cmAnchorX=0;
     cmAnchorY=0;
-  }//+++
+  }//++!
+  
+  /**
+   * the owner will be null by default.<br>
+   */
+  public ScTitledWindow(){
+    this(null);
+  }//++!
 
   /**
    * 
