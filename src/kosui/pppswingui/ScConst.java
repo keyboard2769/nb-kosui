@@ -332,7 +332,7 @@ public class ScConst {
   public static final File ccGetFileByFileChooser(char pxMode){
     
     //-- pre
-    if(ccIsEDT()){return null;}
+    if(!ccIsEDT()){return null;}
     
     //-- apply
     int lpMode=JFileChooser.FILES_AND_DIRECTORIES;
