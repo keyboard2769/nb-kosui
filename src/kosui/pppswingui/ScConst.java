@@ -599,7 +599,7 @@ public class ScConst {
    */
   public static final Font ccGetDefaultFont(){
     return O_DEFAULT_FONT;
-  }//+++
+  }//++>
   
   /**
    * an alias to pxTarget.setFont.<br>
@@ -617,7 +617,7 @@ public class ScConst {
     for(Component it:lpList){
       if(it instanceof JComponent){it.setFont(O_DEFAULT_FONT);}
     }//..~
-  }//+++
+  }//++<
   
   /**
    * an alias to FileChooser.setApproveButtonText().<br>
@@ -626,7 +626,19 @@ public class ScConst {
   public static final void ccSetFileChooserButtonText(String pxText){
     if(!VcConst.ccIsValidString(pxText)){return;}
     O_FILE_CHOOSER.setApproveButtonText(pxText);
-  }//+++
+  }//++<
+  
+  /**
+   * alias for File.setCurrentDirectory() with instance creation.<br>
+   * @param pxLocation do not pass null
+   */
+  public static final
+  void ccSetFileChooserCurrentDirectoryLocation(String pxLocation){
+    if(!VcConst.ccIsValidString(pxLocation)){return;}
+    File lpFile = new File(pxLocation);
+    if(!lpFile.isDirectory()){return;}
+    O_FILE_CHOOSER.setCurrentDirectory(lpFile);
+  }//++<
   
   /**
    * try to get an array of LookAndFeelInfo from UIManager, 

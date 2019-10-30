@@ -47,6 +47,8 @@ public final class VcTranslator {
     E_BLANK    = "<bk>"
   ;//,,,
   
+  private static final int C_FILE_READLINE_MAX = 255;
+  
   /**
    * @return instance
    */
@@ -179,7 +181,7 @@ public final class VcTranslator {
     if(pxResource==null){return false;}
     Scanner lpSanner = new Scanner(pxResource,"utf-8");
     boolean lpRes=false;
-    for(int i=0;i<255;i++){
+    for(int i=0;i<C_FILE_READLINE_MAX;i++){
       if(!lpSanner.hasNext()){break;}
       lpRes|=ccParseCSV(lpSanner.next());
     }//..?
