@@ -119,9 +119,9 @@ public final class McTextFileExporter extends SwingWorker<Integer, Void> {
       lpCode = C_R_EXCEPITON;
     }//..?
     if(cmReporting!=null){
-      cmReporting.ccExecute(new String[]{Integer.toString(lpCode)});
+      cmReporting.ccExecute(Integer.toString(lpCode));
     }else{
-      System.out.println("kosui.pppmodel.McTextFileExporter::endwith:"
+      System.out.println("kosui.pppmodel.McTextFileExporter::done_with:"
         + Integer.toString(lpCode));
     }//..?
     if(cmPortReadOnly){cmFile.setReadOnly();}

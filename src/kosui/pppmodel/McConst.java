@@ -18,11 +18,14 @@
 package kosui.pppmodel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import kosui.pppswingui.ScConst;
 import processing.data.XML;
@@ -165,7 +168,7 @@ public final class McConst {
    * expanding ccVerifyFileForLoading(File).<br>
    * the extension check is performed via String.endWith().<br>
    * @param pxFile will get verified with the none extension version
-   * @param pxExtension must have something
+   * @param pxExtension must have something whit no "dot" prefix
    * @return true if matches
    */
   public static final
@@ -290,9 +293,50 @@ public final class McConst {
     else{return lpContent;}
   }//+++
   
-  //=== output
+  //=== input
+  
+  /**
+   * wrapping Scanner::hasNext() up and swallowing exceptions for you .<br>
+   * looped result will get added to passed list.<br>
+   * any one calling this utility is responsible for allocation.<br> 
+   * be ware the passed list will get cleared before adding.<br>
+   * @param pxFile checked via McConst.ccVerifyFileForLoading()
+   * @param pxTarget do not pass null
+   * @return true if nothing went wrong
+   */
+  public static final
+  boolean ccImportTextFile(File pxFile, List<String> pxTarget){
+    
+    //-- checkin
+    if(!McConst.ccVerifyFileForLoading(pxFile)){return false;}
+    if(pxTarget==null){return false;}
+    
+    //-- scan
+    Scanner lpScanner;
+    try {
+      lpScanner = new Scanner(pxFile, "utf-8");
+    } catch (FileNotFoundException e) {
+      System.err.println("kosui.McConst.ccImportTextFile::"+e.getMessage());
+      lpScanner=null;
+    }//..?
+    if(lpScanner==null){return false;}
+    
+    //-- loop
+    pxTarget.clear();
+    for(int i=0;i<65535;i++){//..arbitrary or constant
+      if(!lpScanner.hasNext()){break;}
+      pxTarget.add(lpScanner.next());
+    }//+++
+    return true;
+  
+  }//+++
   
   //[todo]::List<HashMap> ccReadINIFile(File)
+  
+  
+  
+  //=== output
+  
   //[todo]::ccWriteINIFile(File, Object)
   //[todo]::ccWriteINIFIle(File, List<Object>)
   

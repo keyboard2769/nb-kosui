@@ -30,6 +30,6 @@ public interface MiExecutable {
    * @param pxArgs arguments
    * @return result
    */
-  public int ccExecute(String[] pxArgs);
+  public int ccExecute(String pxArgs);
   
 }//***eof

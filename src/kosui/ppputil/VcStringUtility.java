@@ -186,6 +186,27 @@ public final class VcStringUtility {
         .replaceAll("false", "x");
   }//+++
   
+  /**
+   * wrapping String::replaceAll() with every stuff in the list for you.<br>
+   * the looping nature may cause overheads.<br>
+   * if the replacement arguments is invalid than it just walk through.<br>
+   * @param pxSource no null no empty
+   * @param pxRegex no null no empty
+   * @param pxReplacement no null no empty
+   */
+  public static final
+  void ccReplaceAll(List<String> pxSource, String pxRegex, String pxReplacement){
+    if(pxSource==null){return;}
+    if(pxSource.isEmpty()){return;}
+    for(int i=0,s=pxSource.size();i<s;i++){
+      String lpBUF = pxSource.get(i);
+      if(VcConst.ccIsValidString(pxRegex)
+       &&VcConst.ccIsValidString(pxRegex)
+      ){lpBUF=lpBUF.replaceAll(pxRegex, pxReplacement);}
+      pxSource.set(i, lpBUF);
+    }//..~
+  }//+++
+  
   //=== formatting
   
   /**

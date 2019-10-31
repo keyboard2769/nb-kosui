@@ -69,7 +69,7 @@ public abstract class McCommand implements MiExecutable{
    * @param pxInput must have something
    * @return see those constants
    */
-  public static final int ccExecute(String pxInput){
+  @Override public int ccExecute(String pxInput){
     if(!VcConst.ccIsValidString(pxInput)){return C_M_GENERAL_FAILIOR;}
     String[] lpSpaceBreak = pxInput.split(" ");
     if(lpSpaceBreak==null){return C_M_GENERAL_FAILIOR;}
@@ -252,7 +252,7 @@ public abstract class McCommand implements MiExecutable{
       return ssReportError("no_recoginized_task");
     }//..?
     for(MiExecutable it : cmListOfRawAction){
-      cmResult=it.ccExecute(cmDesRawBody);
+      cmResult=it.ccExecute(PApplet.join(cmDesRawBody, ' '));
       if(cmResult<0){
         return cmResult;
       }//..?
@@ -268,7 +268,7 @@ public abstract class McCommand implements MiExecutable{
       for(int i=0,s=cmListOfOptionHead.size();i<s;i++){
         if(cmMapOfOptionAction.containsKey(cmListOfOptionHead.get(i))){
           cmResult=cmMapOfOptionAction.get(cmListOfOptionHead.get(i))
-            .ccExecute(cmListOfOptionBody.get(i));
+            .ccExecute(PApplet.join(cmListOfOptionBody.get(i), ' '));
         }//..?
       }//..~
     }//..?
@@ -279,17 +279,6 @@ public abstract class McCommand implements MiExecutable{
     }//..?
     return cmResult;
     
-  }//+++
-  
-  /**
-   * just for the generic capability
-   * @param pxArgs must have something
-   * @return see those constants
-   */
-  @Override public int ccExecute(String[] pxArgs) {
-    if(pxArgs==null){return C_M_GENERAL_FAILIOR;}
-    if(pxArgs.length!=1){return C_M_GENERAL_FAILIOR;}
-    return ccExecute(pxArgs[0]);
   }//+++
   
   //===

@@ -47,7 +47,7 @@ public final class VcTranslator {
     E_BLANK    = "<bk>"
   ;//,,,
   
-  private static final int C_FILE_READLINE_MAX = 255;
+  private static final int C_FILE_READLINE_MAX = 65535;
   
   /**
    * @return instance
