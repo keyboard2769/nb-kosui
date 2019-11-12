@@ -302,6 +302,7 @@ public final class VcTranslator {
     if(pxSource==null){return pxSource;}
     if(pxSource.equals("")){return pxSource;}
     if(pxSource.equals("...")){return pxSource;}
+    if(self==null){return pxSource;}
     String lpRes;
     switch(self.cmMode){
       case 'e':lpRes=self.cmEnglishDict.get(pxSource);break;
