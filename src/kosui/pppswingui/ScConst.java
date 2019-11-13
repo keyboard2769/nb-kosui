@@ -620,7 +620,7 @@ public class ScConst {
   }//++<
   
   /**
-   * an alias to FileChooser.setApproveButtonText().<br>
+   * an alias to FileChooser::setApproveButtonText.<br>
    * @param pxText must have some thing
    */
   public static final void ccSetFileChooserButtonText(String pxText){
@@ -629,8 +629,8 @@ public class ScConst {
   }//++<
   
   /**
-   * alias for File.setCurrentDirectory() with instance creation.<br>
-   * @param pxLocation do not pass null
+   * alias for File::setCurrentDirectory with instance creation.<br>
+   * @param pxLocation no null no empty
    */
   public static final
   void ccSetFileChooserCurrentDirectoryLocation(String pxLocation){
@@ -641,8 +641,24 @@ public class ScConst {
   }//++<
   
   /**
+   * alias for File::setSelectedFile with instance creation.<br>
+   * <pre>
+   * supposedly, the location should get passed like:
+   *   ( %PWD% + %PATHSEP% + %DUMMYNAME% + %TSTAMP% + %EXTENSION%)
+   * </pre>
+   * @param pxLocation no null no empty
+   */
+  public static final
+  void ccSetFileChooserSelectedFile(String pxLocation){
+    if(!VcConst.ccIsValidString(pxLocation)){return;}
+    File lpFile = new File(pxLocation);
+    if(!lpFile.isAbsolute()){return;}
+    O_FILE_CHOOSER.setSelectedFile(lpFile);
+  }//++<
+  
+  /**
    * try to get an array of LookAndFeelInfo from UIManager, 
-   *   than apply an indexed one via setLookAndFeel(). <br>
+   *   than apply an indexed one via UIManager::setLookAndFeel. <br>
    * if a minus index is passed, getCrossPlatformLookAndFeelClassName()
    *   will get applied. <br>
    * will not get blocked out for EDT.
@@ -669,20 +685,15 @@ public class ScConst {
     //-- applying
     try{
       UIManager.setLookAndFeel(lpTarget);
-    }catch(ClassNotFoundException e){
-      System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
-    }catch(InstantiationException e){
-      System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
-    }catch(IllegalAccessException e){
-      System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
-    }catch(UnsupportedLookAndFeelException e){
-      System.err.println("..ScFactory.ccApplyLookAndFeel()::"+e.getMessage());
-    }//..%
+    }catch(Exception e){
+      System.err.println("kosui.ScFactory.ccApplyLookAndFeel::"
+        +e.getMessage());
+    }//..?
     
   }//+++
   
   /**
-   * just chaining bunch of UIManager.put.<br>
+   * just chaining bunch of UIManager::put.<br>
    * intensively for altering the metal ocean blue to gray.<br>
    */
   public static final void ccApplyModifiedColorTheme(){
