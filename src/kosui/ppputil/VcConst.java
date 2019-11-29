@@ -86,7 +86,7 @@ public final class VcConst {
    */
   static public final boolean ccIsAllNoneSpace(String pxLine){
     return VcStringUtility.ccNulloutString(pxLine)
-      .matches("^\\s+$");
+      .matches("^\\S+$");
   }//+++
   
   /**
