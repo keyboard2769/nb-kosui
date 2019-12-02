@@ -20,6 +20,7 @@ package kosui.pppswingui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -48,7 +49,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 import kosui.ppputil.VcConst;
 import processing.core.PApplet;
@@ -205,11 +205,23 @@ public class ScConst {
   /**
    * will get blocked out from event dispatch thread.<br>
    * @param pxMessage must have something
+   * @param pxOwner if null passed it is the default one will get passed
    */
-  public static final void ccMessageBox(String pxMessage){
+  public static final
+  void ccMessageBox(String pxMessage, Container pxOwner){
     if(!ccIsEDT()){return;}
     if(!VcConst.ccIsValidString(pxMessage)){return;}
-    JOptionPane.showMessageDialog(cmOwner,pxMessage);
+    JOptionPane.showMessageDialog(pxOwner,pxMessage);
+  }//+++
+  
+  /**
+   * will get blocked out from event dispatch thread.<br>
+   * actual owner will get set to the default one.<br>
+   * @param pxMessage must have something
+   */
+  public static final
+  void ccMessageBox(String pxMessage){
+    ccMessageBox(pxMessage, cmOwner);
   }//+++
   
   /**
@@ -217,11 +229,13 @@ public class ScConst {
    * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
    * and yes, there will be no ccWarnBox().<br>
    * @param pxMessage must have something
+   * @param pxOwner if null passed it is the default one will get passed
    */
-  public static final void ccErrorBox(String pxMessage){
+  public static final
+  void ccErrorBox(String pxMessage, Container pxOwner){
     if(!ccIsEDT()){return;}
     JOptionPane.showMessageDialog(
-      cmOwner,
+      pxOwner,
       pxMessage,
       cmOwner==null?"<!>":cmOwner.getTitle(),
       JOptionPane.ERROR_MESSAGE
@@ -231,18 +245,44 @@ public class ScConst {
   /**
    * will get blocked out from event dispatch thread.<br>
    * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
+   * and yes, there will be no ccWarnBox().<br>
+   * actual owner will get set to the default one.<br>
+   * @param pxMessage must have something
+   */
+  public static final
+  void ccErrorBox(String pxMessage){
+    ccErrorBox(pxMessage, cmOwner);
+  }//+++
+  
+  /**
+   * will get blocked out from event dispatch thread.<br>
+   * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
    * @param pxMessage does not check for null or emptiness
+   * @param pxOwner if null passed it is the default one will get passed
    * @return false by default
    */
-  public static final boolean ccYesOrNoBox(String pxMessage){
+  public static final
+  boolean ccYesOrNoBox(String pxMessage, Container pxOwner){
     if(!ccIsEDT()){return false;}
     int i=JOptionPane.showConfirmDialog(
-      cmOwner,
+      pxOwner,
       pxMessage,
       cmOwner==null?"<?>":cmOwner.getTitle(),
       JOptionPane.YES_NO_OPTION
     );
     return i==0;
+  }//+++
+  
+  /**
+   * will get blocked out from event dispatch thread.<br>
+   * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
+   * actual owner will get set to the default one.<br>
+   * @param pxMessage does not check for null or emptiness
+   * @return false by default
+   */
+  public static final
+  boolean ccYesOrNoBox(String pxMessage){
+    return ccYesOrNoBox(pxMessage, cmOwner);
   }//+++
   
   /**
