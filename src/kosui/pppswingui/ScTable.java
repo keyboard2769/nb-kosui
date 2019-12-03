@@ -146,7 +146,18 @@ public final class ScTable extends JScrollPane {
   }//+++
   
   /**
-   * alias to JTable::getSelectedRow().<br>
+   * alias to JTable::setRowSelectionInterval.<br>
+   * thus JTable::setRowSelectionInterval supports multi-selection
+   * the head and the tail will all get set to the passed value.<br>
+   * should not get called outside EDT but this does NOT check.<br>
+   * @param pxIndex count from zero
+   */
+  public final void ccSetSelectedRowIndex(int pxIndex){
+    cmTable.setRowSelectionInterval(pxIndex, pxIndex);
+  }//+++
+  
+  /**
+   * alias to JTable::getSelectedRow.<br>
    * should not get called outside EDT but this does NOT check.<br>
    * @return getSelectedRow() of JTable.
    */
