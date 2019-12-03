@@ -116,82 +116,57 @@ public final class ZcPLC{
   //=== condition aliasing
   
   /**
+   * @param pxV could be anything
+   * @return could be anything
+   */
+  public static final 
+  boolean not(boolean pxV){
+    return !pxV;
+  }//+++
+  
+  /**
    * @param pxA could be anything
    * @param pxB could be anything
-   * @return aliasing bit operate
+   * @return could be anything
    */
   public static final
-  boolean ccAnd(boolean pxA, boolean pxB){
+  boolean and(boolean pxA, boolean pxB){
     return pxA&&pxB;
   }//+++
   
   /**
    * @param pxA could be anything
    * @param pxB could be anything
-   * @param pxC could be anything
-   * @return aliasing bit operate
+   * @return could be anything
    */
   public static final
-  boolean ccAnd(boolean pxA, boolean pxB, boolean pxC){
-    return pxA&&pxB&&pxC;
-  }//+++
-  
-  /**
-   * @param pxA could be anything
-   * @param pxB could be anything
-   * @param pxC could be anything
-   * @param pxD could be anything
-   * @return aliasing bit operate
-   */
-  public static final
-  boolean ccAnd(boolean pxA, boolean pxB, boolean pxC, boolean pxD){
-    return pxA&&pxB&&pxC&&pxD;
-  }//+++
-  
-  /**
-   * @param pxA could be anything
-   * @param pxB could be anything
-   * @return aliasing bit operate
-   */
-  public static final
-  boolean ccOr(boolean pxA, boolean pxB){
+  boolean or(boolean pxA, boolean pxB){
     return pxA||pxB;
   }//+++
   
   /**
-   * @param pxA could be anything
-   * @param pxB could be anything
-   * @param pxC could be anything
-   * @return aliasing bit operate
+   * @param pxCA could be anything
+   * @param pxVA could be anything
+   * @param pxVB could be anything
+   * @return could be anything
    */
   public static final
-  boolean ccOr(boolean pxA, boolean pxB, boolean pxC){
-    return pxA||pxB||pxC;
+  boolean sel(boolean pxCA, boolean pxVA, boolean pxVB){
+    return pxCA ? pxVA : pxVB;
   }//+++
   
   /**
-   * @param pxA could be anything
-   * @param pxB could be anything
-   * @param pxC could be anything
-   * @param pxD could be anything
-   * @return aliasing bit operate
+   * @param pxCA could be anything
+   * @param pxCB could be anything
+   * @param pxVA could be anything
+   * @param pxVB could be anything
+   * @return could be anything
    */
   public static final
-  boolean ccOr(boolean pxA, boolean pxB, boolean pxC, boolean pxD){
-    return pxA||pxB||pxC||pxD;
+  boolean gate(boolean pxCA, boolean pxCB, boolean pxVA, boolean pxVB){
+    return
+       pxCA ? pxVA 
+     :(pxCB ? pxVB : false);
   }//+++
   
-  //=== self-holding
-  
-  //[todo]::selfHold(trigger,lock)
-  
-  //=== select logic
-  
-  //[todo]::selectSolo(modeA, inputA, inputB)
-  //[todo]::selectSolo(lock,modeA, inputA, inputB)
-  //[todo]::selectDuo(modeA, inputA, ,mpdeB, inputB)
-  //[todo]::selectDuo(lock,modeA, inputA, ,mpdeB, inputB)
-  //[todo]::selectTrio(...)
-  //[todo]::selectTrio(lock...)
-
 }//***eof
