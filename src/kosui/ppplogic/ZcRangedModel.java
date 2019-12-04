@@ -17,9 +17,6 @@
 
 package kosui.ppplogic;
 
-import kosui.ppputil.VcNumericUtility;
-import kosui.ppputil.VcStringUtility;
-
 /**
  * a ranged model can be anything. <br>
  * to me, basically it is a cylinder. <br>
@@ -124,16 +121,14 @@ public class ZcRangedModel {
   //===
 
   /**
-   * {@inheritDoc }
-   * @return packed string
+   * {@inheritDoc}
    */
   @Override public String toString() {
-    StringBuilder lpRes=new StringBuilder();
-    lpRes.append(super.toString());
-    lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupPairedTag("min", cmMin));
-    lpRes.append(VcStringUtility.ccPackupPairedTag("max", cmMax));
-    return lpRes.toString();
+    return String.format(
+      "%s@%08x$[%d ~ %d]",
+      ZcRangedModel.class.getName(),this.hashCode(),
+      cmMin,cmMax
+    );
   }//+++
   
   //===
@@ -158,7 +153,7 @@ public class ZcRangedModel {
    */
   public static final
   int ccLimitInclude(int pxSource, int pxRangeNose, int pxRangeTail){
-    if((pxRangeTail-pxRangeNose)<2){return pxRangeNose;}
+    if((pxRangeTail-pxRangeNose)<1){return pxRangeNose;}
     int lpRes=pxSource>=pxRangeNose?pxSource:pxRangeNose;
     lpRes=lpRes<=pxRangeTail?lpRes:pxRangeTail;
     return lpRes;

@@ -157,13 +157,24 @@ public final class ZcPLC{
   
   /**
    * @param pxCA could be anything
+   * @param pxVA could be anything
+   * @param pxVB could be anything
+   * @return could be anything
+   */
+  public static final
+  int sel(boolean pxCA, int pxVA, int pxVB){
+    return pxCA ? pxVA : pxVB;
+  }//+++
+  
+  /**
+   * @param pxCA could be anything
    * @param pxCB could be anything
    * @param pxVA could be anything
    * @param pxVB could be anything
    * @return could be anything
    */
   public static final
-  boolean gate(boolean pxCA, boolean pxCB, boolean pxVA, boolean pxVB){
+  boolean gate(boolean pxCA, boolean pxVA, boolean pxCB, boolean pxVB){
     return
        pxCA ? pxVA 
      :(pxCB ? pxVB : false);

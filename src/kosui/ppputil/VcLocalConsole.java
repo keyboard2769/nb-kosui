@@ -19,6 +19,7 @@ package kosui.ppputil;
 
 import java.util.HashMap;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.ppplogic.ZcRangedModel;
 import processing.core.PApplet;
 
 /**
@@ -427,9 +428,9 @@ public final class VcLocalConsole {
    */
   static public final String ccGetLastAccepted(int pxIndex){
     if(self.cmDesAccepted==null){return "";}
-    int lpFixedIndex=pxIndex<0?0:(
-      pxIndex>self.cmDesAccepted.length?self.cmDesAccepted.length:pxIndex
-    );
+    if(self.cmDesAccepted.length<=1){return self.cmDesAccepted[0];}
+    int lpFixedIndex=ZcRangedModel
+      .ccLimitInclude(pxIndex,0,self.cmDesAccepted.length-1);
     return self.cmDesAccepted[lpFixedIndex];
   }//++>
   

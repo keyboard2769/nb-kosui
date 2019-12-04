@@ -133,4 +133,17 @@ public class ZcRoller {
     return (cmVal % pxMod) <= pxComp;
   }//++>
   
+  //===
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override public String toString() {
+    return String.format(
+      "%s@%08x$[v:%4d][m:%04d]",
+      ZcRoller.class.getName(),this.hashCode(),
+      cmVal,cmMask
+    );
+  }//+++
+  
 }//***eof
