@@ -17,6 +17,8 @@
 
 package kosui.ppplogic;
 
+import processing.core.PApplet;
+
 /**
  * backing those days we needed to use two timer to build a flicker.<br>
  * now this thing makes me think i am cheating.
@@ -27,8 +29,8 @@ public class ZcFlicker extends ZcTimer{
   
   /**
    * you can consider this thing as a square wave generator
-   * @param pxSpan consider this as the wavelength
-   * @param pxDuty high-level time percentage, pass value for 0.0-1.0
+   * @param pxSpan max span as frame count 
+   * @param pxDuty 0.0 ~ 1.0 factor as high level proportion
    */
   public ZcFlicker(int pxSpan, float pxDuty){
     super(pxSpan);
@@ -36,48 +38,57 @@ public class ZcFlicker extends ZcTimer{
   }//++!
   
   private void ssInit(float pxDuty){
-    cmJudge=(int)(pxDuty*(float)cmMax);
+    cmJudge=(int)(
+      PApplet.constrain(pxDuty, 0f, 1f) 
+      *(float)cmMax
+    );
   }//++!
   
   //===
   
   /**
-   * 
-   * @param pxDuty #
+   * @param pxFactor 0.0 ~ 1.0 factor as high level proportion
    */
-  public final void ccSetDuty(float pxDuty){
-    ssInit(pxDuty);
-  }//+++
+  public final void ccSetDuty(float pxFactor){
+    ssInit(pxFactor);
+  }//++<
+  
+  /**
+   * @return as pulse signal
+   */
+  public final boolean ccAtEdge(){
+    return cmValue==cmJudge;
+  }//++>
   
   //===
   
   /**
-   * {@inheritDoc }
+   * {@inheritDoc}
    */
   @Override public void ccAct(boolean pxAct){
     cmIsCounting=pxAct;
     if(pxAct){ccRoll(1);}
     else{ccSetValue(0);}
-  }//+++
+  }//++~
 
   /**
    * @return a flag that NOT based on current value
    */
   @Override public boolean ccIsCounting(){
     return cmIsCounting;
-  }//+++
+  }//++>
   
   /**
-   * {@inheritDoc }
+   * {@inheritDoc}
    */
   @Override public boolean ccIsUp(){
     return cmValue>cmJudge;
-  }//+++
+  }//++>
   
   /**
    * the duty rate of flicker will be 50% by default. <br>
    * for implement reason you have to use other method if you need to change.
-   * @param pxDivision #
+   * @param pxDivision max span as frame count 
    */
   @Override public void ccSetTime(int pxDivision){
     ccSetRange(ccLimitTimeValue(pxDivision));
