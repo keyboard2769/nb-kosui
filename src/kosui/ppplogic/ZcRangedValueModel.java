@@ -43,8 +43,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
   //===
     
   /**
-   * ##
-   * @param pxValue #
+   * @param pxValue will get limited
    */
   public final void ccSetValue(int pxValue){
     cmValue=ccLimit(pxValue);
@@ -59,6 +58,20 @@ public class ZcRangedValueModel extends ZcRangedModel{
    */
   public final void ccSetValue(float pxZeroToOne){
     ccSetValue((int)(pxZeroToOne*(cmMax-cmMin))+cmMin);
+  }//+++
+  
+  /**
+   * it just happen
+   */
+  public final void ccSetToMinimum(){
+    cmValue=cmMin;
+  }//+++
+  
+  /**
+   * it just happen
+   */
+  public final void ccSetToMaximum(){
+    cmValue=cmMax;
   }//+++
   
   /**
@@ -103,7 +116,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
   }//+++
   
   /**
-   * @param pxGivenValue #
+   * @param pxGivenValue could be anything
    * @return equals
    */
   public final boolean ccIsAt(int pxGivenValue){
@@ -111,7 +124,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
   }//+++
   
   /**
-   * @param pxGivenValue #
+   * @param pxGivenValue could be anything
    * @return inclusive
    */
   public final boolean ccIsAbove(int pxGivenValue){
@@ -119,7 +132,7 @@ public class ZcRangedValueModel extends ZcRangedModel{
   }//+++
   
   /**
-   * @param pxGivenValue #
+   * @param pxGivenValue could be anything
    * @return exclusive
    */
   public final boolean ccIsBelow(int pxGivenValue){
@@ -127,8 +140,8 @@ public class ZcRangedValueModel extends ZcRangedModel{
   }//+++
   
   /**
-   * @param pxLowBound #
-   * @param pxUpBound #
+   * @param pxLowBound must be smaller than the upper one
+   * @param pxUpBound must be bigger than the lower one
    * @return inclusive
    */
   public final boolean ccIsWith(int pxLowBound, int pxUpBound){

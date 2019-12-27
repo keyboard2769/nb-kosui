@@ -168,6 +168,17 @@ public final class ZcPLC{
   
   /**
    * @param pxCA could be anything
+   * @param pxVA could be anything
+   * @param pxVB could be anything
+   * @return could be anything
+   */
+  public static final
+  float sel(boolean pxCA, float pxVA, float pxVB){
+    return pxCA ? pxVA : pxVB;
+  }//+++
+  
+  /**
+   * @param pxCA could be anything
    * @param pxCB could be anything
    * @param pxVA could be anything
    * @param pxVB could be anything

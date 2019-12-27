@@ -28,13 +28,22 @@ public class ZcFlicker extends ZcTimer{
   private boolean cmIsCounting;
   
   /**
-   * you can consider this thing as a square wave generator
+   * you can consider this thing as a square wave generator.<br>
    * @param pxSpan max span as frame count 
    * @param pxDuty 0.0 ~ 1.0 factor as high level proportion
    */
   public ZcFlicker(int pxSpan, float pxDuty){
     super(pxSpan);
     ssInit(pxDuty);
+  }//++!
+  
+  /**
+   * you can consider this thing as a square wave generator.<br>
+   * duty is set to 0.5f by default.<br>
+   * @param pxSpan max span as frame count 
+   */
+  public ZcFlicker(int pxSpan){
+    this(pxSpan, 0.5f);
   }//++!
   
   private void ssInit(float pxDuty){
