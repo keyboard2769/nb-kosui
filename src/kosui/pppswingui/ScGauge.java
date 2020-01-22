@@ -51,6 +51,10 @@ public class ScGauge extends JProgressBar{
     cmKey=VcStringUtility.ccNulloutString(pxName);
     cmText=cmKey;
     cmUnit=VcStringUtility.ccNulloutString(pxUnit);
+    ccInit();
+  }//..!
+  
+  private void ccInit(){
     this.setValue(99);
     this.setString(cmText+":?"+cmUnit);
     this.setBorderPainted(true);
