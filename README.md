@@ -49,11 +49,11 @@ i know it is a nonsense name, but anyway.
    | oracle jdk 1.6 | mac osx 10.8,
   using processing 2.1 core. 
 - currently push and pull environment is apache netbeans ide 11
-   | oracle open jdk 12, windows 10 home 1809,
+   | oracle open jdk 12 | windows 10 home 1809,
   using processing 2.0 core. 
 - personally i still recommend oracle netbeans ide 8.2.
   apache 9.x+ works a little bit tissy to me, but anyway.
-- anyway forget about netbeans.
+- well ok just forget about netbeans.
   the project is just an ant project and the only dependency is THE `core.jar`.
 
 ---
