@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.pppswingui.ScConst;
 import processing.core.PApplet;
@@ -45,6 +46,16 @@ public final class VcSwingCoordinator {
   //===
   
   private String cmLastAccepted="";
+  
+  private EiTriggerable cmRedirected = null;
+  
+  private final Runnable cmRedirectedInvoking = new Runnable() {
+    @Override public void run() {
+      if(cmRedirected==null){return;}
+      cmRedirected.ccTrigger();
+      cmRedirected=null;
+    }//+++
+  };//***
   
   private final HashMap<String, EiTriggerable> cmMapOfCommandExecuting
     = new HashMap<String, EiTriggerable>();
@@ -164,6 +175,22 @@ public final class VcSwingCoordinator {
        SELF.cmLastAccepted="";
       return "[BAD]unhandled:"+pxCommand;
     }//..?
+  }//+++
+  
+  /**
+   * <pre>
+   * wrapped SwingUtilities.invokeLater for triggerable actions.
+   * i would still be loosely insisting on that
+   *   Runnbale is meant for Thread only in any kosui project.
+   * </pre>
+   * @param pxTrigger never null
+   */
+  synchronized static public final
+  void ccInvokeLater(EiTriggerable pxTrigger){
+    if(SELF.cmRedirected != null){return;}
+    if(pxTrigger == null){return;}
+    SELF.cmRedirected=pxTrigger;
+    SwingUtilities.invokeLater(SELF.cmRedirectedInvoking);
   }//+++
   
  }//***eof

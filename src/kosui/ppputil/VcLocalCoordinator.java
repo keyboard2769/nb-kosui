@@ -89,6 +89,7 @@ public final class VcLocalCoordinator {
    * <pre>
    * should be called inside draw().
    * both passive part and active part is iterated.
+   * trigger queue is polled after passive but before active.
    * thus coordinator for-each all component he holds,
    *   ccUpdate() of components should never
    *   be called directly from draw().
@@ -97,6 +98,7 @@ public final class VcLocalCoordinator {
   static public final void ccUpdate(){
     if(!EcComponent.ccHasOwner()){return;}
     ccUpdatePassive();
+    ccUpdateQueue();
     ccUpdateActive();
   }//+++
   
@@ -116,14 +118,18 @@ public final class VcLocalCoordinator {
   }//+++
   
   /**
-   * queue offering and responsive UI updating.<br>
+   * queue polling.<br>
    */
-  static public final void ccUpdateActive(){
-    
-    //-- response to offer
+  static public final void ccUpdateQueue(){
     if(!SELF.cmQueueOfLoopTrigger.isEmpty()){
       SELF.cmQueueOfLoopTrigger.poll().ccTrigger();
     }//..?
+  }//+++
+  
+  /**
+   * responsive UI updating.<br>
+   */
+  static public final void ccUpdateActive(){
     
     //-- turn on selected inputtable 
     for(EcElement it:SELF.cmMapOfInputtable.values()){
