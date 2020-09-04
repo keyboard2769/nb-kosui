@@ -246,7 +246,7 @@ public final class McConst {
   
   /**
    * <pre>
-   * a safer alternative to just callling TableRow.getString().
+   * a safer alternative to just calling TableRow.getString().
    * swallow exception and nothingness for you.
    * </pre>
    * @param pxRow do not pass null
@@ -258,6 +258,32 @@ public final class McConst {
   String ccGetColumnValue(TableRow pxRow, String pxColumn, String pxOrDefault){
     if(pxRow==null){return pxOrDefault;}
     if(!VcConst.ccIsValidString(pxColumn)){return pxOrDefault;}
+    String lpCell;
+    try {
+      lpCell = pxRow.getString(pxColumn);
+    } catch (Exception e) {
+      System.err.println("kosui.pppmodel.McConst.ccGetColumnValue()::"
+        + e.getMessage());
+      lpCell=null;
+    }//..?
+    if(lpCell==null){return pxOrDefault;}
+    else{return lpCell;}
+  }//+++
+  
+  /**
+   * <pre>
+   * a safer alternative to just calling TableRow.getString().
+   * swallow exception and nothingness for you.
+   * </pre>
+   * @param pxRow do not pass null
+   * @param pxColumn do not pass minus value
+   * @param pxOrDefault or this will get returned
+   * @return never null if you don not pass any
+   */
+  static public final
+  String ccGetColumnValue(TableRow pxRow, int  pxColumn, String pxOrDefault){
+    if(pxRow==null){return pxOrDefault;}
+    if(pxColumn<0){return pxOrDefault;}
     String lpCell;
     try {
       lpCell = pxRow.getString(pxColumn);

@@ -34,7 +34,9 @@ import kosui.pppswingui.ScStoker;
 public final class VcSwingConsole extends JPanel{
   
   private static final String C_INIT_TEXT
-    = "kosui standby::"+VcConst.C_V_NEWLINE;
+    = "kosui standby::"+VcConst.C_V_NEWLINE
+    + ".with $ "+VcConst.C_V_OS+VcConst.C_V_NEWLINE
+    + ".at $ "+VcConst.C_V_PWD+VcConst.C_V_NEWLINE;
   
   /**
    * @return instance

@@ -101,6 +101,28 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * swallow those error stuff for you
+   * @param pxFileName separated by the dot
+   * @return the one before the first dot
+   */
+  public static final String ccExtractFileName(String pxFileName){
+    if(!VcConst.ccIsValidString(pxFileName)){
+      System.err.println(".ccTrimFileName $ ER_101");
+      return pxFileName;
+    }//..?
+    String[] lpSplit = pxFileName.split("\\.");
+    if(lpSplit == null){
+      System.err.println(".ccTrimFileName $ ER_102");
+      return pxFileName;
+    }//..?
+    if(lpSplit.length <=1 ){
+      System.err.println(".ccTrimFileName $ ER_103");
+      return pxFileName;
+    }//..?
+    return lpSplit[0];
+  }//..?
+  
+  /**
    * i do not know why sax is calling the thing "qName".<br>
    * bur t thought it is COOL!<br>
    * well im going to call it QTag.<br>
