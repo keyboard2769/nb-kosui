@@ -17,6 +17,7 @@
 
 package kosui.ppplocalui;
 
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
 
@@ -30,6 +31,11 @@ public class EcText extends EcShape{
    * ##
    */
   protected String cmText="<?>";
+  
+  /**
+   * ##
+   */
+  protected char cmAlignment = 's';
   
   /**
    * ##
@@ -58,11 +64,73 @@ public class EcText extends EcShape{
    * {@inheritDoc }
    */
   @Override public void ccUpdate(){
+    
+    //-- check in
     if(!ccIsVisible()){return;}
-    pbOwner.fill(cmTextColor);
-    pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
-    pbOwner.text(cmText, cmX, cmY);
-    pbOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+    if(!VcConst.ccIsValidString(cmText)){return;}
+    
+    //-- plate
+    if(cmBaseColor!=0){
+      drawRect(cmBaseColor);
+    }//..?
+    
+    //-- content
+    pbOwner.pushStyle();
+    {
+      pbOwner.fill(cmTextColor);
+      switch(cmAlignment){
+          
+          case 'q':case 'Q':
+            pbOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+            pbOwner.text(cmText, ccGetX(), ccGetY());
+          break;
+        
+          case 'w':case 'W':
+            pbOwner.textAlign(PApplet.CENTER, PApplet.TOP);
+            pbOwner.text(cmText, ccCenterX(), ccGetY());
+          break;
+          
+          case 'e':case 'E':
+            pbOwner.textAlign(PApplet.RIGHT, PApplet.TOP);
+            pbOwner.text(cmText, ccEndX(), ccGetY());
+          break;
+          
+          case 'd':case 'D':
+            pbOwner.textAlign(PApplet.RIGHT, PApplet.CENTER);
+            pbOwner.text(cmText, ccEndX(), ccCenterY());
+          break;
+          
+          case 'c':case 'C':
+            pbOwner.textAlign(PApplet.RIGHT, PApplet.BOTTOM);
+            pbOwner.text(cmText, ccEndX(), ccEndY());
+          break;
+          
+          case 'x':case 'X':
+            pbOwner.textAlign(PApplet.CENTER, PApplet.BOTTOM);
+            pbOwner.text(cmText, ccCenterX(), ccEndY());
+          break;
+          
+          case 'z':case 'Z':
+            pbOwner.textAlign(PApplet.LEFT, PApplet.BOTTOM);
+            pbOwner.text(cmText, ccGetX(), ccEndY());
+          break;
+          
+          case 'a':case 'A':
+            pbOwner.textAlign(PApplet.LEFT, PApplet.CENTER);
+            pbOwner.text(cmText, ccGetX(), ccCenterY());
+          break;
+          
+          case 's':case 'S':
+            pbOwner.textAlign(PApplet.CENTER, PApplet.CENTER);
+            pbOwner.text(cmText, ccCenterX(), ccCenterY());
+          break;
+          
+        default:break;
+      }//..?
+    }
+    
+    pbOwner.popStyle();
+    
   }//+++
   
   /**
@@ -70,6 +138,61 @@ public class EcText extends EcShape{
    */
   public final void ccSetText(String pxText){
     cmText=VcStringUtility.ccNulloutString(pxText);
+  }//+++
+  
+  /**
+   * [q] : top    - left   a.k.a northwest <br>
+   * [w] : top    - center a.k.a north <br>
+   * [e] : top    - right  a.k.a northeast <br>
+   * [d] : center - right  a.k.a east <br>
+   * [c] : bottom - right  a.k.a southeast<br>
+   * [x] : bottom - center a.k.a south <br>
+   * [z] : bottom - left   a.k.a southwest<br>
+   * [a] : center - left   a.k.a south <br>
+   * [s] : center - center a.k.a center<br>
+   * @param pxAlignment do not get across a-z
+   */
+  public final void ccSetAlignment(char pxAlignment){
+    if((pxAlignment >= 'a' )&&(pxAlignment<='z')){
+      cmAlignment=pxAlignment;
+    }//..?
+  }//+++
+  
+  /**
+   * will get converted to that char version.
+   * @param pxHorizontal use the constant value from PApplet
+   * @param pxVertical use the constant value from PApplet
+   */
+  public final void ccSetAlignment(int pxHorizontal, int pxVertical){
+    
+    //-- revert
+    int lpCombined = pxHorizontal*1000+pxVertical;
+    switch(lpCombined){
+      //--
+      case 37101:cmAlignment='q';break;
+      case 3101:cmAlignment='w';break;
+      case 39101:cmAlignment='e';break;
+      //--
+      case 39003:cmAlignment='d';break;
+      case 39102:cmAlignment='c';break;
+      //--
+      case 3102:cmAlignment='x';break;
+      case 37102:cmAlignment='z';break;
+      //--
+      case 37003:cmAlignment='a';break;
+      case 3003:cmAlignment='s';break;
+      default:break;
+    }//..?
+    
+    //-- test
+    VcConst.ccLogln(
+      ".ccSetAlignment$",
+      String.format(
+        "[%d,%d] -> %d -> %c",
+        pxHorizontal, pxVertical, lpCombined, cmAlignment
+      )
+    );
+    
   }//+++
   
   /**
