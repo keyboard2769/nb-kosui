@@ -311,6 +311,20 @@ public final class EcConst {
   //== entry
   
   /**
+   * @return aka the MARK
+   */
+  public static final String ccGetLastLeavingStamp(){
+    return "_b2009151626";
+  }//+++
+  
+  /**
+   * @return aka project name
+   */
+  public static final String ccGetCodeName(){
+    return "kosui";
+  }//+++
+  
+  /**
    * for some arbitrary reason, the utility class of the local UI package
    * is the main class.<br>
    * @param args you know what it is.
@@ -332,17 +346,10 @@ public final class EcConst {
      */
     VcConst.ccPrintln("Key Optional System User Interface");
     VcConst.ccPrintln("v0.2.0");
-    VcConst.ccPrintln("build",ccGetLastLeavingStamp());
+    VcConst.ccPrintln("export",ccGetCodeName()+ccGetLastLeavingStamp()+".zip");
     VcConst.ccPrintln("on",VcConst.C_V_OS);
     VcConst.ccPrintln("at",VcConst.C_V_PWD);
-    VcConst.ccErrln("NO_PUBLIC_USE!!");
-  }//+++
-  
-  /**
-   * @return the MARK
-   */
-  public static final String ccGetLastLeavingStamp(){
-    return "_2009151626";
+    VcConst.ccErrln("EcConst $ NO_PUBLIC_USE!!");
   }//+++
   
 }//***eof

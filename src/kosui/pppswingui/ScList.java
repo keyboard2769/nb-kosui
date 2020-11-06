@@ -45,8 +45,8 @@ public final class ScList extends JScrollPane {
   
   /**
    * #
-   * @param pxW pix
-   * @param pxH pix
+   * @param pxW in pix for preferred size
+   * @param pxH in pix for preferred size
    */
   public ScList(int pxW, int pxH) {
     super();
@@ -59,8 +59,8 @@ public final class ScList extends JScrollPane {
   
   /**
    * @param cmMode if null passed an empty default list model will be set
-   * @param pxW pix
-   * @param pxH pix
+   * @param pxW in pix for preferred size
+   * @param pxH in pix for preferred size
    */
   public ScList(ListModel<String> cmMode,int pxW, int pxH){
     super();
@@ -79,7 +79,7 @@ public final class ScList extends JScrollPane {
   
   /**
    * wrapper for JList::addListSelectionListener().<br>
-   * @param pxListener #
+   * @param pxListener no null
    */
   public final
   void ccAddListSelectionListener(ListSelectionListener pxListener){
@@ -94,7 +94,7 @@ public final class ScList extends JScrollPane {
    *   a scraoll pane actually, you can never get any mouse clicked
    *   event fired by that listener.
    * </pre>
-   * @param pxListener #
+   * @param pxListener no null
    */
   public final void ccAddMouseListener(MouseListener pxListener) {
     if(pxListener==null){return;}

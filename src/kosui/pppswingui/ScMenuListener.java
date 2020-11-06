@@ -20,51 +20,95 @@ package kosui.pppswingui;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
+import kosui.ppplocalui.EiTriggerable;
 
-class ScMenuListener extends MouseAdapter{
+public class ScMenuListener extends MouseAdapter{
   
   private final JPopupMenu cmPop;
+  private final EiTriggerable cmMainDoing;
   private int cmAnchorX, cmAnchorY;
   
-  ScMenuListener(JPopupMenu pxPop) {cmPop = pxPop;}
+  //=== setup
   
-  //@Override public void mousePressed(MouseEvent e){ccCheckIfShowsPop(e);}
-  
-  @Override public void mouseReleased(MouseEvent e){
-    ssCheckIfShowsPop(e);
-    ccClearAnchor();
-  }//+++
-  
-  private void ssCheckIfShowsPop(MouseEvent e) {
-    if (e.isPopupTrigger()) {
-      cmPop.show(
-        e.getComponent(),
-        e.getX(),e.getY()
-      );
-    }//..?
+  /**
+   * ##
+   * @param pxPop the menu root for pop showing
+   * @param pxDoing the action for `button one` on release
+   */
+  public ScMenuListener(JPopupMenu pxPop, EiTriggerable pxDoing) {
+    cmPop = pxPop;
+    cmMainDoing = pxDoing;
   }//+++
   
   //===
   
+  /**
+   * the location for JPopupMenu::shows
+   * @param pxX pix
+   * @param pxY pix
+   */
   public final void ccSetAnchor(int pxX, int pxY){
     cmAnchorX=pxX;
     cmAnchorY=pxY;
   }//+++
   
+  /**
+   * #
+   */
   public final void ccClearAnchor(){
     ccSetAnchor(0, 0);
   }//+++
   
+  /**
+   * @return pix
+   */
   public final int ccGetAnchorX(){
     return cmAnchorX;
   }//+++
   
+  /**
+   * @return pix
+   */
   public final int ccGetAnchorY(){
     return cmAnchorY;
   }//+++
   
+  /**
+   * @return ##
+   */
   public final boolean ccIsAnchorCleared(){
     return cmAnchorX==0 && cmAnchorY==0;
+  }//+++
+  
+  //=== interface
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override public void mouseReleased(MouseEvent e){
+    
+    //-- sub
+    if (e.isPopupTrigger()) {
+      cmPop.show(
+        e.getComponent(),
+        e.getX(),e.getY()
+      );
+      ccClearAnchor();
+      return;
+    }//..?
+    
+    //-- main
+    if(e.getButton() == MouseEvent.BUTTON1){
+      if(cmMainDoing!=null){
+        cmMainDoing.ccTrigger();
+      }//..?
+      ccClearAnchor();
+      return;
+    }//..?
+    
+    //-- post
+    ccClearAnchor();
+    
   }//+++
   
 }//***eof

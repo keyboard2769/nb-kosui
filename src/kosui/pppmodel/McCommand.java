@@ -339,4 +339,48 @@ public abstract class McCommand implements MiExecutable{
     
   }//+++
   
+  /**
+   * %[not_yet]::%
+   * %dont push it before we actually could rewrite it%
+   * @deprecated but how do we re-write the whole stuff?
+   * @param pxLine
+   * @return #
+   */
+  public static final
+  HashMap<String, String> ccParseInlineRecord(String pxLine){
+    
+    //-- check in
+    if(!VcConst.ccIsValidString(pxLine)){return null;}
+    
+    //-- split
+    String lpBuf = pxLine.trim();
+    lpBuf = lpBuf.replaceAll("\\s+", " ");
+    lpBuf = lpBuf.replaceAll(" -", " %--");
+    String[] lpSplit = lpBuf.split("%-");
+    for(String it : lpSplit){System.out.println(it);}
+    
+    //-- new 
+    HashMap<String, String> lpRes = new HashMap<String, String>();
+    
+    lpRes.put("_TITLE_", "?");
+    lpRes.put("_CONTENT_", "?");
+    for(String it : lpSplit){
+      if(it.startsWith("@")|it.startsWith("#")){
+        lpRes.put("_TITLE_", it.substring(1,it.length()-1));
+      }//..?
+      if(it.startsWith("-")){
+        int lpCut = it.indexOf(" ");
+        if(lpCut<=1){continue;}
+        lpRes.put(
+          it.substring(0,lpCut),
+          it.substring(lpCut, it.length()).trim()
+        );
+      }//..?
+    }//..~
+    
+    //-- pack
+    return lpRes;
+    
+  }//+++
+  
 }//***eof

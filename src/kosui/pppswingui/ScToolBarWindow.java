@@ -17,7 +17,6 @@
 
 package kosui.pppswingui;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -89,7 +88,7 @@ public final class ScToolBarWindow extends JWindow {
     JPopupMenu lpPop = new JPopupMenu();
     lpPop.add(cmHelpMI);
     lpPop.add(cmQuitMI);
-    cmMenuListener=new ScMenuListener(lpPop);
+    cmMenuListener=new ScMenuListener(lpPop,null);
 
     cmTitle = new JLabel(pxTitle);
     cmTitle.addMouseListener(cmMenuListener);

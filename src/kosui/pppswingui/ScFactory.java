@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -326,6 +328,43 @@ public final class ScFactory {
    */
   public static final JToggleButton ccCreateCommandToggler(String pxText){
     return ccCreateCommandToggler(pxText, -1, -1);
+  }//+++
+  
+  //=== input UI ** menu
+  
+  /**
+   * ##
+   * @param pxTitle #
+   * @param pxActionCommand #
+   * @param pxMnemonicKeyCokde #
+   * @return #
+   */
+  public static final JMenuItem ccCreateMenuItem(
+    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde
+  ){
+    JMenuItem lpRes = new JMenuItem(pxTitle);
+    lpRes.setActionCommand(pxActionCommand);
+    lpRes.setMnemonic(pxMnemonicKeyCokde);
+    return lpRes;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxTitle #
+   * @param pxActionCommand #
+   * @param pxMnemonicKeyCokde #
+   * @param pxOwner #
+   * @return #
+   */
+  public static final JMenuItem ccCreateMenuItem(
+    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde,
+    JMenu pxOwner
+  ){
+    JMenuItem lpRes = ccCreateMenuItem(
+      pxTitle, pxActionCommand, pxMnemonicKeyCokde
+    );
+    pxOwner.add(lpRes);
+    return lpRes;
   }//+++
   
   //=== input UI ** combo box

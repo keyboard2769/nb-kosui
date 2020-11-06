@@ -29,6 +29,11 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -50,6 +55,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
+import kosui.ppplocalui.EiTriggerable;
 import kosui.ppputil.VcConst;
 import processing.core.PApplet;
 
@@ -150,18 +156,29 @@ public class ScConst {
    * plain 1 pix straight line
    */
   public static final BasicStroke C_DEFAULT_STROKE
-    = new BasicStroke(1.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_BUTT);
+   = new BasicStroke(1.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_BUTT);
   
   //=== resource
   
   private static final JFileChooser O_FILE_CHOOSER
-    = new JFileChooser(VcConst.C_V_PWD);
+   = new JFileChooser(VcConst.C_V_PWD);
   
   private static final Font O_DEFAULT_FONT
-    = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);
+   = new Font(Font.DIALOG_INPUT,  Font.PLAIN, 12);
   
   private static final List<Rectangle> O_LIST_OF_MONITOR
-    = new LinkedList<Rectangle>();
+   = new LinkedList<Rectangle>();
+  
+  private static EiTriggerable cmClipboardLostDoing = null;
+  
+  private static final ClipboardOwner O_CLIPBOARD_OWNER = new ClipboardOwner(){
+    @Override public
+    void lostOwnership(Clipboard clipboard, Transferable contents) {
+      if(cmClipboardLostDoing!=null){
+        cmClipboardLostDoing.ccTrigger();
+      }//..?
+    }//+++
+  };//***
   
   private ScConst(){}//..!
   
@@ -283,6 +300,24 @@ public class ScConst {
   public static final
   boolean ccYesOrNoBox(String pxMessage){
     return ccYesOrNoBox(pxMessage, cmOwner);
+  }//+++
+  
+  /**
+   * ##
+   * @param pxDoing triggers on ClipboardOwner::lostOwnership
+   */
+  static public final void ccSetClipboardOnLost(EiTriggerable pxDoing){
+    cmClipboardLostDoing = pxDoing;
+  }//+++
+  
+  /**
+   * wrapper for Clipboard::setContents to system clipboard
+   * @param pxLine check for validity
+   */
+  static public final void ccSendToSystemClipBoard(String pxLine){
+    if(!VcConst.ccIsValidString(pxLine)){return;}
+    Toolkit.getDefaultToolkit().getSystemClipboard()
+      .setContents(new StringSelection(pxLine),O_CLIPBOARD_OWNER);
   }//+++
   
   /**
