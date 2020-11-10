@@ -33,6 +33,7 @@ import processing.data.Table;
 import processing.data.TableRow;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
+import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
 import processing.data.StringList;
@@ -359,8 +360,6 @@ public final class McConst {
   
   //[todo]::List<HashMap> ccReadINIFile(File)
   
-  
-  
   //=== output
   
   //[todo]::ccWriteINIFile(File, Object)
@@ -398,6 +397,50 @@ public final class McConst {
   }//+++
   
   //=== 
+  
+  //=== util
+  
+  /**
+   * ##
+   * @param pxFolder direct to McConst.ccVerifyFolder
+   * @param pxName valid or underscore
+   * @param pxExtention need no dot
+   * @param pxStampMode direct to VcStampUtility.ccFileNameTypeFor
+   * @return new from string constructor
+   */
+  public static final
+  File ccPackFileForExport(
+    File pxFolder, String pxName, String pxExtention, int pxStampMode
+  ){
+    boolean lpFolderOK = McConst.ccVerifyFolder(pxFolder);
+    if(!lpFolderOK){return null;}
+    String lpFileName=VcConst.ccIsValidString(pxName)?pxName:"_";
+    StringBuilder lpRes=new StringBuilder(pxFolder.getAbsolutePath());
+    lpRes.append(VcConst.C_V_PATHSEP);
+    lpRes.append(lpFileName);
+    lpRes.append(VcStampUtility.ccFileNameTypeFor(pxStampMode));
+    if(VcConst.ccIsValidString(pxExtention)){
+      lpRes.append(".");
+      lpRes.append(pxExtention);
+    }//..?
+    return new File(lpRes.toString());
+  }//+++
+  
+  /**
+   * ##
+   * @param pxTarget no null
+   * @param pxKey no null no empty
+   * @param pxValue no null no empty
+   */
+  public static
+  void ccRegisterValidAttribute(XML pxTarget, String pxKey, String pxValue){
+    if(pxTarget==null){return;}
+    if(!VcConst.ccIsValidString(pxKey)){return;}
+    if(!VcConst.ccIsValidString(pxValue)){return;}
+    pxTarget.setString(pxKey, pxValue);
+  }//..?
+  
+  //=== test
   
   /**
    * @param pxFolder do note pass null

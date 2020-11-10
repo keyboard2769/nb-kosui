@@ -23,6 +23,7 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import kosui.ppplocalui.EcConst;
 import kosui.pppswingui.ScStoker;
 
 /**
@@ -35,6 +36,7 @@ public final class VcSwingConsole extends JPanel{
   
   private static final String C_INIT_TEXT
     = "kosui standby::"+VcConst.C_V_NEWLINE
+    + ".build $ "+EcConst.ccGetLastLeavingStamp()+VcConst.C_V_NEWLINE
     + ".with $ "+VcConst.C_V_OS+VcConst.C_V_NEWLINE
     + ".at $ "+VcConst.C_V_PWD+VcConst.C_V_NEWLINE;
   

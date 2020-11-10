@@ -126,6 +126,44 @@ public final class VcConst {
     if(cmDoseLog){ccPrintln(pxTag, pxValue);}
   }//+++
   
+  /**
+   * just iterate throw given list
+   * @param pxTag direct to VcConst.ccPrintln
+   * @param pxList null or emptiness to report
+   */
+  static public final void ccLogls(String pxTag, List pxList){
+    if(cmDoseLog){
+      ccPrintln(pxTag);
+        if(pxList == null){
+          System.out.println(".ccPrintls() $ null");
+          return;
+        }//..?
+        if(pxList.isEmpty()){
+          System.out.println(".ccPrintls() $ empty");
+          return;
+        }//..?
+        System.out.println(String.format(
+          ".ccPrintls() $ -class %s -size %d : start", 
+          pxList.get(0).getClass().getName(),pxList.size()
+        ));
+        for(Object it : pxList){
+          System.out.println(it.toString());
+        }//..~
+        System.out.println(".ccPrintls() $ over");
+    }//..?
+  }//+++
+  
+  /**
+   * ##[not yet]::
+   * @param pxLine direct to System.err.println without check
+   * @param pxCode direct return
+   * @return direct return
+   */
+  public static final int ccErrorln(String pxLine, int pxCode){
+    System.err.println(pxLine);
+    return pxCode;
+  }//+++
+  
   //=== 
   
   /**

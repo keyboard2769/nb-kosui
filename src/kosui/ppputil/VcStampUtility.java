@@ -28,7 +28,7 @@ public final class VcStampUtility {
   
   private VcStampUtility(){}//..!
   
-  //===
+  //=== bypass
   
   /**
    * @return aliasing Calender::get()
@@ -72,7 +72,7 @@ public final class VcStampUtility {
     return Calendar.getInstance().get(Calendar.SECOND);
   }//+++
   
-  //===
+  //=== format
 
   /**
    * @param pxForm like:yy-MM-dd hh:mm'ss
@@ -88,6 +88,8 @@ public final class VcStampUtility {
     lpRes=lpRes.replaceFirst("ss",PApplet.nf(PApplet.second(),2));
     return lpRes;
   }//+++
+  
+  //=== filename
   
   /**
    * supposedly for document file.<br>
@@ -158,7 +160,22 @@ public final class VcStampUtility {
     return lpRes.toString();
   }//+++
   
-  //===
+  /**
+   * just a by path. see others.
+   * @param pxCode [2;3;4;6;]
+   * @return empty if uncoded 
+   */
+  synchronized static public final String ccFileNameTypeFor(int pxCode){
+    switch(pxCode){
+      case 2:return ccFilenameTypeII();
+      case 3:return ccFileNameTypeIII();
+      case 4:return ccFileNameTypeIV();
+      case 6:return ccFileNameTypeVI();
+      default:return "";
+    }//..?
+  }//+++
+  
+  //=== datalog
   
   /**
    * supposedly for data logger.<br>
@@ -174,7 +191,7 @@ public final class VcStampUtility {
     return lpRes.toString();
   }//+++
   
-  //===
+  //=== error
   
   /**
    * supposedly for error generation.<br>
