@@ -314,7 +314,7 @@ public final class EcConst {
    * @return aka the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_2011101333";
+    return "_2011201532";
   }//+++
   
   /**
@@ -349,7 +349,7 @@ public final class EcConst {
     VcConst.ccPrintln("export",ccGetCodeName()+ccGetLastLeavingStamp()+".zip");
     VcConst.ccPrintln("on",VcConst.C_V_OS);
     VcConst.ccPrintln("at",VcConst.C_V_PWD);
-    VcConst.ccErrln("EcConst $ NO_PUBLIC_USE!!");
+    VcConst.ccPrintln("[!] EcConst $ NO_PUBLIC_USE!!");
   }//+++
   
 }//***eof

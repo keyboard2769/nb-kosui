@@ -159,8 +159,8 @@ public final class VcConst {
    * @param pxCode direct return
    * @return direct return
    */
-  public static final int ccErrorln(String pxLine, int pxCode){
-    System.err.println(pxLine);
+  public static final int ccErrln(String pxLine, int pxCode){
+    System.err.println(pxLine+Integer.toString(pxCode));
     return pxCode;
   }//+++
   
@@ -182,22 +182,12 @@ public final class VcConst {
     if(!ccIsValidString(pxTag)){return;}
     System.out.print(pxTag);
     if(pxValue==null){
-      System.out.println("");
+      System.out.println("<");
     }else{
       System.out.print(":");
       System.out.println(pxValue.toString());
     }//..?
   }//+++
-  
-  //=== 
-  
-  /**
-   * only a "[ERR]" tag with time stamp will be added through System.err.<br>
-   * @param pxLine #
-   */
-  public static final void ccErrln(String pxLine){
-    System.err.println(VcStampUtility.ccErrStampTypeI()+pxLine);
-  }//..?
   
   //=== backward
   

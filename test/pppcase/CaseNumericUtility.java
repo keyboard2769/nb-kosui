@@ -240,7 +240,7 @@ public class CaseNumericUtility extends JFrame{
           }//..?
         }//..~
       }else{
-        VcConst.ccErrln("failed to relect member fields.");
+        VcConst.ccLogln("[!]failed to relect member fields.");
       }//+++
       
       //-- menu ** bar
