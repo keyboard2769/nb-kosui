@@ -159,11 +159,12 @@ public final class EcFactory {
   PFont ccLoadTrueTypeFont(File pxFontFile){
     
     //-- check in
-    if(!McConst.ccVerifyFileForLoading(pxFontFile)){
-      System.err.println("kosui.ppplocalui.EcFactory.ccLoadTrueTypeFont()"
-        + "failed to verify file for loading");
+    if(McConst.ccVerifyFileForLoading(pxFontFile)<0){
+      System.err.println(".ccLoadTrueTypeFont $ abort 1.1");
       return null;
     }//..?
+    
+    //-- appoint
     String lpName=pxFontFile.getName();
     boolean lpIsExtensionOK=false;
     lpIsExtensionOK|=lpName.endsWith(".TTF");
@@ -171,26 +172,24 @@ public final class EcFactory {
     lpIsExtensionOK|=lpName.endsWith(".TTC");
     lpIsExtensionOK|=lpName.endsWith(".ttc");
     if(!lpIsExtensionOK){
-      System.err.println("kosui.ppplocalui.EcFactory.ccLoadTrueTypeFont()"
-        + "failed to verify file extension");
+      System.err.println(".ccLoadTrueTypeFont $ abort 1.2");
       return null;
     }//..?
     
     //-- to awt font
-    Font lpFont=null;
+    Font lpFont;
     try {
       lpFont = Font.createFont(Font.TRUETYPE_FONT, pxFontFile);
     } catch (Exception e) {
-      System.err.println("kosui.ppplocalui.ccLoadTrueTypeFont()::"
-       + e.getMessage());
+      System.err.println(e.getMessage());
+      lpFont=null;
+    }//..?
+    if(lpFont==null){
+      System.err.println(".ccLoadTrueTypeFont $ abort 1.3");
     }//..?
     
-    //-- to processing font
-    PFont lpPFont = null;
-    if(lpFont!=null){
-      lpPFont=new PFont(lpFont, false);
-    }//..?
-    
+    //-- pack
+    PFont lpPFont = new PFont(lpFont, false);
     return lpPFont;
     
   }//+++

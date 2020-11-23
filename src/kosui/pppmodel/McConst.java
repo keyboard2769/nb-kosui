@@ -19,6 +19,7 @@ package kosui.pppmodel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -27,6 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import javax.xml.parsers.ParserConfigurationException;
+import kosui.ppplogic.ZcPLC;
 import kosui.pppswingui.ScConst;
 import processing.data.XML;
 import processing.data.Table;
@@ -36,6 +39,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
+import org.xml.sax.SAXException;
 import processing.data.StringList;
 
 /**
@@ -60,55 +64,44 @@ public final class McConst {
   
   private McConst(){}//+++ 
   
-  //=== resource
-  
-  /**
-   * alias for Class<?>::getResourceAsStream.<br>
-   * @param pxProjectClass do not pass null
-   * @param pxResourceIdentifier can be anything
-   * @return could be null
-   */
-  public static final InputStream ccGetPackageResource(
-    Class<?> pxProjectClass, String pxResourceIdentifier
-  ){
-    if(pxProjectClass==null){return null;}
-    return pxProjectClass.getResourceAsStream
-      (VcStringUtility.ccNulloutString(pxResourceIdentifier));
-  }//+++
-  
   //=== verify
   
   /**
    * with null check, absolution check, existence check, identical check.<br>
    * @param pxFolder #
-   * @return #
+   * @return 0 if everything match or step code
    */
-  public static final boolean ccVerifyFolder(File pxFolder){
-    if(pxFolder==null){return false;}
-    if(!pxFolder.isAbsolute()){return false;}
-    if(!pxFolder.exists()){return false;}
-    if(!pxFolder.isDirectory()){return false;}
-    return true;
+  public static final int ccVerifyFolder(File pxFolder){
+    if(pxFolder==null){return -101;}//..?
+    if(!pxFolder.isAbsolute()){return -102;}//..?
+    if(!pxFolder.exists()){return -103;}//..?
+    if(!pxFolder.isDirectory()){return -104;}//..?
+    return 0;
   }//+++
   
   /**
    * @param pxFolder will get verified via ccVerifyFolder(File)
    * @param pxDesFileName elements should be the full file name 
-   * @return true if all matched
+   * @return 0 if everything match or step code
    */
   public static final
-  boolean ccVerifyFolder(File pxFolder, String[] pxDesFileName){
-    if(!McConst.ccVerifyFolder(pxFolder)){return false;}
-    if(pxDesFileName==null){return false;}
+  int ccVerifyFolder(File pxFolder, String[] pxDesFileName){
+    int lpRes = McConst.ccVerifyFolder(pxFolder);
+    if(lpRes<0){return lpRes;}//..?
+    if(pxDesFileName==null){return -101;}//..?
     LinkedList<String> lpFolderList = new LinkedList<String>();
     for(File it:pxFolder.listFiles()){
       lpFolderList.add(it.getName());
     }//..~
-    boolean lpRes=true;
+    boolean lpProb=true;
     for(String it:pxDesFileName){
-      lpRes&=lpFolderList.contains(it);
+      lpProb&=lpFolderList.contains(it);
+      if(!lpProb){
+        VcConst.ccLogln(".ccVerifyFolder $ failed at", it);
+        break;
+      }//..?
     }//..~
-    return lpRes;
+    return lpProb?0:-1;
   }//+++
   
   /**
@@ -120,49 +113,44 @@ public final class McConst {
    *   just avoid use this method.
    * </pre>
    * @param pxFile #
-   * @return #
+   * @return 0 if everything okay or step code
    */
-  public static final boolean ccVerifyFileForSaving(File pxFile){
-    if(pxFile==null){return false;}
-    if(!pxFile.isAbsolute()){return false;}
+  public static final int ccVerifyFileForSaving(File pxFile){
+    if(pxFile==null){return -101;}//..?
+    if(!pxFile.isAbsolute()){return -102;}//..?
     if(pxFile.exists()){
       return ScConst.ccYesOrNoBox(
         VcTranslator.tr(C_KEY_OVERWRITE_COMFIRMATION)
-      );
-    }else{
-      return true;
-    }//..?
+      )?0:-1;
+    }else{return 0;}//..?
   }//+++
   
   /**
    * the extension check is performed via String.endWith().<br>
    * @param pxFile will get verified with the none extension version
    * @param pxExtension must have something
-   * @return true if matches
+   * @return 0 if everything okay or step code
    */
   public static final
-  boolean ccVerifyFileForSaving(File pxFile, String pxExtension){
-    if(pxFile==null){return false;}
-    if(!VcConst.ccIsValidString(pxExtension)){return false;}
-    boolean lpJustFile=ccVerifyFileForSaving(pxFile);
-    if(lpJustFile){
-      return pxFile.getName().endsWith(pxExtension);
-    }else{
-      return false;
-    }//..?
+  int ccVerifyFileForSaving(File pxFile, String pxExtension){
+    if(pxFile==null){return -101;}//..?
+    if(!VcConst.ccIsValidString(pxExtension)){return -102;}//..?
+    int lpRes = ccVerifyFileForSaving(pxFile);
+    if(lpRes < 0){return -103;}//..?
+    return pxFile.getName().endsWith(pxExtension)?0:-104;
   }//+++
   
   /**
    * with null check, absolution check, existence check, identical check.<br>
-   * @param pxFile #
-   * @return #
+   * @param pxFile absolutely exists file
+   * @return 0 if everything okay or step code
    */
-  public static final boolean ccVerifyFileForLoading(File pxFile){
-    if(pxFile==null){return false;}
-    if(!pxFile.isAbsolute()){return false;}
-    if(!pxFile.isFile()){return false;}
-    if(!pxFile.exists()){return false;}
-    return true;
+  public static final int ccVerifyFileForLoading(File pxFile){
+    if(pxFile==null){return -101;}
+    if(!pxFile.isAbsolute()){return -102;}
+    if(!pxFile.isFile()){return -103;}
+    if(!pxFile.exists()){return -104;}
+    return 0;
   }//+++
   
   /**
@@ -170,18 +158,15 @@ public final class McConst {
    * the extension check is performed via String.endWith().<br>
    * @param pxFile will get verified with the none extension version
    * @param pxExtension must have something whit no "dot" prefix
-   * @return true if matches
+   * @return 0 if everything okay or step code
    */
   public static final
-  boolean ccVerifyFileForLoading(File pxFile, String pxExtension){
-    if(pxFile==null){return false;}
-    if(!VcConst.ccIsValidString(pxExtension)){return false;}
-    boolean lpJustFile=ccVerifyFileForLoading(pxFile);
-    if(lpJustFile){
-      return pxFile.getName().endsWith("."+pxExtension);
-    }else{
-      return false;
-    }//..?
+  int ccVerifyFileForLoading(File pxFile, String pxExtension){
+    if(pxFile==null){return -101;}
+    if(!VcConst.ccIsValidString(pxExtension)){return -102;}
+    int lpRes = ccVerifyFileForLoading(pxFile);
+    if(lpRes < 0){return -103;}
+    return pxFile.getName().endsWith("."+pxExtension)?0:-104;
   }//+++
   
   /**
@@ -190,60 +175,62 @@ public final class McConst {
    * @param pxFile will get verified with the none extension version
    * @param pxExtension must have something
    * @param pxMaxByteLength must be lesser than this
-   * @return true if all matches
+   * @return 0 if everything okay or step code
    */
   public static final
-  boolean ccVerifyFileForLoading(
+  int ccVerifyFileForLoading(
     File pxFile, String pxExtension, long pxMaxByteLength
   ){
-    boolean lpJustFile=ccVerifyFileForLoading(pxFile,pxExtension);
-    if(lpJustFile){
-      return pxFile.length()<=pxMaxByteLength;
-    }else{
-      return false;
-    }//..?
+    int lpRes =ccVerifyFileForLoading(pxFile,pxExtension);
+    if(lpRes<0){return -101;}
+    return (pxFile.length()<=pxMaxByteLength)?0:-102;
   }//+++
   
   /**
-   * ##
-   * @param pxCSV the source object to check
+   * must contains every given list member.<br>
+   * @param pxTable the source object to check
    * @param pxDesColumn those supposed must have content
-   * @return true if everything match
+   * @return 0 if everything okay or step code
    */
   public static final
-  boolean ccVerifyCSVColumn(Table pxCSV, String[] pxDesColumn){
+  int ccVerifyTableColumn(Table pxTable, String[] pxDesColumn){
     
-    //-- precheck
-    if(pxCSV==null){return false;}
-    if(pxDesColumn==null){return false;}
+    //-- check in
+    if(pxTable==null){return -101;}
+    if(pxDesColumn==null){return -102;}
     if(pxDesColumn.length<=1){
-      System.err.println("pppmain.McConst.ccValidateCSVColumn()::"
-       + "single column form is forbidden.");
-      return false;
+      return VcConst.ccErrln(".ccVerifyTableColumn $ abort" , -103);
     }//..?
     
     //-- additional check
-    int lpColumnCount=pxCSV.getColumnCount();
-    int lpRowCount=pxCSV.getRowCount();
-    /* 4 */VcConst.ccLogln("column count", lpColumnCount);
-    /* 4 */VcConst.ccLogln("row clunt", lpRowCount);
+    int lpColumnCount=pxTable.getColumnCount();
+    int lpRowCount=pxTable.getRowCount();
     if(lpColumnCount<=1 || lpRowCount==0){
-      VcConst.ccLogln("csvc::too few row and column", 0);
-      return false;
+      return VcConst.ccErrln(".ccVerifyTableColumn $ abort" , -103);
     }//..?
+    /* 4 */VcConst.ccLogln(String.format(
+      ".ccVerifyTableColumn $ got table with [ %d x %d] for : %s",
+      lpColumnCount, lpRowCount, Arrays.toString(pxDesColumn)
+    ));
     
     //-- loop
     Set<String> lpTitleSet
-      = new HashSet<String>(Arrays.asList(pxCSV.getColumnTitles()));
-    boolean lpTester=true;
-    /* 4 */for(String it:lpTitleSet){VcConst.ccLogln("csv-c", it);}//..~
+      = new HashSet<String>(Arrays.asList(pxTable.getColumnTitles()));
+    boolean lpProb=true;
     for(String it:pxDesColumn){
-      /* 4 */VcConst.ccLogln("csvc-given", it);
-      lpTester&=lpTitleSet.contains(it);
+      lpProb&=lpTitleSet.contains(it);
+      if(!lpProb){
+        VcConst.ccLogln(".ccVerifyTableColumn $ failed at",it);
+        break;
+      }//..?
     }//..~
-    return lpTester;
+    
+    //-- report
+    return lpProb?0:-109;
     
   }//+++
+  
+  //=== data process
   
   /**
    * <pre>
@@ -320,7 +307,43 @@ public final class McConst {
     else{return lpContent;}
   }//+++
   
-  //=== input
+  //=== file io
+  
+  /**
+   * alias for Class<?>::getResourceAsStream.<br>
+   * @param pxProjectClass do not pass null
+   * @param pxResourceIdentifier can be anything
+   * @return could be null
+   */
+  public static final
+  InputStream ccGetResourceStream(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    if(pxProjectClass==null){return null;}
+    InputStream lpRes = pxProjectClass.getResourceAsStream(
+      VcStringUtility.ccNulloutString(pxResourceIdentifier)
+    );
+    if(lpRes==null){
+      VcConst.ccLogln
+        (".ccGetResourceStream $ failed on ",pxResourceIdentifier);
+      return null;
+    }//..?
+    int lpAvailable = -1;
+    try {
+      lpAvailable = lpRes.available();
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpAvailable = -1;
+    }//..?
+    if(lpAvailable<=0){
+      System.err.println(String.format(
+        ".ccGetResourceStream $ @abort -rsc %s -length %d",
+        lpRes.toString(), lpAvailable
+      ));
+      return null;
+    }//..?
+    return lpRes;
+  }//+++
   
   /**
    * wrapping Scanner::hasNext() up and swallowing exceptions for you .<br>
@@ -329,24 +352,29 @@ public final class McConst {
    * be ware the passed list will get cleared before adding.<br>
    * @param pxFile checked via McConst.ccVerifyFileForLoading()
    * @param pxTarget do not pass null
-   * @return true if nothing went wrong
+   * @return line count if everything okay or step code
    */
   public static final
-  boolean ccImportTextFile(File pxFile, List<String> pxTarget){
+  int ccImportTextFile(File pxFile, List<String> pxTarget){
+    
+    int lpRes = 0;
     
     //-- checkin
-    if(!McConst.ccVerifyFileForLoading(pxFile)){return false;}
-    if(pxTarget==null){return false;}
+    lpRes = McConst.ccVerifyFileForLoading(pxFile);
+    if(lpRes<0){return -101;}
+    if(pxTarget==null){return -102;}
     
     //-- scan
     Scanner lpScanner;
     try {
       lpScanner = new Scanner(pxFile, "utf-8");
     } catch (FileNotFoundException e) {
-      System.err.println("kosui.McConst.ccImportTextFile::"+e.getMessage());
+      System.err.println(e.getMessage());
       lpScanner=null;
     }//..?
-    if(lpScanner==null){return false;}
+    if(lpScanner==null){
+      return VcConst.ccErrln(".ccImportTextFile $ got caught", -103);
+    }//..?
     
     //-- loop
     pxTarget.clear();
@@ -354,15 +382,102 @@ public final class McConst {
       if(!lpScanner.hasNext()){break;}
       pxTarget.add(lpScanner.next());
     }//+++
-    return true;
+    
+    //--
+    return pxTarget.size();
   
   }//+++
   
-  //[todo]::List<HashMap> ccReadINIFile(File)
+  //[todo]::Table ccLoadCSVFile()
+  
+  /**
+   * ##[to_fill]::
+   * @param pxProjectClass ##
+   * @param pxResourceIdentifier ##
+   * @return ##
+   */
+  public static final
+  Table ccLoadTableFromResource(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    
+    //-- take in
+    InputStream lpStream
+      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
+    if(lpStream==null){
+      System.err.println(".ccLoadTableFromResource $ abort 1.1");
+      return null;
+    }//..?
+    
+    //-- generate
+    Table lpRes;
+    try {
+      lpRes = new Table(lpStream, "csv");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){
+      System.err.println(".ccLoadTableFromResource $ abort 1.2");
+      return null;
+    }//..?
+    
+    //-- pack
+    if(ZcPLC.and(
+      lpRes.getRowCount()>1,
+      lpRes.getColumnCount()>1
+    )){lpRes.setColumnTitles(lpRes.getStringRow(0));}
+    else{
+      VcConst.ccLogln(".ccLoadTableFromResource $ goes on without headers");
+    }//..?
+    return lpRes;
+    
+  }//+++
+  
+  /**
+   * ##[to_fill]::
+   * @param pxProjectClass ##
+   * @param pxResourceIdentifier ##
+   * @return ##
+   */
+  public static final
+  XML ccLoadXMLFromResource(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    
+    //-- take in
+    InputStream lpStream
+      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
+    if(lpStream==null){
+      System.err.println(".ccLoadXMLFromResource $ abort 1.1");
+      return null;
+    }//..?
+    
+    //-- generate
+    XML lpRes;
+    try{
+      lpRes = new XML(lpStream);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes=null;
+    }//..?
+    
+    //-- pack
+    if(lpRes==null){
+      VcConst.ccLogln(".ccLoadXMLFromResource $ goes on with failed loading");
+    }//..?
+    return lpRes;
+    
+  }//+++
+  
+  //[todo]:: StringList ccLoadTextFile(File){...
+  
+  //[todo]::List<HashMap> ccLoadINIFile(File)
   
   //=== output
   
   //[todo]::ccWriteINIFile(File, Object)
+  
   //[todo]::ccWriteINIFIle(File, List<Object>)
   
   /**
@@ -406,13 +521,13 @@ public final class McConst {
    * @param pxName valid or underscore
    * @param pxExtention need no dot
    * @param pxStampMode direct to VcStampUtility.ccFileNameTypeFor
-   * @return new from string constructor
+   * @return new from string constructor or null for invalid folder
    */
   public static final
   File ccPackFileForExport(
     File pxFolder, String pxName, String pxExtention, int pxStampMode
   ){
-    boolean lpFolderOK = McConst.ccVerifyFolder(pxFolder);
+    boolean lpFolderOK = McConst.ccVerifyFolder(pxFolder)==0;
     if(!lpFolderOK){return null;}
     String lpFileName=VcConst.ccIsValidString(pxName)?pxName:"_";
     StringBuilder lpRes=new StringBuilder(pxFolder.getAbsolutePath());
@@ -447,7 +562,7 @@ public final class McConst {
    * @deprecated test use only
    */
   @Deprecated public static final void tstReadupFolderContent(File pxFolder){
-    if(!McConst.ccVerifyFolder(pxFolder)){return;}
+    if(McConst.ccVerifyFolder(pxFolder)<0){return;}
     for(File it:pxFolder.listFiles()){
       VcConst.ccPrintln("r-subf", it.getName());
     }//+++

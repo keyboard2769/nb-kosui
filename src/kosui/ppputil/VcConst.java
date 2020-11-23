@@ -62,7 +62,7 @@ public final class VcConst {
   private static final RuntimeException E_GENERAL_GET
     = new RuntimeException("general_exception_of_get_mehod");
   
-  private static boolean cmDoseLog = false;
+  private static boolean cmLogOn   = false;//...
   
   //=== 
   
@@ -103,10 +103,11 @@ public final class VcConst {
   //===
   
   /**
+   * only affects on ::ccLogxx
    * @param pxVal ##
    */
   public static final void ccSetDoseLog(boolean pxVal){
-    cmDoseLog=pxVal;
+    cmLogOn=pxVal;
   }//+++
   
   /**
@@ -114,7 +115,7 @@ public final class VcConst {
    * @param pxLine must have some thing
    */
   static public final void ccLogln(String pxLine){
-    if(cmDoseLog){ccPrintln(pxLine);}
+    ccLogln(pxLine, null);
   }//+++
   
   /**
@@ -123,7 +124,9 @@ public final class VcConst {
    * @param pxValue can be anything
    */
   static public final void ccLogln(String pxTag, Object pxValue){
-    if(cmDoseLog){ccPrintln(pxTag, pxValue);}
+    if(cmLogOn){
+      ccPrintln(pxTag, pxValue);
+    }//..?
   }//+++
   
   /**
@@ -132,25 +135,24 @@ public final class VcConst {
    * @param pxList null or emptiness to report
    */
   static public final void ccLogls(String pxTag, List pxList){
-    if(cmDoseLog){
-      ccPrintln(pxTag);
-        if(pxList == null){
-          System.out.println(".ccPrintls() $ null");
-          return;
-        }//..?
-        if(pxList.isEmpty()){
-          System.out.println(".ccPrintls() $ empty");
-          return;
-        }//..?
-        System.out.println(String.format(
-          ".ccPrintls() $ -class %s -size %d : start", 
-          pxList.get(0).getClass().getName(),pxList.size()
-        ));
-        for(Object it : pxList){
-          System.out.println(it.toString());
-        }//..~
-        System.out.println(".ccPrintls() $ over");
+    if(cmLogOn){return;}//..?
+    ccLogln(pxTag);
+    if(pxList == null){
+      System.out.println(".ccPrintls() $ null");
+      return;
     }//..?
+    if(pxList.isEmpty()){
+      System.out.println(".ccPrintls() $ empty");
+      return;
+    }//..?
+    System.out.println(String.format(
+      ".ccPrintls() $ -class %s -size %d : start", 
+      pxList.get(0).getClass().getName(),pxList.size()
+    ));
+    for(Object it : pxList){
+      System.out.println(it.toString());
+    }//..~
+    System.out.println(".ccPrintls() $ over");
   }//+++
   
   /**
@@ -182,7 +184,7 @@ public final class VcConst {
     if(!ccIsValidString(pxTag)){return;}
     System.out.print(pxTag);
     if(pxValue==null){
-      System.out.println("<");
+      System.out.println("/");
     }else{
       System.out.print(":");
       System.out.println(pxValue.toString());
