@@ -62,7 +62,10 @@ public final class VcConst {
   private static final RuntimeException E_GENERAL_GET
     = new RuntimeException("general_exception_of_get_mehod");
   
-  private static boolean cmLogOn   = false;//...
+  private static boolean
+    cmLogOn = false,
+    cmErrOn = true
+  ;//...
   
   //=== 
   
@@ -111,6 +114,14 @@ public final class VcConst {
   }//+++
   
   /**
+   * only affects on ::ccErrxx
+   * @param pxVal ##
+   */
+  public static final void ccSetSilentError(boolean pxVal){
+    cmErrOn=!pxVal;
+  }//+++
+  
+  /**
    * masked out for ccPrintln()<br>
    * @param pxLine must have some thing
    */
@@ -156,13 +167,53 @@ public final class VcConst {
   }//+++
   
   /**
-   * ##[not yet]::
+   * ##[to_fill]::
+   * @param pxLine ##
+   */
+  public static void ccErrln(String pxLine){
+    if(cmErrOn){
+      System.err.println(pxLine);
+    }//..?
+  }//+++
+  
+  /**
+   * ##[to_fill]::
+   * @param pxLine ##
+   * @param pxCodePrev ##
+   */
+  public static void ccErrln(String pxLine, Object pxCodePrev){
+    if(cmErrOn){
+      System.err.println(pxLine+":"+pxCodePrev.toString());
+    }//..?
+  }//+++
+  
+  /**
+   * ##[to_fill]::
    * @param pxLine direct to System.err.println without check
    * @param pxCode direct return
    * @return direct return
    */
   public static final int ccErrln(String pxLine, int pxCode){
-    System.err.println(pxLine+Integer.toString(pxCode));
+    if(cmErrOn){
+      System.err.println(pxLine+Integer.toString(pxCode));
+    }//..?
+    return pxCode;
+  }//+++
+  
+  /**
+   * ##[to_fill]::
+   * @param pxLine ##
+   * @param pxCode ##
+   * @param pxCodePrev ##
+   * @return ##
+   */
+  public static final int ccErrln(String pxLine, int pxCode, Object pxCodePrev){
+    if(cmErrOn){
+      System.err.println(String.format(
+        "%s{%d < %s}",
+        pxLine, pxCode, pxCodePrev.toString()
+      ));
+    }//..?
     return pxCode;
   }//+++
   

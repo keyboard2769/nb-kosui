@@ -243,19 +243,22 @@ public final class McConst {
    * @return never null if you don not pass any
    */
   static public final
-  String ccGetColumnValue(TableRow pxRow, String pxColumn, String pxOrDefault){
+  String ccGetValue(TableRow pxRow, String pxColumn, String pxOrDefault){
     if(pxRow==null){return pxOrDefault;}
     if(!VcConst.ccIsValidString(pxColumn)){return pxOrDefault;}
-    String lpCell;
+    String lpRes;
     try {
-      lpCell = pxRow.getString(pxColumn);
+      lpRes = pxRow.getString(pxColumn);
     } catch (Exception e) {
-      System.err.println("kosui.pppmodel.McConst.ccGetColumnValue()::"
-        + e.getMessage());
-      lpCell=null;
-    }//..?
-    if(lpCell==null){return pxOrDefault;}
-    else{return lpCell;}
+      System.err.println(e.getMessage());
+      lpRes=null;
+    }//..?//..?
+    if(lpRes==null){
+      VcConst.ccLogln(
+        "McConst.ccGetValue $ failed on TableRow::getString with",pxColumn
+      );
+      return pxOrDefault;
+    }else{return lpRes;}//..?
   }//+++
   
   /**
@@ -269,19 +272,20 @@ public final class McConst {
    * @return never null if you don not pass any
    */
   static public final
-  String ccGetColumnValue(TableRow pxRow, int  pxColumn, String pxOrDefault){
+  String ccGetValue(TableRow pxRow, int  pxColumn, String pxOrDefault){
     if(pxRow==null){return pxOrDefault;}
     if(pxColumn<0){return pxOrDefault;}
-    String lpCell;
+    String lpRes;
     try {
-      lpCell = pxRow.getString(pxColumn);
+      lpRes = pxRow.getString(pxColumn);
     } catch (Exception e) {
-      System.err.println("kosui.pppmodel.McConst.ccGetColumnValue()::"
-        + e.getMessage());
-      lpCell=null;
-    }//..?
-    if(lpCell==null){return pxOrDefault;}
-    else{return lpCell;}
+      System.err.println(e.getMessage());
+      lpRes=null;
+    }//..?//..?
+    if(lpRes==null){
+      VcConst.ccLogln("McConst.ccGetValue $ failed on TableRow::getString");
+      return pxOrDefault;
+    }else{return lpRes;}//..?
   }//+++
   
   /**
@@ -295,15 +299,27 @@ public final class McConst {
    * @return never null if you don not pass any
    */
   static public final
-  String ccGetXMLChildContent(
+  String ccGetChildContent(
     XML pxXML, String pxChildName, String pxOrDefault
   ){
     if(pxXML==null){return pxOrDefault;}
     if(!VcConst.ccIsValidString(pxChildName)){return pxOrDefault;}
     XML lpChild = pxXML.getChild(pxChildName);
-    if(lpChild==null){return pxOrDefault;}
+    if(lpChild==null){
+      VcConst.ccLogln(
+        "McConst.ccGetChildContent $ failed finding child",
+        pxChildName
+      );
+      return pxOrDefault;
+    }//..?
     String lpContent=lpChild.getContent();
-    if(lpContent==null){return pxOrDefault;}
+    if(lpContent==null){
+      VcConst.ccLogln(
+        "McConst.ccGetChildContent $ failed on XML::getContent with",
+        pxChildName
+      );
+      return pxOrDefault;
+    }//..?
     else{return lpContent;}
   }//+++
   
