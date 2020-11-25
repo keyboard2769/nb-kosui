@@ -17,6 +17,9 @@
 
 package kosui.ppputil;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import kosui.ppplogic.ZcRangedModel;
 import processing.core.PApplet;
 
@@ -142,6 +145,18 @@ public final class VcArrayUtility {
   //[plan]::ccBinaryCopySE(int[] pxFrom, byte[] pxTo)
   //[plan]::ccBinaryCopyLE(byte[] pxFrom, int[] pxTo)
   //[plan]::ccBinaryCopySE(byte[] pxFrom, int[] pxTo)
+  
+  //=== convert 
+  
+  //[plan]::boolean[]::ccToBooleanArray(List<Boolean> pxList){...
+  //[plan]::int[]::ccToIntegerArray(List<Integer> pxList){...
+  //[plan]::float[]::ccToFloatArray(List<Float> pxList){...
+  
+  public static final String[] ccToStringArray(Collection<String> pxList){
+    if(pxList==null){return null;}
+    if(pxList.isEmpty()){return new String[]{};}
+    return pxList.toArray(new String[]{});
+  }//+++
   
   //=== pack
   

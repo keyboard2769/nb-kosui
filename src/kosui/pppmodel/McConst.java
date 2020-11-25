@@ -23,12 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.TreeSet;
 import kosui.ppplogic.ZcPLC;
 import kosui.pppswingui.ScConst;
 import processing.data.XML;
@@ -39,7 +40,6 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
-import org.xml.sax.SAXException;
 import processing.data.StringList;
 
 /**
@@ -189,35 +189,31 @@ public final class McConst {
   /**
    * must contains every given list member.<br>
    * @param pxTable the source object to check
-   * @param pxDesColumn those supposed must have content
+   * @param pxLesColumn those supposed must have content
    * @return 0 if everything okay or step code
    */
   public static final
-  int ccVerifyTableColumn(Table pxTable, String[] pxDesColumn){
+  int ccVerifyTableColumn(Table pxTable, Set<String> pxLesColumn){
     
     //-- check in
     if(pxTable==null){return -101;}
-    if(pxDesColumn==null){return -102;}
-    if(pxDesColumn.length<=1){
-      return VcConst.ccErrln(".ccVerifyTableColumn $ abort" , -103);
-    }//..?
+    if(pxLesColumn==null){return -102;}
+    if(pxLesColumn.size()<=1){return -103;}
     
     //-- additional check
     int lpColumnCount=pxTable.getColumnCount();
     int lpRowCount=pxTable.getRowCount();
-    if(lpColumnCount<=1 || lpRowCount==0){
-      return VcConst.ccErrln(".ccVerifyTableColumn $ abort" , -103);
-    }//..?
+    if(lpColumnCount<=1 || lpRowCount==0){return -104;}//..?
     /* 4 */VcConst.ccLogln(String.format(
       ".ccVerifyTableColumn $ got table with [ %d x %d] for : %s",
-      lpColumnCount, lpRowCount, Arrays.toString(pxDesColumn)
+      lpColumnCount, lpRowCount, Arrays.toString(pxLesColumn.toArray())
     ));
     
     //-- loop
     Set<String> lpTitleSet
       = new HashSet<String>(Arrays.asList(pxTable.getColumnTitles()));
     boolean lpProb=true;
-    for(String it:pxDesColumn){
+    for(String it:pxLesColumn){
       lpProb&=lpTitleSet.contains(it);
       if(!lpProb){
         VcConst.ccLogln(".ccVerifyTableColumn $ failed at",it);
@@ -228,6 +224,20 @@ public final class McConst {
     //-- report
     return lpProb?0:-109;
     
+  }//+++
+  
+  /**
+   * must contains every given list member.<br>
+   * @param pxTable the source object to check
+   * @param pxLesColumn those supposed must have content
+   * @return 0 if everything okay or step code
+   */
+  public static final
+  int ccVerifyTableColumn(Table pxTable, String[] pxLesColumn){
+    if(pxLesColumn==null){return -102;}
+    if(pxLesColumn.length<=0){return -103;}
+    return ccVerifyTableColumn(pxTable, Collections
+      .unmodifiableSet(new TreeSet<String>(Arrays.asList(pxLesColumn))));
   }//+++
   
   //=== data process
@@ -286,6 +296,27 @@ public final class McConst {
       VcConst.ccLogln("McConst.ccGetValue $ failed on TableRow::getString");
       return pxOrDefault;
     }else{return lpRes;}//..?
+  }//+++
+  
+  /**
+   * matches column title add retrieves invalid value for you. 
+   * @param pxTable must have column header longer than one
+   * @param pxRow no null
+   * @return column count
+   */
+  public static final int ccAddTableRow(Table pxTable, TableRow pxRow){
+    if(pxTable==null){return -101;}
+    if(pxRow==null){return -102;}
+    String[] lpDesCoulmn = pxTable.getColumnTitles();
+    if(lpDesCoulmn==null){return -103;}
+    if(lpDesCoulmn.length==0){return -104;}
+    int lpRes = 0;
+    TableRow lpNewRow = pxTable.addRow();
+    for(String it : lpDesCoulmn){
+      lpNewRow.setString(it, McConst.ccGetValue(pxRow, it, ""));
+      lpRes++;
+    }//..~
+    return lpRes;
   }//+++
   
   /**

@@ -252,7 +252,7 @@ public class CaseNumericUtility extends JFrame{
       //-- pack
       ScFactory.ccSetupMainFrame(SELF, 640, 480);
       SELF.setJMenuBar(lpMenuBar);
-      SELF.setContentPane(VcSwingConsole.ccGetInstance());
+      SELF.setContentPane(VcSwingConsole.ccGetPanel());
       SELF.pack();
       SELF.setVisible(true);
       

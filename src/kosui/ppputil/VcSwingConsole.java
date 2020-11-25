@@ -32,7 +32,7 @@ import kosui.pppswingui.ScStoker;
  * for normal static building, i think you should avoid using this 
  * manager class directly.<br>
  */
-public final class VcSwingConsole extends JPanel{
+public final class VcSwingConsole{
   
   private static final String C_INIT_TEXT
     = "kosui standby::"+VcConst.C_V_NEWLINE
@@ -40,44 +40,37 @@ public final class VcSwingConsole extends JPanel{
     + ".with $ "+VcConst.C_V_OS+VcConst.C_V_NEWLINE
     + ".at $ "+VcConst.C_V_PWD+VcConst.C_V_NEWLINE;
   
-  /**
-   * @return instance
-   */
-  public static final VcSwingConsole ccGetInstance() {
-    if(self==null){self=new VcSwingConsole();return self;}
-    else{return self;}
-  }//+++
-  private static VcSwingConsole self = null;
-  
   //===
   
-  private final ScStoker cmStoker 
+  private static final JPanel O_PANEL
+    = new JPanel(new BorderLayout());
+  
+  private static final ScStoker O_STOCKER 
     = new ScStoker(C_INIT_TEXT, -1, -1);
   
-  private final JTextField cmField
+  private static final JTextField O_FIELD
    = new JTextField("");
   
-  private final KeyListener cmListener=new KeyListener() {
-      @Override public void keyTyped(KeyEvent ke){}//+++
-      @Override public void keyPressed(KeyEvent ke){}//+++
-      @Override public void keyReleased(KeyEvent ke){
-        int lpCharCode=(int)ke.getKeyChar();
-        switch(lpCharCode){
-          case 0x0A:
-            ccWriteln(VcSwingCoordinator.ccExecute(cmField.getText()));
-            cmField.setText("");
-          break;
-          default:break;
-        }//..?
-      }//+++
-  };
+  private static final KeyListener O_LISTENER = new KeyListener() {
+    @Override public void keyTyped(KeyEvent ke){}//+++
+    @Override public void keyPressed(KeyEvent ke){}//+++
+    @Override public void keyReleased(KeyEvent ke){
+      int lpCharCode=(int)ke.getKeyChar();
+      switch(lpCharCode){
+        case 0x0A:
+          ccWriteln(VcSwingCoordinator.ccExecute(O_FIELD.getText()));
+          O_FIELD.setText("");
+        break;
+        default:break;
+      }//..?
+    }//+++
+  };//***
   
-  private VcSwingConsole(){
-    super(new BorderLayout());
-    setBorder(BorderFactory.createEtchedBorder());
-    cmField.addKeyListener(cmListener);
-    add(cmStoker,BorderLayout.CENTER);
-    add(cmField,BorderLayout.PAGE_END);
+  public static final void ccInit(){
+    O_PANEL.setBorder(BorderFactory.createEtchedBorder());
+    O_FIELD.addKeyListener(O_LISTENER);
+    O_PANEL.add(O_STOCKER,BorderLayout.CENTER);
+    O_PANEL.add(O_FIELD,BorderLayout.PAGE_END);
   }//..!
   
   //===
@@ -89,7 +82,7 @@ public final class VcSwingConsole extends JPanel{
    * @param pxVal can be any thing
    */
   public static final void ccWriteln(String pxTag, Object pxVal){
-    self.cmStoker.ccWriteln(pxTag, pxVal);
+    O_STOCKER.ccWriteln(pxTag, pxVal);
   }//+++
   
   /**
@@ -98,35 +91,41 @@ public final class VcSwingConsole extends JPanel{
    * @param pxLine must have some thing.
    */
   public static final void ccWriteln(String pxLine){
-    self.cmStoker.ccWriteln(pxLine);
+    O_STOCKER.ccWriteln(pxLine);
   }//+++
   
   /**
    * reset output area content
    */
   public static final void ccClear(){
-    self.cmStoker.ccClear(C_INIT_TEXT);
+    O_STOCKER.ccClear(C_INIT_TEXT);
   }//+++
   
   /**
    * for input field
    */
   public static final void ccRequestFocus(){
-    self.cmField.requestFocus();
+    O_FIELD.requestFocus();
   }//+++
   
   /**
    * @return directly from input field
    */
   public static final String ccGetFieldText(){
-    return self.cmField.getText();
+    return O_FIELD.getText();
   }//+++
   
   /**
    * @return directly from output area
    */
   public static final String ccGetAreaText(){
-    return self.cmStoker.ccGetText();
+    return O_STOCKER.ccGetText();
+  }//+++
+  
+  //===
+  
+  public static final JPanel ccGetPanel(){
+    return O_PANEL;
   }//+++
   
  }//***eof

@@ -266,7 +266,7 @@ public class CaseRingBuffer {
     JTabbedPane lpContentPane = new JTabbedPane();
     lpContentPane.setBorder(BorderFactory.createEtchedBorder());
     lpContentPane.add("Ring", O_RING_PANE);
-    lpContentPane.add("Console", VcSwingConsole.ccGetInstance());
+    lpContentPane.add("Console", VcSwingConsole.ccGetPanel());
     lpContentPane.updateUI();
     
     //-- frame ** setup

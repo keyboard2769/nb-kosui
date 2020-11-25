@@ -44,10 +44,10 @@ public final class McTextFileExporter extends SwingWorker<Integer, Void> {
   
   //===
   
-  private MiExecutable cmReporting;
   private final List<String> cmContent;
   private final File cmFile;
   private boolean cmPortReadOnly=true;
+  private MiExecutable cmReporting = null;
   
   //===
   
@@ -56,22 +56,9 @@ public final class McTextFileExporter extends SwingWorker<Integer, Void> {
    * @param pxContent no null no empty
    * @param pxReporting null means silence
    */
-  public McTextFileExporter(
-    File pxFile, List<String> pxContent, MiExecutable pxReporting
-  ){
+  public McTextFileExporter(File pxFile, List<String> pxContent){
     cmFile = pxFile;
     cmContent = pxContent;
-    cmReporting = pxReporting;
-  }//++!
-  
-  /**
-   * @param pxFile no null no relative no directory
-   * @param pxContent no null no empty
-   */
-  public McTextFileExporter(
-    File pxFile, List<String> pxContent
-  ){
-    this(pxFile, pxContent, null);
   }//++!
   
   //===
@@ -84,6 +71,14 @@ public final class McTextFileExporter extends SwingWorker<Integer, Void> {
    */
   public final void ccSetPortReadOnly(boolean pxVal){
     cmPortReadOnly=pxVal;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxAction for background work
+   */
+  public final void ccSetReport(MiExecutable pxAction){
+    cmReporting = pxAction;
   }//+++
   
   //===

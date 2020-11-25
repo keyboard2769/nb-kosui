@@ -142,7 +142,7 @@ public class TestFrame {
     JTabbedPane lpContentPane = new JTabbedPane();
     lpContentPane.setBorder(BorderFactory.createEtchedBorder());
     lpContentPane.add("Test", ssCreateTestPane());
-    lpContentPane.add("Console", VcSwingConsole.ccGetInstance());
+    lpContentPane.add("Console", VcSwingConsole.ccGetPanel());
     lpContentPane.updateUI();
     
     //-- frame ** setup

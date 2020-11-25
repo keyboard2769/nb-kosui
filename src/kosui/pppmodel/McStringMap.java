@@ -17,58 +17,117 @@
 
 package kosui.pppmodel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import kosui.ppputil.VcConst;
-import kosui.ppputil.VcStringUtility;
-import processing.core.PApplet;
 
 /**
+ * ##[not_yet]::
  * for some handy input command parsing. everything is finally integer. <br>
  * you can let user get to type a string like "addRect 12 12 12 12 -l -t"
  * and parse it to invoke your own addRect(12,12,12,12,LEFT,TOP)
  * at somewhere of your sketch. <br>
  */
-public abstract class McCommand implements MiExecutable{
+public abstract class McStringMap implements MiExecutable{
+  
+  //[todo]:: think again!!
+  
+  //===
+  
+  //private final Map<>...;
+  
+  //McCommand(String){...
+
+  //===
+
+  //Map<String, String> ccGetMap(){...}
+  
+  //List<String> ccGetPathList("path"){...
+  
+  //List<String> ccGetPathList(int[] ){...
+  
+  //===
+  
+  //int ccParse(String ...)
+  //int ccParse(Table ...)
+  //int ccParse(XML ...)
+  //String ccExportText(){}
+  //XML ccExportXML(){}
+  //Table ccExportTable(){}
+  //int ccExport(File ..., ".???"){...}
+  
+  //===
   
   /**
-   * hard coded
+   * %[not_yet]::%
+   * %dont push it before we actually could rewrite it%
+   * @deprecated but how do we re-write the whole stuff?
+   * @param pxLine
+   * @return #
    */
+  public static final
+  Map<String, String> ccParse(String pxLine){
+    
+    //-- check in
+    if(!VcConst.ccIsValidString(pxLine)){return null;}
+    
+    //-- split
+    String lpBuf = pxLine.trim();
+    lpBuf = lpBuf.replaceAll("\\s+", " ");
+    lpBuf = lpBuf.replaceAll(" -", " %--");
+    String[] lpSplit = lpBuf.split("%-");
+    for(String it : lpSplit){System.out.println(it);}
+    
+    //-- new 
+    HashMap<String, String> lpRes = new HashMap<String, String>();
+    
+    lpRes.put("_TITLE_", "?");
+    lpRes.put("_CONTENT_", "?");
+    for(String it : lpSplit){
+      if(it.startsWith("@")|it.startsWith("#")){
+        lpRes.put("_TITLE_", it.substring(1,it.length()-1));
+      }//..?
+      if(it.startsWith("-")){
+        int lpCut = it.indexOf(" ");
+        if(lpCut<=1){continue;}
+        lpRes.put(
+          it.substring(0,lpCut),
+          it.substring(lpCut, it.length()).trim()
+        );
+      }//..?
+    }//..~
+    
+    //-- pack
+    return lpRes;
+    
+  }//+++
+  
+}//***eof
+
+/*
+
+
   public static final int
     C_M_GENERAL_SUCCESS =   0,
     C_M_GENERAL_FAILIOR =  -1,
     C_M_GENERAL_UNKNOWN =  -2,
     C_M_UNREGISTERED    = -63
   ;//,,,
-  
-  private static final HashMap<String, McCommand> O_MAP_OF_REGISTERED
-    = new HashMap<String, McCommand>();
-  
-  /**
-   * @param pxName do not pass null
-   * @param pxExecution do not pass null
-   */
+
   public static final void ccRegister(String pxName, McCommand pxExecution){
     if(!VcConst.ccIsValidString(pxName)){return;}
     if(pxExecution==null){return;}
     if(O_MAP_OF_REGISTERED.containsKey(pxName)){return;}
     O_MAP_OF_REGISTERED.put(pxName, pxExecution);
   }//+++
-  
-  /**
-   * @param pxExecution do not pass null
-   */
+
+
   public static final void ccRegister(McCommand pxExecution){
     if(pxExecution==null){return;}
     ccRegister(pxExecution.ccGetName(), pxExecution);
   }//+++
-  
-  /**
-   * @param pxInput must have something
-   * @return see those constants
-   */
+
+
   @Override public int ccExecute(String pxInput){
     if(!VcConst.ccIsValidString(pxInput)){return C_M_GENERAL_FAILIOR;}
     String[] lpSpaceBreak = pxInput.split(" ");
@@ -81,94 +140,36 @@ public abstract class McCommand implements MiExecutable{
     lpExecution.ccParse(pxInput);
     return lpExecution.ccExecute();
   }//+++
-  
-  //=== 
-  
-  /**
-   * inward use only.<br>
-   */
+
+
   protected String cmRawHead = null;
-  
-  /**
-   * inward use only.<br>
-   */
   protected String[] cmDesRawBody = null;
-  
-  /**
-   * inward use only.<br>
-   */
   protected List<String> cmListOfOptionHead = new ArrayList<String>();
-  
-  /**
-   * inward use only.<br>
-   */
+  protected List<String> cmListOfOptionHead = new ArrayList<String>();
   protected List<String[]> cmListOfOptionBody= new ArrayList<String[]>();
-  
-  /**
-   * inward use only.<br>
-   */
   protected boolean cmIsSilent = true;
-  
-  /**
-   * inward use only.<br>
-   */
   protected int cmResult,cmParamW,cmParamL;
-  
-  /**
-   * inward use only.<br>
-   */
   protected final List<MiExecutable> cmListOfRawAction
     = new LinkedList<MiExecutable>();
-  
-  /**
-   * inward use only.<br>
-   */
   protected HashMap<String,MiExecutable> cmMapOfOptionAction
     = new HashMap<String,MiExecutable>();
-  
-  //=== interface
-  
-  /**
-   * for subclassing.<br>
-   * action registration is supposed to get done here
-   */
   abstract public void ccInit();
-  
-  /**
-   * for subclassing.<br>
-   * @return serve as a key
-   */
+
   abstract public String ccGetName();
-  
-  /**
-   * for subclassing.<br>
-   * @return serve as a lock before execution
-   */
+
   abstract protected boolean ccVerify();
-  
-  //===
-  
-  /**
-   * does report error and echo or not
-   * @param pxVal could be anything
-   */
+
   public final void ccSetIsSilent(boolean pxVal){
      cmIsSilent=pxVal;
   }//+++
-  
-  /**
-   * inward use only.<br>
-   */
+
   protected void ccClear(){
     cmRawHead=null;
     cmDesRawBody=null;
     cmListOfOptionHead.clear();
     cmListOfOptionBody.clear();
   }//+++
-  
-  /**
-   * @param pxInput must have some thing
-   */
+
   public final void ccParse(String pxInput){
     
     //-- clear
@@ -221,10 +222,9 @@ public abstract class McCommand implements MiExecutable{
     }//..?
     
   }//+++
-  
-  /**
-   * @return see those constants
-   */
+
+
+
   public final int ccExecute() {
     
     //-- init
@@ -280,9 +280,7 @@ public abstract class McCommand implements MiExecutable{
     return cmResult;
     
   }//+++
-  
-  //===
-  
+
   private int ssReportError(String pxMessage){
     return McCommand.this.ssReportError(pxMessage, cmResult);
   }//+++
@@ -296,12 +294,7 @@ public abstract class McCommand implements MiExecutable{
     }//..?
     return pxResult;
   }//+++
-  
-  //===
-  
-  /**
-   * @deprecated for test use only
-   */
+
   @Deprecated public final void tstReadUp(){
     
     int lpRawL = cmDesRawBody==null?-1:cmDesRawBody.length;
@@ -338,49 +331,26 @@ public abstract class McCommand implements MiExecutable{
     System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::end");
     
   }//+++
-  
-  /**
-   * %[not_yet]::%
-   * %dont push it before we actually could rewrite it%
-   * @deprecated but how do we re-write the whole stuff?
-   * @param pxLine
-   * @return #
-   */
-  public static final
-  HashMap<String, String> ccParseInlineRecord(String pxLine){
-    
-    //-- check in
-    if(!VcConst.ccIsValidString(pxLine)){return null;}
-    
-    //-- split
-    String lpBuf = pxLine.trim();
-    lpBuf = lpBuf.replaceAll("\\s+", " ");
-    lpBuf = lpBuf.replaceAll(" -", " %--");
-    String[] lpSplit = lpBuf.split("%-");
-    for(String it : lpSplit){System.out.println(it);}
-    
-    //-- new 
-    HashMap<String, String> lpRes = new HashMap<String, String>();
-    
-    lpRes.put("_TITLE_", "?");
-    lpRes.put("_CONTENT_", "?");
-    for(String it : lpSplit){
-      if(it.startsWith("@")|it.startsWith("#")){
-        lpRes.put("_TITLE_", it.substring(1,it.length()-1));
-      }//..?
-      if(it.startsWith("-")){
-        int lpCut = it.indexOf(" ");
-        if(lpCut<=1){continue;}
-        lpRes.put(
-          it.substring(0,lpCut),
-          it.substring(lpCut, it.length()).trim()
-        );
-      }//..?
-    }//..~
-    
-    //-- pack
-    return lpRes;
-    
-  }//+++
-  
-}//***eof
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*///***not yet
+
