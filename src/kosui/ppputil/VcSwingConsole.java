@@ -24,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import kosui.ppplocalui.EcConst;
+import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScStoker;
 
 /**
@@ -41,6 +42,8 @@ public final class VcSwingConsole{
     + ".at $ "+VcConst.C_V_PWD+VcConst.C_V_NEWLINE;
   
   //===
+  
+  private static boolean pbIsInitiated=false;
   
   private static final JPanel O_PANEL
     = new JPanel(new BorderLayout());
@@ -67,10 +70,13 @@ public final class VcSwingConsole{
   };//***
   
   public static final void ccInit(){
+    if(pbIsInitiated){return;}
+    if(!ScConst.ccIsEDT()){return;}
     O_PANEL.setBorder(BorderFactory.createEtchedBorder());
     O_FIELD.addKeyListener(O_LISTENER);
     O_PANEL.add(O_STOCKER,BorderLayout.CENTER);
     O_PANEL.add(O_FIELD,BorderLayout.PAGE_END);
+    pbIsInitiated=true;
   }//..!
   
   //===
@@ -122,9 +128,10 @@ public final class VcSwingConsole{
     return O_STOCKER.ccGetText();
   }//+++
   
-  //===
+  //=== entry
   
   public static final JPanel ccGetPanel(){
+    if(!pbIsInitiated){ccInit();}
     return O_PANEL;
   }//+++
   
