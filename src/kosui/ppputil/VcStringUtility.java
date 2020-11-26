@@ -79,6 +79,17 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * ##
+   * @param pxLine ##
+   * @return ##
+   */
+  public static boolean ccIsInvisibleString(String pxLine){
+    if(pxLine==null){return false;}
+    if(pxLine.isEmpty()){return true;}
+    return pxLine.matches("\\s+");
+  }//+++
+  
+  /**
    * extract first than simply compare.<br>
    * @param pxQTag #
    * @param pxName #
@@ -89,7 +100,6 @@ public final class VcStringUtility {
     if(!VcConst.ccIsValidString(pxName)){return false;}
     return ccExtractQTagString(pxQTag).equals(pxName);
   }//+++
-  
   //=== manipulate
   
   /**
@@ -102,25 +112,37 @@ public final class VcStringUtility {
   
   /**
    * swallow those error stuff for you
-   * @param pxFileName separated by the dot
+   * @param pxName separated by the dot
    * @return the one before the first dot
    */
-  public static final String ccExtractFileName(String pxFileName){
-    if(!VcConst.ccIsValidString(pxFileName)){
-      System.err.println(".ccTrimFileName $ ER_101");
-      return pxFileName;
-    }//..?
-    String[] lpSplit = pxFileName.split("\\.");
-    if(lpSplit == null){
-      System.err.println(".ccTrimFileName $ ER_102");
-      return pxFileName;
-    }//..?
-    if(lpSplit.length <=1 ){
-      System.err.println(".ccTrimFileName $ ER_103");
-      return pxFileName;
-    }//..?
+  public static final String ccExtractFileName(String pxName){
+    String lpAbn = "VcStringUtility.ccExtractFileName $ abort";
+    if(!VcConst.ccIsValidString(pxName))
+      {VcConst.ccErrln(lpAbn, -101);return pxName;}//..?
+    String[] lpSplit = pxName.split("\\.");
+    if(lpSplit == null)
+      {VcConst.ccErrln(lpAbn, -102);return pxName;}//..?
+    if(lpSplit.length <=1 )
+      {VcConst.ccErrln(lpAbn, -103);return pxName;}//..?
     return lpSplit[0];
-  }//..?
+  }//+++
+  
+  /**
+   * swallow those error stuff for you
+   * @param pxName separated by the dot
+   * @return the one after the last dot
+   */
+  public static final String ccExtractFileExtension(String pxName){
+    String lpAbn = "VcStringUtility.ccExtractFileExtension() $ abort";
+    if(!VcConst.ccIsValidString(pxName))
+      {VcConst.ccErrln(lpAbn, -101);return pxName;}//..?
+    String[] lpSplit = pxName.split("\\.");
+    if(lpSplit == null)
+      {VcConst.ccErrln(lpAbn, -102);return pxName;}//..?
+    if(lpSplit.length <=1 )
+      {VcConst.ccErrln(lpAbn, -103);return pxName;}//..?
+    return lpSplit[lpSplit.length-1];
+  }//+++
   
   /**
    * i do not know why sax is calling the thing "qName".<br>
@@ -312,5 +334,26 @@ public final class VcStringUtility {
     lpRes.append(')');
     return lpRes.toString();
   }//+++
+  
+  //===
+  
+  /*[not_sure]::[netbeans_only]::
+  public static final int ???(String, List<String>){
+  
+    //-- case **
+    if(${EXP instanceof="String" default="true"}.equals("")){
+      ${cursor}
+    }else
+
+    //-- case **
+    if(${EXP instanceof="String" default="true"}.equals("")){
+
+    }else
+
+    //-- case ** impossible
+    {{return -;}}//..?
+
+  }//+++
+  */
   
  }//***eof

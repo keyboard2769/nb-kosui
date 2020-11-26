@@ -17,340 +17,298 @@
 
 package kosui.pppmodel;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 
 /**
- * ##[not_yet]::
- * for some handy input command parsing. everything is finally integer. <br>
- * you can let user get to type a string like "addRect 12 12 12 12 -l -t"
- * and parse it to invoke your own addRect(12,12,12,12,LEFT,TOP)
+ * for some handy input command parsing. everything is finally String. <br>
+ * you can let user get to type a string like :<br>
+ * <pre>
+ *   "addRect -bond --x 12 --y 12 --w 12 --h 12 -align left top"
+ * </pre>
+ * and parse it into a map like:<br>
+ * <pre>
+ *   addRect{
+ *     "--addRect-bond-x":"12",
+ *     "--addRect-bond-y":"12",
+ *     "--addRect-bond-w":"12",
+ *     "--addRect-bond-h":"12",
+ *     "--addRect-align":"left top"
+ *   }
+ * </pre>
+ * and than translate it to invoke your own
+ *   `addRect(new Rect(12,12,12,12), Papplet.LEFT, Papplet.TOP);`
  * at somewhere of your sketch. <br>
+ * <hr>
+ * another sample:<br>
+ * <pre>
+ *   "gcc -c text.c -o text.exe"
+ * </pre>
+ * would became:<br>
+ * <pre>
+ *   gcc{
+ *     "--gcc-c":"test.c",
+ *     "--gcc-o":"test.o"
+ *   }
+ * </pre>
+ * thats it.
  */
-public abstract class McStringMap implements MiExecutable{
+public class McStringMap {
   
-  //[todo]:: think again!!
+  //=== inner
   
-  //===
+  private class McNode{
+    int cmLevel = 0;
+    String cmKey = null;
+    String cmVal = null;
+    int ccParse(String pxLine){
+      
+      //-- check in
+      if(pxLine==null){return -101;}
+      if(pxLine.length()<3){return -102;}
+      if(!pxLine.startsWith("-")){return -103;}
+      
+      //-- split apart
+      String[] lpSplit = pxLine.split(" ");
+      if(lpSplit==null){return -201;}
+      if(lpSplit.length<=1){return -202;}
+      
+      //-- count level
+      cmLevel = 0;cmKey = null;cmVal = null;
+      for(char it : lpSplit[0].toCharArray()){
+        if(it=='-'){cmLevel++;}
+      }//..?
+      if(cmLevel<1){return -301;}
+      
+      //-- pack
+      cmKey=lpSplit[0].replaceAll("-", "");
+      switch (lpSplit.length) {
+        case 1:
+        return 0;
+        case 2:
+          cmVal=lpSplit[1];
+        return 1;
+        default:
+        {
+          StringBuilder lpBuilder=new StringBuilder("");
+          for(int i=0, s=lpSplit.length;i<s;i++){
+            if(i==0){continue;}
+            if(i>1){
+              lpBuilder.append(' ');
+            }//..?
+            lpBuilder.append(lpSplit[i]);
+          }//..~
+          cmVal=lpBuilder.toString();
+        }
+        return lpSplit.length-1; //..?
+      }//..?
+      
+    }//+++
+    @Override public String toString() {
+      return String.format(
+        "%s -lv %d -k %s -v %s",
+        super.toString(),cmLevel,cmKey,cmVal
+      );
+    }//+++
+  }//***
   
-  //private final Map<>...;
+  //=== 
+  
+  private String cmKey = "";
+  
+  private final Map<String, String> cmMap = new TreeMap<String, String>();
   
   //McCommand(String){...
 
   //===
-
-  //Map<String, String> ccGetMap(){...}
-  
-  //List<String> ccGetPathList("path"){...
-  
-  //List<String> ccGetPathList(int[] ){...
-  
-  //===
-  
-  //int ccParse(String ...)
-  //int ccParse(Table ...)
-  //int ccParse(XML ...)
-  //String ccExportText(){}
-  //XML ccExportXML(){}
-  //Table ccExportTable(){}
-  //int ccExport(File ..., ".???"){...}
-  
-  //===
   
   /**
-   * %[not_yet]::%
-   * %dont push it before we actually could rewrite it%
-   * @deprecated but how do we re-write the whole stuff?
-   * @param pxLine
+   * ##
+   * @param pxKey in the form of `--a-b-c-d` better no special letter
+   * @param pxOrDefault #
    * @return #
    */
-  public static final
-  Map<String, String> ccParse(String pxLine){
+  public final String ccGetValue(String pxKey, String pxOrDefault){
+    if(!VcConst.ccIsValidString(pxKey)){return pxOrDefault;}
+    return cmMap.getOrDefault(pxKey, pxOrDefault);
+  }//+++
+
+  /**
+   * supposedly could be used in somewhere like `Map:String,McStringMap:` 
+   * @return could be anything
+   */
+  public final String ccGetMapKey(){
+    return cmKey;
+  }//+++
+  
+  /**
+   * ##
+   * @return ##
+   */
+  public final int ccGetMapSize(){
+    return cmMap.size();
+  }//+++
+  
+  /**
+   * ##
+   * @return ##
+   */
+  public final Set<String> ccGetKeySet(){
+    return Collections.unmodifiableSet(cmMap.keySet());
+  }//+++
+  
+  //[later]::List<String> ccGetPathList("path"){...
+  //[later]::List<String> ccGetPathList(int[] ){...
+  
+  //=== export
+  
+  //[later]::Table ccExportTable(){}
+  //[later]::XML ccExportXML(){}
+  
+  //[later]::int ccExport(File ..., ".???"){...}
+  
+  //=== parse
+  
+  /**
+   * ##
+   * @param pxLine #
+   * @return size of map if everything is okay or step code
+   */
+  public final int ccParse(String pxLine){
+    
+    final String lpAbs = "McStringMap.ccParse $ abort";
+    final String lpAbn = "McStringMap.ccParse $ this should never happen";
     
     //-- check in
-    if(!VcConst.ccIsValidString(pxLine)){return null;}
+    if(!VcConst.ccIsValidString(pxLine)){return VcConst.ccErrln(lpAbs, -101);}
     
-    //-- split
+    //-- filter in
     String lpBuf = pxLine.trim();
     lpBuf = lpBuf.replaceAll("\\s+", " ");
+    lpBuf = lpBuf.replaceAll("#", " -#");
+    lpBuf = lpBuf.replaceAll("@", " -@");
     lpBuf = lpBuf.replaceAll(" -", " %--");
-    String[] lpSplit = lpBuf.split("%-");
-    for(String it : lpSplit){System.out.println(it);}
+    String[] lpDesSplit = lpBuf.split("%-");
+    if(lpDesSplit==null){return VcConst.ccErrln(lpAbs, -102);}
+    if(lpDesSplit.length<=1){return VcConst.ccErrln(lpAbs, -103);}
     
-    //-- new 
-    HashMap<String, String> lpRes = new HashMap<String, String>();
-    
-    lpRes.put("_TITLE_", "?");
-    lpRes.put("_CONTENT_", "?");
-    for(String it : lpSplit){
-      if(it.startsWith("@")|it.startsWith("#")){
-        lpRes.put("_TITLE_", it.substring(1,it.length()-1));
-      }//..?
+    //-- loop
+    int lpLevelCount=0;
+    McNode lpBufNode = new McNode();
+    String lpKeyPath = "--";
+    String lpValue = null;
+    cmKey="";
+    cmMap.clear();
+    for(String it : lpDesSplit){
+      
+      if(!VcConst.ccIsValidString(it)){continue;}
+      if(VcStringUtility.ccIsInvisibleString(it)){continue;}
+      
+      //-- ** valid 
       if(it.startsWith("-")){
-        int lpCut = it.indexOf(" ");
-        if(lpCut<=1){continue;}
-        lpRes.put(
-          it.substring(0,lpCut),
-          it.substring(lpCut, it.length()).trim()
-        );
+        
+        //-- ** valid ** pre determine
+        if(it.length()<=1){continue;}
+        char lpSenondaryFlag = it.charAt(1);
+        switch (lpSenondaryFlag) {
+          
+          //-- ** ** case of map key
+          case '#':
+            cmKey=it.trim().replaceAll("#", "").replaceAll("-", "");
+          break;
+          
+          //-- ** ** case of new root
+          case '@':
+            lpKeyPath="-"+it.trim().replaceAll("@", "");
+            lpLevelCount=0;
+          break;
+          
+          //-- ** ** case of normal
+          default:{
+            
+            //-- ** ** ** parse
+            int lpParseRes = lpBufNode.ccParse(it);
+            if(lpParseRes<0){continue;}
+            
+            //-- ** ** ** repath
+            if(lpBufNode.cmLevel<=lpLevelCount){
+              String[] lpDesPath = lpKeyPath.split("-");
+              if(lpDesPath==null)
+                {VcConst.ccErrln(lpAbn,"1");continue;}//..?
+              if(lpDesPath.length<3)
+                {VcConst.ccErrln(lpAbn,"2");continue;}//..?
+              if(lpBufNode.cmLevel<=0)
+                {VcConst.ccErrln(lpAbn,"3");continue;}//..?
+              StringBuilder lpPreviousBuilder = new StringBuilder("");
+              for(int i=0,s=lpBufNode.cmLevel+2;i<s;i++){
+                lpPreviousBuilder.append(lpDesPath[i]);
+                lpPreviousBuilder.append('-');
+              }//..?
+              lpPreviousBuilder.append(lpBufNode.cmKey);
+              lpKeyPath=lpPreviousBuilder.toString();
+              lpLevelCount=lpDesPath.length+1;
+              if(cmMap.containsKey(lpKeyPath)){
+                lpValue=cmMap.get(lpKeyPath)+" ";
+              }else{
+                lpValue=lpBufNode.cmVal;
+              }//..?
+            }else
+            if(lpBufNode.cmLevel>lpLevelCount){
+              lpKeyPath=lpKeyPath+"-"+lpBufNode.cmKey;
+              lpValue=lpBufNode.cmVal;
+              lpLevelCount++;
+            }else{VcConst.ccErrln(lpAbn,"4");continue;}//..?
+            
+            //--
+            cmMap.put(lpKeyPath.trim(), lpValue.trim());
+            
+          }break;
+          
+        }//...?
+        
+      }else{
+        lpKeyPath="--"+it.trim();
+        cmKey=lpKeyPath;
+        lpLevelCount=0;
       }//..?
+      
     }//..~
     
-    //-- pack
-    return lpRes;
-    
+    //-- report
+    return cmMap.size();
+  
+  }//+++
+  
+  //[later]::int ccParse(Table ...)
+  //[later]::int ccParse(XML ...)
+  
+  //=== entry
+
+  @Override public String toString() {
+    return String.format(
+      "%s $ -key %s -size %d",
+      super.toString(),cmKey,cmMap.size()
+    );
+  }//+++
+  
+  //=== util
+  
+  public static final void ccPrintln(McStringMap pxMap){
+    if(pxMap==null){return;}
+    VcConst.ccPrintln("McStringMap.ccPrintln $ enter", pxMap.cmKey);
+    for(String it : pxMap.ccGetKeySet()){
+      System.out.println(String.format(
+        "[%s:%s]", it,pxMap.ccGetValue(it, "?")
+      ));
+    }//..?
+    VcConst.ccPrintln("McStringMap.ccPrintln $ exit");
+  
   }//+++
   
 }//***eof
-
-/*
-
-
-  public static final int
-    C_M_GENERAL_SUCCESS =   0,
-    C_M_GENERAL_FAILIOR =  -1,
-    C_M_GENERAL_UNKNOWN =  -2,
-    C_M_UNREGISTERED    = -63
-  ;//,,,
-
-  public static final void ccRegister(String pxName, McCommand pxExecution){
-    if(!VcConst.ccIsValidString(pxName)){return;}
-    if(pxExecution==null){return;}
-    if(O_MAP_OF_REGISTERED.containsKey(pxName)){return;}
-    O_MAP_OF_REGISTERED.put(pxName, pxExecution);
-  }//+++
-
-
-  public static final void ccRegister(McCommand pxExecution){
-    if(pxExecution==null){return;}
-    ccRegister(pxExecution.ccGetName(), pxExecution);
-  }//+++
-
-
-  @Override public int ccExecute(String pxInput){
-    if(!VcConst.ccIsValidString(pxInput)){return C_M_GENERAL_FAILIOR;}
-    String[] lpSpaceBreak = pxInput.split(" ");
-    if(lpSpaceBreak==null){return C_M_GENERAL_FAILIOR;}
-    if(lpSpaceBreak.length<1){return C_M_GENERAL_FAILIOR;}
-    String lpName=lpSpaceBreak[0];
-    if(!O_MAP_OF_REGISTERED.containsKey(lpName)){return C_M_UNREGISTERED;}
-    McCommand lpExecution = O_MAP_OF_REGISTERED.get(lpName);
-    if(lpExecution == null){return C_M_GENERAL_UNKNOWN;}
-    lpExecution.ccParse(pxInput);
-    return lpExecution.ccExecute();
-  }//+++
-
-
-  protected String cmRawHead = null;
-  protected String[] cmDesRawBody = null;
-  protected List<String> cmListOfOptionHead = new ArrayList<String>();
-  protected List<String> cmListOfOptionHead = new ArrayList<String>();
-  protected List<String[]> cmListOfOptionBody= new ArrayList<String[]>();
-  protected boolean cmIsSilent = true;
-  protected int cmResult,cmParamW,cmParamL;
-  protected final List<MiExecutable> cmListOfRawAction
-    = new LinkedList<MiExecutable>();
-  protected HashMap<String,MiExecutable> cmMapOfOptionAction
-    = new HashMap<String,MiExecutable>();
-  abstract public void ccInit();
-
-  abstract public String ccGetName();
-
-  abstract protected boolean ccVerify();
-
-  public final void ccSetIsSilent(boolean pxVal){
-     cmIsSilent=pxVal;
-  }//+++
-
-  protected void ccClear(){
-    cmRawHead=null;
-    cmDesRawBody=null;
-    cmListOfOptionHead.clear();
-    cmListOfOptionBody.clear();
-  }//+++
-
-  public final void ccParse(String pxInput){
-    
-    //-- clear
-    ccClear();
-    
-    //-- check in
-    if(!VcConst.ccIsValidString(pxInput)){return;}
-    String lpFilterd = pxInput
-      .trim()
-      .replaceAll("-( )+-", "-")
-      .replaceAll("(-)+", "-")
-      .replaceAll("(- )", "");
-    String[] lpHiphenBreak = lpFilterd.split("-");
-    if(lpHiphenBreak==null){return;}
-    
-    //-- once upon the time
-    int lpHiphened = lpHiphenBreak.length;
-    if(lpHiphened>0){
-      
-      //-- raw command
-      String lpMainTarget = lpHiphenBreak[0];
-      if(!VcConst.ccIsValidString(lpMainTarget)){return;}
-      String[] lpMainSpaceBreak = lpMainTarget.split(" ");
-      if(lpMainSpaceBreak==null){return;}
-      int lpMainSpacened = lpMainSpaceBreak.length;
-      cmRawHead=lpMainSpaceBreak[0];
-      if(lpMainSpacened>1){
-        cmDesRawBody = lpMainSpaceBreak;
-      }//..?
-      
-    }//..?
-    
-    //-- they ve got multiple
-    if(lpHiphened>1){
-      for(String it : lpHiphenBreak){
-        
-        if(it.equals(lpHiphenBreak[0])){continue;}
-        
-        //-- option command
-        if(!VcConst.ccIsValidString(it)){continue;}
-        String[] lpRawSpaceBreak = it.split(" ");
-        if(lpRawSpaceBreak==null){continue;}
-        int lpRawSpacened = lpRawSpaceBreak.length;
-        cmListOfOptionHead.add(lpRawSpaceBreak[0]);
-        if(lpRawSpacened>1){
-          cmListOfOptionBody.add(lpRawSpaceBreak);
-        }//..?
-        
-      }//..~
-    }//..?
-    
-  }//+++
-
-
-
-  public final int ccExecute() {
-    
-    //-- init
-    cmResult=C_M_GENERAL_FAILIOR;
-    if(!VcConst.ccIsValidString(ccGetName())){
-      return ssReportError("unhandled_subclass");
-    }//..?
-    if(!VcConst.ccIsValidString(cmRawHead)){
-      return ssReportError("bad_parsing_result");
-    }//..?
-    if(!cmRawHead.equals(ccGetName())){
-      return ssReportError("unhandlable_parsing_result:" + cmRawHead);
-    }//..?
-    if(!cmIsSilent){
-      VcConst.ccPrintln(ccGetName(),">>>");
-    }//..?
-    
-    //-- check
-    if(!ccVerify()){
-      return ssReportError("verification_failed");
-    }//..?
-    
-    //-- raw
-    if(cmListOfRawAction.isEmpty()){
-      return ssReportError("no_recoginized_task");
-    }//..?
-    for(MiExecutable it : cmListOfRawAction){
-      cmResult=it.ccExecute(PApplet.join(cmDesRawBody, ' '));
-      if(cmResult<0){
-        return cmResult;
-      }//..?
-    }//..?
-    
-    //-- option
-    int lpOptionHeadCount = cmListOfOptionHead.size();
-    int lpOptionBodyCount = cmListOfOptionBody.size();
-    if(lpOptionBodyCount!=lpOptionBodyCount){
-      return McCommand.this.ssReportError("unhandled_option_registering_error",-2);
-    }//..?
-    if(lpOptionHeadCount!=0){
-      for(int i=0,s=cmListOfOptionHead.size();i<s;i++){
-        if(cmMapOfOptionAction.containsKey(cmListOfOptionHead.get(i))){
-          cmResult=cmMapOfOptionAction.get(cmListOfOptionHead.get(i))
-            .ccExecute(PApplet.join(cmListOfOptionBody.get(i), ' '));
-        }//..?
-      }//..~
-    }//..?
-    
-    //-- 
-    if(!cmIsSilent){
-      VcConst.ccPrintln(ccGetName(),"<<<");
-    }//..?
-    return cmResult;
-    
-  }//+++
-
-  private int ssReportError(String pxMessage){
-    return McCommand.this.ssReportError(pxMessage, cmResult);
-  }//+++
-  
-  private int ssReportError(String pxMessage, int pxResult){
-    if(VcConst.ccIsValidString(pxMessage) && (!cmIsSilent)){
-      System.out.println(
-        "Excecution$"+VcStringUtility.ccNulloutString(ccGetName())
-          + ":" + pxMessage
-      );
-    }//..?
-    return pxResult;
-  }//+++
-
-  @Deprecated public final void tstReadUp(){
-    
-    int lpRawL = cmDesRawBody==null?-1:cmDesRawBody.length;
-    int lpOptionHeadL = cmListOfOptionHead==null?-1:cmListOfOptionHead.size();
-    int lpOptionBodyL = cmListOfOptionBody==null?-1:cmListOfOptionBody.size();
-    
-    System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::begin");
-    
-    VcConst.ccPrintln(VcStringUtility.ccPackupPairedTag("raw-head", cmRawHead));
-    VcConst.ccPrintln("raw-body-count", lpRawL);
-    VcConst.ccPrintln("option-head-count", lpOptionHeadL);
-    VcConst.ccPrintln("option-body-count", lpOptionBodyL);
-    
-    if(lpRawL!=-1){
-      PApplet.println("=raw-body=");
-      for(String it : cmDesRawBody){
-        PApplet.println(it);
-      }//..~
-    }//..?
-    if(lpOptionHeadL != -1){
-      PApplet.println("=option-head=");
-      for(String it : cmListOfOptionHead){
-        PApplet.println(it);
-      }
-    }//..?
-    if(lpOptionBodyL != 1){
-      PApplet.println("=option-body=");
-      for(String[] it : cmListOfOptionBody){
-        PApplet.println(it);
-        PApplet.println("<-");
-      }
-    }//..?
-    
-    System.out.println("kosui.pppmodel.McExcecutable.tstReadUp()::end");
-    
-  }//+++
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*///***not yet
-

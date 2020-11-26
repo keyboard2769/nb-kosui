@@ -240,7 +240,7 @@ public final class McConst {
       .unmodifiableSet(new TreeSet<String>(Arrays.asList(pxLesColumn))));
   }//+++
   
-  //=== data process
+  //=== data process ** table
   
   /**
    * <pre>
@@ -319,6 +319,8 @@ public final class McConst {
     return lpRes;
   }//+++
   
+  //=== data process ** xml
+  
   /**
    * <pre>
    * a safer alternative to just callling XML.getChild().getContent().
@@ -353,6 +355,20 @@ public final class McConst {
     }//..?
     else{return lpContent;}
   }//+++
+  
+  /**
+   * ##
+   * @param pxTarget no null
+   * @param pxKey no null no empty
+   * @param pxValue no null no empty
+   */
+  public static
+  void ccAddAttribute(XML pxTarget, String pxKey, String pxValue){
+    if(pxTarget==null){return;}
+    if(!VcConst.ccIsValidString(pxKey)){return;}
+    if(!VcConst.ccIsValidString(pxValue)){return;}
+    pxTarget.setString(pxKey, pxValue);
+  }//..?
   
   //=== file io
   
@@ -435,7 +451,23 @@ public final class McConst {
   
   }//+++
   
-  //[todo]::Table ccLoadCSVFile()
+  /**
+   * just swallow the exception for you
+   * @param pxFile no null
+   * @return with header
+   */
+  public static final 
+  Table ccLoadTableFromFile(File pxFile){
+    if(pxFile==null){return null;}
+    Table lpRes;
+    try {
+      lpRes = new Table(pxFile, "header");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }//..?
+    return lpRes;
+  }//+++
   
   /**
    * ##[to_fill]::
@@ -517,6 +549,26 @@ public final class McConst {
     
   }//+++
   
+  /**
+   * just a alias for XML::save to swallow exception for you
+   * @param pxXML no null
+   * @param pxFile no null
+   * @return zero if everything is okay or step code
+   */
+  public static final
+  int ccSaveXMLToFile(XML pxXML, File pxFile){
+    if(pxXML==null){return -101;}
+    if(pxFile==null){return -102;}
+    int lpRes=0;
+    try {
+      pxXML.save(pxFile, "");
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes = -209;
+    }//..?
+    return lpRes;
+  }//+++
+  
   //[todo]:: StringList ccLoadTextFile(File){...
   
   //[todo]::List<HashMap> ccLoadINIFile(File)
@@ -558,8 +610,6 @@ public final class McConst {
     return lpRes;
   }//+++
   
-  //=== 
-  
   //=== util
   
   /**
@@ -590,17 +640,15 @@ public final class McConst {
   
   /**
    * ##
-   * @param pxTarget no null
-   * @param pxKey no null no empty
-   * @param pxValue no null no empty
+   * @param pxFile no null
+   * @return never null
    */
-  public static
-  void ccRegisterValidAttribute(XML pxTarget, String pxKey, String pxValue){
-    if(pxTarget==null){return;}
-    if(!VcConst.ccIsValidString(pxKey)){return;}
-    if(!VcConst.ccIsValidString(pxValue)){return;}
-    pxTarget.setString(pxKey, pxValue);
-  }//..?
+  public static final String ccExtractFileExtension(File pxFile){
+    if(pxFile==null){return "";}
+    return VcStringUtility
+      .ccNulloutString(VcStringUtility
+        .ccExtractFileExtension(pxFile.getName()));
+  }//+++
   
   //=== test
   

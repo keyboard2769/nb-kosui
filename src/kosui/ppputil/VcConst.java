@@ -24,6 +24,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import processing.core.PApplet;
 import processing.data.StringList;
 
@@ -71,7 +74,7 @@ public final class VcConst {
   
   private VcConst(){}//++!
   
-  //===
+  //=== asset
   
   /**
    * @param pxLine #
@@ -103,7 +106,7 @@ public final class VcConst {
     return pxList.size()>=pxMinimal;
   }//+++
   
-  //===
+  //=== logger ** config
   
   /**
    * only affects on ::ccLogxx
@@ -120,6 +123,8 @@ public final class VcConst {
   public static final void ccSetSilentError(boolean pxVal){
     cmErrOn=!pxVal;
   }//+++
+  
+  //=== logger ** log
   
   /**
    * masked out for ccPrintln()<br>
@@ -141,30 +146,40 @@ public final class VcConst {
   }//+++
   
   /**
+   * in the form of `blah blah blah : {step_code := problem_code}`
+   * @param pxTag ##
+   * @param pxCodeT ##
+   * @param pxCodeP ##
+   */
+  static public final void ccLogln(String pxTag, int pxCodeT, int pxCodeP){
+    if(cmLogOn){
+      ccPrintln(pxTag, String.format("{%d < %d}", pxCodeT, pxCodeP));
+    }//..?
+  }//+++
+  
+  /**
    * just iterate throw given list
    * @param pxTag direct to VcConst.ccPrintln
    * @param pxList null or emptiness to report
    */
   static public final void ccLogls(String pxTag, List pxList){
     if(cmLogOn){return;}//..?
-    ccLogln(pxTag);
-    if(pxList == null){
-      System.out.println(".ccPrintls() $ null");
-      return;
-    }//..?
-    if(pxList.isEmpty()){
-      System.out.println(".ccPrintls() $ empty");
-      return;
-    }//..?
-    System.out.println(String.format(
-      ".ccPrintls() $ -class %s -size %d : start", 
-      pxList.get(0).getClass().getName(),pxList.size()
-    ));
-    for(Object it : pxList){
-      System.out.println(it.toString());
-    }//..~
-    System.out.println(".ccPrintls() $ over");
+    ccPrintln(pxTag);
+    ccPrintls(pxList);
   }//+++
+  
+  /**
+   * ##
+   * @param pxTag ##
+   * @param pxMap ##
+   */
+  static public final void ccLogmp(String pxTag, Map pxMap){
+    if(cmLogOn){return;}//..?
+    ccPrintln(pxTag);
+    ccPrintmp(pxMap);
+  }//+++
+  
+  //=== logger ** error
   
   /**
    * ##[to_fill]::
@@ -217,7 +232,7 @@ public final class VcConst {
     return pxCode;
   }//+++
   
-  //=== 
+  //=== logger ** print
   
   /**
    * alias to ccPrintln(String, null)<br>
@@ -240,6 +255,34 @@ public final class VcConst {
       System.out.print(":");
       System.out.println(pxValue.toString());
     }//..?
+  }//+++
+  
+  /**
+   * ##
+   * @param pxList ##
+   */
+  public static final void ccPrintls(List pxList){
+    if(pxList==null){System.out.println("<nulllist>");return;}
+    if(pxList.isEmpty()){System.out.println("<emptylist>");return;}
+    for(Object it : pxList){
+      System.out.println(it.toString());
+    }//..~
+  }//+++
+  
+  /**
+   * ##
+   * @param pxMap ##
+   */
+  public static final void ccPrintmp(Map pxMap){
+    if(pxMap==null){System.out.println("<nullmap>");return;}
+    if(pxMap.isEmpty()){System.out.println("<emptymap>");return;}
+    for(Object it: pxMap.keySet()){
+      Object lpVal = pxMap.get(it);
+      String lpRepresent = (lpVal==null)?"":lpVal.toString();
+      System.out.println(String.format(
+        "[%s:%s;]",it.toString(),lpRepresent
+      ));
+    }//..~
   }//+++
   
   //=== backward
@@ -449,5 +492,13 @@ public final class VcConst {
     return lpRes;
     
   }//+++
+  
+  //===
+  
+  /*[not_sure]::[netbeans_only]::
+    throw new UnsupportedOperationException
+      ("${className currClassFQName editable="false"}
+        .${methodName currMethodName editable="false"} $ not_yet");
+  */
   
 }//***eof
