@@ -119,9 +119,13 @@ public final class McConst {
     if(pxFile==null){return -101;}//..?
     if(!pxFile.isAbsolute()){return -102;}//..?
     if(pxFile.exists()){
-      return ScConst.ccYesOrNoBox(
-        VcTranslator.tr(C_KEY_OVERWRITE_COMFIRMATION)
-      )?0:-1;
+      if(ScConst.ccIsEDT()){
+        return ScConst.ccYesOrNoBox(
+          VcTranslator.tr(C_KEY_OVERWRITE_COMFIRMATION)
+        )?0:-104;
+      }else{
+        return -103;
+      }//..?
     }else{return 0;}//..?
   }//+++
   

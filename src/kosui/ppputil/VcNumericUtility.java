@@ -17,6 +17,7 @@
 
 package kosui.ppputil;
 
+import java.text.ParseException;
 import java.util.Random;
 import processing.core.PApplet;
 
@@ -350,6 +351,36 @@ public final class VcNumericUtility {
     boolean lpA=pxA==pxC;
     boolean lpB=pxB==pxC;
     return lpA&lpB;
+  }//+++
+  
+  /**
+   * transforms given Strings to Number
+   *   and swallows the exception hell out for your
+   *   and then compares them in double.<br>
+   * @param pxObjective could be anything but better in valid number form
+   * @param pxSubjective could be anything but better in valid number form
+   * @return you may guess it
+   */
+  public static final boolean ccEquals(String pxObjective, String pxSubjective){
+    boolean lpPre = VcStringUtility.ccEquals(pxObjective, pxSubjective);
+    if(lpPre||(pxObjective==null)||(pxSubjective==null)){return lpPre;}
+    Number lpSubjective,lpObjective;
+    try {
+      lpSubjective = java.text.NumberFormat.getInstance().parse(pxObjective);
+      lpObjective = java.text.NumberFormat.getInstance().parse(pxSubjective);
+    } catch (ParseException pe){
+      System.err.println(pe.getMessage());
+      lpSubjective = null;
+      lpObjective = null;
+    }//..?//..?//..?//..?
+    if((lpSubjective==null)||(lpObjective==null)){
+      VcConst.ccErrln(
+        "VcNumericUtility.ccEquals $ failed to parse number",
+        VcStringUtility.ccPackupPairedTag(pxObjective, pxSubjective)
+      );
+      return false;
+    }//..?
+    return lpSubjective.doubleValue() == lpObjective.doubleValue();
   }//+++
   
   //=== calculation

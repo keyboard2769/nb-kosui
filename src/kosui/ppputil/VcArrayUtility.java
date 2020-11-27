@@ -18,8 +18,7 @@
 package kosui.ppputil;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import kosui.ppplogic.ZcRangedModel;
 import processing.core.PApplet;
 
@@ -34,7 +33,7 @@ public final class VcArrayUtility {
   
   /**
    * @param pxArray be tested
-   * @return no null no empty
+   * @return true if not null not empty
    */
   static public final boolean ccIsValidArray(Object[] pxArray){
     if(pxArray==null){return false;}
@@ -43,39 +42,57 @@ public final class VcArrayUtility {
   
   /**
    * @param pxArray be tested
-   * @return no null no empty
+   * @param pxLength as minimum count
+   * @return true if not null not small
+   */
+  static public final boolean ccIsValidArray(Object[] pxArray, int pxLength){
+    if(pxArray==null){return false;}
+    return pxArray.length>=pxLength;
+  }//+++
+  
+  /**
+   * @param pxArray be tested
+   * @return true if not null not empty
    */
   static public final boolean ccIsValidArray(boolean[] pxArray){
     if(pxArray==null){return false;}
     return pxArray.length!=0;
   }//+++
   
+  //[todo]::ccIsValidArray(boolean[] pxArray, int ...){
+  
   /**
    * @param pxArray be tested
-   * @return no null no empty
+   * @return true if not null not empty
    */
   static public final boolean ccIsValidArray(byte[] pxArray){
     if(pxArray==null){return false;}
     return pxArray.length!=0;
   }//+++
   
+  //[todo]::ccIsValidArray(byte[] pxArray, int ...){
+  
   /**
    * @param pxArray be tested
-   * @return no null no empty
+   * @return true if not null not empty
    */
   static public final boolean ccIsValidArray(int[] pxArray){
     if(pxArray==null){return false;}
     return pxArray.length!=0;
   }//+++
   
+  //[todo]::ccIsValidArray(int[] pxArray, int ...){
+  
   /**
    * @param pxArray be tested
-   * @return no null no empty
+   * @return true if not null not empty
    */
   static public final boolean ccIsValidArray(float[] pxArray){
     if(pxArray==null){return false;}
     return pxArray.length!=0;
   }//+++
+  
+  //[todo]::ccIsValidArray(float[] pxArray, int ...){
   
   //=== access
   
@@ -146,7 +163,7 @@ public final class VcArrayUtility {
   //[plan]::ccBinaryCopyLE(byte[] pxFrom, int[] pxTo)
   //[plan]::ccBinaryCopySE(byte[] pxFrom, int[] pxTo)
   
-  //=== convert 
+  //=== collection 
   
   //[plan]::boolean[]::ccToBooleanArray(List<Boolean> pxList){...
   //[plan]::int[]::ccToIntegerArray(List<Integer> pxList){...
@@ -156,6 +173,54 @@ public final class VcArrayUtility {
     if(pxList==null){return null;}
     if(pxList.isEmpty()){return new String[]{};}
     return pxList.toArray(new String[]{});
+  }//+++
+  
+  /**
+   * tweeked from Apache Commons Collection v4 for fast initiating.
+   * @param <K> ##
+   * @param <V> ##
+   * @param pxMap no null
+   * @param pxDesEntry no null no empty
+   * @return 
+   */
+  public static <K extends Object, V extends Object>
+  Map<K, V> ccPutAllToMap(Map<K, V> pxMap, Object[]pxDesEntry) {
+    
+    //-- check in
+    if(pxMap == null){return pxMap;}
+    if(pxDesEntry == null || pxDesEntry.length == 0){return pxMap;}
+    
+    //-- loop over
+    int lpRes = 0;
+    final Object lpBuf = pxDesEntry[0];
+    if (lpBuf instanceof Map.Entry) {
+      for (final Object it : pxDesEntry) {
+        final Map.Entry<K, V> lpEntry = (Map.Entry<K, V>) it;
+        pxMap.put(lpEntry.getKey(), lpEntry.getValue());
+      }//..~
+    }else
+    if (lpBuf instanceof Object[]) {
+      for (int i = 0; i < pxDesEntry.length; i++) {
+        final Object[] lpSubstituent = (Object[]) pxDesEntry[i];
+        if (lpSubstituent == null || lpSubstituent.length < 2) {
+          lpRes = -1*Math.abs(i);
+          break;
+        }//..?
+        pxMap.put((K) lpSubstituent[0], (V) lpSubstituent[1]);
+      }//..~
+    } else {
+        for (int i = 0; i < pxDesEntry.length - 1;) {
+          pxMap.put((K) pxDesEntry[i++], (V) pxDesEntry[i++]);
+        }//..?
+    }//..?
+    
+    //-- report
+    if(lpRes < 0){VcConst.ccErrln(
+      ".ccPutAllToMap $ abort at :",
+      Integer.toString(Math.abs(lpRes)
+    ));}
+    return pxMap;
+    
   }//+++
   
   //=== pack

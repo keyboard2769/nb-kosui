@@ -18,11 +18,9 @@
 package kosui.pppmodel;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
 
@@ -124,8 +122,20 @@ public class McStringMap {
   
   private final Map<String, String> cmMap = new TreeMap<String, String>();
   
-  //McCommand(String){...
-
+  /**
+   * same as `new =: ccParse`.<br>
+   * @param pxLine #
+   */
+  public McStringMap(String pxLine) {
+    this();
+    int lpRes = ccParse(pxLine);
+    if(lpRes<0){
+      VcConst.ccLogln("McStringMap::new $ failed with",lpRes);
+    }//..?
+  }//++!
+  
+  public McStringMap(){}//++!
+  
   //===
   
   /**

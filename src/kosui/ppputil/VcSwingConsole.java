@@ -69,6 +69,9 @@ public final class VcSwingConsole{
     }//+++
   };//***
   
+  /**
+   * must get called before actual use.<br>
+   */
   public static final void ccInit(){
     if(pbIsInitiated){return;}
     if(!ScConst.ccIsEDT()){return;}
@@ -130,6 +133,10 @@ public final class VcSwingConsole{
   
   //=== entry
   
+  /**
+   * auto initiation 
+   * @return ##
+   */
   public static final JPanel ccGetPanel(){
     if(!pbIsInitiated){ccInit();}
     return O_PANEL;

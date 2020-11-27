@@ -32,34 +32,34 @@ import static processing.core.PConstants.TOP;
  * now he just produce em. so, don't just new those elements.<br>
  */
 public final class EcConst {
-  
+
   /**
    * this probably will never change.
    */
   public static final float C_FRAME_RATE = 16.0f;
-  
+
   /**
    * this probably will never change.
    */
   public static final int C_FPS = 16;
-  
+
   /**
    * serves as a dummy id.<br>
    * might be confusing with zero and this is not supposed to be zero.<br>
    */
   public static final int C_ID_IGNORE = 0xFFFF;
-  
+
   /**
    * auto sizing using this as a measurement.<br>
    */
-  public static final int 
+  public static final int
     //-- pix
     C_DEFAULT_TEXT_WIDTH      =  8,
     C_DEFAULT_TEXT_HEIGHT     = 16,
     C_DEFAULT_AUTOSIZE_MARGIN =  4,
     C_DEFAULT_AUTOSIZE_HEIGHT = 20
   ;//...
-    
+
   /**
    * <pre>
    * pre configured colors:
@@ -115,14 +115,14 @@ public final class EcConst {
     C_BLACK      = 0xFF111111,
     C_BLACK_PURE = 0xFF000000
   ;//...
-  
+
   private EcConst(){}//..!
-  
+
   /**
    * <b>NO NULL CHECK!!</b><br>
    * <pre>
    * supposedly should get called from PApplet.setup()
-   *   before constructing any UIElement but after size(), 
+   *   before constructing any UIElement but after size(),
    *   for there is some basic mode setting this library intended prefers.
    * for some reason this does no calls noSmooth().
    * </pre>
@@ -135,9 +135,9 @@ public final class EcConst {
     pxOwner.textAlign(LEFT,TOP);
     pxOwner.ellipseMode(CENTER);
   }//+++
-  
+
   //=== utility ** time
-  
+
   /**
    * @param pxFrameCount #
    * @return based on the given FPS, which is 16
@@ -145,18 +145,18 @@ public final class EcConst {
   public static final float ccToSecondCount(int pxFrameCount){
     return VcNumericUtility.ccFloat(pxFrameCount)/C_FRAME_RATE;
   }//+++
-  
+
   /**
-   * 
+   *
    * @param pxSecondCount #
    * @return based on the given FPS, which is 16
    */
   public static final int ccToFrameCount(float pxSecondCount){
     return PApplet.ceil(pxSecondCount*C_FRAME_RATE);
   }//+++
-  
+
   //=== utility ** color
-  
+
   /**
    * only bit wise calculation involved
    * @param pxSource in processing color format
@@ -173,12 +173,12 @@ public final class EcConst {
     int lpRes=lpBlue|(lpGreen<<8)|(lpRed<<16);
     return lpRes|=lpAlpha;
   }//+++
-  
+
   /**
    * constrain() from PApplet is involved.
    * @param pxSource in processing color format
    * @param pxLight plus value to get brighter while minus is darker
-   * @return ARGB 
+   * @return ARGB
    */
   static public int ccAdjustColor(int pxSource, int pxLight){
     int lpOrientation=pxLight>=0?1:-1;
@@ -193,7 +193,7 @@ public final class EcConst {
     int lpRes=lpBlue|(lpGreen<<8)|(lpRed<<16);
     return lpRes|=lpAlpha;
   }//+++
-  
+
   /**
    * blend color in the adding manner.<br>
    * alpha channel well be set to the biggest.<br>
@@ -230,7 +230,7 @@ public final class EcConst {
     int lpRes=lpBlue|(lpGreen<<8)|(lpRed<<16);
     return lpRes|=(lpAlpha<<24);
   }//+++
-  
+
   /**
    * only bit wise calculation involved
    * @param pxSource in processing color format
@@ -240,9 +240,9 @@ public final class EcConst {
   static public int ccSetColorAlpha(int pxSource, int pxAlpha){
     return (pxSource&0x00FFFFFF)|((pxAlpha&0xFF)<<24);
   }//+++
-  
+
   //=== congigure
-  
+
   /**
    * iterate all content to call his .hide() .<br>
    * @param pxList do not pass null
@@ -252,9 +252,9 @@ public final class EcConst {
     if(pxList.isEmpty()){return;}
     for(EcComponent it:pxList){it.ccHide();}
   }//+++
-  
+
   //=== translate
-  
+
   /**
    * reset text with current key.<br>
    * @param pxList do not pass null
@@ -266,7 +266,7 @@ public final class EcConst {
       ccTranslateText(it);
     }//..~
   }//+++
-  
+
   /**
    * reset text with current key.<br>
    * the result of EiGroup.ccGiveElementList is passed to the list version
@@ -277,7 +277,7 @@ public final class EcConst {
     if(pxGroup==null){return;}
     ccTranslateText(pxGroup.ccGiveElementList());
   }//+++
-  
+
   /**
    * reset text with current key.<br>
    * @param pxSource do not pass null
@@ -296,7 +296,7 @@ public final class EcConst {
       pxSource.ccSetText(lpTranslated);
     }//..?
   }//+++
-  
+
   /**
    * reset text with current key.<br>
    * @param pxSource do not pass null
@@ -307,23 +307,23 @@ public final class EcConst {
       VcTranslator.tr(pxSource.ccGetKey())
     );
   }//+++
-    
+
   //== entry
-  
+
   /**
    * @return aka the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_2011251558";
+    return "_2011271551";
   }//+++
-  
+
   /**
    * @return aka project name
    */
   public static final String ccGetCodeName(){
     return "kosui";
   }//+++
-  
+
   /**
    * for some arbitrary reason, the utility class of the local UI package
    * is the main class.<br>
@@ -333,16 +333,16 @@ public final class EcConst {
     /* *
      * NO BODY IS SUPPOSED TO RUN THIS DIRECTLY
      * # predefined prefix numbering tag meaning:
-     * - [ 0 ]: 
+     * - [ 0 ]:
      * - [ 1 ]: for-override
-     * - [ 2 ]: 
-     * - [ 3 ]: 
-     * - [ 4 ]: test|log|debug 
-     * - [ 5 ]:  
+     * - [ 2 ]:
+     * - [ 3 ]:
+     * - [ 4 ]: test|log|debug
+     * - [ 5 ]:
      * - [ 6 ]: todo|plan|fill
      * - [ 7 ]: dirty-case|work-around
-     * - [ 8 ]:  
-     * - [ 9 ]:  
+     * - [ 8 ]:
+     * - [ 9 ]:
      */
     VcConst.ccPrintln("Key Optional System User Interface");
     VcConst.ccPrintln("v0.2.0");
@@ -351,5 +351,5 @@ public final class EcConst {
     VcConst.ccPrintln("at",VcConst.C_V_PWD);
     VcConst.ccPrintln("[!] EcConst $ NO_PUBLIC_USE!!");
   }//+++
-  
+
 }//***eof

@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import processing.core.PApplet;
 import processing.data.StringList;
 
@@ -74,7 +72,7 @@ public final class VcConst {
   
   private VcConst(){}//++!
   
-  //=== asset
+  //=== assert
   
   /**
    * @param pxLine #
@@ -104,6 +102,18 @@ public final class VcConst {
     if(pxList==null){return false;}
     if(pxMinimal<=1){return !pxList.isEmpty();}
     return pxList.size()>=pxMinimal;
+  }//+++
+  
+  /**
+   * alias for Object::equals to bypass null check
+   * @param pxSubjective ##
+   * @param pxObjective ##
+   * @return ##
+   */
+  public static final
+  boolean ccEquals(Object pxSubjective, Object pxObjective){
+    if(pxSubjective==null){return pxObjective==null;}
+    return pxSubjective.equals(pxObjective);
   }//+++
   
   //=== logger ** config
@@ -493,12 +503,32 @@ public final class VcConst {
     
   }//+++
   
-  //===
+  //=== netbeans only
   
-  /*[not_sure]::[netbeans_only]::
-    throw new UnsupportedOperationException
-      ("${className currClassFQName editable="false"}
-        .${methodName currMethodName editable="false"} $ not_yet");
+  /*[not_sure]::[netbeans_only]:: flags :
+    ${cursor}
+    ${className currClassFQName editable="false"}
+    ${methodName currMethodName editable="false"}
   */
+  
+  /*[not_sure]::[netbeans_only]:: cclog $ vcc.log(... */
+  
+  /*[not_sure]::[netbeans_only]:: ccerr $ vcc.err(... */
+  
+  /*[not_sure]::[netbeans_only]:: sys $ sys.err.println(... */
+  
+  /*[not_sure]::[netbeans_only]:: tw $ throw e(notyet... */
+  
+  /*[not_sure]::[netbeans_only]:: iff $ if(x.eq(... */
+  
+  /*[not_sure]::[netbeans_only]:: lpabs $ final String lpAbs = ".$... */
+  
+  /*[not_sure]::[netbeans_only]:: lpres $ lpRes = cc(... */
+  
+  /*[not_sure]::[netbeans_only]:: unmodlist $ Col....unmodiableList(... */
+  
+  /*[not_sure]::[netbeans_only]:: unmodset $ Col....unmodiableSet(... */
+  
+  /*[not_sure]::[netbeans_only]:: unmodmap $ Col....unmodiableMap(... */
   
 }//***eof

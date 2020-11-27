@@ -32,6 +32,17 @@ public final class VcStringUtility {
   //=== charactor
   
   /**
+   * ##
+   * @param pxLine no null no empty
+   * @param pxIndex will get constrained via PApplet.constrain
+   * @return Character.MIN_VALUE if anything went wrong
+   */
+  static public final char ccGetCharAt(String pxLine, int pxIndex){
+    if(!VcConst.ccIsValidString(pxLine)){return Character.MIN_VALUE;}
+    return pxLine.charAt(PApplet.constrain(pxIndex, 0, pxLine.length()-1));
+  }//+++
+  
+  /**
    * @param pxKey could be anything
    * @return [0x20 ~ 0x7E]
    */
@@ -67,7 +78,7 @@ public final class VcStringUtility {
     return lpRes;
   }//+++
   
-  //=== judging
+  //=== assert
   
   /**
    * if you think REGEX is heavy you should NOT use this.<br>
@@ -100,6 +111,38 @@ public final class VcStringUtility {
     if(!VcConst.ccIsValidString(pxName)){return false;}
     return ccExtractQTagString(pxQTag).equals(pxName);
   }//+++
+  
+  /**
+   * alias for String::charAt to bypass null check
+   * @param pxLine ##
+   * @param pxChar ##
+   * @return ##
+   */
+  static public final
+  boolean ccStartWith(String pxLine, char pxChar){
+    if(VcConst.ccIsValidString(pxLine)){
+      return pxLine.charAt(0)==pxChar;
+    }else{return false;}//..?
+  }//+++
+  
+  /**
+   * alias for String::equals to bypass null check
+   * @param pxLine ##
+   * @param pxTarget ##
+   * @return ##
+   */
+  static public final boolean ccEquals(String pxLine, String pxTarget){
+    if(pxLine == null){return pxTarget==null;}
+    if(pxLine.isEmpty()){
+      if(pxTarget==null){
+        return false;
+      }else{
+        return pxTarget.isEmpty();
+      }//..?
+    }//..?
+    return pxLine.equals(pxTarget);
+  }//+++
+  
   //=== manipulate
   
   /**
@@ -287,10 +330,10 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * in the same manner of VcConst.ccPrintln() with square bracket.<br>
+   * in the form of `[???:???]`.<br>
    * @param pxTag must have something
    * @param pxValue can be anything
-   * @return #
+   * @return ##
    */
   static public final
   String ccPackupPairedTag(String pxTag, Object pxValue){
@@ -304,10 +347,10 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * true to 'o' and false to 'x'.<br>
+   * in the form of `[???:o|x]`.<br>
    * @param pxTag must have something
    * @param pxValue can be anything
-   * @return #
+   * @return ##
    */
   static public final
   String ccPackupBoolTag(String pxTag, boolean pxValue){
@@ -315,15 +358,16 @@ public final class VcStringUtility {
     StringBuilder lpRes=new StringBuilder("[");
     lpRes.append(pxTag);
     lpRes.append(':');
-    lpRes.append(pxValue?"o":"x");
+    lpRes.append(ccToString(pxValue));
     lpRes.append(']');
     return lpRes.toString();
   }//+++
   
   /**
+   * in the form of `(0000:0000)`
    * @param pxPoleA like width or something
    * @param pxPoleB like height or something
-   * @return formatted at four digit by default
+   * @return ##
    */
   static public final
   String ccPackupDimensionValue(int pxPoleA, int pxPoleB){
@@ -335,25 +379,22 @@ public final class VcStringUtility {
     return lpRes.toString();
   }//+++
   
-  //===
-  
-  /*[not_sure]::[netbeans_only]::
-  public static final int ???(String, List<String>){
-  
-    //-- case **
-    if(${EXP instanceof="String" default="true"}.equals("")){
-      ${cursor}
-    }else
-
-    //-- case **
-    if(${EXP instanceof="String" default="true"}.equals("")){
-
-    }else
-
-    //-- case ** impossible
-    {{return -;}}//..?
-
+  /**
+   * in the form of `{-0 := -0}`
+   * @param pxThis supposedly a step code
+   * @param pxPrev supposedly an error code
+   * @return ##
+   */
+  static public final
+  String ccPackupErrorTraceBlock(int pxThis, int pxPrev){
+    StringBuilder lpRes=new StringBuilder("{");
+    lpRes.append(Integer.toString(pxThis));
+    lpRes.append(' ');
+    lpRes.append('<');
+    lpRes.append(' ');
+    lpRes.append(Integer.toString(pxPrev));
+    lpRes.append('}');
+    return lpRes.toString();
   }//+++
-  */
   
  }//***eof
