@@ -18,19 +18,13 @@
 package kosui.pppmodel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
-import kosui.ppplogic.ZcPLC;
 import kosui.pppswingui.ScConst;
 import processing.data.XML;
 import processing.data.Table;
@@ -64,7 +58,7 @@ public final class McConst {
   
   private McConst(){}//+++ 
   
-  //=== verify
+  //=== verify ** file
   
   /**
    * with null check, absolution check, existence check, identical check.<br>
@@ -189,6 +183,8 @@ public final class McConst {
     if(lpRes<0){return -101;}
     return (pxFile.length()<=pxMaxByteLength)?0:-102;
   }//+++
+  
+  //=== verify ** table
   
   /**
    * must contains every given list member.<br>
@@ -374,245 +370,9 @@ public final class McConst {
     pxTarget.setString(pxKey, pxValue);
   }//..?
   
-  //=== file io
+  //=== data process ** json
   
-  /**
-   * alias for Class<?>::getResourceAsStream.<br>
-   * @param pxProjectClass do not pass null
-   * @param pxResourceIdentifier can be anything
-   * @return could be null
-   */
-  public static final
-  InputStream ccGetResourceStream(
-    Class<?> pxProjectClass, String pxResourceIdentifier
-  ){
-    if(pxProjectClass==null){return null;}
-    InputStream lpRes = pxProjectClass.getResourceAsStream(
-      VcStringUtility.ccNulloutString(pxResourceIdentifier)
-    );
-    if(lpRes==null){
-      VcConst.ccLogln
-        (".ccGetResourceStream $ failed on ",pxResourceIdentifier);
-      return null;
-    }//..?
-    int lpAvailable = -1;
-    try {
-      lpAvailable = lpRes.available();
-    } catch (IOException ioe) {
-      System.err.println(ioe.getMessage());
-      lpAvailable = -1;
-    }//..?
-    if(lpAvailable<=0){
-      System.err.println(String.format(
-        ".ccGetResourceStream $ @abort -rsc %s -length %d",
-        lpRes.toString(), lpAvailable
-      ));
-      return null;
-    }//..?
-    return lpRes;
-  }//+++
-  
-  /**
-   * wrapping Scanner::hasNext() up and swallowing exceptions for you .<br>
-   * looped result will get added to passed list.<br>
-   * any one calling this utility is responsible for allocation.<br> 
-   * be ware the passed list will get cleared before adding.<br>
-   * @param pxFile checked via McConst.ccVerifyFileForLoading()
-   * @param pxTarget do not pass null
-   * @return line count if everything okay or step code
-   */
-  public static final
-  int ccImportTextFile(File pxFile, List<String> pxTarget){
-    
-    int lpRes = 0;
-    
-    //-- checkin
-    lpRes = McConst.ccVerifyFileForLoading(pxFile);
-    if(lpRes<0){return -101;}
-    if(pxTarget==null){return -102;}
-    
-    //-- scan
-    Scanner lpScanner;
-    try {
-      lpScanner = new Scanner(pxFile, "utf-8");
-    } catch (FileNotFoundException e) {
-      System.err.println(e.getMessage());
-      lpScanner=null;
-    }//..?
-    if(lpScanner==null){
-      return VcConst.ccErrln(".ccImportTextFile $ got caught", -103);
-    }//..?
-    
-    //-- loop
-    pxTarget.clear();
-    for(int i=0;i<65535;i++){//..arbitrary or constant
-      if(!lpScanner.hasNext()){break;}
-      pxTarget.add(lpScanner.next());
-    }//+++
-    
-    //--
-    return pxTarget.size();
-  
-  }//+++
-  
-  /**
-   * just swallow the exception for you
-   * @param pxFile no null
-   * @return with header
-   */
-  public static final 
-  Table ccLoadTableFromFile(File pxFile){
-    if(pxFile==null){return null;}
-    Table lpRes;
-    try {
-      lpRes = new Table(pxFile, "header");
-    } catch (IOException ioe) {
-      System.err.println(ioe.getMessage());
-      lpRes=null;
-    }//..?
-    return lpRes;
-  }//+++
-  
-  /**
-   * ##[to_fill]::
-   * @param pxProjectClass ##
-   * @param pxResourceIdentifier ##
-   * @return ##
-   */
-  public static final
-  Table ccLoadTableFromResource(
-    Class<?> pxProjectClass, String pxResourceIdentifier
-  ){
-    
-    //-- take in
-    InputStream lpStream
-      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
-    if(lpStream==null){
-      System.err.println(".ccLoadTableFromResource $ abort 1.1");
-      return null;
-    }//..?
-    
-    //-- generate
-    Table lpRes;
-    try {
-      lpRes = new Table(lpStream, "csv");
-    } catch (IOException ioe) {
-      System.err.println(ioe.getMessage());
-      lpRes=null;
-    }//..?
-    if(lpRes==null){
-      System.err.println(".ccLoadTableFromResource $ abort 1.2");
-      return null;
-    }//..?
-    
-    //-- pack
-    if(ZcPLC.and(
-      lpRes.getRowCount()>1,
-      lpRes.getColumnCount()>1
-    )){lpRes.setColumnTitles(lpRes.getStringRow(0));}
-    else{
-      VcConst.ccLogln(".ccLoadTableFromResource $ goes on without headers");
-    }//..?
-    return lpRes;
-    
-  }//+++
-  
-  /**
-   * ##[to_fill]::
-   * @param pxProjectClass ##
-   * @param pxResourceIdentifier ##
-   * @return ##
-   */
-  public static final
-  XML ccLoadXMLFromResource(
-    Class<?> pxProjectClass, String pxResourceIdentifier
-  ){
-    
-    //-- take in
-    InputStream lpStream
-      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
-    if(lpStream==null){
-      System.err.println(".ccLoadXMLFromResource $ abort 1.1");
-      return null;
-    }//..?
-    
-    //-- generate
-    XML lpRes;
-    try{
-      lpRes = new XML(lpStream);
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
-      lpRes=null;
-    }//..?
-    
-    //-- pack
-    if(lpRes==null){
-      VcConst.ccLogln(".ccLoadXMLFromResource $ goes on with failed loading");
-    }//..?
-    return lpRes;
-    
-  }//+++
-  
-  /**
-   * just a alias for XML::save to swallow exception for you
-   * @param pxXML no null
-   * @param pxFile no null
-   * @return zero if everything is okay or step code
-   */
-  public static final
-  int ccSaveXMLToFile(XML pxXML, File pxFile){
-    if(pxXML==null){return -101;}
-    if(pxFile==null){return -102;}
-    int lpRes=0;
-    try {
-      pxXML.save(pxFile, "");
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
-      lpRes = -209;
-    }//..?
-    return lpRes;
-  }//+++
-  
-  //[todo]:: StringList ccLoadTextFile(File){...
-  
-  //[todo]::List<HashMap> ccLoadINIFile(File)
-  
-  //=== output
-  
-  //[todo]::ccWriteINIFile(File, Object)
-  
-  //[todo]::ccWriteINIFIle(File, List<Object>)
-  
-  /**
-   * the canonical class name of given instance will be the section name.<br>
-   * iterates only for public primary integer members.<br>
-   * for private or static inner classes, an access exception still 
-   * has chance to occur.<br>
-   * @param pxSource do not pass null
-   * @return never be null but could be empty
-   */
-  public static final StringList ccPackupINIFormat(Object pxSource){
-    StringList lpRes = new StringList();
-    if(pxSource==null){return lpRes;}
-    Class<?> lpClass = pxSource.getClass();
-    lpRes.append(String.format("[%s]", pxSource.getClass().getCanonicalName()));
-    Field[] lpDesField = lpClass.getFields();
-    for(Field it:lpDesField){
-      Class<?> lpType = it.getType();
-      if(!(lpType.equals(int.class))){continue;}
-      String lpName = it.getName();
-      Object lpValue = VcConst.ccRetrieveField(it, pxSource);
-      if(lpValue==null){
-        System.err.println("kosui.pppmodel.McConst.ccPackupInitFormat()::"
-          + "some access exception might occurred with:"
-          + pxSource.toString());
-        break;
-      }//..~
-      int lpContent=VcNumericUtility.ccInteger(lpValue);
-      lpRes.append(String.format("%s=%d", lpName,lpContent));
-    }//..~
-    return lpRes;
-  }//+++
+  //[plan]:: ??? ccToJSON???
   
   //=== util
   
@@ -655,6 +415,34 @@ public final class McConst {
   }//+++
   
   //=== test
+  
+  /**
+   * ##[dep]::##[todo]::break this down to McStringMap and ?.Pack <br>
+   * @param pxSource do not pass null
+   * @return never be null but could be empty
+   */
+  public static final StringList ccPackupINIFormat(Object pxSource){
+    StringList lpRes = new StringList();
+    if(pxSource==null){return lpRes;}
+    Class<?> lpClass = pxSource.getClass();
+    lpRes.append(String.format("[%s]", pxSource.getClass().getCanonicalName()));
+    Field[] lpDesField = lpClass.getFields();
+    for(Field it:lpDesField){
+      Class<?> lpType = it.getType();
+      if(!(lpType.equals(int.class))){continue;}
+      String lpName = it.getName();
+      Object lpValue = VcConst.ccRetrieveField(it, pxSource);
+      if(lpValue==null){
+        System.err.println("kosui.pppmodel.McConst.ccPackupInitFormat()::"
+          + "some access exception might occurred with:"
+          + pxSource.toString());
+        break;
+      }//..~
+      int lpContent=VcNumericUtility.ccInteger(lpValue);
+      lpRes.append(String.format("%s=%d", lpName,lpContent));
+    }//..~
+    return lpRes;
+  }//+++
   
   /**
    * @param pxFolder do note pass null

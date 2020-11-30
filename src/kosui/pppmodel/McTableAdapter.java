@@ -23,6 +23,7 @@ import javax.swing.event.TableModelListener;
 /**
  * can serve as a dummy model to a JTable. <br>
  * real model might also extends this. <br>
+ * <b>THIS HAVE NOTHING TO DO WITH THE DATA TABLE OF PROCESSING!!</b><br>
  */
 public class McTableAdapter implements TableModel {
 

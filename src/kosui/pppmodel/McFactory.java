@@ -18,9 +18,18 @@
 package kosui.pppmodel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import kosui.ppplogic.ZcPLC;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 import processing.data.XML;
 import processing.data.Table;
 
@@ -32,14 +41,105 @@ public final class McFactory {
   
   private McFactory(){}//+++
   
+  //=== stream
+  
+  /**
+   * alias for Class<?>::getResourceAsStream.<br>
+   * @param pxProjectClass do not pass null
+   * @param pxResourceIdentifier can be anything
+   * @return could be null
+   */
+  public static final
+  InputStream ccGetResourceStream(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    if(pxProjectClass==null){return null;}
+    InputStream lpRes = pxProjectClass.getResourceAsStream(
+      VcStringUtility.ccNulloutString(pxResourceIdentifier)
+    );
+    if(lpRes==null){
+      VcConst.ccLogln
+        (".ccGetResourceStream $ failed on ",pxResourceIdentifier);
+      return null;
+    }//..?
+    int lpAvailable = -1;
+    try {
+      lpAvailable = lpRes.available();
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpAvailable = -1;
+    }//..?
+    if(lpAvailable<=0){
+      System.err.println(String.format(
+        ".ccGetResourceStream $ @abort -rsc %s -length %d",
+        lpRes.toString(), lpAvailable
+      ));
+      return null;
+    }//..?
+    return lpRes;
+  }//+++
+  
   //=== text
+  
+  /**
+   * wrapping Scanner::hasNext() up and swallowing exceptions for you .<br>
+   * looped result will get added to passed list.<br>
+   * any one calling this utility is responsible for allocation.<br> 
+   * be ware the passed list will get cleared before adding.<br>
+   * @param pxFile checked via McConst.ccVerifyFileForLoading()
+   * @return null if anything went wrong
+   */
+  public static final
+  List<String> ccLoadTextFromFile(File pxFile){
+    
+    final String lpAbs = "McFactory.ccImportTextFromFile $ abort";
+    final String lpRpt = "McFactory.ccImportTextFromFile $ Got Line of ";
+    
+    //-- checkin
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxFile);
+    if(lpVerifyRes<0){
+      VcConst.ccErrln(
+        lpAbs,VcStringUtility.ccPackupErrorTraceBlock(-101, lpVerifyRes)
+      );
+      return null;
+    }//..?
+    
+    //-- scan
+    Scanner lpScanner;
+    try {
+      lpScanner = new Scanner(pxFile, "utf-8");
+    } catch (FileNotFoundException e) {
+      System.err.println(e.getMessage());
+      lpScanner=null;
+    }//..?
+    if(lpScanner==null){
+      VcConst.ccErrln(lpAbs,"mk102");
+      return null;
+    }//..?
+    
+    //-- loop
+    List<String> lpRes = new LinkedList<String>();
+    lpRes.clear();
+    for(int i=0;i<65535;i++){//..arbitrary or constant
+      if(!lpScanner.hasNext()){break;}
+      lpRes.add(lpScanner.next());
+    }//+++
+    
+    //-- pack
+    VcConst.ccLogln(
+      lpRpt,
+      VcStringUtility.ccPackupPairedTag(pxFile.getName(), lpRes.size())
+    );
+    return lpRes;
+  
+  }//+++
   
   /**
    * a wrapper to Files.readAllBytes() and will convert it to string.<br>
    * @param pxURL supposedly should get from class.getResource()
    * @return could be null
    */
-  static public final String ccLoadText(URL pxURL){
+  static public final String ccLoadStringFromURL(URL pxURL){
     if(pxURL==null){return null;}
     byte[] lpByteBuf=null;
     try{
@@ -55,30 +155,53 @@ public final class McFactory {
     return null;
   }//+++
   
+  //[todo]::ccSaveTextToFile(File, List<String>){...
+  
   //=== JSON
   
-  //[plan]::ccToJSONArray(List<MiRecord>)
-  //[plan]::ccToJSONObject(HashMap<String, MiRecord>)
-  //[plan]::ccParseJSONArray()
-  //[plan]::ccParseJSONObject()
+  //[plan]::JSONArray ccLoadJSONArrayFromFile(File)
+  //[plan]::JSONObject ccLoadJSONObjectFromFile(File)
+  //[plan]::int ccSaveJSONArrayToFile(File)
+  //[plan]::int ccSaveJSONObjectToFile(File)
   
   //=== XML 
   
+  //[think_again]::public static final XML ccCreaEmptyXML(String ...
+  
   /**
-   * swallow the exception for you.<br>
-   * the root is named "root".<br>
-   * @return might be null if exception occurred
+   * ##[to_fill]::
+   * @param pxProjectClass ##
+   * @param pxResourceIdentifier ##
+   * @return ##
    */
-  public static final XML ccNewXML(){
-    XML lpXML=null;
-    try {
-      lpXML = XML.parse("<root/>");
-    } catch (Exception e) {
-      System.out.println("kosui.pppmodel.McFactory.ccNewXML()::+"
-        + e.getMessage());
-      lpXML=null;
+  public static final
+  XML ccLoadXMLFromResource(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    
+    //-- take in
+    InputStream lpStream
+      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
+    if(lpStream==null){
+      System.err.println(".ccLoadXMLFromResource $ abort 1.1");
+      return null;
     }//..?
-    return lpXML;
+    
+    //-- generate
+    XML lpRes;
+    try{
+      lpRes = new XML(lpStream);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes=null;
+    }//..?
+    
+    //-- pack
+    if(lpRes==null){
+      VcConst.ccLogln(".ccLoadXMLFromResource $ goes on with failed loading");
+    }//..?
+    return lpRes;
+    
   }//+++
   
   /**
@@ -86,7 +209,8 @@ public final class McFactory {
    * @param pxFile do not pass null
    * @return might be null if exception occurred
    */
-  public static final XML ccLoadXML(File pxFile){
+  public static final
+  XML ccLoadXML(File pxFile){
     if(pxFile==null){return null;}
     XML lpXML = null;
     try {
@@ -101,29 +225,94 @@ public final class McFactory {
     }//..?
     return lpXML;
   }//+++
+
+  /**
+   * ##[to_fill]::
+   * @param pxProjectClass ##
+   * @param pxResourceIdentifier ##
+   * @return ##
+   */
+  public static final
+  Table ccLoadTableFromResource(
+    Class<?> pxProjectClass, String pxResourceIdentifier
+  ){
+    
+    //-- take in
+    InputStream lpStream
+      = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
+    if(lpStream==null){
+      System.err.println(".ccLoadTableFromResource $ abort 1.1");
+      return null;
+    }//..?
+    
+    //-- generate
+    Table lpRes;
+    try {
+      lpRes = new Table(lpStream, "csv");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){
+      System.err.println(".ccLoadTableFromResource $ abort 1.2");
+      return null;
+    }//..?
+    
+    //-- pack
+    if(ZcPLC.and(
+      lpRes.getRowCount()>1,
+      lpRes.getColumnCount()>1
+    )){lpRes.setColumnTitles(lpRes.getStringRow(0));}
+    else{
+      VcConst.ccLogln(".ccLoadTableFromResource $ goes on without headers");
+    }//..?
+    return lpRes;
+    
+  }//+++
+  
+  /**
+   * just a alias for XML::save to swallow exception for you
+   * @param pxXML no null
+   * @param pxFile no null
+   * @return zero if everything is okay or step code
+   */
+  public static final
+  int ccSaveXMLToFile(XML pxXML, File pxFile){
+    if(pxXML==null){return -101;}
+    if(pxFile==null){return -102;}
+    int lpRes=0;
+    try {
+      pxXML.save(pxFile, "");
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes = -209;
+    }//..?
+    return lpRes;
+  }//+++
   
   //=== CSV
   
+  //[think_again]::public static final Table ccCreateEmptyTable(String[] ...
+  
   /**
-   * loading with the "header" option.<br>
-   * swallow the exception for you.<br>
-   * @param pxFile do not pass null
-   * @return might be null if exception occurred
+   * just swallow the exception for you
+   * @param pxFile get passed to verification with `csv` extension hard coded 
+   * @return with header option
    */
-  public static final Table ccLoadCSV(File pxFile){
-    if(pxFile==null){return null;}
-    Table lpCSV=null;
+  public static final 
+  Table ccLoadTableFromFile(File pxFile){
+    String lpAbs = "McFactory.ccLoadTableFromFile $ abort";
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxFile, "csv");
+    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
+    Table lpRes;
     try {
-      lpCSV = new Table(pxFile, "header");
-    } catch (Exception e) {
-      System.err.println("kosui.pppmodel.McFactory.ccLoadCSV()::"
-        + e.getMessage());
-      lpCSV=null;
+      lpRes = new Table(pxFile, "header");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
     }//..?
-    if(lpCSV==null){
-      System.out.println("kosui.pppmodel.McFactory.ccLoadCSV()::failed.");
-    }//..?
-    return lpCSV;
+    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
+    return lpRes;
   }//+++
   
 }//***eof
