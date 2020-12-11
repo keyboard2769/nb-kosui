@@ -41,7 +41,9 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import kosui.ppplocalui.EiTriggerable;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcSwingCoordinator;
 
 /**
  * i think swing is still an excellent library for dirty case. <br>
@@ -363,7 +365,30 @@ public final class ScFactory {
     JMenuItem lpRes = ccCreateMenuItem(
       pxTitle, pxActionCommand, pxMnemonicKeyCokde
     );
-    pxOwner.add(lpRes);
+    if(pxOwner!=null){
+      pxOwner.add(lpRes);
+    }//..?
+    return lpRes;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxTitle ##
+   * @param pxActionCommand ##
+   * @param pxMnemonicKeyCokde ##
+   * @param pxOwner ##
+   * @param pxTrigger ##
+   * @return ##
+   */
+  public static final JMenuItem ccCreateMenuItem(
+    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde,
+    JMenu pxOwner, EiTriggerable pxTrigger
+  ){
+    JMenuItem lpRes = ccCreateMenuItem(
+      pxTitle, pxActionCommand, pxMnemonicKeyCokde
+    );
+    if(pxOwner!=null){pxOwner.add(lpRes);}//..?
+    if(pxTrigger!=null){VcSwingCoordinator.ccRegisterAction(lpRes, pxTrigger);}
     return lpRes;
   }//+++
   

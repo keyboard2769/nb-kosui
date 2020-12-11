@@ -280,6 +280,7 @@ public final class McFactory {
   int ccSaveXMLToFile(XML pxXML, File pxFile){
     if(pxXML==null){return -101;}
     if(pxFile==null){return -102;}
+    if(McConst.ccVerifyFileForSaving(pxFile, "xml")<0){return -103;}
     int lpRes=0;
     try {
       pxXML.save(pxFile, "");
@@ -295,6 +296,51 @@ public final class McFactory {
   //[think_again]::public static final Table ccCreateEmptyTable(String[] ...
   
   /**
+   * ##
+   * @param pxODSFile ##
+   * @param pxWorksheet ##
+   * @return ##
+   */
+  public static final Table ccLoadTableFromODSFile(File pxODSFile, String pxWorksheet){
+    final String lpAbs = "kosui.pppmodel.McFactory.ccLoadTableFromODSFile $ abort";
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxODSFile, "ods");
+    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
+    String lpOption = VcConst.ccIsValidString(pxWorksheet)
+      ?("ods,worksheet="+pxWorksheet)
+      :"ods";
+    Table lpRes = null;
+    try {
+      lpRes = new Table(pxODSFile, lpOption);
+    } catch (IOException ioe){
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }
+    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
+    lpRes.setColumnTitles(lpRes.getStringRow(0));
+    return lpRes;
+  }//+++
+
+  /**
+   * ##
+   * @param pxCSVFile ##
+   * @return ##
+   */  
+  public static final Table ccLoadTableFromCSVFile(File pxCSVFile){
+    String lpAbs = "McFactory.ccLoadTableFromCSVFile $ abort";
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxCSVFile, "csv");
+    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
+    Table lpRes;
+    try {
+      lpRes = new Table(pxCSVFile, "header");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
+    return lpRes;
+  }//+++
+  
+  /**
    * just swallow the exception for you
    * @param pxFile get passed to verification with `csv` extension hard coded 
    * @return with header option
@@ -302,17 +348,14 @@ public final class McFactory {
   public static final 
   Table ccLoadTableFromFile(File pxFile){
     String lpAbs = "McFactory.ccLoadTableFromFile $ abort";
-    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxFile, "csv");
-    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
-    Table lpRes;
-    try {
-      lpRes = new Table(pxFile, "header");
-    } catch (IOException ioe) {
-      System.err.println(ioe.getMessage());
-      lpRes=null;
-    }//..?
-    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
-    return lpRes;
+    if(pxFile==null)
+      {VcConst.ccErrln(lpAbs,"er101");return null;}//..?
+    String lpName = pxFile.getName();
+    if(!VcConst.ccIsValidString(lpName))
+      {VcConst.ccErrln(lpAbs,"er102");return null;}//..?
+    if(lpName.endsWith("csv")){return ccLoadTableFromCSVFile(pxFile);}
+    if(lpName.endsWith("ods")){return ccLoadTableFromODSFile(pxFile,null);}
+    VcConst.ccErrln(lpAbs,"er909");return null;
   }//+++
   
 }//***eof
