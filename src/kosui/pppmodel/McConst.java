@@ -34,6 +34,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
+import processing.data.JSONObject;
 import processing.data.StringList;
 
 /**
@@ -244,7 +245,7 @@ public final class McConst {
   
   /**
    * <pre>
-   * a safer alternative to just calling TableRow.getString().
+   * a safer alternative to just calling TableRow::getString.
    * swallow exception and nothingness for you.
    * </pre>
    * @param pxRow do not pass null
@@ -273,7 +274,7 @@ public final class McConst {
   
   /**
    * <pre>
-   * a safer alternative to just calling TableRow.getString().
+   * a safer alternative to just calling TableRow::getString.
    * swallow exception and nothingness for you.
    * </pre>
    * @param pxRow do not pass null
@@ -373,6 +374,56 @@ public final class McConst {
   //=== data process ** json
   
   //[plan]:: ??? ccToJSON???
+  
+  /**
+   * replace simple format to full format 
+   *   than pass to JSONObject.parse and swallow runtime exception for you.
+   * @param pxInput in the form of `[k1:v1;k2:v2;k3:v3;]`
+   * @return could be null
+   */
+  public static final
+  JSONObject ccParseSimpleMap(String pxInput){
+    if(!VcConst.ccIsValidString(pxInput)){return null;}
+    String lpBuf = pxInput.replaceAll(";]", "]");
+    lpBuf = lpBuf.replaceAll("\\[", "{ \"");
+    lpBuf = lpBuf.replaceAll("\\]", "\" }");
+    lpBuf = lpBuf.replaceAll(":", "\":\"");
+    lpBuf = lpBuf.replaceAll(";", "\",\"");
+    VcConst.ccLogln("McConst.ccParseSimpleMap $ before", pxInput);
+    VcConst.ccLogln("McConst.ccParseSimpleMap $ after", pxInput);
+    JSONObject lpRes;
+    try {
+      lpRes = JSONObject.parse(lpBuf);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes=null;
+    }//..?
+    return lpRes;
+  }//+++
+  
+  /**
+   * <pre>
+   * a safer alternative to just calling JSONObject::getString.
+   * swallow exception and nothingness for you.
+   * </pre>
+   * @param pxJSON ##
+   * @param pxKey ##
+   * @param pxOrDefault ##
+   * @return ##
+   */
+  static public final
+  String ccGetValue(JSONObject pxJSON, String pxKey, String pxOrDefault){
+    if(pxJSON == null){return pxOrDefault;}
+    if(!VcConst.ccIsValidString(pxKey)){return pxOrDefault;}
+    String lpRes;
+    try {
+      lpRes = pxJSON.getString(pxKey);
+    } catch (Exception e) {
+      VcConst.ccErrln(e.getMessage(), pxKey);
+      lpRes = pxOrDefault;
+    }//..?
+    return lpRes;
+  }//+++
   
   //=== util
   

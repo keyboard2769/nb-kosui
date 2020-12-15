@@ -237,11 +237,14 @@ public final class McFactory {
     Class<?> pxProjectClass, String pxResourceIdentifier
   ){
     
+    //-- pre
+    String lpAbs = "McFactory.ccLoadTableFromResource $ abort";
+    
     //-- take in
     InputStream lpStream
       = ccGetResourceStream(pxProjectClass, pxResourceIdentifier);
     if(lpStream==null){
-      System.err.println(".ccLoadTableFromResource $ abort 1.1");
+      VcConst.ccErrln(lpAbs, "st101");
       return null;
     }//..?
     
@@ -254,7 +257,7 @@ public final class McFactory {
       lpRes=null;
     }//..?
     if(lpRes==null){
-      System.err.println(".ccLoadTableFromResource $ abort 1.2");
+      VcConst.ccErrln(lpAbs, "st102");
       return null;
     }//..?
     
@@ -264,7 +267,9 @@ public final class McFactory {
       lpRes.getColumnCount()>1
     )){lpRes.setColumnTitles(lpRes.getStringRow(0));}
     else{
-      VcConst.ccLogln(".ccLoadTableFromResource $ goes on without headers");
+      VcConst.ccLogln(
+        "McFactory.ccLoadTableFromResource $ goes on without headers"
+      );
     }//..?
     return lpRes;
     
