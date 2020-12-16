@@ -17,7 +17,9 @@
 
 package kosui.pppmodel;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
@@ -463,6 +465,19 @@ public final class McConst {
     return VcStringUtility
       .ccNulloutString(VcStringUtility
         .ccExtractFileExtension(pxFile.getName()));
+  }//+++
+  
+  /**
+   * alias to Desktop.getDesktop::open and swallow exception for you
+   * @param pxFolder will get verified by ccOpenFolderFromDesktop
+   */
+  public static final void ccOpenFolderFromDesktop(File pxFolder){
+    if(McConst.ccVerifyFolder(pxFolder)<0){return;}
+    try {
+      Desktop.getDesktop().open(pxFolder);
+    } catch (IOException ioe){
+      VcConst.ccErrln("McConst.ccOpenFolderFromDesktop",ioe.getMessage());
+    }//..?
   }//+++
   
   //=== test

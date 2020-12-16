@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import kosui.ppplogic.ZcPLC;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
 import processing.data.XML;
@@ -38,8 +39,6 @@ import processing.data.Table;
  * and i know that some model is harder to reproduce than others.<br>
  */
 public final class McFactory {
-  
-  private McFactory(){}//+++
   
   //=== stream
   
@@ -77,6 +76,30 @@ public final class McFactory {
       return null;
     }//..?
     return lpRes;
+  }//+++
+  
+  //=== file
+  
+  /**
+   * loop thru given array with McConst.ccVerifyFileForLoading.
+   * @param pxDesPotentialPath no null no empty
+   * @return first verified one
+   */
+  public static final
+  File ccPickFileForLoading(final String[] pxDesPotentialPath){
+    if(!VcArrayUtility.ccIsValidArray(pxDesPotentialPath, 1)){return null;}
+    File lpProb = null;
+    int lpRes;
+    for(String ofPath : pxDesPotentialPath){
+      lpProb = new File(ofPath);
+      lpRes = McConst.ccVerifyFileForLoading(lpProb);
+      if(lpRes<0){
+        lpProb=null;
+      }else{
+        break;
+      }//..?
+    }//..~
+    return lpProb;
   }//+++
   
   //=== text

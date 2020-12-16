@@ -94,17 +94,6 @@ public final class VcConst {
   }//+++
   
   /**
-   * @param pxList #
-   * @param pxMinimal size or less than one for emptiness
-   * @return no null no lesser
-   */
-  public static final boolean ccIsValidList(List pxList, int pxMinimal){
-    if(pxList==null){return false;}
-    if(pxMinimal<=1){return !pxList.isEmpty();}
-    return pxList.size()>=pxMinimal;
-  }//+++
-  
-  /**
    * alias for Object::equals to bypass null check
    * @param pxSubjective ##
    * @param pxObjective ##

@@ -18,7 +18,9 @@
 package kosui.ppputil;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import kosui.ppplogic.ZcRangedModel;
 import processing.core.PApplet;
 
@@ -29,7 +31,7 @@ import processing.core.PApplet;
  */
 public final class VcArrayUtility {
   
-  //=== verify
+  //=== assert ** array
   
   /**
    * @param pxArray be tested
@@ -93,6 +95,70 @@ public final class VcArrayUtility {
   }//+++
   
   //[todo]::ccIsValidArray(float[] pxArray, int ...){
+  
+  //=== assert ** container
+  
+  /**
+   * @param pxList #
+   * @param pxMinimal size or less than one for emptiness
+   * @return no null no lesser
+   */
+  public static final boolean ccIsValidList(List pxList, int pxMinimal){
+    if(pxList==null){return false;}
+    if(pxMinimal<=1){return !pxList.isEmpty();}
+    return pxList.size()>=pxMinimal;
+  }//+++
+  
+  //=== fix ** array
+  
+  //[todo]:: ccFixIndex(?[], int...)
+  //[todo]:: ccFixIndex(?[], int...)
+  
+  /**
+   * alias for PApplet.constrain applied to []::length
+   * @param pxArray ##
+   * @param pxIndex ##
+   * @return ##
+   */
+  public static final int ccFixIndex(Object[] pxArray, int pxIndex){
+    if(pxArray == null){return 0;}
+    return PApplet.constrain(pxIndex, 0, pxArray.length-1);
+  }//+++
+  
+  //=== fix ** container
+  
+  /**
+   * alias for PApplet.constrain applied to Container::size
+   * @param pxContainer ##
+   * @param pxIndex ##
+   * @return ##
+   */
+  public static final int ccFixIndex(List pxContainer, int pxIndex){
+    if(pxContainer == null){return 0;}
+    return PApplet.constrain(pxIndex, 0, pxContainer.size()-1);
+  }//+++
+  
+  /**
+   * alias for PApplet.constrain applied to Container::size
+   * @param pxContainer ##
+   * @param pxIndex ##
+   * @return ##
+   */
+  public static final int ccFixIndex(Set pxContainer, int pxIndex){
+    if(pxContainer == null){return 0;}
+    return PApplet.constrain(pxIndex, 0, pxContainer.size()-1);
+  }//+++
+  
+  /**
+   * alias for PApplet.constrain applied to Container::size
+   * @param pxContainer ##
+   * @param pxIndex ##
+   * @return ##
+   */
+  public static final int ccFixIndex(Map pxContainer, int pxIndex){
+    if(pxContainer == null){return 0;}
+    return PApplet.constrain(pxIndex, 0, pxContainer.size()-1);
+  }//+++
   
   //=== access
   

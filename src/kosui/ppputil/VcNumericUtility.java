@@ -369,15 +369,17 @@ public final class VcNumericUtility {
       lpSubjective = java.text.NumberFormat.getInstance().parse(pxObjective);
       lpObjective = java.text.NumberFormat.getInstance().parse(pxSubjective);
     } catch (ParseException pe){
-      System.err.println(pe.getMessage());
+      //[thinkagin]::System.err.println(pe.getMessage());
       lpSubjective = null;
       lpObjective = null;
-    }//..?//..?//..?//..?
+    }//..?
     if((lpSubjective==null)||(lpObjective==null)){
+      /* //[thinkagin]::
       VcConst.ccErrln(
         "VcNumericUtility.ccEquals $ failed to parse number",
         VcStringUtility.ccPackupPairedTag(pxObjective, pxSubjective)
       );
+      */
       return false;
     }//..?
     return lpSubjective.doubleValue() == lpObjective.doubleValue();

@@ -23,6 +23,7 @@ import javax.swing.event.TableModelListener;
 /**
  * can serve as a dummy model to a JTable. <br>
  * real model might also extends this. <br>
+ * `|key|value|` as default. <br>
  * <b>THIS HAVE NOTHING TO DO WITH THE DATA TABLE OF PROCESSING!!</b><br>
  */
 public class McTableAdapter implements TableModel {
@@ -30,7 +31,11 @@ public class McTableAdapter implements TableModel {
   /**
    * dummy content
    */
-  static protected final String C_DEFAULT = "<?>";
+  static protected final String
+    C_DEFAULT_COL_Z = "?key",
+    C_DEFAULT_COL_X = "?val",
+    C_DEFAULT = "..."
+  ;//...
 
   /**
    * changes when add or remove table listener is called
@@ -66,7 +71,7 @@ public class McTableAdapter implements TableModel {
    * {@inheritDoc }
    */
   @Override public String getColumnName(int pxColumnIndex){
-    return C_DEFAULT;
+    return (pxColumnIndex==0)?C_DEFAULT_COL_Z:C_DEFAULT_COL_X;
   }//+++
 
   /**

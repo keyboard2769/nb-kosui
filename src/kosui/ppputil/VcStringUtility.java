@@ -126,6 +126,21 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * alias for String::startsWith to bypass null check
+   * @param pxLine ##
+   * @param pxStart ##
+   * @return ##
+   */
+  static public final
+  boolean ccStartWith(String pxLine, String pxStart){
+    if(!VcConst.ccIsValidString(pxLine))
+      {return !VcConst.ccIsValidString(pxStart);}
+    if(!VcConst.ccIsValidString(pxStart))
+      {return !VcConst.ccIsValidString(pxLine);}
+    return pxLine.startsWith(pxStart);
+  }//+++
+  
+  /**
    * alias for String::equals to bypass null check
    * @param pxLine ##
    * @param pxTarget ##
@@ -318,7 +333,7 @@ public final class VcStringUtility {
    */
   static public final
   String ccJoin(List<String> pxTarget, char pxSeparator){
-    if(!VcConst.ccIsValidList(pxTarget, 1)){return "";}
+    if(!VcArrayUtility.ccIsValidList(pxTarget, 1)){return "";}
     StringBuilder lpRes=new StringBuilder("");
     char lpFixed=ccIsSeparator(pxSeparator)?pxSeparator:'_';
     for(String it : pxTarget){
