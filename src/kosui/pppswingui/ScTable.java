@@ -56,7 +56,15 @@ public final class ScTable extends JScrollPane {
     if (pxW > 0 && pxH > 0) {
       setPreferredSize(new Dimension(pxW, pxH));
     }//..?
-  }//+++
+  }//++!
+  
+  /**
+   * selection mode will be set single mode.<br>
+   * @param pxModel we have a adaptor in this package
+   */
+  public ScTable(TableModel pxModel) {
+   this(pxModel,-1,-1);
+  }//++!
   
   //===
   

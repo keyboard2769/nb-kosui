@@ -243,6 +243,21 @@ public final class McConst {
       .unmodifiableSet(new TreeSet<String>(Arrays.asList(pxLesColumn))));
   }//+++
   
+  /**
+   * ##
+   * @param pxTable ##
+   * @param pxRowMin inclusive
+   * @param pxColMin inclusive
+   * @return actual row count times actual column count or minus one
+   */
+  public static final
+  int ccVerifyTableSize(Table pxTable, int pxRowMin, int pxColMin){
+    if(pxTable==null){return -1;}
+    if(pxTable.getRowCount()<pxRowMin){return -1;}
+    if(pxTable.getColumnCount()<pxColMin){return -1;}
+    return pxTable.getRowCount()*pxTable.getColumnCount();
+  }//+++
+  
   //=== data process ** table
   
   /**
@@ -299,6 +314,34 @@ public final class McConst {
       VcConst.ccLogln("McConst.ccGetValue $ failed on TableRow::getString");
       return pxOrDefault;
     }else{return lpRes;}//..?
+  }//+++
+  
+  /**
+   * <pre>
+   * a safer alternative to just calling `Table::getString(row,col)`.
+   * swallow exception and nothingness for you.
+   * </pre>
+   * @param pxTable ##
+   * @param pxRow ##
+   * @param pxColumn ##
+   * @param pxOrDefault ##
+   * @return never null if you don not pass any
+   */
+  static public final
+  String ccGetValue(Table pxTable, int pxRow, int pxColumn, String pxOrDefault){
+    if(ccVerifyTableSize(pxTable, pxRow, pxColumn)<0){return pxOrDefault;}
+    String lpRes;
+    try {
+      lpRes = pxTable.getString(pxRow, pxColumn);
+    } catch (Exception e) {
+      VcConst.ccErrln("McConst.ccGetValue(Table)",e.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){
+       return pxOrDefault;
+    }else{
+      return lpRes;
+    }//..?
   }//+++
   
   /**

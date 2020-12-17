@@ -50,6 +50,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -665,6 +666,18 @@ public class ScConst {
       );
     }//..?
 
+  }//+++
+  
+  /**
+   * wrapping the JTabbedPane::setSelectedIndex for you.<br>
+   * @param pxTarget no null
+   * @param pxIndex will get trimmed via PApplet.constrain
+   */
+  public static final void ccShowTab(JTabbedPane pxTarget, int pxIndex){
+    if(pxTarget==null){return;}
+    pxTarget.setSelectedIndex(PApplet.constrain(
+      pxIndex, 0, pxTarget.getComponentCount()-1
+    ));
   }//+++
 
   //=== system

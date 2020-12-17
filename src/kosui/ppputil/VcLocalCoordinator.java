@@ -104,7 +104,7 @@ public final class VcLocalCoordinator {
   
   /**
    * <pre>
-   * draws irresponsive UI serve as background layer.<>
+   * draws irresponsive UI serve as background layer.
    * this can get separated from draw() loop to setup() for
    *   performance improvement, but it sure left some tedious stuff
    *   for dislay lagging, so,  just a trade off.

@@ -30,9 +30,12 @@ import processing.core.PImage;
  *   well a programmatically drawable image as background would be handy.
  * </pre>
  */
-public final class EcImage extends EcShape implements MiPixillated{
+public class EcImage extends EcShape implements MiPixillated{
   
-  private final PImage cmImage;
+  /**
+   * ##
+   */
+  protected final PImage cmImage;
   
   /**
    * also constructs a PImage.<br>
@@ -45,6 +48,14 @@ public final class EcImage extends EcShape implements MiPixillated{
     for (int i = 0; i < cmImage.pixels.length; i++) {
       cmImage.pixels[i] = cmBaseColor; 
     }cmImage.updatePixels();
+  }//+++
+  
+  /**
+   * also constructs a PImage.<br>
+   * default size is `8 x 8`.<br>
+   */
+  public EcImage(){
+    this(8, 8);
   }//+++
   
   //===

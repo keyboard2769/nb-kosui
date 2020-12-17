@@ -345,7 +345,7 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * in the form of `[???:???]`.<br>
+   * in the form of `[k:v]`.<br>
    * @param pxTag must have something
    * @param pxValue can be anything
    * @return ##
@@ -379,7 +379,23 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * in the form of `(0000:0000)`
+   * in the form of `-k v`.<br>
+   * @param pxFlag must have something
+   * @param pxValue can be anything
+   * @return ##
+   */
+  static public final
+  String ccPackupFlag(String pxFlag, Object pxValue){
+    if(!VcConst.ccIsValidString(pxFlag)){return "";}
+    StringBuilder lpRes=new StringBuilder("-");
+    lpRes.append(pxFlag);
+    lpRes.append(' ');
+    lpRes.append(pxValue==null?"<null>":pxValue.toString());
+    return lpRes.toString();
+  }//+++
+  
+  /**
+   * in the form of `(0000x0000)`
    * @param pxPoleA like width or something
    * @param pxPoleB like height or something
    * @return ##

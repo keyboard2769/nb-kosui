@@ -17,6 +17,11 @@
 
 package kosui.ppplocalui;
 
+import kosui.pppmodel.McConst;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcNumericUtility;
+import processing.data.XML;
+
 /**
  * a shape don't react at user, but it is a component. <br>
  * and it always lies under elements. <br>
@@ -36,13 +41,36 @@ public class EcShape extends EcComponent{
   }//..!
   
   /**
-   * 
-   * @param pxW
-   * @param pxH 
+   * ##
+   * @param pxW ##
+   * @param pxH ##
    */
   public EcShape(int pxW, int pxH){
     super();
     ccSetSize(pxW, pxH);
+  }//..!
+  
+  public EcShape(XML pxSVGRepresentation){
+    super();
+    if(pxSVGRepresentation==null){return;}
+    VcConst.ccLogln("EcShape(XML) $ parse",pxSVGRepresentation.format(0));
+    int lpX = VcNumericUtility.ccParseIntegerString(
+      pxSVGRepresentation.getString("x", "8")
+    );
+    int lpY = VcNumericUtility.ccParseIntegerString(
+      pxSVGRepresentation.getString("y", "8")
+    );
+    int lpW = VcNumericUtility.ccParseIntegerString(
+      pxSVGRepresentation.getString("width", "8")
+    );
+    int lpH = VcNumericUtility.ccParseIntegerString(
+      pxSVGRepresentation.getString("height", "8")
+    );
+    
+    ccSetBaseColor(EcConst.C_BLUE);
+    
+    ccSetBound(lpX, lpY, lpW, lpH);
+    VcConst.ccLogln("EcShape(XML) $ got",super.toString());
   }//..!
   
   //==

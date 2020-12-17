@@ -425,9 +425,9 @@ public class EcRect extends EcPoint{
   @Override public String toString() {
     StringBuilder lpBuilder = new StringBuilder();
     lpBuilder.append(super.toString());
-    lpBuilder.append("|");
-    lpBuilder.append(VcStringUtility.ccPackupPairedTag("w", cmW));
-    lpBuilder.append(VcStringUtility.ccPackupPairedTag("h", cmH));
+    lpBuilder.append(' ');
+    lpBuilder.append(VcStringUtility.ccPackupFlag("w", cmW));
+    lpBuilder.append(VcStringUtility.ccPackupFlag("h", cmH));
     return lpBuilder.toString();
   }//+++
   

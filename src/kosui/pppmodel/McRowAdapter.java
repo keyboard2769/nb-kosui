@@ -29,7 +29,7 @@ import processing.data.TableRow;
  */
 public class McRowAdapter implements TableRow{
   
-  private static String pbEmptyRepresentation = "?";
+  private static String pbEmptyRepresentation = "<?e>";
   
   /**
    * the one get returned if not got overridden.

@@ -27,10 +27,12 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import javax.xml.parsers.ParserConfigurationException;
 import kosui.ppplogic.ZcPLC;
 import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
+import org.xml.sax.SAXException;
 import processing.data.XML;
 import processing.data.Table;
 
@@ -190,6 +192,27 @@ public final class McFactory {
   //=== XML 
   
   //[think_again]::public static final XML ccCreaEmptyXML(String ...
+  
+  /**
+   * alias to `XML.parse(String)` and swallwo exception for you
+   * @param pxXMLRepresentation ##
+   * @return ##
+   */
+  public static final
+  XML ccParseXML(String pxXMLRepresentation){
+    XML lpRes;
+    try {
+      lpRes = XML.parse(pxXMLRepresentation);
+    } catch (Exception e){
+      VcConst.ccErrln("McFactory.ccParseXML $ abort", e.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){
+      return new XML("null");
+    }else{
+      return lpRes;
+    }//..?
+  }//+++
   
   /**
    * ##[to_fill]::

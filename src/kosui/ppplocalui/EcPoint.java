@@ -86,6 +86,16 @@ public class EcPoint {
   }//+++
   
   /**
+   * ##
+   * @param pxX ##
+   * @param pxY ##
+   */
+  public final void ccSetUnlimittedLocation(int pxX, int pxY){
+    cmX = pxX;
+    cmY = pxY;
+  }//+++
+  
+  /**
    * simply add current value with offset
    * @param pxOffsetX #
    * @param pxOffsetY #
@@ -119,9 +129,10 @@ public class EcPoint {
   @Override public String toString() {
     StringBuilder lpBuilder = new StringBuilder();
     lpBuilder.append(super.toString());
-    lpBuilder.append("::");
-    lpBuilder.append(VcStringUtility.ccPackupPairedTag("x", cmX));
-    lpBuilder.append(VcStringUtility.ccPackupPairedTag("y", cmY));
+    lpBuilder.append('$');
+    lpBuilder.append(' ');
+    lpBuilder.append(VcStringUtility.ccPackupFlag("x", cmX));
+    lpBuilder.append(VcStringUtility.ccPackupFlag("y", cmY));
     return lpBuilder.toString();
   }//+++
   

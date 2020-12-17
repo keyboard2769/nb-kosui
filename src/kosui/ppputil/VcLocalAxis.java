@@ -17,11 +17,8 @@
 
 package kosui.ppputil;
 
+import kosui.ppplocalui.EcPoint;
 import processing.core.PApplet;
-import static processing.core.PApplet.nf;
-import static processing.core.PConstants.LEFT;
-import static processing.core.PConstants.RIGHT;
-import static processing.core.PConstants.TOP;
 
 /**
  * <pre>
@@ -51,6 +48,8 @@ public final class VcLocalAxis {
     cmAnchorX=0,
     cmAnchorY=0
   ;//...
+  
+  private EcPoint cmTransformedMouse = null;
   
   /**
    * <pre>
@@ -100,6 +99,28 @@ public final class VcLocalAxis {
     cmIsEnabled=pxStatus;
   }//+++
   
+  /**
+   * will get shown on east south point
+   * @param pxStatus ##
+   */
+  public final void ccSetTransformed(boolean pxStatus){
+    if(pxStatus){
+      cmTransformedMouse=new EcPoint(0, 0);
+    }else{
+      cmTransformedMouse=null;
+    }//..?
+  }//+++
+  
+  /**
+   * ##
+   * @param pxX ##
+   * @param pxY ##
+   */
+  public final void ccSetTransformedMosuePoint(int pxX, int pxY){
+    if(cmTransformedMouse==null){return;}
+    cmTransformedMouse.ccSetUnlimittedLocation(pxX, pxY);
+  }//+++
+  
   //===
   
   private void ssUpdate(){
@@ -125,19 +146,39 @@ public final class VcLocalAxis {
     if(lpHasAnchor){cmOwner.rect(cmAnchorX,cmAnchorY,lpWidth,lpHeight);}
     cmOwner.noStroke();
     
-    //-- info
+    //-- info 
+    
+    //-- info ** pre
     cmOwner.fill(cmAxisColor);
-    String lpMouse=nf(lpMouseX,3)+":"+nf(lpMouseY,3);
-    String lpSize=nf(lpWidth,3)+":"+nf(lpHeight,3);
-    cmOwner.text(lpMouse,lpMouseX+2,lpMouseY-14);
-    cmOwner.textAlign(RIGHT, TOP);
-    cmOwner.text(lpSize,lpMouseX-2,lpMouseY+4);
+    
+    //-- info ** draw ** mosue
+    String lpMouse=VcStringUtility.ccPackupDimensionValue(lpMouseX, lpMouseY);
+    cmOwner.textAlign(PApplet.LEFT, PApplet.BOTTOM);
+    cmOwner.text(lpMouse,lpMouseX+2,lpMouseY-2);
+    
+    //-- info ** draw ** select
     if(lpHasAnchor){
-      String lpAnchor=nf(cmAnchorX,3)+":"+nf(cmAnchorY,3);
+      cmOwner.textAlign(PApplet.RIGHT, PApplet.TOP);
+      String lpSize=VcStringUtility
+        .ccPackupDimensionValue(lpWidth, lpHeight);
+      cmOwner.text(lpSize,lpMouseX-2,lpMouseY+4);
+      String lpAnchor=VcStringUtility
+        .ccPackupDimensionValue(cmAnchorX, cmAnchorY);
       cmOwner.text(lpAnchor,lpMouseX-2,lpMouseY-14);
     }//..?
-    cmOwner.textAlign(LEFT, TOP);
-  
+    
+    //-- info ** draw ** transform
+    if(cmTransformedMouse!=null){
+      cmOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+      String lpTransformed=VcStringUtility.ccPackupDimensionValue(
+        cmTransformedMouse.ccGetX(),
+        cmTransformedMouse.ccGetY()
+      );cmOwner.text(lpTransformed,lpMouseX+2,lpMouseY+2);
+    }//..?
+    
+    //-- always
+    cmOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+    
   }//+++
   
   /**
@@ -145,6 +186,18 @@ public final class VcLocalAxis {
    * should be called inside draw()<br>
    */
   static public void ccUpdate(){
+    self.ssUpdate();
+  }//+++
+  
+  /**
+   * <b>MUST BE INITIATED</b><br>
+   * should be called inside draw()<br>
+   * the axis him self does NOT calcualte transformation.<br>
+   * @param pxTransformedX
+   * @param pxTransformedY 
+   */
+  static public void ccUpdate(int pxTransformedX, int pxTransformedY){
+    self.ccSetTransformedMosuePoint(pxTransformedX, pxTransformedY);
     self.ssUpdate();
   }//+++
   
