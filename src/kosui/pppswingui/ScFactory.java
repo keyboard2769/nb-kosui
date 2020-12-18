@@ -338,7 +338,7 @@ public final class ScFactory {
    * ##
    * @param pxTitle #
    * @param pxActionCommand #
-   * @param pxMnemonicKeyCokde #
+   * @param pxMnemonicKeyCokde `[0-512]`
    * @return #
    */
   public static final JMenuItem ccCreateMenuItem(
@@ -346,7 +346,9 @@ public final class ScFactory {
   ){
     JMenuItem lpRes = new JMenuItem(pxTitle);
     lpRes.setActionCommand(pxActionCommand);
-    lpRes.setMnemonic(pxMnemonicKeyCokde);
+    if(  (pxMnemonicKeyCokde>=  0)
+       &&(pxMnemonicKeyCokde<=512)
+    ){lpRes.setMnemonic(pxMnemonicKeyCokde);}//+++
     return lpRes;
   }//+++
   
@@ -390,6 +392,22 @@ public final class ScFactory {
     if(pxOwner!=null){pxOwner.add(lpRes);}//..?
     if(pxTrigger!=null){VcSwingCoordinator.ccRegisterAction(lpRes, pxTrigger);}
     return lpRes;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxTitle ##
+   * @param pxActionCommand ##
+   * @param pxMnemonicKeyCokde ##
+   * @param pxTrigger ##
+   * @return ##
+   */
+  public static final JMenuItem ccCreateMenuItem(
+    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde, 
+    EiTriggerable pxTrigger
+  ){
+    return ccCreateMenuItem
+      (pxTitle, pxActionCommand, pxMnemonicKeyCokde, null, pxTrigger);
   }//+++
   
   //=== input UI ** combo box

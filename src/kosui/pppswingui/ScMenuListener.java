@@ -32,12 +32,20 @@ public class ScMenuListener extends MouseAdapter{
   
   /**
    * ##
-   * @param pxPop the menu root for pop showing
-   * @param pxDoing the action for `button one` on release
+   * @param pxPop the menu root for context menu to get popped up
+   * @param pxClick the action for `button one` on release
    */
-  public ScMenuListener(JPopupMenu pxPop, EiTriggerable pxDoing) {
+  public ScMenuListener(JPopupMenu pxPop, EiTriggerable pxClick) {
     cmPop = pxPop;
-    cmMainDoing = pxDoing;
+    cmMainDoing = pxClick;
+  }//+++
+
+  /**
+   * ##
+   * @param pxPop the menu root for pop showing
+   */
+  public ScMenuListener(JPopupMenu pxPop) {
+    this(pxPop, null);
   }//+++
   
   //===
