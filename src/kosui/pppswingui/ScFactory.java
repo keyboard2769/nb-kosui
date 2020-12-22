@@ -339,36 +339,21 @@ public final class ScFactory {
    * @param pxTitle #
    * @param pxActionCommand #
    * @param pxMnemonicKeyCokde `[0-512]`
+   * @param pxTrigger ##
    * @return #
    */
   public static final JMenuItem ccCreateMenuItem(
-    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde
+    String pxTitle, String pxActionCommand,
+    int pxMnemonicKeyCokde,
+    EiTriggerable pxTrigger
   ){
     JMenuItem lpRes = new JMenuItem(pxTitle);
     lpRes.setActionCommand(pxActionCommand);
     if(  (pxMnemonicKeyCokde>=  0)
        &&(pxMnemonicKeyCokde<=512)
     ){lpRes.setMnemonic(pxMnemonicKeyCokde);}//+++
-    return lpRes;
-  }//+++
-  
-  /**
-   * ##
-   * @param pxTitle #
-   * @param pxActionCommand #
-   * @param pxMnemonicKeyCokde #
-   * @param pxOwner #
-   * @return #
-   */
-  public static final JMenuItem ccCreateMenuItem(
-    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde,
-    JMenu pxOwner
-  ){
-    JMenuItem lpRes = ccCreateMenuItem(
-      pxTitle, pxActionCommand, pxMnemonicKeyCokde
-    );
-    if(pxOwner!=null){
-      pxOwner.add(lpRes);
+    if(pxTrigger!=null){
+      VcSwingCoordinator.ccRegisterAction(lpRes, pxTrigger);
     }//..?
     return lpRes;
   }//+++
@@ -378,36 +363,14 @@ public final class ScFactory {
    * @param pxTitle ##
    * @param pxActionCommand ##
    * @param pxMnemonicKeyCokde ##
-   * @param pxOwner ##
-   * @param pxTrigger ##
    * @return ##
    */
   public static final JMenuItem ccCreateMenuItem(
-    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde,
-    JMenu pxOwner, EiTriggerable pxTrigger
-  ){
-    JMenuItem lpRes = ccCreateMenuItem(
-      pxTitle, pxActionCommand, pxMnemonicKeyCokde
-    );
-    if(pxOwner!=null){pxOwner.add(lpRes);}//..?
-    if(pxTrigger!=null){VcSwingCoordinator.ccRegisterAction(lpRes, pxTrigger);}
-    return lpRes;
-  }//+++
-  
-  /**
-   * ##
-   * @param pxTitle ##
-   * @param pxActionCommand ##
-   * @param pxMnemonicKeyCokde ##
-   * @param pxTrigger ##
-   * @return ##
-   */
-  public static final JMenuItem ccCreateMenuItem(
-    String pxTitle, String pxActionCommand, int pxMnemonicKeyCokde, 
-    EiTriggerable pxTrigger
+    String pxTitle, String pxActionCommand,
+    int pxMnemonicKeyCokde
   ){
     return ccCreateMenuItem
-      (pxTitle, pxActionCommand, pxMnemonicKeyCokde, null, pxTrigger);
+      (pxTitle, pxActionCommand, pxMnemonicKeyCokde, null);
   }//+++
   
   //=== input UI ** combo box

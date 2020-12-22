@@ -42,7 +42,6 @@ public final class ScToolBarWindow extends JWindow {
   private JToolBar cmBar;
   private JMenuItem cmHelpMI, cmQuitMI;
   private JTextField cmRunPL;
-  private ScMenuListener cmMenuListener;
 
   //===
   
@@ -62,10 +61,13 @@ public final class ScToolBarWindow extends JWindow {
    * @param pxTitle will be show at head
    * @param pxListener action listener
    */
-  public final void ccInit
-    (String pxTitle, ActionListener pxListener)
-  { final ScToolBarWindow lpWindow = this;
+  public final
+  void ccInit(String pxTitle, ActionListener pxListener){ 
+    
+    //-- selfie
+    final ScToolBarWindow lpWindow = this;
   
+    //-- pre
     Container lpContentPane = lpWindow.getContentPane();
     if(lpContentPane instanceof JPanel){
       ((JPanel)lpContentPane).setBorder(BorderFactory.createEtchedBorder());
@@ -88,25 +90,13 @@ public final class ScToolBarWindow extends JWindow {
     JPopupMenu lpPop = new JPopupMenu();
     lpPop.add(cmHelpMI);
     lpPop.add(cmQuitMI);
-    cmMenuListener=new ScMenuListener(lpPop,null);
-
+    ScPopupAdaptor lpPopper=new ScPopupAdaptor(lpPop,null);
+    ScDragAnchor lpDragger = new ScDragAnchor(lpWindow);
     cmTitle = new JLabel(pxTitle);
-    cmTitle.addMouseListener(cmMenuListener);
-    cmTitle.addMouseMotionListener(new MouseMotionAdapter() {
-      @Override public void mouseDragged(MouseEvent e) {
-        if(cmMenuListener.ccIsAnchorCleared()){
-          cmMenuListener.ccSetAnchor(
-            e.getXOnScreen()-lpWindow.getLocationOnScreen().x,
-            e.getYOnScreen()-lpWindow.getLocationOnScreen().y
-          );
-        }//..?
-        lpWindow.setLocation(
-          e.getXOnScreen()-cmMenuListener.ccGetAnchorX(), 
-          e.getYOnScreen()-cmMenuListener.ccGetAnchorY()
-        );
-      }//+++
-    });
-
+    cmTitle.addMouseListener(lpPopper);
+    cmTitle.addMouseListener(lpDragger);
+    cmTitle.addMouseMotionListener(lpDragger);
+    
     //-- setup
     cmBar.add(cmTitle);
     cmBar.add(cmRunPL);

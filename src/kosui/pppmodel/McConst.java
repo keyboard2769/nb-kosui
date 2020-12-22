@@ -499,7 +499,19 @@ public final class McConst {
   }//+++
   
   /**
-   * ##
+   * alias to VcStringUtility.ccExtractFileName
+   * @param pxFile no null
+   * @return never null
+   */
+  public static final String ccExtractFileName(File pxFile){
+    if(pxFile==null){return "";}
+    return VcStringUtility
+      .ccNulloutString(VcStringUtility
+        .ccExtractFileName(pxFile.getName()));
+  }//+++
+  
+  /**
+   * alias to VcStringUtility.ccExtractFileExtension
    * @param pxFile no null
    * @return never null
    */

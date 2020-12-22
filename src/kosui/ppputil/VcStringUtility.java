@@ -169,7 +169,20 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * swallow those error stuff for you
+   * ##
+   * @param pxLine ##
+   * @param pxOrDefault ##
+   * @return default if null passed
+   */
+  public static final
+  String ccNulloutString(String pxLine, String pxOrDefault){
+    if(pxLine==null){return pxOrDefault;}
+    else{return pxLine;}
+  }//+++
+  
+  /**
+   * in form of `abc.efg`.<br>
+   * swallow those error stuff for you.<br>
    * @param pxName separated by the dot
    * @return the one before the first dot
    */
@@ -186,7 +199,8 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * swallow those error stuff for you
+   * in form of `abc.efg`.<br>
+   * swallow those error stuff for you.<br>
    * @param pxName separated by the dot
    * @return the one after the last dot
    */
@@ -246,6 +260,18 @@ public final class VcStringUtility {
       if(i%pxCharCount==0 && i!=0){lpBuilder.append('\n');}
     }//..~
     return lpBuilder.toString();
+  }//+++
+  
+  /**
+   * just replacing all back-slash-r and black-slash-n.<br>
+   * previously called `return-killer`.<br>
+   * @param pxSource #
+   * @return #
+   */
+  static public final String ccFlat(String pxSource){
+    if(!VcConst.ccIsValidString(pxSource)){return pxSource;}
+    String lpRes = pxSource.replaceAll("\\r", "");
+    return lpRes.replaceAll("\\n", "");
   }//+++
   
   /**

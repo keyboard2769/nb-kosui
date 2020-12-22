@@ -21,9 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Frame;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -39,7 +36,6 @@ public class ScTitledWindow extends JWindow {
   private JLabel cmTitle;
   private boolean cmHasCenter;
   private boolean cmHasEnd;
-  private int cmAnchorX, cmAnchorY;
   private boolean cmIsFinished;
 
   //=== 
@@ -55,8 +51,6 @@ public class ScTitledWindow extends JWindow {
     cmHasCenter=false;
     cmHasEnd=false;
     cmIsFinished=false;
-    cmAnchorX=0;
-    cmAnchorY=0;
   }//++!
   
   /**
@@ -67,7 +61,7 @@ public class ScTitledWindow extends JWindow {
   }//++!
 
   /**
-   * 
+   * ##
    * @param pxTitle a drag able dummy JLabel serve as title bar
    */
   public final void ccInit(String pxTitle){
@@ -75,43 +69,24 @@ public class ScTitledWindow extends JWindow {
   }//++!
 
   /**
-   * 
+   * ##
    * @param pxTitle a drag able dummy JLabel serve as title bar
    * @param pxColor for content pane
    */
   public final void ccInit(String pxTitle, Color pxColor){
     final JWindow lpWindow=this;
-
     Container lpContentPane = lpWindow.getContentPane();
     if(lpContentPane instanceof JPanel){
       ((JPanel)lpContentPane).setBackground(pxColor);
       ((JPanel)lpContentPane).setBorder(BorderFactory.createEtchedBorder());
     }//..?
-
+    ScDragAnchor lpDragger = new ScDragAnchor(lpWindow);
     cmTitle= new JLabel(pxTitle);
     cmTitle.setForeground(Color.WHITE);
-    cmTitle.addMouseListener(new MouseAdapter() {
-      @Override public void mouseReleased(MouseEvent pxE){
-        cmAnchorX=0;
-        cmAnchorY=0;
-      }//+++
-    });
-    cmTitle.addMouseMotionListener(new MouseMotionAdapter() {
-      @Override public void mouseDragged(MouseEvent e) {
-        if(cmAnchorX==0 && cmAnchorY==0){
-          cmAnchorX=e.getXOnScreen()-lpWindow.getLocationOnScreen().x;
-          cmAnchorY=e.getYOnScreen()-lpWindow.getLocationOnScreen().y;
-        }//..?
-        lpWindow.setLocation(
-          e.getXOnScreen()-cmAnchorX, 
-          e.getYOnScreen()-cmAnchorY
-        );
-        lpWindow.toFront();
-      }//+++
-    });
-    
+    cmTitle.setBorder(BorderFactory.createEtchedBorder());
+    cmTitle.addMouseListener(lpDragger);
+    cmTitle.addMouseMotionListener(lpDragger);
     lpContentPane.add(cmTitle,BorderLayout.PAGE_START);
-    
   }//++!
   
   /**
@@ -229,5 +204,16 @@ public class ScTitledWindow extends JWindow {
   public final boolean ccIsFinished(){
     return cmIsFinished;
   }//+++
-
+  
+  //=== action export
+  
+  /**
+   * for animated thread use.
+   */
+  public final Runnable fpVisibilityFlipping = new Runnable() {
+    @Override public void run(){
+      ccSetIsVisible();
+    }//+++
+  };//***
+  
 }//***eof

@@ -57,6 +57,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import processing.core.PApplet;
 
@@ -326,22 +327,20 @@ public class ScConst {
    * there will never be a version does invoke later
    * for you because you should decide if invoke and wait is necessary
    * or not and when and how to use the returned string.<br>
+   * @param pxOwner if null passed it is the default one will get passed
    * @param pxBrief a short message you describe about what you want
    * @param pxDefault will be in the input box before getting input
-   * @param pxOwner if null passed it is the default one will get passed
    * @return may be some arbitrary tag
    */
   public static final
   String ccGetStringByInputBox(
-    String pxBrief, String pxDefault, JComponent pxOwner
+    JComponent pxOwner, String pxBrief, String pxDefault
   ){
-    if(!ccIsEDT()){return C_M_BLOCK;}
-    String lpRes=JOptionPane.showInputDialog(
+    if(!ccIsEDT()){return null;}
+    return JOptionPane.showInputDialog(
       pxOwner==null?cmOwner:pxOwner,
       pxBrief, pxDefault
     );
-    if(!VcConst.ccIsValidString(lpRes)){return C_M_CANCEL;}
-    return lpRes;
   }//+++
   
   /**
@@ -356,7 +355,44 @@ public class ScConst {
    */
   public static final
   String ccGetStringByInputBox(String pxBrief, String pxDefault){
-    return ccGetStringByInputBox(pxBrief, pxDefault, null);
+    return ccGetStringByInputBox(null,pxBrief, pxDefault);
+  }//+++
+  
+  /**
+   * <pre>
+   * will get blocked out from event dispatch thread.
+   * this thing iterates through the whole list to find the index.
+   * if you are not confortable with those overheads just don't use this one.
+   * </pre>
+   * @param pxOwner the first parameter to JOptionPane.showInputDialog
+   * @param pxBrief a short message you describe about what you want
+   * @param pxList supposedly a string array but you can pass anything
+   * @return #
+   */
+  public static final
+  int ccGetIndexFromComboBox(Component pxOwner, String pxBrief, Object[] pxList){
+    
+    //-- pre check
+    if(pxList==null){return -1;}
+    if(!ccIsEDT()){return 0;}
+    int lpLength=pxList.length;
+    if(lpLength<=1  || pxList.length>9){return 0;}
+    
+    //-- getting
+    Object lpBuf = JOptionPane.showInputDialog(
+      pxOwner==null?cmOwner:pxOwner,
+      pxBrief,"Select...",//[later]::localization!!
+      JOptionPane.PLAIN_MESSAGE,null,pxList,pxList[0]
+    );
+    if(lpBuf==null){return -1;}
+    
+    //-- matching
+    int lpIndex;
+    for(lpIndex=0;lpIndex<lpLength;lpIndex++){
+      if(lpBuf.equals(pxList[lpIndex])){break;}
+    }//..?
+    return lpIndex;
+    
   }//+++
   
   /**
@@ -371,28 +407,7 @@ public class ScConst {
    */
   public static final
   int ccGetIndexFromComboBox(String pxBrief, Object[] pxList){
-    
-    //-- pre check
-    if(pxList==null){return -1;}
-    if(!ccIsEDT()){return 0;}
-    int lpLength=pxList.length;
-    if(lpLength<=1  || pxList.length>9){return 0;}
-    
-    //-- getting
-    Object lpBuf = JOptionPane.showInputDialog(
-      cmOwner,
-      pxBrief,"Select...",//[later]::localization!!
-      JOptionPane.PLAIN_MESSAGE,null,pxList,pxList[0]
-    );
-    if(lpBuf==null){return -1;}
-    
-    //-- matching
-    int lpIndex;
-    for(lpIndex=0;lpIndex<lpLength;lpIndex++){
-      if(lpBuf.equals(pxList[lpIndex])){break;}
-    }//..?
-    return lpIndex;
-    
+    return ccGetIndexFromComboBox(null, pxBrief, pxList);
   }//+++
   
   /**
@@ -755,27 +770,39 @@ public class ScConst {
    */
   public static final void ccApplyLookAndFeel(int pxIndex, boolean pxRead){
     
-    String lpTarget=UIManager.getCrossPlatformLookAndFeelClassName();
-    
-    //-- getting
-    if(pxIndex>=0){
-      UIManager.LookAndFeelInfo[] lpInfos=UIManager.getInstalledLookAndFeels();
-      if(pxRead){
-        System.out.println("--installed lookNfeel: 0->");
-        for(UIManager.LookAndFeelInfo it : lpInfos){
-          System.out.println(it.getClassName());
-        }//..~
-      }//..?
-      int lpFixedIndex=pxIndex>=lpInfos.length?lpInfos.length-1:pxIndex;
-      lpTarget=lpInfos[lpFixedIndex].getClassName();
+    //-- check in
+    if(pxIndex<0){
+      VcConst.ccErrln("ScConst.ccApplyLookAndFeel $ abort", "ab101");
+      return;
     }//..?
     
-    //-- applying
+    //-- get array
+    UIManager.LookAndFeelInfo[] lpDesInfo=UIManager.getInstalledLookAndFeels();
+    if(!VcArrayUtility.ccIsValidArray(lpDesInfo, 1)){
+      VcConst.ccErrln("ScConst.ccApplyLookAndFeel $ abort", "ab102");
+      return;
+    }//..?
+    if(pxRead){
+      VcConst.ccPrintln(
+        "ScConst.ccApplyLookAndFeel $ read up",
+        "installed look n feel"
+      );
+      int lpCount = 0;
+      for(UIManager.LookAndFeelInfo ofInfo : lpDesInfo){
+        VcConst.ccPrintln(String.format(
+          "[%d] %s", lpCount,ofInfo.getClassName()
+        ));lpCount++;
+      }//..~
+    }//..?
+    
+    //-- apply
+    String lpTarget
+      =lpDesInfo[VcArrayUtility.ccFixIndex(lpDesInfo, pxIndex)]
+        .getClassName();
     try{
       UIManager.setLookAndFeel(lpTarget);
     }catch(Exception e){
-      System.err.println("kosui.ScFactory.ccApplyLookAndFeel::"
-        +e.getMessage());
+      VcConst.ccErrln("ScConst.ccApplyLookAndFeel $ caught", e.getMessage());
     }//..?
     
   }//+++

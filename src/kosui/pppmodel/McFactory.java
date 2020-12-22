@@ -27,12 +27,11 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import javax.xml.parsers.ParserConfigurationException;
 import kosui.ppplogic.ZcPLC;
 import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
-import org.xml.sax.SAXException;
+import processing.core.PApplet;
 import processing.data.XML;
 import processing.data.Table;
 
@@ -180,7 +179,30 @@ public final class McFactory {
     return null;
   }//+++
   
-  //[todo]::ccSaveTextToFile(File, List<String>){...
+  /**
+   * alias to PApplet.saveStrings
+   *   and swallows exceptions for you
+   * @param pxExportFile via McConst.ccVerifyFileForSaving
+   * @param pxData via 
+   * @return 
+   */
+  public static final
+  int ccSaveTextToFile(File pxExportFile, String[] pxData){
+    final String lpAbs = "McFactory.ccSaveTextToFile $ abort";
+    if(!VcArrayUtility.ccIsValidArray(pxData,1)){
+      return VcConst.ccErrln(lpAbs, -101);
+    }//..?
+    int lpProbe = McConst.ccVerifyFileForSaving(pxExportFile);
+    if(lpProbe<0){return VcConst.ccErrln(lpAbs, -102, lpProbe);}
+    try {
+      PApplet.saveStrings(pxExportFile, pxData);
+      lpProbe=0;
+    } catch (Exception e) {
+      VcConst.ccErrln(lpAbs,e.getMessage());
+      lpProbe=-909;
+    }//..?
+    return lpProbe;
+  }//+++
   
   //=== JSON
   
@@ -190,6 +212,48 @@ public final class McFactory {
   //[plan]::int ccSaveJSONObjectToFile(File)
   
   //=== XML 
+  
+  //=== XML ** inside
+  
+  /**
+   * my style empty page as processing XML element.<br>
+   * if you are using just another markup language library, 
+   *   you can say, like:<br>
+   * <pre>
+   *   RandomHTMLType html = RandomHTMLType.parse(
+   *     McFactory.ccCreateEmptyHTMLPage(fileName).format(2)
+   *   );
+   * </pre>
+   * @param pxTitle as content if title element
+   * @return never null
+   */
+  public static final 
+  XML ccCreateEmptyHTMLPage(String pxTitle){
+    
+    //-- new
+    XML lpHtml = new XML("html");
+    XML lpHead = new XML("head");
+    XML lpMeta = new XML("meta");
+    XML lpTitle = new XML("title");
+    XML lpBody = new XML("body");
+    
+    //-- config
+    lpHtml.setString("lang", "en");
+    lpMeta.setString("charset", "UTF-8");
+    lpTitle.setContent(
+      VcStringUtility.ccNulloutString(pxTitle, "_what_title_")
+    );
+    
+    //-- pack
+    lpHead.addChild(lpTitle);
+    lpHead.addChild(lpMeta);
+    lpHtml.addChild(lpHead);
+    lpHtml.addChild(lpBody);
+    return lpHtml;
+    
+  }//+++
+  
+  //=== XML ** file io
   
   //[think_again]::public static final XML ccCreaEmptyXML(String ...
   
@@ -273,6 +337,81 @@ public final class McFactory {
   }//+++
 
   /**
+   * just a alias for XML::save to swallow exception for you
+   * @param pxXML no null
+   * @param pxFile no null
+   * @return zero if everything is okay or step code
+   */
+  public static final
+  int ccSaveXMLToFile(XML pxXML, File pxFile){
+    if(pxXML==null){return -101;}
+    if(pxFile==null){return -102;}
+    if(McConst.ccVerifyFileForSaving(pxFile, "xml")<0){return -103;}
+    int lpRes=0;
+    try {
+      pxXML.save(pxFile, "");
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      lpRes = -209;
+    }//..?
+    return lpRes;
+  }//+++
+  
+  //=== CSV
+  
+  //=== CSV ** inside
+  
+  //[think_again]::public static final Table ccCreateEmptyTable(String[] ...
+  
+  
+  //=== CSV ** file io
+  
+  /**
+   * ##
+   * @param pxODSFile ##
+   * @param pxWorksheet ##
+   * @return ##
+   */
+  public static final Table ccLoadTableFromODSFile(File pxODSFile, String pxWorksheet){
+    final String lpAbs = "kosui.pppmodel.McFactory.ccLoadTableFromODSFile $ abort";
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxODSFile, "ods");
+    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
+    String lpOption = VcConst.ccIsValidString(pxWorksheet)
+      ?("ods,worksheet="+pxWorksheet)
+      :"ods";
+    Table lpRes = null;
+    try {
+      lpRes = new Table(pxODSFile, lpOption);
+    } catch (IOException ioe){
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }
+    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
+    lpRes.setColumnTitles(lpRes.getStringRow(0));
+    return lpRes;
+  }//+++
+
+  /**
+   * ##
+   * @param pxCSVFile ##
+   * @return ##
+   */  
+  public static final Table ccLoadTableFromCSVFile(File pxCSVFile){
+    String lpAbs = "McFactory.ccLoadTableFromCSVFile $ abort";
+    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxCSVFile, "csv");
+    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
+    Table lpRes;
+    try {
+      lpRes = new Table(pxCSVFile, "header");
+    } catch (IOException ioe) {
+      System.err.println(ioe.getMessage());
+      lpRes=null;
+    }//..?
+    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
+    return lpRes;
+  }//+++
+  
+  /**
    * ##[to_fill]::
    * @param pxProjectClass ##
    * @param pxResourceIdentifier ##
@@ -319,76 +458,6 @@ public final class McFactory {
     }//..?
     return lpRes;
     
-  }//+++
-  
-  /**
-   * just a alias for XML::save to swallow exception for you
-   * @param pxXML no null
-   * @param pxFile no null
-   * @return zero if everything is okay or step code
-   */
-  public static final
-  int ccSaveXMLToFile(XML pxXML, File pxFile){
-    if(pxXML==null){return -101;}
-    if(pxFile==null){return -102;}
-    if(McConst.ccVerifyFileForSaving(pxFile, "xml")<0){return -103;}
-    int lpRes=0;
-    try {
-      pxXML.save(pxFile, "");
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
-      lpRes = -209;
-    }//..?
-    return lpRes;
-  }//+++
-  
-  //=== CSV
-  
-  //[think_again]::public static final Table ccCreateEmptyTable(String[] ...
-  
-  /**
-   * ##
-   * @param pxODSFile ##
-   * @param pxWorksheet ##
-   * @return ##
-   */
-  public static final Table ccLoadTableFromODSFile(File pxODSFile, String pxWorksheet){
-    final String lpAbs = "kosui.pppmodel.McFactory.ccLoadTableFromODSFile $ abort";
-    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxODSFile, "ods");
-    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
-    String lpOption = VcConst.ccIsValidString(pxWorksheet)
-      ?("ods,worksheet="+pxWorksheet)
-      :"ods";
-    Table lpRes = null;
-    try {
-      lpRes = new Table(pxODSFile, lpOption);
-    } catch (IOException ioe){
-      System.err.println(ioe.getMessage());
-      lpRes=null;
-    }
-    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
-    lpRes.setColumnTitles(lpRes.getStringRow(0));
-    return lpRes;
-  }//+++
-
-  /**
-   * ##
-   * @param pxCSVFile ##
-   * @return ##
-   */  
-  public static final Table ccLoadTableFromCSVFile(File pxCSVFile){
-    String lpAbs = "McFactory.ccLoadTableFromCSVFile $ abort";
-    int lpVerifyRes = McConst.ccVerifyFileForLoading(pxCSVFile, "csv");
-    if(lpVerifyRes<0){VcConst.ccErrln(lpAbs,"mk101");return null;}//..?
-    Table lpRes;
-    try {
-      lpRes = new Table(pxCSVFile, "header");
-    } catch (IOException ioe) {
-      System.err.println(ioe.getMessage());
-      lpRes=null;
-    }//..?
-    if(lpRes==null){VcConst.ccErrln(lpAbs,"mk102");return null;}//..?
-    return lpRes;
   }//+++
   
   /**

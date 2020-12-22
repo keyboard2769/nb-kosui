@@ -64,6 +64,7 @@ i know it is a nonsense name, but anyway.
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ refactor the local axis to work more closely with local transformer
 
 #### heading
 
@@ -71,6 +72,7 @@ i know it is a nonsense name, but anyway.
 
 #### last
 
+- [x] $ a new local transformer class for sketch viewport transformation
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
 - [x] $ two new class for PGraphics based composing mechanism
@@ -78,6 +80,5 @@ i know it is a nonsense name, but anyway.
 - [x] $ re-arranged ScLabel for glass pane window
 - [x] $ maybe we really need a roller class
 - [x] $ a ESC guarding mechanism!
-- [x] $ new pdf class for local ui and new print method for swing ui
 
 <hr><!--EOF-->
