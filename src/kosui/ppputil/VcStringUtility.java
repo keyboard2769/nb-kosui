@@ -141,6 +141,20 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * alias for String::endsWith to bypass null check
+   * @param pxLine ##
+   * @param pxEnd ##
+   * @return ##
+   */
+  public static final boolean ccEndWith(String pxLine, String pxEnd){
+    if(!VcConst.ccIsValidString(pxLine))
+      {return !VcConst.ccIsValidString(pxEnd);}
+    if(!VcConst.ccIsValidString(pxEnd))
+      {return !VcConst.ccIsValidString(pxLine);}
+    return pxLine.endsWith(pxEnd);
+  }//+++
+  
+  /**
    * alias for String::equals to bypass null check
    * @param pxLine ##
    * @param pxTarget ##
@@ -275,7 +289,9 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * cut the source from left
+   * cut the source from left via String::substring.<br>
+   * supposedly , say, you want
+   *   `uno_does_tree` to become `uno_` .<br>
    * @param pxSource #
    * @param pxCharCount #
    * @return substring-ed string
@@ -287,16 +303,45 @@ public final class VcStringUtility {
   }//+++
   
   /**
-   * cut the source from right
-   * @param pxSource #
-   * @param pxCharCount #
-   * @return substring-ed string
+   * cut the left side of the source line via String::replaceFirst.<br>
+   * supposedly , say, you want
+   *   `uno_does_tree` to become `_does_tree` .<br>
+   * @param pxLine ##
+   * @param pxStartWith ##
+   * @return ##
+   */
+  public static final String ccCutLeft(String pxLine, String pxStartWith){
+    if(!VcStringUtility.ccStartWith(pxLine, pxStartWith)){return pxLine;}
+    return pxLine.replaceFirst(pxStartWith, "");
+  }//+++
+  
+  /**
+   * cut the source from left via String::substring.<br>
+   * supposedly , say, you want
+   *   `uno_does_tree` to become `_tree` .<br>
+   * @param pxSource ##
+   * @param pxCharCount ##
+   * @return ##
    */
   static public final String ccRight(String pxSource, int pxCharCount){
     if(!ccIsValidString(pxSource)){return pxSource;}
     int lpLength=pxSource.length();
     if(pxCharCount<1 || pxCharCount>lpLength){return pxSource;}
     return pxSource.substring(lpLength-pxCharCount, lpLength);
+  }//+++
+  
+  /**
+   * cut the left side of the source line via VcStringUtility.ccLeft.<br>
+   * supposedly , say, you want
+   *   `uno_does_tree` to become `uno_does_` .<br>
+   * @param pxLine ##
+   * @param pxEndWith ##
+   * @return ##
+   */
+  public static final String ccCutRight(String pxLine, String pxEndWith){
+    if(!VcStringUtility.ccEndWith(pxLine, pxEndWith)){return pxLine;}
+    if(pxLine.length()<=pxEndWith.length()){return pxLine;}
+    return VcStringUtility.ccLeft(pxLine, pxLine.length()-pxEndWith.length());
   }//+++
   
   /**

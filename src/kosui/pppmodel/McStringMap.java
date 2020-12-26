@@ -140,6 +140,27 @@ public class McStringMap {
   
   /**
    * ##
+   * @param pxKey ##
+   * @return ##
+   */
+  public final boolean ccContains(String pxKey){
+    return cmMap.containsKey(pxKey);
+  }//+++
+  
+  /**
+   * ##
+   * @param pxKey ##
+   * @param pxVal ##
+   * @return ##
+   */
+  public final boolean ccMatchs(String pxKey, String pxVal){
+    if(!cmMap.containsKey(pxKey)){return false;}
+    String lpVal = cmMap.get(pxKey);
+    return VcStringUtility.ccEquals(lpVal, pxVal);
+  }//+++
+  
+  /**
+   * ##
    * @param pxKey in the form of `--a-b-c-d` better no special letter
    * @param pxOrDefault #
    * @return #
@@ -300,6 +321,9 @@ public class McStringMap {
   
   //=== entry
 
+  /**
+   * {@inheritDoc }
+   */
   @Override public String toString() {
     return String.format(
       "%s $ -key %s -size %d",
@@ -309,12 +333,16 @@ public class McStringMap {
   
   //=== util
   
+  /**
+   * loop thru given map via VcConst.ccPrintln. <br>
+   * @param pxMap no null
+   */
   public static final void ccPrintln(McStringMap pxMap){
     if(pxMap==null){return;}
     VcConst.ccPrintln("McStringMap.ccPrintln $ enter", pxMap.cmKey);
-    for(String it : pxMap.ccGetKeySet()){
-      System.out.println(String.format(
-        "[%s:%s]", it,pxMap.ccGetValue(it, "?")
+    for(String ofKey : pxMap.ccGetKeySet()){
+      VcConst.ccPrintln(
+        String.format("[%s:%s]", ofKey,pxMap.ccGetValue(ofKey, "?")
       ));
     }//..?
     VcConst.ccPrintln("McStringMap.ccPrintln $ exit");

@@ -75,12 +75,28 @@ public final class VcStampUtility {
   //=== format
 
   /**
+   * <div>
+   *   replace predefined acronyms with formatted string
+   *     via `PApplet.%time_functions%` thru `PApplet.nf()`.
+   * </div>
+   * <div>acceptable form acronyms : </div>
+   * <dl>
+   *   <dt>YYYY:</dt><dd>as four digital year</dd>
+   *   <dt>yy:</dt><dd>as two digital year</dd>
+   *   <dt>MM:</dt><dd>as two digital month</dd>
+   *   <dt>dd:</dt><dd>as for digital day</dd>
+   *   <dt>hh:</dt><dd>as for digital hour</dd>
+   *   <dt>mm:</dt><dd>as for digital minute</dd>
+   *   <dt>ss:</dt><dd>as for digital second</dd>
+   * </dl>
    * @param pxForm like:yy-MM-dd hh:mm'ss
-   * @return formatted
+   * @return replaced one or given form it self if not valid string
    */
   synchronized public static final String ccTimeStamp(String pxForm){
     if(!VcConst.ccIsValidString(pxForm)){return pxForm;}
-    String lpRes=pxForm.replaceFirst("yy",PApplet.nf(PApplet.year()%2000,2));
+    String lpRes = pxForm.trim();
+    lpRes=lpRes.replaceFirst("YYYY",PApplet.nf(PApplet.year(),4));
+    lpRes=lpRes.replaceFirst("yy",PApplet.nf(PApplet.year()%2000,2));
     lpRes=lpRes.replaceFirst("MM",PApplet.nf(PApplet.month(),2));
     lpRes=lpRes.replaceFirst("dd",PApplet.nf(PApplet.day(),2));
     lpRes=lpRes.replaceFirst("hh",PApplet.nf(PApplet.hour(),2));
