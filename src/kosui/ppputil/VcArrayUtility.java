@@ -18,6 +18,7 @@
 package kosui.ppputil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -231,6 +232,8 @@ public final class VcArrayUtility {
   
   //=== collection 
   
+  //=== collection ** to array
+  
   //[plan]::boolean[]::ccToBooleanArray(List<Boolean> pxList){...
   //[plan]::int[]::ccToIntegerArray(List<Integer> pxList){...
   //[plan]::float[]::ccToFloatArray(List<Float> pxList){...
@@ -241,19 +244,91 @@ public final class VcArrayUtility {
     return pxList.toArray(new String[]{});
   }//+++
   
+  //=== collection ** put all
+  
   /**
-   * tweeked from Apache Commons Collection v4 for fast initiating.
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * @param <T> ##
+   * @param pxList no null but must be empty
+   * @param pxDesValue no null no empty
+   * @return the given list
+   */
+  public static <T extends Object>
+  List<T> ccPutAllToList(List<T> pxList, Object[] pxDesValue){
+    
+    //-- check in
+    if(pxList == null){return pxList;}
+    if(!pxList.isEmpty()){
+      VcConst.ccLogln(
+        "VcArrayUtility.ccPutAllToList $ abort",
+        "fulfilled container is not acceptable"
+      );
+      return null;
+    }//..?
+    if(!ccIsValidArray(pxDesValue)){return null;}
+    
+    //-- loop over
+    for (int i = 0; i < pxDesValue.length;) {
+      pxList.add((T)pxDesValue[i++]);
+    }//..?
+    
+    //--
+    return pxList;
+    
+  }//+++
+  
+  /**
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * @param <T> ##
+   * @param pxSet no null but must be empty
+   * @param pxDesValue no null no empty
+   * @return the given set
+   */
+  public static <T extends Object>
+  Set<T> ccPutAllToSet(Set<T> pxSet, Object[] pxDesValue){
+    
+    //-- check in
+    if(pxSet == null){return pxSet;}
+    if(!pxSet.isEmpty()){
+      VcConst.ccLogln(
+        "VcArrayUtility.ccPutAllToSet $ abort",
+        "fulfilled container is not acceptable"
+      );
+      return null;
+    }//..?
+    if(!ccIsValidArray(pxDesValue)){return null;}
+    
+    //-- loop over
+    for (int i = 0; i < pxDesValue.length;) {
+      pxSet.add((T)pxDesValue[i++]);
+    }//..?
+    
+    //--
+    return pxSet;
+    
+  }//+++
+  
+  /**
+   * tweeked from Apache Commons Collection v4 for fast initiating.<br>
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
    * @param <K> ##
    * @param <V> ##
-   * @param pxMap no null
+   * @param pxMap no null but must empty
    * @param pxDesEntry no null no empty
-   * @return 
+   * @return the given map
    */
   public static <K extends Object, V extends Object>
   Map<K, V> ccPutAllToMap(Map<K, V> pxMap, Object[]pxDesEntry) {
     
     //-- check in
     if(pxMap == null){return pxMap;}
+    if(!pxMap.isEmpty()){
+      VcConst.ccLogln(
+        "VcArrayUtility.ccPutAllToMap $ abort",
+        "fulfilled container is not acceptable"
+      );
+      return null;
+    }//..?
     if(pxDesEntry == null || pxDesEntry.length == 0){return pxMap;}
     
     //-- loop over
@@ -281,12 +356,56 @@ public final class VcArrayUtility {
     }//..?
     
     //-- report
-    if(lpRes < 0){VcConst.ccErrln(
-      ".ccPutAllToMap $ abort at :",
-      Integer.toString(Math.abs(lpRes)
-    ));}
+    if(lpRes < 0){
+      VcConst.ccErrln(
+        "VcArrayUtility.ccPutAllToMap $ abort for bad entry array at :",
+        Integer.toString(Math.abs(lpRes))
+      );
+    }//..?
     return pxMap;
     
+  }//+++
+  
+  //=== collection ** unmodifiable
+  
+  /**
+   * alias for Collections.unmodifiableList via VcArrayUtility.ccPutAllToList.<br>
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * @param <T> ##
+   * @param pxList no null but must be empty
+   * @param pxDesValue no null no empty
+   * @return the given List
+   */
+  public static <T extends Object>
+  List<T> ccUnmodifiableList(List<T> pxList, Object[] pxDesValue){
+    return Collections.unmodifiableList(ccPutAllToList(pxList, pxDesValue));
+  }//+++
+  
+  /**
+   * alias for Collections.unmodifiableSet via VcArrayUtility.ccPutAllToSet.<br>
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * @param <T> ##
+   * @param pxSet no null but must be empty
+   * @param pxDesValue no null no empty
+   * @return the given set
+   */
+  public static <T extends Object>
+  Set<T> ccUnmodifiableSet(Set<T> pxSet, Object[] pxDesValue){
+    return Collections.unmodifiableSet(ccPutAllToSet(pxSet, pxDesValue));
+  }//+++
+  
+  /**
+   * alias for Collections.unmodifiableMap via VcArrayUtility.ccPutAllToMap.<br>
+   * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * @param <K> ##
+   * @param <V> ##
+   * @param pxMap no null but must empty
+   * @param pxDesEntry no null no empty
+   * @return the given map
+   */
+  public static <K extends Object, V extends Object>
+  Map<K, V> ccUnmodifiableMap(Map<K, V> pxMap, Object[]pxDesEntry){
+    return Collections.unmodifiableMap(ccPutAllToMap(pxMap, pxDesEntry));
   }//+++
   
   //=== pack

@@ -307,14 +307,14 @@ public final class EcConst {
       VcTranslator.tr(pxSource.ccGetKey())
     );
   }//+++
-
+  
   //== entry
-
+  
   /**
    * @return aka the MARK
    */
   public static final String ccGetLastLeavingStamp(){
-    return "_2012261146";
+    return "_2101081549";
   }//+++
 
   /**
