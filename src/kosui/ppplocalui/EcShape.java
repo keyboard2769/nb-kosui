@@ -18,15 +18,13 @@
 package kosui.ppplocalui;
 
 import kosui.pppmodel.McConst;
-import kosui.ppputil.VcConst;
-import kosui.ppputil.VcNumericUtility;
 import processing.data.XML;
 
 /**
  * a shape don't react at user, but it is a component. <br>
  * and it always lies under elements. <br>
  */
-public class EcShape extends EcComponent{
+public class EcShape extends EcComponent {
   
   /**
    * the fill of the shape
@@ -52,36 +50,13 @@ public class EcShape extends EcComponent{
   
   public EcShape(XML pxSVGRepresentation){
     super();
-    if(pxSVGRepresentation==null){return;}
-    VcConst.ccLogln("EcShape(XML) $ parse",pxSVGRepresentation.format(0));
-    int lpX = VcNumericUtility.ccParseIntegerString(
-      pxSVGRepresentation.getString("x", "8")
-    );
-    int lpY = VcNumericUtility.ccParseIntegerString(
-      pxSVGRepresentation.getString("y", "8")
-    );
-    int lpW = VcNumericUtility.ccParseIntegerString(
-      pxSVGRepresentation.getString("width", "8")
-    );
-    int lpH = VcNumericUtility.ccParseIntegerString(
-      pxSVGRepresentation.getString("height", "8")
-    );
-    
-    ccSetBaseColor(EcConst.C_BLUE);
-    
-    ccSetBound(lpX, lpY, lpW, lpH);
-    VcConst.ccLogln("EcShape(XML) $ got",super.toString());
+    if(pxSVGRepresentation!=null){
+      cmX=McConst.ccGetIntegerValue(pxSVGRepresentation, "x", cmX);
+      cmY=McConst.ccGetIntegerValue(pxSVGRepresentation, "y", cmY);
+      cmW=McConst.ccGetIntegerValue(pxSVGRepresentation, "width", cmW);
+      cmH=McConst.ccGetIntegerValue(pxSVGRepresentation, "height", cmH);
+    }//..?
   }//..!
-  
-  //==
-  
-  /**
-   * 
-   * @param pxColor the fill of the shape
-   */
-  public final void ccSetBaseColor(int pxColor){
-    cmBaseColor=pxColor;
-  }//+++
   
   //===
   
@@ -93,5 +68,15 @@ public class EcShape extends EcComponent{
     if(!ccIsVisible()){return;}
     drawRect(cmBaseColor);
   }//+++
-
+  
+  //===
+  
+  /**
+   * 
+   * @param pxColor the fill of the shape
+   */
+  public final void ccSetBaseColor(int pxColor){
+    cmBaseColor=pxColor;
+  }//+++
+  
 }//***eof

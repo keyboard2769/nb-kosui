@@ -28,19 +28,26 @@ import processing.core.PApplet;
 public class EcText extends EcShape{
   
   /**
-   * ##
+   * default value is a question mark in the angled bracket.<br>
    */
   protected String cmText="<?>";
   
   /**
-   * ##
+   * default anchor is the "s" mode.<br>
    */
   protected char cmAlignment = 's';
   
   /**
-   * ##
+   * the color used for rendering.<br>
+   * default value is "dark gray".<br>
    */
   protected int cmTextColor=EcConst.C_DARK_GRAY;
+  
+  /**
+   * the size used for rendering.<br>
+   * default value is 12 from `PGraphics::textSize`.<br>
+   */
+  protected int cmTextSize = 12;
   
   /**
    * text color is dark gray by default.<br>
@@ -78,6 +85,7 @@ public class EcText extends EcShape{
     pbOwner.pushStyle();
     {
       pbOwner.fill(cmTextColor);
+      pbOwner.textSize(((float)cmTextSize));
       switch(cmAlignment){
           
           case 'q':case 'Q':
@@ -128,7 +136,6 @@ public class EcText extends EcShape{
         default:break;
       }//..?
     }
-    
     pbOwner.popStyle();
     
   }//+++

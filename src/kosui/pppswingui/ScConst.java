@@ -223,11 +223,11 @@ public class ScConst {
   
   /**
    * will get blocked out from event dispatch thread.<br>
-   * @param pxMessage must have something
    * @param pxOwner if null passed it is the default one will get passed
+   * @param pxMessage must have something
    */
   public static final
-  void ccMessageBox(String pxMessage, Container pxOwner){
+  void ccMessageBox(Container pxOwner, String pxMessage){
     if(!ccIsEDT()){return;}
     if(!VcConst.ccIsValidString(pxMessage)){return;}
     JOptionPane.showMessageDialog(pxOwner,pxMessage);
@@ -240,18 +240,18 @@ public class ScConst {
    */
   public static final
   void ccMessageBox(String pxMessage){
-    ccMessageBox(pxMessage, cmOwner);
+    ccMessageBox(cmOwner, pxMessage);
   }//+++
   
   /**
    * will get blocked out from event dispatch thread.<br>
    * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
    * and yes, there will be no ccWarnBox().<br>
-   * @param pxMessage must have something
    * @param pxOwner if null passed it is the default one will get passed
+   * @param pxMessage must have something
    */
   public static final
-  void ccErrorBox(String pxMessage, Container pxOwner){
+  void ccErrorBox( Container pxOwner, String pxMessage){
     if(!ccIsEDT()){return;}
     JOptionPane.showMessageDialog(
       pxOwner,
@@ -270,18 +270,18 @@ public class ScConst {
    */
   public static final
   void ccErrorBox(String pxMessage){
-    ccErrorBox(pxMessage, cmOwner);
+    ccErrorBox(cmOwner, pxMessage);
   }//+++
   
   /**
    * will get blocked out from event dispatch thread.<br>
    * icon will get set to JOptionPane.ERROR_MESSAGE.<br>
-   * @param pxMessage does not check for null or emptiness
    * @param pxOwner if null passed it is the default one will get passed
+   * @param pxMessage does not check for null or emptiness
    * @return false by default
    */
   public static final
-  boolean ccYesOrNoBox(String pxMessage, Container pxOwner){
+  boolean ccYesOrNoBox(Container pxOwner, String pxMessage){
     if(!ccIsEDT()){return false;}
     int i=JOptionPane.showConfirmDialog(
       pxOwner,
@@ -301,7 +301,7 @@ public class ScConst {
    */
   public static final
   boolean ccYesOrNoBox(String pxMessage){
-    return ccYesOrNoBox(pxMessage, cmOwner);
+    return ccYesOrNoBox(cmOwner, pxMessage);
   }//+++
   
   /**

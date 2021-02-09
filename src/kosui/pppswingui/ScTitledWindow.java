@@ -37,8 +37,8 @@ public class ScTitledWindow extends JWindow {
   private boolean cmHasCenter;
   private boolean cmHasEnd;
   private boolean cmIsFinished;
-
-  //=== 
+  
+  //===
   
   /**
    * for windows os,
@@ -98,6 +98,7 @@ public class ScTitledWindow extends JWindow {
     pack();
     setVisible(pxVisible);
     setAlwaysOnTop(false);
+    cmTitle.updateUI();
     cmHasCenter=true;
     cmHasEnd=true;
     cmIsFinished=true;

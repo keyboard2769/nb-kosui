@@ -54,13 +54,13 @@ public class DemoLocalUtility extends PApplet {
   
   private final EiTriggerable cmFlipAxis = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalAxis.ccGetInstance().ccSetIsEnabled();
+      VcLocalAxis.ccSetIsEnabled();
     }//+++
   };
   
   private final EiTriggerable cmAnchorAxis = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalAxis.ccGetInstance().ccSetAnchor(mouseX, mouseY);
+      VcLocalAxis.ccSetAnchor();
     }//+++
   };
   
@@ -89,7 +89,7 @@ public class DemoLocalUtility extends PApplet {
     self=this;
     
     //-- managers ** init
-    VcLocalAxis.ccGetInstance().ccInit(self, true);
+    VcLocalAxis.ccInit(self, true);
     VcLocalTagger.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
     VcLocalStoker.ccGetInstance().ccInit(this);

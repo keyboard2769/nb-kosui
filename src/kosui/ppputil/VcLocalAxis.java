@@ -17,7 +17,7 @@
 
 package kosui.ppputil;
 
-import kosui.ppplocalui.EcPoint;
+import kosui.pppswingui.ScDragAnchor;
 import processing.core.PApplet;
 
 /**
@@ -29,27 +29,29 @@ import processing.core.PApplet;
 public final class VcLocalAxis {
   
   /**
-   * @return instance
+   * between lines or axis.
    */
-  public static final VcLocalAxis ccGetInstance(){
-    if(self==null){self = new VcLocalAxis();}
-    return self;
-  }
-  private static VcLocalAxis self = null;
-  private VcLocalAxis(){}//..!
+  public static final int C_TEXT_GAP = 2;
   
   //===
-
-  private PApplet cmOwner=null;
   
-  private int cmAxisColor=0x9933EE33;
-  private boolean cmIsEnabled=true;
-  private int 
-    cmAnchorX=0,
-    cmAnchorY=0
-  ;//...
+  private static PApplet pbOwner=null;
   
-  private EcPoint cmTransformedMouse = null;
+  private static final ScDragAnchor O_DRAGGER = new ScDragAnchor();
+  
+  private static float pbScale = 1.0f;
+  
+  private static int pbAxisColor = 0x9933EE33;
+  
+  private static boolean pbIsEnabled = true;
+  
+  private static int pbAnchorX=0, pbAnchorY=0;
+  
+  private static boolean pbIsTransformed = false;
+  
+  private static int pbTransmouseX=0, pbTransmouseY=0;
+  
+  //===
   
   /**
    * <pre>
@@ -59,146 +61,290 @@ public final class VcLocalAxis {
    * @param pxParent your sketch
    * @param pxEnable #
    */
-  public final void ccInit(PApplet pxParent, boolean pxEnable){
-    if(cmOwner==null){cmOwner=pxParent;}
+  public static final void ccInit(PApplet pxParent, boolean pxEnable){
+    if(pbOwner==null){pbOwner=pxParent;}
     ccSetIsEnabled(pxEnable);
   }//..!
   
-  //===
-  
-  /**
-   * 
-   * @param pxColor ARGB
-   */
-  public final void ccSetColor(int pxColor){
-    cmAxisColor=pxColor;
-  }//+++
-  
-  /**
-   * 
-   * @param pxX pix
-   * @param pxY pix
-   */
-  public final void ccSetAnchor(int pxX,int pxY){
-    cmAnchorX=pxX;
-    cmAnchorY=pxY;
-  }//+++
-  
-  /**
-   * flips states.
-   */
-  public final void ccSetIsEnabled(){
-    cmIsEnabled=!cmIsEnabled;
-  }//+++
-  
-  /**
-   * 
-   * @param pxStatus #
-   */
-  public final void ccSetIsEnabled(boolean pxStatus){
-    cmIsEnabled=pxStatus;
-  }//+++
-  
-  /**
-   * will get shown on east south point
-   * @param pxStatus ##
-   */
-  public final void ccSetTransformed(boolean pxStatus){
-    if(pxStatus){
-      cmTransformedMouse=new EcPoint(0, 0);
-    }else{
-      cmTransformedMouse=null;
-    }//..?
-  }//+++
-  
-  /**
-   * ##
-   * @param pxX ##
-   * @param pxY ##
-   */
-  public final void ccSetTransformedMosuePoint(int pxX, int pxY){
-    if(cmTransformedMouse==null){return;}
-    cmTransformedMouse.ccSetUnlimittedLocation(pxX, pxY);
-  }//+++
-  
-  //===
-  
-  private void ssUpdate(){
-    
-    //-- check
-    if(!cmIsEnabled){return;}
-    if(cmOwner==null){return;}
-    
-    //-- pre
-    int lpMouseX=cmOwner.mouseX;
-    int lpMouseY=cmOwner.mouseY;
-    int lpWidth=lpMouseX-cmAnchorX;
-    int lpHeight=lpMouseY-cmAnchorY;
-    boolean lpHasAnchor=(cmAnchorX!=0)&&(cmAnchorY!=0);
-    
-    //-- axis
-    cmOwner.noFill();
-    cmOwner.stroke(cmAxisColor);
-    cmOwner.line(0,lpMouseY,cmOwner.width,lpMouseY);
-    cmOwner.line(lpMouseX,0,lpMouseX,cmOwner.height);
-    
-    //-- rect
-    if(lpHasAnchor){cmOwner.rect(cmAnchorX,cmAnchorY,lpWidth,lpHeight);}
-    cmOwner.noStroke();
-    
-    //-- info 
-    
-    //-- info ** pre
-    cmOwner.fill(cmAxisColor);
-    
-    //-- info ** draw ** mosue
-    String lpMouse=VcStringUtility.ccPackupDimensionValue(lpMouseX, lpMouseY);
-    cmOwner.textAlign(PApplet.LEFT, PApplet.BOTTOM);
-    cmOwner.text(lpMouse,lpMouseX+2,lpMouseY-2);
-    
-    //-- info ** draw ** select
-    if(lpHasAnchor){
-      cmOwner.textAlign(PApplet.RIGHT, PApplet.TOP);
-      String lpSize=VcStringUtility
-        .ccPackupDimensionValue(lpWidth, lpHeight);
-      cmOwner.text(lpSize,lpMouseX-2,lpMouseY+4);
-      String lpAnchor=VcStringUtility
-        .ccPackupDimensionValue(cmAnchorX, cmAnchorY);
-      cmOwner.text(lpAnchor,lpMouseX-2,lpMouseY-14);
-    }//..?
-    
-    //-- info ** draw ** transform
-    if(cmTransformedMouse!=null){
-      cmOwner.textAlign(PApplet.LEFT, PApplet.TOP);
-      String lpTransformed=VcStringUtility.ccPackupDimensionValue(
-        cmTransformedMouse.ccGetX(),
-        cmTransformedMouse.ccGetY()
-      );cmOwner.text(lpTransformed,lpMouseX+2,lpMouseY+2);
-    }//..?
-    
-    //-- always
-    cmOwner.textAlign(PApplet.LEFT, PApplet.TOP);
-    
-  }//+++
+  //=== overridden
   
   /**
    * <b>MUST BE INITIATED</b><br>
    * should be called inside draw()<br>
    */
   static public void ccUpdate(){
-    self.ssUpdate();
+    
+    //-- check
+    if(!pbIsEnabled){return;}
+    if(pbOwner==null){return;}
+    
+    //-- pre
+    int lpMouseX=pbOwner.mouseX;
+    int lpMouseY=pbOwner.mouseY;
+    int lpWidth=lpMouseX-pbAnchorX;
+    int lpHeight=lpMouseY-pbAnchorY;
+    int lpLineHeight = PApplet.ceil(pbOwner.g.textSize);
+    boolean lpHasAnchor=(pbAnchorX!=0)&&(pbAnchorY!=0);
+    
+    //-- axis
+    pbOwner.noFill();
+    pbOwner.stroke(pbAxisColor);
+    pbOwner.line(0,lpMouseY,pbOwner.width,lpMouseY);
+    pbOwner.line(lpMouseX,0,lpMouseX,pbOwner.height);
+    
+    //-- rect
+    if(lpHasAnchor){
+      pbOwner.rect(pbAnchorX,pbAnchorY,lpWidth,lpHeight);
+    }//..?
+    pbOwner.noStroke();
+    
+    //-- info 
+    
+    //-- info ** pre
+    pbOwner.fill(pbAxisColor);
+    
+    //-- info ** draw ** mosue
+    String lpMouse=VcStringUtility.ccPackupDimensionValue(lpMouseX, lpMouseY);
+    pbOwner.textAlign(PApplet.LEFT, PApplet.BOTTOM);
+    pbOwner.text(lpMouse,lpMouseX+C_TEXT_GAP,lpMouseY-C_TEXT_GAP);
+    
+    //-- info ** draw ** rect
+    if(lpHasAnchor){
+      pbOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+      String lpSize=VcStringUtility
+        .ccPackupDimensionValue(lpWidth, lpHeight);
+      String lpAnchor=VcStringUtility
+        .ccPackupDimensionValue(pbAnchorX, pbAnchorY);
+      pbOwner.text(lpAnchor,lpMouseX+C_TEXT_GAP,lpMouseY+C_TEXT_GAP);
+      pbOwner.text(lpSize,lpMouseX+C_TEXT_GAP,lpMouseY+C_TEXT_GAP+lpLineHeight);
+    }//..?
+    
+    //-- info ** draw ** transform
+    if(pbIsTransformed){
+      pbOwner.textAlign(PApplet.RIGHT, PApplet.BOTTOM);
+      String lpTransformedMouse=VcStringUtility
+        .ccPackupDimensionValue(pbTransmouseX,pbTransmouseY);
+      pbOwner.text(lpTransformedMouse,lpMouseX-C_TEXT_GAP,lpMouseY-C_TEXT_GAP);
+      if(lpHasAnchor){
+        pbOwner.textAlign(PApplet.RIGHT, PApplet.TOP);
+        String lpSize=VcStringUtility.ccPackupDimensionValue(
+          VcNumericUtility.ccMagnify(lpWidth, 1f/pbScale),
+          VcNumericUtility.ccMagnify(lpHeight, 1f/pbScale)
+        );
+        String lpAnchor=VcStringUtility.ccPackupDimensionValue(
+          ccTransformX(pbAnchorX),
+          ccTransformY(pbAnchorY)
+        );
+        pbOwner.text(lpAnchor,lpMouseX-C_TEXT_GAP,lpMouseY+C_TEXT_GAP);
+        pbOwner.text(
+          lpSize,
+          lpMouseX-C_TEXT_GAP,
+          lpMouseY+C_TEXT_GAP+lpLineHeight
+        );
+      }//..?
+    }//..?
+    
+    //-- always
+    pbOwner.textAlign(PApplet.LEFT, PApplet.TOP);
+    
   }//+++
   
-  /**
+  /*
+  / ** [head]:: cut this above 
    * <b>MUST BE INITIATED</b><br>
    * should be called inside draw()<br>
    * the axis him self does NOT calcualte transformation.<br>
    * @param pxTransformedX
    * @param pxTransformedY 
-   */
+   * /
   static public void ccUpdate(int pxTransformedX, int pxTransformedY){
-    self.ccSetTransformedMosuePoint(pxTransformedX, pxTransformedY);
-    self.ssUpdate();
+    ccSetTransformedMosuePoint(pxTransformedX, pxTransformedY);
+    ccUpdate();
+  }//+++
+  */
+  
+  /**
+   * pushes matrix then set translation and scale value on given owner.
+   * call this before actual view.
+   */
+  public static final void ccEnterTransformation(){
+    if(pbOwner==null){return;}
+    pbOwner.pushMatrix();
+    pbOwner.translate(O_DRAGGER.ccGetOffsetX(), O_DRAGGER.ccGetOffsetY());
+    pbOwner.scale(pbScale);
+    pbTransmouseX=ccTransformX(pbOwner.mouseX);
+    pbTransmouseY=ccTransformY(pbOwner.mouseY);
+  }//+++
+  
+  /**
+   * pops matrix back on given owner.
+   * call this after actual view.
+   */
+  public static final void ccExitTransformation(){
+    if(pbOwner==null){return;}
+    pbOwner.popMatrix();
+  }//+++
+  
+  //=== evet ** transformer
+  
+  /**
+   * supposedly should get called on mouse release.
+   */
+  public static final
+  void ccCleanTransformationalAnchor(){
+    O_DRAGGER.ccClearAnchor();
+  }//+++
+  
+  /**
+   * supposedly should get called on mouse dragged.
+   * @param pxMouseRawX ##
+   * @param pxMouseRawY ##
+   */
+  public static final
+  void ccDragTransformationalAnchor(int pxMouseRawX, int pxMouseRawY){
+    O_DRAGGER.ccMouseDragged(pxMouseRawX, pxMouseRawY);
+  }//+++
+  
+  //=== access ** axis
+  
+  /**
+   * ##
+   * @param pxColor ARGB
+   */
+  public static final void ccSetColor(int pxColor){
+    pbAxisColor=pxColor;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxX pix
+   * @param pxY pix
+   */
+  public static final void ccSetAnchor(int pxX,int pxY){
+    pbAnchorX=pxX;
+    pbAnchorY=pxY;
+  }//+++
+  
+  /**
+   * to the current mouse point of given owner.
+   */
+  public static final void ccSetAnchor(){
+    if(pbOwner==null){return;}
+    pbAnchorX=pbOwner.mouseX;
+    pbAnchorY=pbOwner.mouseY;
+  }//+++
+  
+  /**
+   * ##
+   */
+  public static final void ccResetAnchor(){
+    ccSetAnchor(0, 0);
+  }//+++
+  
+  /**
+   * flips states.
+   */
+  public static final void ccSetIsEnabled(){
+    pbIsEnabled=!pbIsEnabled;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxStatus #
+   */
+  public static final void ccSetIsEnabled(boolean pxStatus){
+    pbIsEnabled=pxStatus;
+  }//+++
+  
+  //=== access ** transformation
+  
+  /**
+   * cleans anchor and set scale to 1.0f.
+   */
+  public static final
+  void ccResetTransformation(){
+    O_DRAGGER.ccClearAnchor();
+    pbScale = 1.0f;
+    pbIsTransformed = false;
+  }//++!
+  
+  /**
+   * the offset is the start point of rectangle region location
+   * @param pxX ##
+   * @param pxY ##
+   */
+  public static final
+  void ccSetTransformationalOffset(int pxX, int pxY){
+    O_DRAGGER.ccSetOffset(pxX, pxY);
+    pbIsTransformed = true;
+  }//+++
+
+  /**
+   * the offset is the start point of rectangle region location
+   * @param pxDiffX ##
+   * @param pxDiffY ##
+   */
+  public static final
+  void ccShiftTransformationalOffset(int pxDiffX, int pxDiffY){
+    O_DRAGGER.ccSetOffset(O_DRAGGER.ccGetOffsetX()+pxDiffX, 
+      O_DRAGGER.ccGetOffsetY()+pxDiffY
+    );
+    pbIsTransformed = true;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxScale ##
+   */
+  public static final
+  void ccSetTransformationalScale(float pxScale){
+    pbScale=PApplet.constrain(pxScale, 0.25f, 8.0f);
+    pbIsTransformed = true;
+  }//+++
+  
+  /**
+   * ##
+   * @param pxDiff ##
+   */
+  public static final void ccShiftTransformationalScale(float pxDiff){
+    ccSetTransformationalScale(pbScale+pxDiff);
+    pbIsTransformed = true;
+  }//+++
+  
+  /**
+   * calculated in loop from given owner.
+   * @return ##
+   */
+  public static final int ccGetTransformedMouseX(){
+    return pbTransmouseX;
+  }//+++
+  
+  /**
+   * calculated in loop from given owner.
+   * @return ##
+   */
+  public static final int ccGetTransformedMouseY(){
+    return pbTransmouseY;
+  }//+++
+  
+  /**
+   * just tells value as result.
+   * @param pxRawX can be location or length
+   * @return scale*(raw-offset)
+   */
+  public static final int ccTransformX(int pxRawX){
+    return VcNumericUtility
+      .ccMagnify(pxRawX-O_DRAGGER.ccGetOffsetX(), 1f/pbScale);
+  }//+++
+  
+  /**
+   * just tells value as result.
+   * @param pxRawY can be location or length
+   * @return scale*(raw-offset)
+   */
+  public static final int ccTransformY(int pxRawY){
+    return VcNumericUtility
+      .ccMagnify(pxRawY-O_DRAGGER.ccGetOffsetY(), 1f/pbScale);
   }//+++
   
 }//***eof

@@ -99,6 +99,8 @@ public final class VcArrayUtility {
   
   //=== assert ** container
   
+  
+  
   /**
    * @param pxList #
    * @param pxMinimal size or less than one for emptiness
@@ -163,11 +165,11 @@ public final class VcArrayUtility {
   
   //=== access
   
-  //[todo]::ccSet(Object[] pxTartget, int pxIndex, pxVal){}//++<
-  //[todo]::ccSet(boolean[] pxTartget, int pxIndex, pxVal){}//++<
-  //[todo]::ccSet(byte[] pxTartget, int pxIndex, pxVal){}//++<
-  //[todo]::ccSet(int[] pxTartget, int pxIndex, pxVal){}//++<
-  //[todo]::ccSet(float[] pxTartget, int pxIndex, pxVal){}//++<
+  //[todo]::ccSet(Object[] pxTartget, int pxIndex, pxVal){}//+++
+  //[todo]::ccSet(boolean[] pxTartget, int pxIndex, pxVal){}//+++
+  //[todo]::ccSet(byte[] pxTartget, int pxIndex, pxVal){}//+++
+  //[todo]::ccSet(int[] pxTartget, int pxIndex, pxVal){}//+++
+  //[todo]::ccSet(float[] pxTartget, int pxIndex, pxVal){}//+++
   
   /**
    * @param pxTartget no null no empty
@@ -178,11 +180,11 @@ public final class VcArrayUtility {
     if(!ccIsValidArray(pxTartget)){return null;}
     return pxTartget[ZcRangedModel
       .ccLimitInclude(pxIndex, 0, pxTartget.length-1)];
-  }//++>
+  }//+++
   
-  //[todo]::ccGet([] pxTartget, int pxIndex){}//++>
-  //[todo]::ccGet([] pxTartget, int pxIndex){}//++>
-  //[todo]::ccGet([] pxTartget, int pxIndex){}//++>
+  //[todo]::ccGet([] pxTartget, int pxIndex){}//+++
+  //[todo]::ccGet([] pxTartget, int pxIndex){}//+++
+  //[todo]::ccGet([] pxTartget, int pxIndex){}//+++
   
   /**
    * @param pxTartget no null no empty
@@ -193,7 +195,7 @@ public final class VcArrayUtility {
     if(!ccIsValidArray(pxTartget)){return 0f;}
     return pxTartget[ZcRangedModel
       .ccLimitInclude(pxIndex, 0, pxTartget.length-1)];
-  }//++>
+  }//+++
   
   //=== copy
   
@@ -234,10 +236,65 @@ public final class VcArrayUtility {
   
   //=== collection ** to array
   
-  //[plan]::boolean[]::ccToBooleanArray(List<Boolean> pxList){...
-  //[plan]::int[]::ccToIntegerArray(List<Integer> pxList){...
-  //[plan]::float[]::ccToFloatArray(List<Float> pxList){...
+  /**
+   * manually copies all value to a new array.<br>
+   * MAY GOT OUT OF BOUNDARY.<br>
+   * @param pxContainer no null no empty
+   * @return null for null empty for emtpy
+   */
+  public static final Boolean[] ccToBooleanArray(Collection<Boolean> pxContainer){
+    if(pxContainer==null){return null;}
+    if(pxContainer.isEmpty()){return new Boolean[]{};}
+    Boolean[] lpRes = new Boolean[pxContainer.size()];
+    int i=0;
+    for(Boolean ofVal : pxContainer){
+      lpRes[i]=ofVal.booleanValue();
+      i++;
+    }//..~
+    return lpRes;
+  }//+++
   
+  /**
+   * manually copies all value to a new array.<br>
+   * MAY GOT OUT OF BOUNDARY.<br>
+   * @param pxContainer no null no empty
+   * @return null for null empty for emtpy
+   */
+  public static final int[] ccToIntegerArray(Collection<Integer> pxContainer){
+    if(pxContainer==null){return null;}
+    if(pxContainer.isEmpty()){return new int[]{};}
+    int[] lpRes = new int[pxContainer.size()];
+    int i=0;
+    for(Integer ofVal : pxContainer){
+      lpRes[i]=ofVal.intValue();
+      i++;
+    }//..~
+    return lpRes;
+  }//+++
+  
+  /**
+   * manually copies all value to a new array.<br>
+   * MAY GOT OUT OF BOUNDARY.<br>
+   * @param pxContainer no null no empty
+   * @return null for null empty for emtpy
+   */
+  public static final float[] ccToFloatArray(Collection<Float> pxContainer){
+    if(pxContainer==null){return null;}
+    if(pxContainer.isEmpty()){return new float[]{};}
+    float[] lpRes = new float[pxContainer.size()];
+    int i=0;
+    for(Float ofVal : pxContainer){
+      lpRes[i]=ofVal.floatValue();
+      i++;
+    }//..~
+    return lpRes;
+  }//+++
+  
+  /**
+   * alias to Collection.toArray
+   * @param pxList no null no empty
+   * @return ##
+   */
   public static final String[] ccToStringArray(Collection<String> pxList){
     if(pxList==null){return null;}
     if(pxList.isEmpty()){return new String[]{};}
@@ -311,6 +368,18 @@ public final class VcArrayUtility {
   /**
    * tweeked from Apache Commons Collection v4 for fast initiating.<br>
    * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * like:<br>
+   * <pre>
+      public static final Map<String, Integer> O_MAP
+       = Collections.unmodifiableMap(VcArrayUtility.ccPutAllToMap(
+        new TreeMap<String, Integer>(), new Object[][]{
+          {"cypher", 0x0},
+          {"uno",    0x1},
+          {"dos",    0x2},
+          {"tre",    0x3},
+          {"quad!!", 0x4}
+        }));
+   * </pre>
    * @param <K> ##
    * @param <V> ##
    * @param pxMap no null but must empty
@@ -397,6 +466,19 @@ public final class VcArrayUtility {
   /**
    * alias for Collections.unmodifiableMap via VcArrayUtility.ccPutAllToMap.<br>
    * NOT THIS MIGHT NOT BE CHEKING TYPE FOR PUTTING.<br>
+   * like:<br>
+   * <pre>
+      public static final Map<String, Integer> O_THEIR_SHEETID 
+       = VcArrayUtility.ccUnmodifiableMap(
+        new TreeMap<String, Integer>(), 
+        new Object[][]{
+          {"cypher", 0x0},
+          {"uno",    0x1},
+          {"dos",    0x2},
+          {"tre",    0x3},
+          {"quad!!", 0x4}
+        });
+   * </pre>
    * @param <K> ##
    * @param <V> ##
    * @param pxMap no null but must empty

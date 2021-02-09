@@ -414,7 +414,38 @@ public final class McConst {
     if(!VcConst.ccIsValidString(pxKey)){return;}
     if(!VcConst.ccIsValidString(pxValue)){return;}
     pxTarget.setString(pxKey, pxValue);
-  }//..?
+  }//+++
+  
+  /**
+   * alias to XML::getString()
+   * @param pxTarget ##
+   * @param pxKey ##
+   * @param pxOrDefault ##
+   * @return ##
+   */
+  public static
+  String ccGetValue(XML pxTarget, String pxKey, String pxOrDefault){
+    if(pxTarget==null){return pxOrDefault;}
+    return pxTarget.getString(pxKey, pxOrDefault);
+  }//+++
+  
+  /**
+   * alternative for `XML::getInt` as any parse exception is 
+   *   swallowed via `VcNumericUtility.ccParseIntegerString`.
+   * @param pxTarget ##
+   * @param pxKey ##
+   * @param pxOrDefault ##
+   * @return ##
+   */
+  public static 
+  int ccGetIntegerValue(XML pxTarget, String pxKey, int pxOrDefault){
+    String lpValue = ccGetValue(pxTarget, pxKey, null);
+    if(lpValue==null){
+      return pxOrDefault;
+    }else{
+      return VcNumericUtility.ccParseIntegerString(lpValue);
+    }//..?
+  }//+++
   
   //=== data process ** json
   
