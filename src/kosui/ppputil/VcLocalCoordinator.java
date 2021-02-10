@@ -38,41 +38,34 @@ import kosui.ppplocalui.EiTriggerable;
  */
 public final class VcLocalCoordinator {
   
-  /**
-   * @return instance
-   */
-  public static final VcLocalCoordinator ccGetInstance(){return SELF;}
-  private static final VcLocalCoordinator SELF = new VcLocalCoordinator();
-  private VcLocalCoordinator(){}//..!
-  
-  //===
-  
-  private int
-    cmMouseOverID=0,
-    cmInputFocusID=0,
-    cmInputIndex=0
-  ;//...
-  
-  private final HashMap<Integer, EiTriggerable> cmMapOfKeyTrigger
+  private static final HashMap<Integer, EiTriggerable> O_MAP_OF_KEY_TRIGGER
     = new HashMap<Integer, EiTriggerable>();
-  private final HashMap<Integer, EiTriggerable> cmMapOfMouseTrigger
+  private static final HashMap<Integer, EiTriggerable> O_MAP_OF_MOUSE_TRIGGER
     = new HashMap<Integer, EiTriggerable>();
   
-  private final HashMap<Integer, EiTriggerable> cmMapOfWheelUpTrigger
+  private static final
+  HashMap<Integer, EiTriggerable> O_MAP_OF_WHEEL_UP_TRIGGER
     = new HashMap<Integer, EiTriggerable>();
-  private final HashMap<Integer, EiTriggerable> cmMapOfWheelDownTrigger
+  private static final
+  HashMap<Integer, EiTriggerable> O_MAP_OF_WHEEL_DOWN_TRIGGER
     = new HashMap<Integer, EiTriggerable>();
   
-  private final HashMap<Integer,EcElement> cmMapOfInputtable
+  private static final HashMap<Integer,EcElement> O_MAP_OF_INPUTTABLE
     = new HashMap<Integer, EcElement>();
   
-  private final Queue<EiTriggerable> cmQueueOfLoopTrigger
+  private static final Queue<EiTriggerable> O_QUEUE_OF_LOOP_TRIGGER
     = new LinkedList<EiTriggerable>();
   
-  private final List<EcShape> cmListOfShape
+  private static final List<EcShape> O_LIST_OF_SHAPE
     = new ArrayList<EcShape>();
-  private final List<EcElement> cmListOfElement
+  private static final List<EcElement> O_LIST_OF_ELEMENT
     = new ArrayList<EcElement>();
+  
+  private static int
+    cmMouseOverID  = 0,
+    cmInputFocusID = 0,
+    cmInputIndex   = 0
+  ;//...
   
   //===
   
@@ -80,7 +73,7 @@ public final class VcLocalCoordinator {
    * all focus will be initiated to zero but NOT "ignore".
    * @param pxOwner will get passed to EcComponent statics.
    */
-  public final void ccInit(PApplet pxOwner) {
+  public static final void ccInit(PApplet pxOwner) {
     if(pxOwner==null){return;}
     EcComponent.ccSetOwner(pxOwner);
   }//..!
@@ -112,7 +105,7 @@ public final class VcLocalCoordinator {
    */
   static public final void ccUpdatePassive(){
     //-- layer I
-    for(EcShape it:SELF.cmListOfShape){
+    for(EcShape it:O_LIST_OF_SHAPE){
       it.ccUpdate();
     }//..~
   }//+++
@@ -121,8 +114,8 @@ public final class VcLocalCoordinator {
    * queue polling.<br>
    */
   static public final void ccUpdateQueue(){
-    if(!SELF.cmQueueOfLoopTrigger.isEmpty()){
-      SELF.cmQueueOfLoopTrigger.poll().ccTrigger();
+    if(!O_QUEUE_OF_LOOP_TRIGGER.isEmpty()){
+      O_QUEUE_OF_LOOP_TRIGGER.poll().ccTrigger();
     }//..?
   }//+++
   
@@ -132,15 +125,15 @@ public final class VcLocalCoordinator {
   static public final void ccUpdateActive(){
     
     //-- turn on selected inputtable 
-    for(EcElement it:SELF.cmMapOfInputtable.values()){
-      it.ccSetIsActivated(it.ccGetID()==SELF.cmInputFocusID);
+    for(EcElement it:O_MAP_OF_INPUTTABLE.values()){
+      it.ccSetIsActivated(it.ccGetID()==cmInputFocusID);
     }//..~
     
     //-- layer II
-    SELF.cmMouseOverID=0;
-    for(EcElement it:SELF.cmListOfElement){
+    cmMouseOverID=0;
+    for(EcElement it:O_LIST_OF_ELEMENT){
       it.ccUpdate();
-      if(it.ccIsMouseHovered()){SELF.cmMouseOverID=it.ccGetID();}
+      if(it.ccIsMouseHovered()){cmMouseOverID=it.ccGetID();}
     }//..~
   
   }//+++
@@ -158,7 +151,7 @@ public final class VcLocalCoordinator {
   synchronized static public final
   void ccInvokeLater(EiTriggerable pxTrigger){
     if(pxTrigger==null){return;}
-    SELF.cmQueueOfLoopTrigger.offer(pxTrigger);
+    O_QUEUE_OF_LOOP_TRIGGER.offer(pxTrigger);
   }//+++
   
   /**
@@ -168,10 +161,10 @@ public final class VcLocalCoordinator {
    * </pre>
    */
   static public final void ccMousePressed(){
-    if(SELF.cmMapOfMouseTrigger.isEmpty()){return;}
+    if(O_MAP_OF_MOUSE_TRIGGER.isEmpty()){return;}
     int lpID=ccGetMouseOverID();
-    if(!SELF.cmMapOfMouseTrigger.containsKey(lpID)){return;}
-    SELF.cmMapOfMouseTrigger.get(lpID).ccTrigger();
+    if(!O_MAP_OF_MOUSE_TRIGGER.containsKey(lpID)){return;}
+    O_MAP_OF_MOUSE_TRIGGER.get(lpID).ccTrigger();
   }//+++
   
   /**
@@ -186,13 +179,13 @@ public final class VcLocalCoordinator {
   void ccMouseWheel(boolean pxIsWheelUp, boolean pxIsWheelDown){
     int lpID=ccGetMouseOverID();
     if(pxIsWheelUp){
-      if(SELF.cmMapOfWheelUpTrigger.isEmpty()){return;}
-      if(!SELF.cmMapOfWheelUpTrigger.containsKey(lpID)){return;}
-      SELF.cmMapOfWheelUpTrigger.get(lpID).ccTrigger();
+      if(O_MAP_OF_WHEEL_UP_TRIGGER.isEmpty()){return;}
+      if(!O_MAP_OF_WHEEL_UP_TRIGGER.containsKey(lpID)){return;}
+      O_MAP_OF_WHEEL_UP_TRIGGER.get(lpID).ccTrigger();
     }else if(pxIsWheelDown){
-      if(SELF.cmMapOfWheelDownTrigger.isEmpty()){return;}
-      if(!SELF.cmMapOfWheelDownTrigger.containsKey(lpID)){return;}
-      SELF.cmMapOfWheelDownTrigger.get(lpID).ccTrigger();
+      if(O_MAP_OF_WHEEL_DOWN_TRIGGER.isEmpty()){return;}
+      if(!O_MAP_OF_WHEEL_DOWN_TRIGGER.containsKey(lpID)){return;}
+      O_MAP_OF_WHEEL_DOWN_TRIGGER.get(lpID).ccTrigger();
     }else{
       return;
     }//..?
@@ -216,9 +209,9 @@ public final class VcLocalCoordinator {
    * @param pxKeyCode generated by PApplet.keyPressed()
    */
   static public final void ccKeyPressed(int pxKeyCode){
-    if(SELF.cmMapOfKeyTrigger.isEmpty()){return;}
-    if(!SELF.cmMapOfKeyTrigger.containsKey(pxKeyCode)){return;}
-    SELF.cmMapOfKeyTrigger.get(pxKeyCode).ccTrigger();
+    if(O_MAP_OF_KEY_TRIGGER.isEmpty()){return;}
+    if(!O_MAP_OF_KEY_TRIGGER.containsKey(pxKeyCode)){return;}
+    O_MAP_OF_KEY_TRIGGER.get(pxKeyCode).ccTrigger();
   }//+++
   
   //===
@@ -228,8 +221,8 @@ public final class VcLocalCoordinator {
    */
   static public final void ccAddElement(EcElement pxElement){
     if(pxElement==null){return;}
-    if(SELF.cmListOfElement.contains(pxElement)){return;}
-    SELF.cmListOfElement.add(pxElement);
+    if(O_LIST_OF_ELEMENT.contains(pxElement)){return;}
+    O_LIST_OF_ELEMENT.add(pxElement);
   }//+++
   
   /**
@@ -238,8 +231,8 @@ public final class VcLocalCoordinator {
   static public final void ccAddElement(List<? extends EcElement> pxList){
     if(pxList==null){return;}
     if(pxList.isEmpty()){return;}
-    if(SELF.cmListOfElement.containsAll(pxList)){return;}
-    SELF.cmListOfElement.addAll(pxList);
+    if(O_LIST_OF_ELEMENT.containsAll(pxList)){return;}
+    O_LIST_OF_ELEMENT.addAll(pxList);
   }//+++
   
   /**
@@ -247,8 +240,8 @@ public final class VcLocalCoordinator {
    */
   static public final void ccAddShape(EcShape pxShape){
     if(pxShape==null){return;}
-    if(SELF.cmListOfShape.contains(pxShape)){return;}
-    SELF.cmListOfShape.add(pxShape);
+    if(O_LIST_OF_SHAPE.contains(pxShape)){return;}
+    O_LIST_OF_SHAPE.add(pxShape);
   }//+++
   
   /**
@@ -257,8 +250,8 @@ public final class VcLocalCoordinator {
   static public final void ccAddShape(List<? extends EcShape> pxList){
     if(pxList==null){return;}
     if(pxList.isEmpty()){return;}
-    if(SELF.cmListOfShape.containsAll(pxList)){return;}
-    SELF.cmListOfShape.addAll(pxList);
+    if(O_LIST_OF_SHAPE.containsAll(pxList)){return;}
+    O_LIST_OF_SHAPE.addAll(pxList);
   }//+++
   
   /**
@@ -307,8 +300,8 @@ public final class VcLocalCoordinator {
    */
   static public final void ccAddInputtable(EcElement pxBox){
     if(pxBox==null){return;}
-    SELF.cmMapOfInputtable.put(pxBox.ccGetID(), pxBox);
-    SELF.cmInputIndex=SELF.cmMapOfInputtable.size();
+    O_MAP_OF_INPUTTABLE.put(pxBox.ccGetID(), pxBox);
+    cmInputIndex=O_MAP_OF_INPUTTABLE.size();
   }//+++
   
   //===
@@ -318,7 +311,7 @@ public final class VcLocalCoordinator {
    * @return id of current mouse hovered element
    */
   static public final int ccGetMouseOverID(){
-    return SELF.cmMouseOverID;
+    return cmMouseOverID;
   }//+++
   
   /**
@@ -326,8 +319,8 @@ public final class VcLocalCoordinator {
    * @return focus id is not zero or "ignore"
    */
   static public final boolean ccHasInputtableFocused(){
-    return SELF.cmInputFocusID!=0
-        && SELF.cmInputFocusID!=EcConst.C_ID_IGNORE;
+    return cmInputFocusID!=0
+        && cmInputFocusID!=EcConst.C_ID_IGNORE;
   }//+++
   
   /**
@@ -335,7 +328,7 @@ public final class VcLocalCoordinator {
    * @return #
    */
   static public final int ccGetInputFocusID(){
-    return SELF.cmInputFocusID;
+    return cmInputFocusID;
   }//+++
   
   //===
@@ -351,8 +344,8 @@ public final class VcLocalCoordinator {
   static public final
   void ccRegisterKeyTrigger(int pxKeyCode, EiTriggerable pxTrigger){
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfKeyTrigger.containsKey(pxKeyCode)){return;}
-    SELF.cmMapOfKeyTrigger.put(pxKeyCode, pxTrigger);
+    if(O_MAP_OF_KEY_TRIGGER.containsKey(pxKeyCode)){return;}
+    O_MAP_OF_KEY_TRIGGER.put(pxKeyCode, pxTrigger);
   }//+++
   
   /**
@@ -374,8 +367,8 @@ public final class VcLocalCoordinator {
     if(pxTrigger==null){return;}
     if(pxElementID==0){return;}
     if(pxElementID==EcConst.C_ID_IGNORE){return;}
-    if(SELF.cmMapOfMouseTrigger.containsKey(pxElementID)){return;}
-    SELF.cmMapOfMouseTrigger.put(pxElementID, pxTrigger);
+    if(O_MAP_OF_MOUSE_TRIGGER.containsKey(pxElementID)){return;}
+    O_MAP_OF_MOUSE_TRIGGER.put(pxElementID, pxTrigger);
   }//+++
   
   /**
@@ -397,8 +390,8 @@ public final class VcLocalCoordinator {
     if(pxTrigger==null){return;}
     if(pxElementID==0){return;}
     if(pxElementID==EcConst.C_ID_IGNORE){return;}
-    if(SELF.cmMapOfWheelUpTrigger.containsKey(pxElementID)){return;}
-    SELF.cmMapOfWheelUpTrigger.put(pxElementID, pxTrigger);
+    if(O_MAP_OF_WHEEL_UP_TRIGGER.containsKey(pxElementID)){return;}
+    O_MAP_OF_WHEEL_UP_TRIGGER.put(pxElementID, pxTrigger);
   }//+++
   
   /**
@@ -420,8 +413,8 @@ public final class VcLocalCoordinator {
     if(pxTrigger==null){return;}
     if(pxElementID==0){return;}
     if(pxElementID==EcConst.C_ID_IGNORE){return;}
-    if(SELF.cmMapOfWheelDownTrigger.containsKey(pxElementID)){return;}
-    SELF.cmMapOfWheelDownTrigger.put(pxElementID, pxTrigger);
+    if(O_MAP_OF_WHEEL_DOWN_TRIGGER.containsKey(pxElementID)){return;}
+    O_MAP_OF_WHEEL_DOWN_TRIGGER.put(pxElementID, pxTrigger);
   }//+++
   
   //===
@@ -430,15 +423,15 @@ public final class VcLocalCoordinator {
    * set input focus to ignore id.
    * call this when you think a value has been taken
    */
-  public final void ccClearCurrentInputFocus(){
+  public static final void ccClearCurrentInputFocus(){
     cmInputFocusID=EcConst.C_ID_IGNORE;
-    cmInputIndex=cmMapOfInputtable.size();
+    cmInputIndex=O_MAP_OF_INPUTTABLE.size();
   }//+++
   
   /**
    * @return ture if focus id is ignored
    */
-  public final boolean ccIsInputCurrentlyFocused(){
+  public static final boolean ccIsInputCurrentlyFocused(){
     return cmInputFocusID!=EcConst.C_ID_IGNORE;
   }//+++
   
@@ -446,16 +439,16 @@ public final class VcLocalCoordinator {
    * set input focus to current mouse hovered element.
    * supposedly should be called from mousePressed().
    */
-  public final void ccSetCurrentInputFocus(){
+  public static final void ccSetCurrentInputFocus(){
     cmInputFocusID=cmMouseOverID;
     ssTransferInputIndex();
   }//+++
   
-  private void ssTransferInputIndex(){
-    cmInputIndex=cmMapOfInputtable.size();
+  private static void ssTransferInputIndex(){
+    cmInputIndex=O_MAP_OF_INPUTTABLE.size();
     EcElement lpSource=ccGetCurrentFocusedBox();
     int lpTester=0;
-    for(EcElement it:cmMapOfInputtable.values()){
+    for(EcElement it:O_MAP_OF_INPUTTABLE.values()){
       if(it==lpSource){cmInputIndex=lpTester;break;}
       lpTester++;
     }//..~
@@ -465,7 +458,7 @@ public final class VcLocalCoordinator {
    * set input focus to next indexed one in the list.<br>
    * supposedly should be triggered by pressing [tab] key.<br>
    */
-  public final void ccToNextInputIndex(){
+  public static final void ccToNextInputIndex(){
     cmInputIndex++;
     ssRefreshInputUI();
   }//+++
@@ -476,18 +469,18 @@ public final class VcLocalCoordinator {
    * for processing you might need a pretty tricky work around
    * to make that happen so it is okay to just not to use this method.<br>
    */
-  public final void ccToPreviousInputIndex(){
+  public static final void ccToPreviousInputIndex(){
     cmInputIndex--;
     ssRefreshInputUI();
   }//+++
   
-  private void ssRefreshInputUI(){
-    int lpSize=cmMapOfInputtable.size();
+  private static void ssRefreshInputUI(){
+    int lpSize=O_MAP_OF_INPUTTABLE.size();
     if(cmInputIndex>lpSize){cmInputIndex=0;}
     if(cmInputIndex<0){cmInputIndex=lpSize;}
     if(cmInputIndex==lpSize){cmInputFocusID=EcConst.C_ID_IGNORE;return;}
     EcElement[] lpArray =new EcElement[lpSize];
-    cmMapOfInputtable.values().toArray(lpArray);
+    O_MAP_OF_INPUTTABLE.values().toArray(lpArray);
     EcElement lpBox=lpArray[cmInputIndex];
     if(lpBox!=null){cmInputFocusID=lpBox.ccGetID();}
   }//+++
@@ -496,11 +489,11 @@ public final class VcLocalCoordinator {
    * 
    * @return null if there is nothing focused so you have to check
    */
-  public final EcElement ccGetCurrentFocusedBox(){
+  public static final EcElement ccGetCurrentFocusedBox(){
     if(cmInputFocusID==0
      ||cmInputFocusID==EcConst.C_ID_IGNORE
     ){return null;}
-    return cmMapOfInputtable.get(cmInputFocusID);
+    return O_MAP_OF_INPUTTABLE.get(cmInputFocusID);
   }//+++
   
 }//***eof

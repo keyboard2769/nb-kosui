@@ -141,6 +141,19 @@ public final class VcStringUtility {
   }//+++
   
   /**
+   * alias for String::charAt to bypass null check
+   * @param pxLine ##
+   * @param pxChar ##
+   * @return ##
+   */
+  static public final
+  boolean ccEndWith(String pxLine, char pxChar){
+    if(VcConst.ccIsValidString(pxLine)){
+      return pxLine.charAt(pxLine.length()-1)==pxChar;
+    }else{return false;}//..?
+  }//+++
+  
+  /**
    * alias for String::endsWith to bypass null check
    * @param pxLine ##
    * @param pxEnd ##

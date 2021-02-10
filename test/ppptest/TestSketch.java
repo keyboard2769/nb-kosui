@@ -103,8 +103,8 @@ public class TestSketch extends PApplet {
     size(320, 240);
     self=this;
     EcConst.ccSetupSketch(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 7);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcLocalTagger.ccInit(this, 7);
+    VcLocalCoordinator.ccInit(this);
     
     //-- laytout
     

@@ -257,7 +257,7 @@ public class CaseNumericUtility extends JFrame{
       SELF.setVisible(true);
       
       //-- coordinating
-      VcSwingCoordinator.ccGetInstance().ccInit(SELF);
+      VcSwingCoordinator.ccInit(SELF);
       VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
       VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
       VcSwingCoordinator.ccRegisterCommand("ls",T_LIST_TEST);

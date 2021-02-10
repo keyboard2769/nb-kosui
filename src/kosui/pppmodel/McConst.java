@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -36,6 +37,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
+import processing.core.PApplet;
 import processing.data.JSONObject;
 import processing.data.StringList;
 
@@ -565,6 +567,38 @@ public final class McConst {
       VcConst.ccErrln("McConst.ccOpenFolderFromDesktop",ioe.getMessage());
     }//..?
   }//+++
+  
+  /**
+   * alias to `Base64..::encodeToString` via `PApplet.loadBytes`
+   *   and swallows exception for you.
+   * @param pxFile checked via `McConst.ccVerifyFileForLoading`
+   * @return ##
+   */
+  public static final String ccEncodeBase64String(File pxFile){
+    
+    //-- pre
+    final String lpAhead = ".%test210109002 $ ";
+    final String lpAbort = lpAhead + "abort";
+    if(McConst.ccVerifyFileForLoading(pxFile)<0){
+      VcConst.ccErrln(lpAbort, "ab101");
+      return null;
+    }//..?
+    
+    //-- load
+    byte[] lpData;
+    try{
+       lpData = PApplet.loadBytes(pxFile);
+    } catch(Exception e){
+      VcConst.ccErrln(lpAbort, e.getMessage());
+      lpData=null;
+    }//..?
+    
+    //-- encode
+    if(lpData == null){return null;}
+    return Base64.getEncoder().encodeToString(lpData);
+  
+  }//+++
+  
   
   //=== test
   

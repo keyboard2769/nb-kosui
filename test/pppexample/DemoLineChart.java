@@ -268,7 +268,7 @@ public class DemoLineChart extends PApplet{
     size(320,240);
     frame.setTitle("Line Chart");
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
     
     //-- swing
     SwingUtilities.invokeLater(cmSwingSetupRunner);

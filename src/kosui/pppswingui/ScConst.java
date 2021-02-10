@@ -228,7 +228,10 @@ public class ScConst {
    */
   public static final
   void ccMessageBox(Container pxOwner, String pxMessage){
-    if(!ccIsEDT()){return;}
+    if(!ccIsEDT()){
+      VcConst.ccErrln("ScConst.ccMessageBox", pxMessage);
+      return;
+    }//..?
     if(!VcConst.ccIsValidString(pxMessage)){return;}
     JOptionPane.showMessageDialog(pxOwner,pxMessage);
   }//+++
@@ -252,7 +255,10 @@ public class ScConst {
    */
   public static final
   void ccErrorBox( Container pxOwner, String pxMessage){
-    if(!ccIsEDT()){return;}
+    if(!ccIsEDT()){
+      VcConst.ccErrln("ScConst.ccErrorBox", pxMessage);
+      return;
+    }//..?
     JOptionPane.showMessageDialog(
       pxOwner,
       pxMessage,

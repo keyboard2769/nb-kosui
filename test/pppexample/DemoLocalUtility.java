@@ -47,7 +47,7 @@ public class DemoLocalUtility extends PApplet {
   
   private final EiTriggerable cmConsoleRefreshing = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalHelper.ccGetInstance().ccSetVisible(false);
+      VcLocalHelper.ccSetVisible(false);
     }//+++
   };
   
@@ -67,7 +67,7 @@ public class DemoLocalUtility extends PApplet {
   private final EiTriggerable cmHelperFlipping = new EiTriggerable() {
     @Override public void ccTrigger(){
       //VcLocalConsole.ccGetInstance().ccSetHelperVisible();
-      VcLocalHelper.ccGetInstance().ccSetVisible();
+      VcLocalHelper.ccSetVisible();
     }//+++
   };
   
@@ -90,15 +90,15 @@ public class DemoLocalUtility extends PApplet {
     
     //-- managers ** init
     VcLocalAxis.ccInit(self, true);
-    VcLocalTagger.ccGetInstance().ccInit(this);
-    VcLocalConsole.ccGetInstance().ccInit(this);
-    VcLocalStoker.ccGetInstance().ccInit(this);
-    VcLocalHelper.ccGetInstance().ccInit(this);
+    VcLocalTagger.ccInit(this);
+    VcLocalConsole.ccInit(this);
+    VcLocalStoker.ccInit(this);
+    VcLocalHelper.ccInit(this);
     
     //-- managers ** config
-    VcLocalTagger.ccGetInstance().ccSetAsBar(true);
-    VcLocalTagger.ccGetInstance().ccSetLocationOffset(1, 1);
-    VcLocalTagger.ccGetInstance().ccSetGap(85, 20);
+    VcLocalTagger.ccSetAsBar(true);
+    VcLocalTagger.ccSetLocationOffset(1, 1);
+    VcLocalTagger.ccSetGap(85, 20);
     
     //-- register ** key
     VcLocalCoordinator.ccRegisterKeyTrigger

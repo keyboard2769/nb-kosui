@@ -40,35 +40,25 @@ public final class VcLocalStoker {
   /**
    * get stacked after clear by default
    */
-  private static final String C_DEFAULT_MESSAGE=".kosui::";
-  
-  /**
-   * @return instance
-   */
-  public static final VcLocalStoker ccGetInstance(){
-    if(self==null){self=new VcLocalStoker();}
-    return self;
-  }//+++
-  private static VcLocalStoker self = null;
-  private VcLocalStoker (){}//..!
+  private static final String C_DEFAULT_MESSAGE="kosui%stoker $ ";
   
   //===
   
-  private PApplet cmOwner=null;
+  private static PApplet cmOwner=null;
   
-  private boolean cmIsVisible=true;
+  private static boolean cmIsVisible=true;
   
-  private int
+  private static int
     //-- color
-    //[abort]::cmConsoleColor,cmStackColor
-    cmThemeColor=0xFF33EE33,
+    //[abort]:: xxConsoleColor, xxStackColor
+    cmThemeColor = 0xFF33EE33,
     //-- pix
-    cmBaseLineOffsetY=40
+    cmBaseLineOffsetY = 40
   ;//...
   
-  private int cmMaxLine,cmMaxLength;
+  private static int cmMaxLine,cmMaxLength;
   
-  private final McTextStoker cmModel = new McTextStoker(C_BUFFER_SIZE);
+  private static final McTextStoker O_MODEL = new McTextStoker(C_BUFFER_SIZE);
   
   //===
   
@@ -79,17 +69,73 @@ public final class VcLocalStoker {
    * </pre>
    * @param pxOwner your sketch
    */
-  public final void ccInit(PApplet pxOwner){
+  public static final void ccInit(PApplet pxOwner){
     if(pxOwner==null){return;}
     if(cmOwner==null){cmOwner=pxOwner;}
     cmMaxLine=cmOwner.height/EcConst.C_DEFAULT_TEXT_HEIGHT;
     cmMaxLength=64;//[abort]::cmOwner.width/EcConst.C_DEFAULT_TEXT_WIDTH
   }//..!
   
+  //===
+  
+  /**
+   * supposedly should get called inside PApplet.draw() loop
+   */
+  public static final void ccUpdate(){
+    if(cmOwner==null || !cmIsVisible){return;}
+    int lpOffset=cmOwner.height-cmBaseLineOffsetY;
+    cmOwner.pushStyle();{
+      cmOwner.fill(cmThemeColor);
+      cmOwner.textAlign(LEFT, BOTTOM);
+      for(int i=0;i<cmMaxLine;i++){
+        cmOwner.text(O_MODEL.ccGet(i), 5,
+          lpOffset-i*EcConst.C_DEFAULT_TEXT_HEIGHT
+        );
+      }//..~
+      cmOwner.stroke(cmThemeColor);
+      cmOwner.line(0,lpOffset,cmOwner.width,lpOffset);
+    }cmOwner.popStyle();
+  }//+++
+  
+  //===
+  
+  /**
+   * will get passed to McLineStacker.ccStack() directly.<br>
+   * @param pxTag #
+   * @param pxVal #
+   */
+  static public final void ccWriteln(String pxTag, Object pxVal){
+    O_MODEL.ccWriteln(pxTag, pxVal);
+  }//+++
+  
+  /**
+   * a wrapped input will get passed to McLineStacker.ccStack() directly.<br>
+   * @param pxLine #
+   */
+  static public final void ccWriteln(String pxLine){
+    O_MODEL.ccWriteln(VcStringUtility.ccWrap(pxLine, cmMaxLength));
+  }//+++
+  
+  /**
+   * set stacked to default message held by the system stacker.
+   */
+  static public final void ccClear(){
+    O_MODEL.ccClear(C_DEFAULT_MESSAGE);
+  }//+++
+  
+  /**
+   * @param pxClearMessage clear with this alternatively
+   */
+  static public final void ccClear(String pxClearMessage){
+    O_MODEL.ccClear(pxClearMessage);
+  }//+++
+  
+  //===
+  
   /**
    * @param pxColor both text and base line will be this color
    */
-  public final void ccSetColor(int pxColor){
+  public static final void ccSetColor(int pxColor){
     cmThemeColor=pxColor;
   }//+++
   
@@ -100,7 +146,7 @@ public final class VcLocalStoker {
    * </pre>
    * @param pxOffsetY to the bottom
    */
-  public final void ccSetBaseLineOffsetY(int pxOffsetY){
+  public static final void ccSetBaseLineOffsetY(int pxOffsetY){
     cmBaseLineOffsetY=pxOffsetY;
   }//+++
   
@@ -108,78 +154,22 @@ public final class VcLocalStoker {
    * max character number of a single line.<br>
    * @param pxCount 3~512
    */
-  public final void ccMaxLineLength(int pxCount){
+  public static final void ccMaxLineLength(int pxCount){
     cmMaxLength=constrain(pxCount, 3, 512);
   }//+++
   
   /**
    * @param pxState #
    */
-  public final void ccSetIsVisible(boolean pxState){
+  public static final void ccSetIsVisible(boolean pxState){
     cmIsVisible=pxState;
   }//+++
   
   /**
    * flip version
    */
-  public final void ccSetIsVisible(){
+  public static final void ccSetIsVisible(){
     cmIsVisible=!cmIsVisible;
-  }//+++
-  
-  //===
-  
-  /**
-   * supposedly should get called inside PApplet.draw() loop
-   */
-  public static final void ccUpdate(){
-    self.ssUpdate();
-  }//+++
-  
-  private void ssUpdate(){
-    if(cmOwner==null || !cmIsVisible){return;}
-    int lpOffset=cmOwner.height-cmBaseLineOffsetY;
-    cmOwner.pushStyle();{
-      cmOwner.fill(cmThemeColor);
-      cmOwner.textAlign(LEFT, BOTTOM);
-      for(int i=0;i<cmMaxLine;i++){
-        cmOwner.text(cmModel.ccGet(i), 5,
-          lpOffset-i*EcConst.C_DEFAULT_TEXT_HEIGHT
-        );
-      }//..~
-      cmOwner.stroke(cmThemeColor);
-      cmOwner.line(0,lpOffset,cmOwner.width,lpOffset);
-    }cmOwner.popStyle();
-  }//+++
-  
-  /**
-   * will get passed to McLineStacker.ccStack() directly.<br>
-   * @param pxTag #
-   * @param pxVal #
-   */
-  static public final void ccWriteln(String pxTag, Object pxVal){
-    self.cmModel.ccWriteln(pxTag, pxVal);
-  }//+++
-  
-  /**
-   * a wrapped input will get passed to McLineStacker.ccStack() directly.<br>
-   * @param pxLine #
-   */
-  static public final void ccWriteln(String pxLine){
-    self.cmModel.ccWriteln(VcStringUtility.ccWrap(pxLine, self.cmMaxLength));
-  }//+++
-  
-  /**
-   * set stacked to default message held by the system stacker.
-   */
-  static public final void ccClear(){
-    self.cmModel.ccClear(C_DEFAULT_MESSAGE);
-  }//+++
-  
-  /**
-   * @param pxClearMessage clear with this alternatively
-   */
-  static public final void ccClear(String pxClearMessage){
-    self.cmModel.ccClear(pxClearMessage);
   }//+++
   
 }//***eof

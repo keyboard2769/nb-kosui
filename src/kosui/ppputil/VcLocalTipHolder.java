@@ -31,39 +31,32 @@ import processing.core.PApplet;
  * outside from a coordinator. <br>
  * but actually it is just a rectangle with text. <br>
  */
-public class VcLocalTipHolder {
+public final class VcLocalTipHolder {
   
   private static final int 
     C_TEXT_ADJ_X = 2,
     C_TEXT_ADJ_Y = 2
   ;//...
   
-  /**
-   * @return instance
-   */
-  public static VcLocalTipHolder ccGetInstance(){
-    if(self == null){self = new VcLocalTipHolder();}
-    return self;
-  }//..!
-  private static VcLocalTipHolder self = null;
-  private VcLocalTipHolder(){}//..!
-  
   //=== 
   
-  private PApplet cmOwner=null;
+  private static PApplet cmOwner=null;
   
-  private boolean cmIsDisabled = false;
-  private boolean cmIsVisible = false;
-  private int cmPaneColor = 0xAA111111;
-  private int cmTextColor = 0xFFCCCCCC;
+  private static boolean cmIsDisabled = false;
+  private static boolean cmIsVisible = false;
   
-  private final HashMap<Integer, String> cmMapOfTip
-    = new HashMap<Integer, String>();
-  private final HashMap<Integer, EcRect> cmMapOfPane
-    = new HashMap<Integer, EcRect>();
+  private static int cmPaneColor = 0xAA111111;
+  private static int cmTextColor = 0xFFCCCCCC;
   
-  private final EcPoint cmAnchor = new EcPoint();
-  private final ZcTimer cmShowTM = new ZcOnDelayTimer(32);//..2s
+  private static final HashMap<Integer, String> O_MAP_OF_TIP
+   = new HashMap<Integer, String>();
+  private static final HashMap<Integer, EcRect> O_MAP_OF_PANE
+   = new HashMap<Integer, EcRect>();
+  
+  private static final EcPoint O_ANCHOR     = new EcPoint();
+  private static final ZcTimer O_SHOW_TIMER = new ZcOnDelayTimer(32);//..2s
+  
+  //===
   
   /**
    * <pre>
@@ -74,45 +67,40 @@ public class VcLocalTipHolder {
    * </pre>
    * @param pxOwner your sketch
    */
-  public final void ccInit(PApplet pxOwner){
+  public static final void ccInit(PApplet pxOwner){
     if(pxOwner==null){return;}
     if(cmOwner==null){cmOwner=pxOwner;}
     ccRegisterTipMessage(0, "<?>");
     ccRegisterTipMessage(EcConst.C_ID_IGNORE, "<?>");
-  }//..!
+  }//++!
   
   //===
 
   /**
    * not supposed to get invoked outside a living sketch. <br>
    */
-  static public final void ccUpdate(){
-    self.ssUpdate(VcLocalCoordinator.ccGetMouseOverID());
-  }//+++
-  
-  private void ssUpdate(int pxID){
+  public static final void ccUpdate(){
+    int lpID = VcLocalCoordinator.ccGetMouseOverID();
     if(cmIsDisabled){return;}
-    cmShowTM.ccAct(cmIsVisible);
-    if(cmShowTM.ccIsUp()){cmIsVisible=false;}
+    O_SHOW_TIMER.ccAct(cmIsVisible);
+    if(O_SHOW_TIMER.ccIsUp()){cmIsVisible=false;}
     if(!cmIsVisible){return;}
-    if(cmMapOfTip.containsKey(pxID)&&cmMapOfPane.containsKey(pxID)){
-      String lpTip=cmMapOfTip.get(pxID);
-      EcRect lpPane=cmMapOfPane.get(pxID);
-      cmAnchor.ccSetX(cmOwner.mouseX<(cmOwner.width/2)?
+    if(O_MAP_OF_TIP.containsKey(lpID)&&O_MAP_OF_PANE.containsKey(lpID)){
+      String lpTip=O_MAP_OF_TIP.get(lpID);
+      EcRect lpPane=O_MAP_OF_PANE.get(lpID);
+      O_ANCHOR.ccSetX(cmOwner.mouseX<(cmOwner.width/2)?
         cmOwner.mouseX:cmOwner.mouseX-lpPane.ccGetW()
       );
-      cmAnchor.ccSetY(cmOwner.mouseY<(cmOwner.height/2)?
+      O_ANCHOR.ccSetY(cmOwner.mouseY<(cmOwner.height/2)?
         cmOwner.mouseY:cmOwner.mouseY-lpPane.ccGetH()
       );
       cmOwner.fill(cmPaneColor);
-      cmOwner.rect(
-        cmAnchor.ccGetX(),cmAnchor.ccGetY(),
+      cmOwner.rect(O_ANCHOR.ccGetX(),O_ANCHOR.ccGetY(),
         lpPane.ccGetW(),lpPane.ccGetH()
       );
       cmOwner.fill(cmTextColor);
-      cmOwner.text(
-        lpTip,
-        cmAnchor.ccGetX()+C_TEXT_ADJ_X,cmAnchor.ccGetY()+C_TEXT_ADJ_Y
+      cmOwner.text(lpTip,
+        O_ANCHOR.ccGetX()+C_TEXT_ADJ_X,O_ANCHOR.ccGetY()+C_TEXT_ADJ_Y
       );
     }//..?
   }//+++
@@ -126,11 +114,11 @@ public class VcLocalTipHolder {
   public static final
   void ccRegisterTipMessage(int pxID, String pxTip){
     if(!VcConst.ccIsValidString(pxTip)){return;}
-    if(self.cmMapOfTip.containsKey(pxID)){return;}
-    self.cmMapOfTip.put(pxID, pxTip);
+    if(O_MAP_OF_TIP.containsKey(pxID)){return;}
+    O_MAP_OF_TIP.put(pxID, pxTip);
     EcRect lpRect=new EcRect();
     lpRect.ccSetSize(pxTip);
-    self.cmMapOfPane.put(pxID, lpRect);
+    O_MAP_OF_PANE.put(pxID, lpRect);
   }//+++
   
   /**
@@ -139,7 +127,7 @@ public class VcLocalTipHolder {
    * @param pxComponent do not pass null
    * @param pxTip do not pass null
    */
-  static public final
+  public static final
   void ccRegisterTipMessage(EcElement pxComponent, String pxTip){
     if(pxComponent==null){return;}
     ccRegisterTipMessage(pxComponent.ccGetID(), pxTip);
@@ -151,14 +139,14 @@ public class VcLocalTipHolder {
    * if it is not enabled it does not draw and can not be activated.<br>
    * @param pxStatus #
    */
-  public final void ccSetIsEnabled(boolean pxStatus){
+  public static final void ccSetIsEnabled(boolean pxStatus){
     cmIsDisabled=!pxStatus;
   }//+++
   
   /**
    * flip version
    */
-  public final void ccSetIsEnabled(){
+  public static final void ccSetIsEnabled(){
     cmIsDisabled=!cmIsDisabled;
   }//+++
   
@@ -166,7 +154,7 @@ public class VcLocalTipHolder {
    * ##
    * @param pxColor #
    */
-  public final void ccSetTextColor(int pxColor){
+  public static final void ccSetTextColor(int pxColor){
     cmTextColor=pxColor;
   }//+++
   
@@ -174,7 +162,7 @@ public class VcLocalTipHolder {
    * ##
    * @param pxColor #
    */
-  public final void ccSetPaneColor(int pxColor){
+  public static final void ccSetPaneColor(int pxColor){
     cmPaneColor=pxColor;
   }//+++
   
@@ -183,7 +171,7 @@ public class VcLocalTipHolder {
    * @param pxText #
    * @param pxPane #
    */
-  public final void ccSetupColor(int pxText, int pxPane){
+  public static final void ccSetupColor(int pxText, int pxPane){
     cmTextColor=pxText;
     cmPaneColor=pxPane;
   }//+++
@@ -191,15 +179,15 @@ public class VcLocalTipHolder {
   /**
    * @param pxSecond #
    */
-  public final void ccSetShowTime(float pxSecond){
-    cmShowTM.ccSetTime(EcConst.ccToFrameCount(pxSecond));
+  public static final void ccSetShowTime(float pxSecond){
+    O_SHOW_TIMER.ccSetTime(EcConst.ccToFrameCount(pxSecond));
   }//+++
   
   /**
    * let tip pane show for a given time.<br>
    */
   public static final void ccActivate(){
-    self.cmIsVisible=true;
+    cmIsVisible=true;
   }//+++
   
 }//***eof

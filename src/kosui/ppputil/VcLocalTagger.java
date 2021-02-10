@@ -28,40 +28,30 @@ import static kosui.ppputil.VcConst.ccIsValidString;
  */
 public final class VcLocalTagger{
   
-  /**
-   * @return instance
-   */
-  public static final VcLocalTagger ccGetInstance(){
-    if(self==null){self=new VcLocalTagger();}
-    return self;
-  }//+++
-  private static VcLocalTagger self = null;
-  private VcLocalTagger(){}//..!
-  
   //===
   
-  private PApplet cmOwner=null;
+  static private PApplet cmOwner=null;
   
-  private int
+  static private int
     //-- count
-    cmCounter=0,
-    cmRowWrap=8,
+    cmCounter = 0,
+    cmRowWrap = 8,
     //-- pix
-    cmTagHeight=EcConst.C_DEFAULT_TEXT_HEIGHT,
-    cmGapX=100,
-    cmGapY=cmTagHeight+2,
-    cmAnchorX=5,
-    cmAnchorY=20,
+    cmTagHeight = EcConst.C_DEFAULT_TEXT_HEIGHT,
+    cmGapX      = 100,
+    cmGapY      = EcConst.C_DEFAULT_TEXT_HEIGHT + 2,
+    cmAnchorX   = 5,
+    cmAnchorY   = 20,
     //-- ARGB
-    cmBackground=0x99666666,
-    cmForeround =0xFF33EE33
+    cmBackground = 0x99666666,
+    cmForeround  = 0xFF33EE33
   ;//...
   
-  private float cmTagWidthCoeff=1.02f;
+  private static float cmTagWidthCoeff = 1.02f;
   
-  private boolean
+  private static boolean
     cmIsVisible = true,
-    cmAsBar = false
+    cmAsBar     = false
   ;//..?
   
   //===
@@ -77,7 +67,8 @@ public final class VcLocalTagger{
    * @param pxRow wrap count .. bigger than three or AUTO 
    * @param pxVisible anyway
    */
-  public final void ccInit(PApplet pxOwner, int pxRow, boolean pxVisible){
+  public static final
+  void ccInit(PApplet pxOwner, int pxRow, boolean pxVisible){
     if(pxOwner==null){return;}
     if(cmOwner==null){cmOwner=pxOwner;}
     int lpTextHeight = (int)(pxOwner.textAscent()+pxOwner.textDescent());
@@ -104,7 +95,7 @@ public final class VcLocalTagger{
    * @param pxOwner your sketch
    * @param pxRow max row count, DONT PASS ZERO!!
    */
-  public final void ccInit(PApplet pxOwner, int pxRow){
+  public static final void ccInit(PApplet pxOwner, int pxRow){
     ccInit(pxOwner, pxRow, true);
   }//..!
   
@@ -119,7 +110,7 @@ public final class VcLocalTagger{
    * @param pxOwner your sketch
    * @param pxVisible anyway
    */
-  public final void ccInit(PApplet pxOwner, boolean pxVisible){
+  public static final void ccInit(PApplet pxOwner, boolean pxVisible){
     ccInit(pxOwner, -1, pxVisible);
   }//..!
   
@@ -134,88 +125,18 @@ public final class VcLocalTagger{
    * visibility is true by default.<br>
    * @param pxOwner your sketch
    */
-  public final void ccInit(PApplet pxOwner){
+  public static final void ccInit(PApplet pxOwner){
     ccInit(pxOwner,-1,true);
   }//..!
   
   //===
   
   /**
-   * gap count from start point but not end. 
-   * should be bigger than actual text height and width.
-   * @param pxGapX 0~255 pix
-   * @param pxGapY 0~255 pix
+   * <b>MUST BE INITIATED</b><br>
+   * <b>MUST BE STABILIZED</b><br>
+   * @param pxTag ##
    */
-  public final void ccSetGap(int pxGapX, int pxGapY){
-    cmGapX=pxGapX&0xFF;
-    cmGapY=pxGapY&0xFF;
-  }//+++
-  
-  /**
-   * for 320*240 size, 7 is recommended. 
-   * @param pxRow 1~31
-   */
-  public final void ccSetRowWrap(int pxRow){
-    cmRowWrap=(pxRow&0x1F)|0x1;
-  }//+++
-  
-  /**
-   * set how every blocks auto size its self
-   * @param pxHeight 0~255pix
-   * @param pxWCoeff 1.0~2.0
-   */
-  public final void ccSetTagSize(int pxHeight, float pxWCoeff){
-    cmTagHeight=pxHeight&0xFF;
-    cmTagWidthCoeff=pxWCoeff<1f?1f
-      :(pxWCoeff>2f?2f:pxWCoeff);
-  }//+++
-  
-  /**
-   * 
-   * @param pxOffsetX pix
-   * @param pxOffsetY pix
-   */
-  public final void ccSetLocationOffset(int pxOffsetX, int pxOffsetY){
-    cmAnchorX=pxOffsetX;
-    cmAnchorY=pxOffsetY;
-  }//+++
-  
-  /**
-   * 
-   * @param pxFore ARGB
-   * @param pxBack ARGB
-   */
-  public final void ccSetColor(int pxFore, int pxBack){
-    cmForeround=pxFore;
-    cmBackground=pxBack;
-  }//+++
-  
-  /**
-   * flips visibility
-   */
-  public final void ccSetIsVisible(){
-    cmIsVisible=!cmIsVisible;
-  }//+++
-  
-  /**
-   * 
-   * @param pxStatus #
-   */
-  public final void ccSetIsVisible(boolean pxStatus){
-    cmIsVisible=pxStatus;
-  }//+++
-  
-  /**
-   * this is a compromise to replace the old "watch bar" style 
-   * @param pxStatus #
-   */
-  public final void ccSetAsBar(boolean pxStatus){
-    cmAsBar=pxStatus;
-  }//+++
-  
-  //===
-  
-  private void ssUpdate(String pxTag){
+  public static void ccTag(String pxTag){
     if(!cmIsVisible){return;}
     if(cmOwner==null){return;}
     if(!ccIsValidString(pxTag)){return;}
@@ -240,33 +161,97 @@ public final class VcLocalTagger{
     cmCounter++;
   }//+++
   
-  //===
-  
-  /**
-   * <b>MUST BE INITIATED</b><br>
-   * <b>MUST BE STABILIZED</b><br>
-   * @param pxLine #
-   */
-  static public void ccTag(String pxLine){
-    self.ssUpdate(pxLine);
-  }//+++
-  
   /**
    * <b>MUST BE INITIATED</b><br>
    * <b>MUST BE STABILIZED</b><br>
    * @param pxTag #
    * @param pxValue #
    */
-  static public void ccTag(String pxTag, Object pxValue){
+  public static void ccTag(String pxTag, Object pxValue){
     if(pxValue==null){ccTag(pxTag);}
-    else{self.ssUpdate(pxTag+":"+pxValue.toString());}
+    else{ccTag(pxTag+":"+pxValue.toString());}
   }//+++
+  
+  //===
   
   /**
    * must be called at the end of draw()
    */
-  static public void ccStabilize(){
-    self.cmCounter=0;
+  public static void ccStabilize(){
+    cmCounter=0;
+  }//+++
+  
+  /**
+   * gap count from start point but not end. 
+   * should be bigger than actual text height and width.
+   * @param pxGapX 0~255 pix
+   * @param pxGapY 0~255 pix
+   */
+  public static final void ccSetGap(int pxGapX, int pxGapY){
+    cmGapX=pxGapX&0xFF;
+    cmGapY=pxGapY&0xFF;
+  }//+++
+  
+  /**
+   * for 320*240 size, 7 is recommended. 
+   * @param pxRow 1~31
+   */
+  public static final void ccSetRowWrap(int pxRow){
+    cmRowWrap=(pxRow&0x1F)|0x1;
+  }//+++
+  
+  /**
+   * set how every blocks auto size its self
+   * @param pxHeight 0~255pix
+   * @param pxWCoeff 1.0~2.0
+   */
+  public static final void ccSetTagSize(int pxHeight, float pxWCoeff){
+    cmTagHeight=pxHeight&0xFF;
+    cmTagWidthCoeff=pxWCoeff<1f?1f
+      :(pxWCoeff>2f?2f:pxWCoeff);
+  }//+++
+  
+  /**
+   * 
+   * @param pxOffsetX pix
+   * @param pxOffsetY pix
+   */
+  public static final void ccSetLocationOffset(int pxOffsetX, int pxOffsetY){
+    cmAnchorX=pxOffsetX;
+    cmAnchorY=pxOffsetY;
+  }//+++
+  
+  /**
+   * 
+   * @param pxFore ARGB
+   * @param pxBack ARGB
+   */
+  public static final void ccSetColor(int pxFore, int pxBack){
+    cmForeround=pxFore;
+    cmBackground=pxBack;
+  }//+++
+  
+  /**
+   * flips visibility
+   */
+  public static final void ccSetIsVisible(){
+    cmIsVisible=!cmIsVisible;
+  }//+++
+  
+  /**
+   * 
+   * @param pxStatus #
+   */
+  public static final void ccSetIsVisible(boolean pxStatus){
+    cmIsVisible=pxStatus;
+  }//+++
+  
+  /**
+   * this is a compromise to replace the old "watch bar" style 
+   * @param pxStatus #
+   */
+  public static final void ccSetAsBar(boolean pxStatus){
+    cmAsBar=pxStatus;
   }//+++
   
 }//***eof

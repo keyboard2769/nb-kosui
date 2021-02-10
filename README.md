@@ -64,7 +64,8 @@ i know it is a nonsense name, but anyway.
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ refactor the local axis to work more closely with local transformer
+- [ ] $ all staticalized manager class need to be tested
+- [ ] $ the translator is lefted tobe staticalized and refactored
 
 #### heading
 
@@ -72,6 +73,8 @@ i know it is a nonsense name, but anyway.
 
 #### last
 
+- [x] $ all mannager class is pure static now
+- [x] $ local axis now transforms him self and his owner
 - [x] $ a new local transformer class for sketch viewport transformation
 - [x] $ improve line chart drawer to give more information
 - [x] $ let's define more awt color!!
@@ -79,6 +82,5 @@ i know it is a nonsense name, but anyway.
 - [x] $ a floating JWindow aka "glass pane window"
 - [x] $ re-arranged ScLabel for glass pane window
 - [x] $ maybe we really need a roller class
-- [x] $ a ESC guarding mechanism!
 
 <hr><!--EOF-->

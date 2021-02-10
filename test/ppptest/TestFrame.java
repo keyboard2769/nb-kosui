@@ -153,7 +153,7 @@ public class TestFrame {
     O_FRAME.setVisible(true);
     
     //-- coordinating
-    VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
+    VcSwingCoordinator.ccInit(O_FRAME);
     VcSwingCoordinator.ccRegisterCommand("quit",T_QUITTING);
     VcSwingCoordinator.ccRegisterCommand("info",T_INFO_POPPING);
     

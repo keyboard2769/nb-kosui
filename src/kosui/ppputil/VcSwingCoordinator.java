@@ -36,20 +36,11 @@ import processing.core.PApplet;
  */
 public final class VcSwingCoordinator {
   
-  /**
-   * @return instance
-   */
-  public static VcSwingCoordinator ccGetInstance(){return SELF;}//+++
-  private static final VcSwingCoordinator SELF = new VcSwingCoordinator();
-  private VcSwingCoordinator(){}//..!
-
-  //===
+  private static String cmLastAccepted="";
   
-  private String cmLastAccepted="";
+  private static EiTriggerable cmRedirected = null;
   
-  private EiTriggerable cmRedirected = null;
-  
-  private final Runnable cmRedirectedInvoking = new Runnable() {
+  private static final Runnable R_REDIRECTED_INVOKING = new Runnable() {
     @Override public void run() {
       if(cmRedirected==null){return;}
       cmRedirected.ccTrigger();
@@ -57,33 +48,38 @@ public final class VcSwingCoordinator {
     }//+++
   };//***
   
-  private final HashMap<String, EiTriggerable> cmMapOfCommandExecuting
+  private static final
+  HashMap<String, EiTriggerable> O_MAP_OF_COMMAND_TRIGGER
     = new HashMap<String, EiTriggerable>();
   
-  private final HashMap<AbstractButton, EiTriggerable> cmMapOfActionPerforming
+  private static final
+  HashMap<AbstractButton, EiTriggerable> O_MAP_OF_ACTION_TRIGGER
     = new HashMap<AbstractButton, EiTriggerable>();
   
-  private final HashMap<JComponent, EiTriggerable> cmMapOfMousePressing
+  private static final
+  HashMap<JComponent, EiTriggerable> O_MAP_OF_MOUSE_TRIGGER
     = new HashMap<JComponent, EiTriggerable>();
   
-  private final ActionListener cmActionLister = new ActionListener() {
+  private static final
+  ActionListener R_ACTION_LISTENER = new ActionListener() {
     @Override public void actionPerformed(ActionEvent ae){
       if(!ScConst.ccIsEDT()){return;}
       AbstractButton lpSource = (AbstractButton)ae.getSource();
-      if(cmMapOfActionPerforming.containsKey(lpSource)){
-        cmMapOfActionPerforming.get(lpSource).ccTrigger();
+      if(O_MAP_OF_ACTION_TRIGGER.containsKey(lpSource)){
+        O_MAP_OF_ACTION_TRIGGER.get(lpSource).ccTrigger();
       }//..?
     }//+++
   };//***
   
-  private final MouseAdapter cmMouseAdaptor = new MouseAdapter() {
+  private static final
+  MouseAdapter R_MOUSE_ADAPTER = new MouseAdapter() {
     @Override  public void mousePressed(MouseEvent me){
       if(!ScConst.ccIsEDT()){return;}
       //..by now we don't support right click
       if(me.getButton()!=MouseEvent.BUTTON1){return;}
       JComponent lpSource = (JComponent)me.getSource();
-      if(cmMapOfMousePressing.containsKey(lpSource)){
-        cmMapOfMousePressing.get(lpSource).ccTrigger();
+      if(O_MAP_OF_MOUSE_TRIGGER.containsKey(lpSource)){
+        O_MAP_OF_MOUSE_TRIGGER.get(lpSource).ccTrigger();
       }//..?
     }//+++
   };//***
@@ -94,7 +90,7 @@ public final class VcSwingCoordinator {
    * alias to ScConst.ccSetOwner()
    * @param pxOwner #
    */
-  public final void ccInit(Frame pxOwner){
+  public static final void ccInit(Frame pxOwner){
     ScConst.ccSetOwner(pxOwner);
   }//..!
   
@@ -102,7 +98,7 @@ public final class VcSwingCoordinator {
    * alias to ScConst.ccSetOwner()
    * @param pxOwner your sketch
    */
-  public final void ccInit(PApplet pxOwner){
+  public static final void ccInit(PApplet pxOwner){
     ScConst.ccSetOwner(pxOwner);
   }//..!
   
@@ -117,9 +113,9 @@ public final class VcSwingCoordinator {
   ccRegisterAction(AbstractButton pxButton, EiTriggerable pxTrigger){
     if(pxButton==null){return;}
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfActionPerforming.containsKey(pxButton)){return;}
-    pxButton.addActionListener(SELF.cmActionLister);
-    SELF.cmMapOfActionPerforming.put(pxButton,pxTrigger);
+    if(O_MAP_OF_ACTION_TRIGGER.containsKey(pxButton)){return;}
+    pxButton.addActionListener(R_ACTION_LISTENER);
+    O_MAP_OF_ACTION_TRIGGER.put(pxButton,pxTrigger);
   }//+++
   
   /**
@@ -131,9 +127,9 @@ public final class VcSwingCoordinator {
   ccRegisterPressing(JComponent pxComponent, EiTriggerable pxTrigger){
     if(pxComponent==null){return;}
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfMousePressing.containsKey(pxComponent)){return;}
-    pxComponent.addMouseListener(SELF.cmMouseAdaptor);
-    SELF.cmMapOfMousePressing.put(pxComponent,pxTrigger);
+    if(O_MAP_OF_MOUSE_TRIGGER.containsKey(pxComponent)){return;}
+    pxComponent.addMouseListener(R_MOUSE_ADAPTER);
+    O_MAP_OF_MOUSE_TRIGGER.put(pxComponent,pxTrigger);
   }//+++
   
   /**
@@ -145,15 +141,17 @@ public final class VcSwingCoordinator {
   ccRegisterCommand(String pxCommand, EiTriggerable pxTrigger){
     if(!VcStringUtility.ccIsCommandString(pxCommand)){return;}
     if(pxTrigger==null){return;}
-    if(SELF.cmMapOfCommandExecuting.containsKey(pxCommand)){return;}
-    SELF.cmMapOfCommandExecuting.put(pxCommand,pxTrigger);
+    if(O_MAP_OF_COMMAND_TRIGGER.containsKey(pxCommand)){return;}
+    O_MAP_OF_COMMAND_TRIGGER.put(pxCommand,pxTrigger);
   }//+++
+  
+  //===
   
   /**
    * @return accepted or empty string
    */
   static public final String ccGetLastAcceped(){
-    return SELF.cmLastAccepted;
+    return cmLastAccepted;
   }//+++
   
   /**
@@ -167,12 +165,12 @@ public final class VcSwingCoordinator {
   static public final String ccExecute(String pxCommand){
     if(!VcConst.ccIsValidString(pxCommand)){return "[>]";}
     String[] lpSplit = pxCommand.split(" ");
-    if(SELF.cmMapOfCommandExecuting.containsKey(lpSplit[0])){
-       SELF.cmLastAccepted=pxCommand;
-       SELF.cmMapOfCommandExecuting.get(lpSplit[0]).ccTrigger();
+    if(O_MAP_OF_COMMAND_TRIGGER.containsKey(lpSplit[0])){
+       cmLastAccepted=pxCommand;
+       O_MAP_OF_COMMAND_TRIGGER.get(lpSplit[0]).ccTrigger();
       return "[OK]accepted:"+lpSplit[0];
     }else{
-       SELF.cmLastAccepted="";
+       cmLastAccepted="";
       return "[BAD]unhandled:"+pxCommand;
     }//..?
   }//+++
@@ -187,10 +185,10 @@ public final class VcSwingCoordinator {
    */
   synchronized static public final
   void ccInvokeLater(EiTriggerable pxTrigger){
-    if(SELF.cmRedirected != null){return;}
+    if(cmRedirected != null){return;}
     if(pxTrigger == null){return;}
-    SELF.cmRedirected=pxTrigger;
-    SwingUtilities.invokeLater(SELF.cmRedirectedInvoking);
+    cmRedirected=pxTrigger;
+    SwingUtilities.invokeLater(R_REDIRECTED_INVOKING);
   }//+++
   
  }//***eof

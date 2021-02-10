@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 package kosui.ppputil;
 
 import processing.core.PApplet;
@@ -35,25 +34,16 @@ public final class VcLocalHelper {
     C_TEXT_ADJ_Y = 4
   ;//...
   
-  /**
-   * @return instance
-   */
-  public static final VcLocalHelper ccGetInstance() {
-    if(self==null){self=new VcLocalHelper();return self;}
-    else{return self;}
-  }//+++
-  private static VcLocalHelper self = null;
-  
   //===
   
-  private PApplet cmOwner=null;
+  private static PApplet cmOwner=null;
   
-  private final StringList cmListOfHelpMessage
-    = new StringList();
+  private static final StringList O_LIST_OF_MESSAGE
+   = new StringList();
   
-  private boolean cmIsHelperVisible = false;
+  private static boolean cmIsHelperVisible = false;
   
-  private int
+  private static int
     //-- index
     cmHelperIndex = 0,
     //-- pix
@@ -64,6 +54,8 @@ public final class VcLocalHelper {
     cmTextColor = 0xFF111111
   ;//...
   
+  //===
+  
   /**
    * <pre>
    * should get invoked from the manager's initiator.
@@ -71,7 +63,7 @@ public final class VcLocalHelper {
    * </pre>
    * @param pxOwner your sketch
    */
-  public final void ccInit(PApplet pxOwner){
+  public static final void ccInit(PApplet pxOwner){
     if(pxOwner==null){return;}
     if(cmOwner==null){
       cmOwner=pxOwner;
@@ -86,18 +78,14 @@ public final class VcLocalHelper {
    * should be called inside draw()
    */
   public static final void ccUpdate(){
-    self.ssUpdate();
-  }//+++
-  
-  private void ssUpdate(){
-    if(cmIsHelperVisible && cmListOfHelpMessage.size()>0){
+    if(cmIsHelperVisible && O_LIST_OF_MESSAGE.size()>0){
       cmOwner.fill(cmBaseColor);
       cmOwner.rect(
         cmOwnerWidth/4,cmOwnerHeight/4,
         cmOwnerWidth/2,cmOwnerHeight/2
       );
       cmOwner.fill(cmTextColor);
-      cmOwner.text(cmListOfHelpMessage.get(cmHelperIndex),
+      cmOwner.text(O_LIST_OF_MESSAGE.get(cmHelperIndex),
         cmOwnerWidth/4+C_TEXT_ADJ_X,cmOwnerWidth/4+C_TEXT_ADJ_Y
       );
     }//..?
@@ -112,20 +100,20 @@ public final class VcLocalHelper {
   public static void ccAddHelpMessage(String pxMessage){
     if(!VcConst.ccIsValidString(pxMessage)){return;}
     //[todo]::can we wrap it??
-    self.cmListOfHelpMessage.append(pxMessage);
+    O_LIST_OF_MESSAGE.append(pxMessage);
   }//+++
   
   /**
    * @param pxColor ARGB
    */
-  public final void ccSetTextColor(int pxColor){
+  public static final void ccSetTextColor(int pxColor){
     cmTextColor=pxColor;
   }//+++
   
   /**
    * @param pxColor ARGB
    */
-  public final void ccSetBaseColor(int pxColor){
+  public static final void ccSetBaseColor(int pxColor){
     cmBaseColor=pxColor;
   }//+++
   
@@ -133,7 +121,7 @@ public final class VcLocalHelper {
    * @param pxBase ##
    * @param pxText ##
    */
-  public final void ccSetupColor(int pxBase, int pxText){
+  public static final void ccSetupColor(int pxBase, int pxText){
     cmBaseColor=pxBase;
     cmTextColor=pxText;
   }//+++
@@ -141,7 +129,7 @@ public final class VcLocalHelper {
   /**
    * flip version. index will also be set to zero.<br>
    */
-  public final void ccSetVisible(){
+  public static final void ccSetVisible(){
     cmIsHelperVisible=!cmIsHelperVisible;
     cmHelperIndex=0;
   }//+++
@@ -150,7 +138,7 @@ public final class VcLocalHelper {
    * index will also be set to zero.<br>
    * @param pxState #
    */
-  public final void ccSetVisible(boolean pxState){
+  public static final void ccSetVisible(boolean pxState){
     cmIsHelperVisible=pxState;
     cmHelperIndex=0;
   }//+++
@@ -159,12 +147,12 @@ public final class VcLocalHelper {
    * supposedly can be called from key pressed
    * @param pxOffset will be constrained to fit size
    */
-  public final void ccShiftHelperIndex(int pxOffset){
+  public static final void ccShiftHelperIndex(int pxOffset){
     if(!cmIsHelperVisible){return;}
-    if(cmListOfHelpMessage.size()<=0){return;}
+    if(O_LIST_OF_MESSAGE.size()<=0){return;}
     cmHelperIndex+=pxOffset;
     cmHelperIndex=PApplet.constrain(cmHelperIndex,
-      0, cmListOfHelpMessage.size()-1
+      0, O_LIST_OF_MESSAGE.size()-1
     );
   }//+++
   

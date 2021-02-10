@@ -287,7 +287,7 @@ public class CaseRingBuffer {
     O_FRAME.setResizable(false);
     O_FRAME.pack();
     O_FRAME.setVisible(true);
-    VcSwingCoordinator.ccGetInstance().ccInit(O_FRAME);
+    VcSwingCoordinator.ccInit(O_FRAME);
     
     //-- post
     VcSwingConsole.ccWriteln("on", VcConst.C_V_OS);

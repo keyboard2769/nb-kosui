@@ -169,8 +169,8 @@ public class DemoLocalUI extends PApplet {
     self=this;
 
     //-- init
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTipHolder.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalTipHolder.ccInit(this);
     
     //-- layout
     
